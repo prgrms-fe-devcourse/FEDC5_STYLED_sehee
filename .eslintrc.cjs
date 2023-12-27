@@ -21,6 +21,10 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'react/react-in-jsx-scope': 'off',
+    'react/function-component-definition': [
+      2,
+      { namedComponents: 'arrow-function' },
+    ],
   },
   parserOptions: {
     ecmaVersion: 'latest',
