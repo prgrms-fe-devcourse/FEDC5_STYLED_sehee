@@ -1,12 +1,12 @@
 import GlobalStyle from './Styles/Global';
 
-function App() {
+const App = () => {
   return (
     <>
       <GlobalStyle />
       hi
     </>
   );
-}
+};
 
 export default App;
