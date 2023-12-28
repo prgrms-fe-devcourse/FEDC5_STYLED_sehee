@@ -1,10 +1,11 @@
 import GlobalStyle from './Styles/Global';
+import RouteManager from './Routes/Router';
 
 const App = () => {
   return (
     <>
       <GlobalStyle />
-      hi
+      <RouteManager />
     </>
   );
 };
