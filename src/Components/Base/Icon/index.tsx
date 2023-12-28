@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const IconContainer = styled.span`
+const StyledIconContainer = styled.span`
   display: inline-block;
 `;
 
@@ -18,12 +18,12 @@ const Icon = ({ iconName, iconClass, iconColor, iconSize }: IconProps) => {
   };
 
   return (
-    <IconContainer
+    <StyledIconContainer
       style={iconStyle}
       className={iconClass}
     >
       {iconName}
-    </IconContainer>
+    </StyledIconContainer>
   );
 };
 
