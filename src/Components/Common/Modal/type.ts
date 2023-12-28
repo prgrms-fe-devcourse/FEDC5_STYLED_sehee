@@ -1,12 +1,21 @@
 import { ReactNode } from 'react';
 
-export interface ModalPropsType extends ModalStyleType {
+export interface ModalPropsType {
   children: ReactNode;
-}
-
-export interface ModalStyleType {
   width?: number;
   height?: number;
-  radius?: number;
-  direction?: 'row' | 'column';
+  borderRadius?: number;
+  flexDirection?: 'row' | 'column';
+  isOpen: boolean;
+  onChangeOpen: (openState: boolean) => void;
+}
+
+export interface StyledModalWrapperType {
+  $isOpen: boolean;
+}
+export interface StyledModalContainerType {
+  width: number;
+  height: number;
+  $borderRadius: number;
+  $flexDirection: 'row' | 'column';
 }
