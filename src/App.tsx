@@ -1,25 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { DetailPage, HomePage, NotFoundPage } from './Pages';
+import RouteManager from './Routes/Router';
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage />}
-        />
-        <Route
-          path="/detail"
-          element={<DetailPage />}
-        />
-        <Route
-          path="*"
-          element={<NotFoundPage />}
-        />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouteManager />;
 };
 
 export default App;
