@@ -31,4 +31,9 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
 };

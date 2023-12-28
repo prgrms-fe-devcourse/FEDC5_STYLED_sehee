@@ -21,7 +21,22 @@
     "noFallthroughCasesInSwitch": true,
 
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] }
+    "paths": {
+      "@/*": ["src/*"],
+      "@/Api/*": ["src/Api/*"],
+      "@/Assets/*": ["src/Assets/*"],
+      "@/Components/*": ["src/Components/*"],
+      "@/Constants/*": ["src/Constants/*"],
+      "@/Contexts/*": ["src/Contexts/*"],
+      "@/Hooks/*": ["src/Hooks/*"],
+      "@/Pages/*": ["src/Pages/*"],
+      "@/Routes/*": ["src/Routes/*"],
+      "@/Services/*": ["src/Services/*"],
+      "@/Stores/*": ["src/Stores/*"],
+      "@/Styles/*": ["src/Styles/*"],
+      "@/Types/*": ["src/Types/*"],
+      "@/Utils/*": ["src/Utils/*"]
+    }
   },
   "include": [".eslintrc.cjs", "src"],
   "references": [{ "path": "./tsconfig.node.json" }]
