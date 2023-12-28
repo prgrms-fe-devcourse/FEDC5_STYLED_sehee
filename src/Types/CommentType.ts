@@ -1,16 +1,11 @@
 // eslint-disable-next-line import/no-cycle
-import { User } from './User';
+import { UserType } from './UserType';
 
-export interface Comment {
+export interface CommentType {
   _id: string;
   comment: string;
-  author: User;
+  author: UserType;
   post: string; // 포스트 id
   createdAt: string;
   updatedAt: string;
-}
-
-export interface CommentRequest {
-  comment: string;
-  postId: string;
 }

@@ -1,4 +1,4 @@
-export interface Like {
+export interface LikeType {
   _id: string;
   user: string; // 사용자 id
   post: string; // 포스트 id

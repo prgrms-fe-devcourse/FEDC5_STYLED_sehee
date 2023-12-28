@@ -38,6 +38,6 @@
       "@/Utils/*": ["src/Utils/*"]
     }
   },
-  "include": [".eslintrc.cjs", "src"],
+  "include": [".eslintrc.cjs", "src", "src/Types/.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
