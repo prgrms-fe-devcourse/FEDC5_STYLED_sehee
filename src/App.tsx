@@ -1,5 +1,12 @@
+import { ThemeProvider } from 'styled-components';
+import { lightTheme } from './Styles/Theme';
+
 const App = () => {
-  return <div>hi</div>;
+  return (
+    <ThemeProvider theme={lightTheme}>
+      <div>test</div>
+    </ThemeProvider>
+  );
 };
 
 export default App;
