@@ -40,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
     background-color: Transparent;
     border: none;
+    user-select: none;
   }
 
   input, button, textarea, select {
