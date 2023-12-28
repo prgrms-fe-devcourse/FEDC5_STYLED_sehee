@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { DetailPage, HomePage, NotFoundPage } from '@/Pages';
 
-const Router = () => {
+const RouterManager = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -22,4 +22,4 @@ const Router = () => {
   );
 };
 
-export default Router;
+export default RouterManager;
