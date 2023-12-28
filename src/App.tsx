@@ -1,7 +1,13 @@
+import GlobalStyle from './Styles/Global';
 import RouteManager from './Routes/Router';
 
 const App = () => {
-  return <RouteManager />;
+  return (
+    <>
+      <GlobalStyle />
+      <RouteManager />
+    </>
+  );
 };
 
 export default App;
