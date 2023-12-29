@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { LikeType } from './LikeType';
 import { MessageType } from './MessageType';
 import { PostType } from './PostType';

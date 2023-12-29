@@ -16,7 +16,7 @@ export interface GetUserListRequestType {
 
 export interface PostProfileImageRequestType {
   isCover: false;
-  image: number;
+  image: File;
 }
 
 export interface PutUpdateUserRequestType {
