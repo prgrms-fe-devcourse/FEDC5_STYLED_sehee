@@ -25,6 +25,8 @@ module.exports = {
       2,
       { namedComponents: 'arrow-function' },
     ],
+    'react/jsx-props-no-spreading': ['warn'],
+    'import/no-cycle': 'off',
   },
   parserOptions: {
     ecmaVersion: 'latest',
