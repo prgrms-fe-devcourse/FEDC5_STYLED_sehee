@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-cycle
 import { UserType } from './UserType';
 
 export interface CommentType {
