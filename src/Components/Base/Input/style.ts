@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div<{ $block?: boolean }>`
   display: ${({ $block }) => ($block ? 'block' : 'inline-block')};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export const Label = styled.label`
@@ -15,5 +16,5 @@ export const StyledInput = styled.input<{ $invalid?: boolean }>`
   border: 1px solid
     ${({ $invalid, theme }) =>
       $invalid ? theme.colors.alert : theme.colors.border};
-  border-radius: 5px;
+  border-radius: ${({ theme }) => theme.size.extraSmall};
 `;

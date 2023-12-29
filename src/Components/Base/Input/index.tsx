@@ -1,7 +1,6 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useRef } from 'react';
-import { Wrapper, StyledInput, Label } from './Style';
-import Props from './Type';
+import { Wrapper, StyledInput, Label } from './style';
+import Props from './type';
 
 const Input = ({
   label,
