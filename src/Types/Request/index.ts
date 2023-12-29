@@ -16,7 +16,7 @@ export interface GetUserListRequestType {
 
 export interface PostProfileImageRequestType {
   isCover: false;
-  image: number;
+  image: File;
 }
 
 export interface PutUpdateUserRequestType {
@@ -35,7 +35,7 @@ export interface GetChannelPostRequestType {
 
 export interface PostCreatePostRequestType {
   title: string;
-  image: number | null;
+  image: File | null;
   channelId: string;
 }
 
