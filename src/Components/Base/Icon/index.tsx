@@ -1,36 +1,15 @@
-import styled from 'styled-components';
+import StyledIconContainer from './style';
+import IconProps from './type';
 
-const StyledIconContainer = styled.span`
-  display: inline-block;
-`;
-
-interface IconProps {
-  iconName: string;
-  iconClass?: string;
-  iconColor?: string;
-  iconSize?: number;
-}
-
-const Icon = ({ iconName, iconClass, iconColor, iconSize }: IconProps) => {
-  const iconStyle = {
-    color: iconColor,
-    fontSize: `${iconSize}rem`,
-  };
-
+const Icon = ({ name, ...props }: IconProps) => {
   return (
     <StyledIconContainer
-      style={iconStyle}
-      className={iconClass}
+      {...props}
+      className="material-symbols-outlined"
     >
-      {iconName}
+      {name}
     </StyledIconContainer>
   );
-};
-
-Icon.defaultProps = {
-  iconClass: 'material-symbols-outlined',
-  iconColor: '',
-  iconSize: 2,
 };
 
 export default Icon;
