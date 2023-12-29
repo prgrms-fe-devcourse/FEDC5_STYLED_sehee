@@ -1,9 +1,25 @@
 import styled from 'styled-components';
 
-const StyledHeaderContainer = styled.div`
+export const StyledHeaderContainer = styled.div`
   height: 94px;
   width: 100vw;
   background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
 `;
 
-export default StyledHeaderContainer;
+export const StyledLogoContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`;
+
+export const StyledNavContainer = styled(StyledLogoContainer)`
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+`;
+
+export const StyledUserContainer = styled.div`
+  display: flex;
+  justify-content: right;
+`;
