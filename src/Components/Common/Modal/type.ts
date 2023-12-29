@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { ButtonHTMLAttributes, HTMLAttributes } from 'react';
 
-export interface ModalPropsType {
-  children: ReactNode;
+export interface ModalPropsType
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   width?: number;
   height?: number;
   borderRadius?: number;
@@ -10,10 +10,11 @@ export interface ModalPropsType {
   onChangeOpen: (openState: boolean) => void;
 }
 
-export interface StyledModalWrapperType {
+export interface StyledModalWrapperType extends HTMLAttributes<HTMLDivElement> {
   $isOpen: boolean;
 }
-export interface StyledModalContainerType {
+export interface StyledModalContainerType
+  extends HTMLAttributes<HTMLDivElement> {
   width: number;
   height: number;
   $borderRadius: number;
