@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div<{ $block?: boolean }>`
+export const StyledWrapper = styled.div<{ $block?: boolean }>`
   display: ${({ $block }) => ($block ? 'block' : 'inline-block')};
   color: ${({ theme }) => theme.colors.text};
 `;
 
-export const Label = styled.label`
+export const StyledLabel = styled.label`
   display: block;
   font-size: ${({ theme }) => theme.size.medium};
 `;

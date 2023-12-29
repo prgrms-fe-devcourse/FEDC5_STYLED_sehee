@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Wrapper, StyledInput, Label } from './style';
+import { StyledWrapper, StyledInput, StyledLabel } from './style';
 import Props from './type';
 
 const Input = ({
@@ -19,17 +19,17 @@ const Input = ({
   }, [initialFocus]);
 
   return (
-    <Wrapper
+    <StyledWrapper
       $block={block}
       {...wrapperProps}
     >
-      {label && <Label>{label}</Label>}
+      {label && <StyledLabel>{label}</StyledLabel>}
       <StyledInput
         $invalid={invalid}
         ref={inputRef}
         {...props}
       />
-    </Wrapper>
+    </StyledWrapper>
   );
 };
 
