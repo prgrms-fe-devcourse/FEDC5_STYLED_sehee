@@ -12,7 +12,6 @@ const Modal = ({
   height = 80,
   borderRadius = 5,
   flexDirection = 'row',
-  isOpen,
   onChangeOpen,
 }: ModalPropsType) => {
   const modalBgRef = useRef(null);
@@ -22,11 +21,12 @@ const Modal = ({
    * 외부 setIsOpen함수에 onChangeOpen 함수를 통해 false 전달하는 함수
    */
   const handleModalClose = (e: MouseEvent) => {
+    e.stopPropagation();
     if (e.currentTarget === modalBgRef.current) onChangeOpen(false);
   };
 
   return (
-    <StyledModalWrapper $isOpen={isOpen}>
+    <StyledModalWrapper>
       <StyledModalBackground
         ref={modalBgRef}
         onClick={handleModalClose}
