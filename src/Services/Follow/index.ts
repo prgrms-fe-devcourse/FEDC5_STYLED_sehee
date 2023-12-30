@@ -1,16 +1,16 @@
 import axiosInstance from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
-import { LikeType } from '@/Types/LikeType';
+import { FollowType } from '@/Types/FollowType';
 
 /**
- * @brief 특정 포스트에 좋아요합니다.
+ * @brief 특정 유저를 팔로우합니다.
  * @return 실패할 경우, null을 반환합니다.
  */
-export const createLike = async (postId: string) => {
+export const followUser = async (userId: string) => {
   try {
-    const res = await axiosInstance.post<LikeType>(DOMAIN.CREATE_LIKE, {
+    const res = await axiosInstance.post<FollowType>(DOMAIN.FOLLOW, {
       params: {
-        postId,
+        userId,
       },
     });
 
@@ -22,14 +22,14 @@ export const createLike = async (postId: string) => {
 };
 
 /**
- * @brief 특정 포스트에 좋아요한 것을 취소합니다.
+ * @brief 특정 유저를 언팔합니다.
  * @return 실패할 경우, null을 반환합니다.
  */
-export const deleteLike = async (postId: string) => {
+export const unfollowUser = async (userId: string) => {
   try {
-    const res = await axiosInstance.delete<LikeType>(DOMAIN.DELETE_LIKE, {
+    const res = await axiosInstance.delete<FollowType>(DOMAIN.UNFOLLOW, {
       params: {
-        id: postId,
+        id: userId,
       },
     });
 

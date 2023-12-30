@@ -7,7 +7,7 @@ import { DOMAIN } from '@/Constants/Api';
  * @brief 전체 사용자 목록을 불러옵니다.
  * @details 디폴트 값은 offset = 0, limit = 10 이며, 선택 속성입니다.
  * 커스텀하여 불러오고 싶다면 {} 중괄호 내부에 offset, limit 값을 지정하도록 합니다.
- * 실패할 경우, 빈 배열을 반환합니다.
+ * @return 실패할 경우, 빈 배열을 반환합니다.
  */
 export const getUsers = async ({
   offset = 0,
@@ -30,7 +30,7 @@ export const getUsers = async ({
 
 /**
  * @brief 현재 접속 중인 사용자 목록을 불러옵니다.
- * @details 실패할 경우, 빈 배열을 반환합니다.
+ * @return 실패할 경우, 빈 배열을 반환합니다.
  */
 export const getOnlineUsers = async () => {
   try {
@@ -45,7 +45,7 @@ export const getOnlineUsers = async () => {
 
 /**
  * @brief 특정한 사용자 정보를 불러옵니다.
- * @details 실패할 경우, null을 반환합니다.
+ * @return 실패할 경우, null을 반환합니다.
  */
 export const getUser = async (userId: string) => {
   try {
@@ -60,7 +60,7 @@ export const getUser = async (userId: string) => {
 
 /**
  * @brief 나의 프로필 이미지를 변경합니다.
- * @details 실패할 경우, null을 반환합니다.
+ * @return 실패할 경우, null을 반환합니다.
  */
 export const updateProfileImage = async (image: File) => {
   try {
@@ -83,7 +83,7 @@ export const updateProfileImage = async (image: File) => {
 
 /**
  * @brief 나의 프로필 이미지를 변경합니다.
- * @details 실패할 경우, null을 반환합니다.
+ * @return 실패할 경우, null을 반환합니다.
  */
 export const updateCoverImage = async (image: File) => {
   try {
