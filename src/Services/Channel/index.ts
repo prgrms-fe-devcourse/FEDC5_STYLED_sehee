@@ -1,4 +1,4 @@
-import { axiosCommonInstance } from '@/Api/axiosInstance';
+import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import { ChannelType } from '@/Types/ChannelType';
 import { DOMAIN } from '@/Constants/Api';
 import { PostChannelCreateRequestType } from '@/Types/Request';
@@ -50,7 +50,7 @@ export const createChannel = async ({
   name,
 }: PostChannelCreateRequestType) => {
   try {
-    await axiosCommonInstance.post(DOMAIN.CREATE_CHANNEL, {
+    await axiosAuthInstance.post(DOMAIN.CREATE_CHANNEL, {
       authRequired,
       description,
       name,

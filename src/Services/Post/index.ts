@@ -76,12 +76,15 @@ export const createPost = async ({
   channelId,
 }: PostCreatePostRequestType) => {
   try {
+    if (image == null) {
+      throw new Error('이미지가 비어있습니다.');
+    }
     const formData = new FormData();
     formData.append('title', title);
     formData.append('image', image);
     formData.append('channelId', channelId);
 
-    await axiosAuthInstance.post(DOMAIN.CREATE_CHANNEL, formData);
+    await axiosAuthInstance.post(DOMAIN.CREATE_POST, formData);
   } catch (e) {
     console.error(e);
   }
@@ -104,7 +107,10 @@ export const getPostDetail = async (postId: string) => {
 /**
  * @brief 내가 작성한 포스트를 수정합니다.
  * @details {} 중괄호 내부에 반드시 postId, title, image, channelId 설정해야 합니다.
+ * @param title title을 수정하지 않는다면 기존 title을 넣어주세요.
+ * @param image image를 수정하지 않는다면 null을 넣어주세요.
  * @return 리턴값은 별도로 존재하지 않습니다.
+ * @todo 추후에 title이 비어있는 경우 기존 제목을 넣어주는 방어 코드를 넣을 수 있습니다.
  */
 export const updatePost = async ({
   postId,
@@ -116,7 +122,9 @@ export const updatePost = async ({
     const formData = new FormData();
     formData.append('postId', postId);
     formData.append('title', title);
-    formData.append('image', image);
+    if (image instanceof File) {
+      formData.append('image', image);
+    }
     formData.append('channelId', channelId);
 
     await axiosAuthInstance.put(DOMAIN.UPDATE_POST, formData);
