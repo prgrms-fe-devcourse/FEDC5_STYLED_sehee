@@ -12,7 +12,7 @@ export const DOMAIN = {
   UPDATE_USER: '/settings/update-user',
   UPDATE_PASSWORD: '/settings/update-password',
   CHANNELS: '/channels',
-  CHANNEL: (channelName: string) => `/channel/${channelName}`,
+  CHANNEL: (channelName: string) => `/channels/${channelName}`,
   POSTS: {
     BY_CHANNEL_ID: (channelId: string) => `/posts/channel/${channelId}`,
     BY_USER_ID: (userId: string) => `/posts/author/${userId}`,
@@ -34,8 +34,8 @@ export const DOMAIN = {
   MESSAGES: '/messages',
   SEND_MESSAGE: '/messages/create',
   READ_MESSAGES: '/messages/update-seen',
-  SEARCH_USER: '/search/users',
-  SEARCH_ALL: '/search/all',
+  SEARCH_USER: (query: string) => `/search/users/${query}`,
+  SEARCH_ALL: (query: string) => `/search/all/${query}`,
 };
 
 export const NETWORK = {
