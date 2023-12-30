@@ -2,7 +2,7 @@
 import { LikeType } from './LikeType';
 import { MessageType } from './MessageType';
 import { PostType } from './PostType';
-import { NotificationType } from './Notification';
+import { NotificationType } from './NotificationType';
 
 export interface UserType {
   coverImage?: string;

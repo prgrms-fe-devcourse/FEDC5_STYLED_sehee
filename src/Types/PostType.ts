@@ -3,7 +3,7 @@ import { CommentType } from './CommentType';
 import { LikeType } from './LikeType';
 import { UserType } from './UserType';
 
-export interface Post {
+export interface PostType {
   likes: LikeType[];
   comments: CommentType[];
   _id: string;
