@@ -14,10 +14,8 @@ export const updateMyName = async ({
 }: PutUpdateUserRequestType) => {
   try {
     const res = await axiosInstance.put<UserType>(DOMAIN.UPDATE_USER, {
-      params: {
-        fullName,
-        username,
-      },
+      fullName,
+      username,
     });
 
     return res.data;
@@ -34,9 +32,7 @@ export const updateMyName = async ({
 export const updateMyPassword = async (password: string) => {
   try {
     await axiosInstance.put(DOMAIN.UPDATE_PASSWORD, {
-      params: {
-        password,
-      },
+      password,
     });
   } catch (e) {
     console.error(e);

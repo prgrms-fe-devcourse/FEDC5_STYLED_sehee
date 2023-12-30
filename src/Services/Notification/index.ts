@@ -51,12 +51,10 @@ export const sendNotifications = async ({
     const res = await axiosInstance.post<NotificationType>(
       DOMAIN.CREATE_NOTIFICATION,
       {
-        params: {
-          notificationType,
-          notificationTypeId,
-          userId,
-          postId,
-        },
+        notificationType,
+        notificationTypeId,
+        userId,
+        postId,
       },
     );
 

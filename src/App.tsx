@@ -25,10 +25,10 @@ const App = () => {
     console.log(data);
   };
 
-  const test2 = () => {
-    login({ email, password });
-    updateMyName({ fullName: 'updateTest1', username: 'updateTest1' });
-    getUsers();
+  const test2 = async () => {
+    await login({ email, password });
+    await updateMyName({ fullName: 'updateTest1', username: 'updateTest1' });
+    await getUsers();
   };
 
   return (
@@ -37,13 +37,13 @@ const App = () => {
       <RouteManager />
       <button
         type="button"
-        onClick={() => test2()}
+        onClick={() => test()}
       >
         login 테스트 버튼
       </button>
       <button
         type="button"
-        onClick={() => test()}
+        onClick={() => test2()}
       >
         login한 유저 불러오는 테스트 버튼
       </button>

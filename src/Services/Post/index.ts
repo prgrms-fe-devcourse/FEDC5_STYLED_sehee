@@ -131,7 +131,7 @@ export const updatePost = async (
 export const deletePost = async (postId: string) => {
   try {
     await axiosInstance.delete(DOMAIN.DELETE_POST, {
-      params: {
+      data: {
         id: postId,
       },
     });

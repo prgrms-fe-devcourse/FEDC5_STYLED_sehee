@@ -9,9 +9,7 @@ import { FollowType } from '@/Types/FollowType';
 export const followUser = async (userId: string) => {
   try {
     const res = await axiosInstance.post<FollowType>(DOMAIN.FOLLOW, {
-      params: {
-        userId,
-      },
+      userId,
     });
 
     return res.data;
@@ -28,7 +26,7 @@ export const followUser = async (userId: string) => {
 export const unfollowUser = async (userId: string) => {
   try {
     const res = await axiosInstance.delete<FollowType>(DOMAIN.UNFOLLOW, {
-      params: {
+      data: {
         id: userId,
       },
     });

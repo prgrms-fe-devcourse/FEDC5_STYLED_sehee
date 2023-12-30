@@ -9,9 +9,7 @@ import { LikeType } from '@/Types/LikeType';
 export const createLike = async (postId: string) => {
   try {
     const res = await axiosInstance.post<LikeType>(DOMAIN.CREATE_LIKE, {
-      params: {
-        postId,
-      },
+      postId,
     });
 
     return res.data;
@@ -28,7 +26,7 @@ export const createLike = async (postId: string) => {
 export const deleteLike = async (postId: string) => {
   try {
     const res = await axiosInstance.delete<LikeType>(DOMAIN.DELETE_LIKE, {
-      params: {
+      data: {
         id: postId,
       },
     });

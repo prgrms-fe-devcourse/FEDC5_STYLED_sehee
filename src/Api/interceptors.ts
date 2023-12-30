@@ -4,7 +4,7 @@ import { AUTH_TOKEN_KEY } from '@/Constants/Api';
 
 // 로그인 하면 토큰 발급
 const setAuthorization = (config: InternalAxiosRequestConfig) => {
-  if (!config.headers || config.headers.Authorization) return config;
+  // if (!config.headers || config.headers.Authorization) return config;
 
   const accessToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
   if (accessToken) {

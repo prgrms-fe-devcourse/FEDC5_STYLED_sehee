@@ -14,10 +14,8 @@ export const createComment = async ({
 }: PostCommentRequestType) => {
   try {
     const res = await axiosInstance.post<CommentType>(DOMAIN.CREATE_COMMENT, {
-      params: {
-        comment,
-        postId,
-      },
+      comment,
+      postId,
     });
 
     return res.data;
@@ -34,7 +32,7 @@ export const createComment = async ({
 export const deleteComment = async (commentId: string) => {
   try {
     const res = await axiosInstance.delete<CommentType>(DOMAIN.DELETE_COMMENT, {
-      params: {
+      data: {
         id: commentId,
       },
     });

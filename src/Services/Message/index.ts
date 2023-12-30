@@ -53,10 +53,8 @@ export const sendMessage = async ({
 }: PostCreateMessageRequestType) => {
   try {
     const res = await axiosInstance.post<MessageType>(DOMAIN.SEND_MESSAGE, {
-      params: {
-        message,
-        receiver,
-      },
+      message,
+      receiver,
     });
 
     return res.data;
@@ -74,9 +72,7 @@ export const sendMessage = async ({
 export const readMessage = async (userId: string) => {
   try {
     await axiosInstance.put(DOMAIN.READ_MESSAGES, {
-      params: {
-        sender: userId,
-      },
+      sender: userId,
     });
   } catch (e) {
     console.error(e);
