@@ -35,14 +35,14 @@ export interface GetChannelPostRequestType {
 
 export interface PostCreatePostRequestType {
   title: string;
-  image: File;
+  image: File | null;
   channelId: string;
 }
 
 export interface PutUpdatePostRequestType {
   postId: string;
   title: string;
-  image: File;
+  image: File | null;
   channelId: string;
 }
 
