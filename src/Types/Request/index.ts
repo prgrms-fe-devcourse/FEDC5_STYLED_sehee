@@ -35,7 +35,7 @@ export interface GetChannelPostRequestType {
 
 export interface PostCreatePostRequestType {
   title: string;
-  image: File | null;
+  image: File;
   channelId: string;
 }
 
