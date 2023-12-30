@@ -4,6 +4,7 @@ import { PostType } from '@/Types/PostType';
 import {
   GetChannelPostRequestType,
   PostCreatePostRequestType,
+  PutUpdatePostRequestType,
 } from '@/Types/Request';
 
 /**
@@ -103,15 +104,15 @@ export const getPostDetail = async (postId: string) => {
 
 /**
  * @brief 내가 작성한 포스트를 수정합니다.
+ * @details {} 중괄호 내부에 반드시 postId, title, image, channelId 설정해야 합니다.
  * @return 리턴값은 별도로 존재하지 않습니다.
- * @todo 추후에 Request Type을 추가하여 파라미터 부분 리팩토링 가능성 있습니다.
  */
-export const updatePost = async (
-  postId: string,
-  title: string,
-  image: File,
-  channelId: string,
-) => {
+export const updatePost = async ({
+  postId,
+  title,
+  image,
+  channelId,
+}: PutUpdatePostRequestType) => {
   try {
     const formData = {
       postId,
