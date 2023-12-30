@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { NotificationType } from '@/Types/NotificationType';
 import { PostNotificationRequestType } from '@/Types/Request';
@@ -9,7 +9,7 @@ import { PostNotificationRequestType } from '@/Types/Request';
  */
 export const getNotifications = async () => {
   try {
-    const res = await axiosInstance.get<NotificationType[]>(
+    const res = await axiosAuthInstance.get<NotificationType[]>(
       DOMAIN.NOTIFICATIONS,
     );
 
@@ -26,7 +26,7 @@ export const getNotifications = async () => {
  */
 export const readNotifications = async () => {
   try {
-    await axiosInstance.put(DOMAIN.READ_NOTIFICATION);
+    await axiosAuthInstance.put(DOMAIN.READ_NOTIFICATION);
   } catch (e) {
     console.error(e);
   }
@@ -48,7 +48,7 @@ export const sendNotifications = async ({
   postId,
 }: PostNotificationRequestType) => {
   try {
-    const res = await axiosInstance.post<NotificationType>(
+    const res = await axiosAuthInstance.post<NotificationType>(
       DOMAIN.CREATE_NOTIFICATION,
       {
         notificationType,

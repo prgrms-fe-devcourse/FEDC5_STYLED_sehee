@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosCommonInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { PostType } from '@/Types/PostType';
 import { UserType } from '@/Types/UserType';
@@ -9,7 +9,7 @@ import { UserType } from '@/Types/UserType';
  */
 export const searchUsers = async () => {
   try {
-    const res = await axiosInstance.get<UserType[]>(DOMAIN.SEARCH_USER);
+    const res = await axiosCommonInstance.get<UserType[]>(DOMAIN.SEARCH_USER);
 
     return res.data;
   } catch (e) {
@@ -25,7 +25,7 @@ export const searchUsers = async () => {
  */
 export const searchAll = async () => {
   try {
-    const res = await axiosInstance.get<UserType[] | PostType[]>(
+    const res = await axiosCommonInstance.get<UserType[] | PostType[]>(
       DOMAIN.SEARCH_ALL,
     );
 

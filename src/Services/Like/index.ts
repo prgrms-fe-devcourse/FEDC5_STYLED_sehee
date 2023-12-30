@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { LikeType } from '@/Types/LikeType';
 
@@ -8,7 +8,7 @@ import { LikeType } from '@/Types/LikeType';
  */
 export const createLike = async (postId: string) => {
   try {
-    const res = await axiosInstance.post<LikeType>(DOMAIN.CREATE_LIKE, {
+    const res = await axiosAuthInstance.post<LikeType>(DOMAIN.CREATE_LIKE, {
       postId,
     });
 
@@ -25,7 +25,7 @@ export const createLike = async (postId: string) => {
  */
 export const deleteLike = async (postId: string) => {
   try {
-    const res = await axiosInstance.delete<LikeType>(DOMAIN.DELETE_LIKE, {
+    const res = await axiosAuthInstance.delete<LikeType>(DOMAIN.DELETE_LIKE, {
       data: {
         id: postId,
       },

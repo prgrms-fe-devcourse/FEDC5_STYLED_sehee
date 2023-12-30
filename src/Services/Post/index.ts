@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { PostType } from '@/Types/PostType';
 import {
@@ -19,7 +19,7 @@ export const getPostByChannel = async (
   { offset = 0, limit = 10 }: GetChannelPostRequestType = {},
 ) => {
   try {
-    const res = await axiosInstance.get<PostType[]>(
+    const res = await axiosCommonInstance.get<PostType[]>(
       DOMAIN.POSTS.BY_CHANNEL_ID(channelId),
       {
         params: {
@@ -48,7 +48,7 @@ export const getPostByUser = async (
   { offset = 0, limit = 10 }: GetChannelPostRequestType = {},
 ) => {
   try {
-    const res = await axiosInstance.get<PostType[]>(
+    const res = await axiosCommonInstance.get<PostType[]>(
       DOMAIN.POSTS.BY_USER_ID(userId),
       {
         params: {
@@ -82,7 +82,7 @@ export const createPost = async ({
       channelId,
     };
 
-    await axiosInstance.post(DOMAIN.CREATE_CHANNEL, formData);
+    await axiosAuthInstance.post(DOMAIN.CREATE_CHANNEL, formData);
   } catch (e) {
     console.error(e);
   }
@@ -94,7 +94,7 @@ export const createPost = async ({
  */
 export const getPostDetail = async (postId: string) => {
   try {
-    const res = await axiosInstance.get(DOMAIN.GET_POST_DETAIL(postId));
+    const res = await axiosCommonInstance.get(DOMAIN.GET_POST_DETAIL(postId));
     return res.data;
   } catch (e) {
     console.error(e);
@@ -120,7 +120,7 @@ export const updatePost = async ({
       image,
       channelId,
     };
-    await axiosInstance.put(DOMAIN.UPDATE_POST, formData);
+    await axiosAuthInstance.put(DOMAIN.UPDATE_POST, formData);
   } catch (e) {
     console.error(e);
   }
@@ -131,7 +131,7 @@ export const updatePost = async ({
  */
 export const deletePost = async (postId: string) => {
   try {
-    await axiosInstance.delete(DOMAIN.DELETE_POST, {
+    await axiosAuthInstance.delete(DOMAIN.DELETE_POST, {
       data: {
         id: postId,
       },

@@ -1,7 +1,8 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import { DOMAIN, AUTH_TOKEN_KEY } from '@/Constants/Api';
 import { PostLoginRequestType, PostSignUpRequestType } from '@/Types/Request';
 import { UserResponseType } from '@/Types/Response';
+import { UserType } from '@/Types/UserType';
 
 /**
  * @brief 사용자가 이메일과 비밀번호로 서비스에 로그인합니다.
@@ -10,7 +11,7 @@ import { UserResponseType } from '@/Types/Response';
  */
 export const login = async ({ email, password }: PostLoginRequestType) => {
   try {
-    const res = await axiosInstance.post<UserResponseType>(DOMAIN.LOGIN, {
+    const res = await axiosCommonInstance.post<UserResponseType>(DOMAIN.LOGIN, {
       email,
       password,
     });
@@ -33,11 +34,14 @@ export const signUp = async ({
   password,
 }: PostSignUpRequestType) => {
   try {
-    const res = await axiosInstance.post<UserResponseType>(DOMAIN.SIGNUP, {
-      email,
-      fullName,
-      password,
-    });
+    const res = await axiosCommonInstance.post<UserResponseType>(
+      DOMAIN.SIGNUP,
+      {
+        email,
+        fullName,
+        password,
+      },
+    );
 
     const { token } = res.data;
     sessionStorage.setItem(AUTH_TOKEN_KEY, token);
@@ -52,10 +56,25 @@ export const signUp = async ({
  */
 export const logout = async () => {
   try {
-    await axiosInstance.post(DOMAIN.LOGOUT);
+    await axiosAuthInstance.post(DOMAIN.LOGOUT);
 
     sessionStorage.removeItem(AUTH_TOKEN_KEY);
   } catch (e) {
     console.error(e);
+  }
+};
+
+/**
+ * @brief 사용자가 인증이 되었는지 확인합니다.
+ * @return 실패할 경우, null을 반환합니다.
+ */
+export const checkAuth = async () => {
+  try {
+    const res = await axiosAuthInstance.get<UserType>(DOMAIN.AUTH_USER);
+
+    return res.data;
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 };

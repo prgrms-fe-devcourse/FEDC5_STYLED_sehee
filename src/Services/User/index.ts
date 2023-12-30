@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import { GetUserListRequestType } from '@/Types/Request';
 import { UserType } from '@/Types/UserType';
 import { DOMAIN } from '@/Constants/Api';
@@ -14,7 +14,7 @@ export const getUsers = async ({
   limit = 10,
 }: GetUserListRequestType = {}) => {
   try {
-    const res = await axiosInstance.get<UserType[]>(DOMAIN.USERS, {
+    const res = await axiosCommonInstance.get<UserType[]>(DOMAIN.USERS, {
       params: {
         offset,
         limit,
@@ -34,7 +34,7 @@ export const getUsers = async ({
  */
 export const getOnlineUsers = async () => {
   try {
-    const res = await axiosInstance.get<UserType[]>(DOMAIN.ONLINE_USERS);
+    const res = await axiosCommonInstance.get<UserType[]>(DOMAIN.ONLINE_USERS);
 
     return res.data;
   } catch (e) {
@@ -49,7 +49,7 @@ export const getOnlineUsers = async () => {
  */
 export const getUser = async (userId: string) => {
   try {
-    const res = await axiosInstance.get<UserType>(DOMAIN.USER(userId));
+    const res = await axiosCommonInstance.get<UserType>(DOMAIN.USER(userId));
 
     return res.data;
   } catch (e) {
@@ -69,7 +69,7 @@ export const updateProfileImage = async (image: File) => {
       image,
     };
 
-    const res = await axiosInstance.post<UserType>(
+    const res = await axiosAuthInstance.post<UserType>(
       DOMAIN.UPLOAD_PHOTO,
       formData,
     );
@@ -92,7 +92,7 @@ export const updateCoverImage = async (image: File) => {
       image,
     };
 
-    const res = await axiosInstance.post<UserType>(
+    const res = await axiosAuthInstance.post<UserType>(
       DOMAIN.UPLOAD_PHOTO,
       formData,
     );

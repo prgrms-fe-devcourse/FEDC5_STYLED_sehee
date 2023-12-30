@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { FollowType } from '@/Types/FollowType';
 
@@ -8,7 +8,7 @@ import { FollowType } from '@/Types/FollowType';
  */
 export const followUser = async (userId: string) => {
   try {
-    const res = await axiosInstance.post<FollowType>(DOMAIN.FOLLOW, {
+    const res = await axiosAuthInstance.post<FollowType>(DOMAIN.FOLLOW, {
       userId,
     });
 
@@ -25,7 +25,7 @@ export const followUser = async (userId: string) => {
  */
 export const unfollowUser = async (userId: string) => {
   try {
-    const res = await axiosInstance.delete<FollowType>(DOMAIN.UNFOLLOW, {
+    const res = await axiosAuthInstance.delete<FollowType>(DOMAIN.UNFOLLOW, {
       data: {
         id: userId,
       },

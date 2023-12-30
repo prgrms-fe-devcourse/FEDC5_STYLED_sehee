@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { PutUpdateUserRequestType } from '@/Types/Request';
 import { UserType } from '@/Types/UserType';
 import { DOMAIN } from '@/Constants/Api';
@@ -13,7 +13,7 @@ export const updateMyName = async ({
   username,
 }: PutUpdateUserRequestType) => {
   try {
-    const res = await axiosInstance.put<UserType>(DOMAIN.UPDATE_USER, {
+    const res = await axiosAuthInstance.put<UserType>(DOMAIN.UPDATE_USER, {
       fullName,
       username,
     });
@@ -31,7 +31,7 @@ export const updateMyName = async ({
  */
 export const updateMyPassword = async (password: string) => {
   try {
-    await axiosInstance.put(DOMAIN.UPDATE_PASSWORD, {
+    await axiosAuthInstance.put(DOMAIN.UPDATE_PASSWORD, {
       password,
     });
   } catch (e) {

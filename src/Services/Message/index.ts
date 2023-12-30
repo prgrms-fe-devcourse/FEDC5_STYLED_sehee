@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { ConversationType } from '@/Types/ConversationType';
 import { MessageType } from '@/Types/MessageType';
@@ -10,7 +10,7 @@ import { PostCreateMessageRequestType } from '@/Types/Request';
  */
 export const getConversations = async () => {
   try {
-    const res = await axiosInstance.get<ConversationType[]>(
+    const res = await axiosAuthInstance.get<ConversationType[]>(
       DOMAIN.CONVERSATIONS,
     );
 
@@ -27,7 +27,7 @@ export const getConversations = async () => {
  */
 export const getMessages = async (userId: string) => {
   try {
-    const res = await axiosInstance.get<MessageType[]>(DOMAIN.MESSAGES, {
+    const res = await axiosAuthInstance.get<MessageType[]>(DOMAIN.MESSAGES, {
       params: {
         userId,
       },
@@ -52,7 +52,7 @@ export const sendMessage = async ({
   receiver,
 }: PostCreateMessageRequestType) => {
   try {
-    const res = await axiosInstance.post<MessageType>(DOMAIN.SEND_MESSAGE, {
+    const res = await axiosAuthInstance.post<MessageType>(DOMAIN.SEND_MESSAGE, {
       message,
       receiver,
     });
@@ -71,7 +71,7 @@ export const sendMessage = async ({
  */
 export const readMessage = async (userId: string) => {
   try {
-    await axiosInstance.put(DOMAIN.READ_MESSAGES, {
+    await axiosAuthInstance.put(DOMAIN.READ_MESSAGES, {
       sender: userId,
     });
   } catch (e) {

@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { DOMAIN } from '@/Constants/Api';
 import { CommentType } from '@/Types/CommentType';
 import { PostCommentRequestType } from '@/Types/Request';
@@ -13,10 +13,13 @@ export const createComment = async ({
   postId,
 }: PostCommentRequestType) => {
   try {
-    const res = await axiosInstance.post<CommentType>(DOMAIN.CREATE_COMMENT, {
-      comment,
-      postId,
-    });
+    const res = await axiosAuthInstance.post<CommentType>(
+      DOMAIN.CREATE_COMMENT,
+      {
+        comment,
+        postId,
+      },
+    );
 
     return res.data;
   } catch (e) {
@@ -31,11 +34,14 @@ export const createComment = async ({
  */
 export const deleteComment = async (commentId: string) => {
   try {
-    const res = await axiosInstance.delete<CommentType>(DOMAIN.DELETE_COMMENT, {
-      data: {
-        id: commentId,
+    const res = await axiosAuthInstance.delete<CommentType>(
+      DOMAIN.DELETE_COMMENT,
+      {
+        data: {
+          id: commentId,
+        },
       },
-    });
+    );
 
     return res.data;
   } catch (e) {

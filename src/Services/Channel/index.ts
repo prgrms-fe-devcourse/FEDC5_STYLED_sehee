@@ -1,4 +1,4 @@
-import axiosInstance from '@/Api/axiosInstance';
+import { axiosCommonInstance } from '@/Api/axiosInstance';
 import { ChannelType } from '@/Types/ChannelType';
 import { DOMAIN } from '@/Constants/Api';
 import { PostChannelCreateRequestType } from '@/Types/Request';
@@ -9,7 +9,7 @@ import { PostChannelCreateRequestType } from '@/Types/Request';
  */
 export const getChannels = async () => {
   try {
-    const res = await axiosInstance.get<ChannelType[]>(DOMAIN.CHANNELS);
+    const res = await axiosCommonInstance.get<ChannelType[]>(DOMAIN.CHANNELS);
 
     return res.data;
   } catch (e) {
@@ -25,7 +25,7 @@ export const getChannels = async () => {
  */
 export const getChannel = async (channelName: string) => {
   try {
-    const res = await axiosInstance.get<ChannelType>(
+    const res = await axiosCommonInstance.get<ChannelType>(
       DOMAIN.CHANNEL(channelName),
     );
 
@@ -50,7 +50,7 @@ export const createChannel = async ({
   name,
 }: PostChannelCreateRequestType) => {
   try {
-    await axiosInstance.post(DOMAIN.CREATE_CHANNEL, {
+    await axiosCommonInstance.post(DOMAIN.CREATE_CHANNEL, {
       authRequired,
       description,
       name,
