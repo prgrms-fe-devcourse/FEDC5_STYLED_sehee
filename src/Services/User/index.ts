@@ -64,10 +64,9 @@ export const getUser = async (userId: string) => {
  */
 export const updateProfileImage = async (image: File) => {
   try {
-    const formData = {
-      isCover: false,
-      image,
-    };
+    const formData = new FormData();
+    formData.append('isCover', 'false');
+    formData.append('image', image);
 
     const res = await axiosAuthInstance.post<UserType>(
       DOMAIN.UPLOAD_PHOTO,
@@ -87,10 +86,9 @@ export const updateProfileImage = async (image: File) => {
  */
 export const updateCoverImage = async (image: File) => {
   try {
-    const formData = {
-      isCover: true,
-      image,
-    };
+    const formData = new FormData();
+    formData.append('isCover', 'true');
+    formData.append('image', image);
 
     const res = await axiosAuthInstance.post<UserType>(
       DOMAIN.UPLOAD_PHOTO,

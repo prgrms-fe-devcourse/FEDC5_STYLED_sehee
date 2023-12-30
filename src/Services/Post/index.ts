@@ -76,11 +76,10 @@ export const createPost = async ({
   channelId,
 }: PostCreatePostRequestType) => {
   try {
-    const formData = {
-      title,
-      image,
-      channelId,
-    };
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('image', image);
+    formData.append('channelId', channelId);
 
     await axiosAuthInstance.post(DOMAIN.CREATE_CHANNEL, formData);
   } catch (e) {
@@ -114,12 +113,12 @@ export const updatePost = async ({
   channelId,
 }: PutUpdatePostRequestType) => {
   try {
-    const formData = {
-      postId,
-      title,
-      image,
-      channelId,
-    };
+    const formData = new FormData();
+    formData.append('postId', postId);
+    formData.append('title', title);
+    formData.append('image', image);
+    formData.append('channelId', channelId);
+
     await axiosAuthInstance.put(DOMAIN.UPDATE_POST, formData);
   } catch (e) {
     console.error(e);
