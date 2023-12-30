@@ -7,9 +7,11 @@ import { UserType } from '@/Types/UserType';
  * @return 실패할 경우, 빈 배열을 반환합니다.
  * @todo 추후에 query를 params로 넘겨줘야 합니다.
  */
-export const searchUsers = async () => {
+export const searchUsers = async (query: string) => {
   try {
-    const res = await axiosCommonInstance.get<UserType[]>(DOMAIN.SEARCH_USER);
+    const res = await axiosCommonInstance.get<UserType[]>(
+      DOMAIN.SEARCH_USER(query),
+    );
 
     return res.data;
   } catch (e) {
@@ -23,10 +25,10 @@ export const searchUsers = async () => {
  * @return 실패할 경우, 빈 배열을 반환합니다.
  * @todo 추후에 query를 params로 넘겨줘야 합니다.
  */
-export const searchAll = async () => {
+export const searchAll = async (query: string) => {
   try {
     const res = await axiosCommonInstance.get<UserType[] | PostType[]>(
-      DOMAIN.SEARCH_ALL,
+      DOMAIN.SEARCH_ALL(query),
     );
 
     return res.data;
