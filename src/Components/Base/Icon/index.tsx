@@ -1,11 +1,7 @@
 import StyledIconContainer from './style';
 import IconProps from './type';
 
-const Icon = ({
-  name,
-  className = 'material-symbols-outlined',
-  ...props
-}: IconProps) => {
+const Icon = ({ name, className = 'material-icons', ...props }: IconProps) => {
   return (
     <StyledIconContainer
       {...props}
