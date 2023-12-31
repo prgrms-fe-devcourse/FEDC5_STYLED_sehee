@@ -8,6 +8,7 @@ const commonTheme = {
   backgroundGrey: '#D1CCC7', // 회색 배경 색상
   backgroundWhite: '#FFFFFF', // 배경 흰색 색상
   focusHover: '#F2F2F2', // 포커스 및 호버 색상
+  focusHoverText: '#000000',
   overlay: 'rgba(0, 0, 0, 0.4)', // 오버레이 색상
   buttonClickHover: 'rgba(0, 0, 0, 0.3)', // 버튼 클릭 시 호버 색상
   follow: 'rgba(119, 82, 254, 1)', // 팔로우 색상

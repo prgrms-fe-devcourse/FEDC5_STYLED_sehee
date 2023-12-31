@@ -1,71 +1,40 @@
-import { styled, css } from 'styled-components';
+import { styled } from 'styled-components';
+import type { StyledButtonProp } from './type';
 
-const buttonColorPreset = {
-  default: css`
-    background-color: ${(props) => props.theme.colors.buttonBackground};
-    color: ${(props) => props.theme.colors.buttonText};
-  `,
-  black: css`
-    background-color: #000000;
-    color: #ffffff;
-  `,
-  gray: css`
-    background-color: #e0e0e0;
-    color: #ffffff;
-  `,
-  white: css`
-    background-color: #ffffff;
-    color: #000000;
-  `,
-  blue: css`
-    background-color: #0095f6;
-    color: #ffffff;
-  `,
-  purple: css`
-    background-color: #7752fe;
-    color: #ffffff;
-  `,
-  transparent: css`
-    background-color: transparent;
-    color: ${(props) => props.theme.colors.text};
-  `,
-};
-
-const buttonBorderRoundPreset = {
-  none: css`
-    border-radius: none;
-  `,
-  sm: css`
-    border-radius: ${(props) => props.theme.size.small};
-  `,
-  md: css`
-    border-radius: ${(props) => props.theme.size.medium};
-  `,
-  lg: css`
-    border-radius: ${(props) => props.theme.size.large};
-  `,
-
-  // TODO: Hover 효과
-};
-
-const StyledButton = styled.button<{
-  $color: 'default' | 'black' | 'gray' | 'white' | 'blue' | 'purple';
-  $width: number;
-  $height: number;
-  $borderRound: 'none' | 'sm' | 'md' | 'lg';
-  $isActive: boolean;
-}>`
+const StyledButton = styled.button<StyledButtonProp>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: ${({ $width }) => `${$width}rem`};
-  height: ${({ $height }) => `${$height}rem`};
+  /* 받아오는 프롭이 'default'이다? 글로벌 테마 사용 */
+  /* 다른 문자열 값일 경우, 그 값을 부여 */
 
-  ${({ $color }) => $color && buttonColorPreset[$color]}
-  ${({ $borderRound }) =>
-    $borderRound && buttonBorderRoundPreset[$borderRound]};
-  ${({ $isActive }) => $isActive && 'background-color: #000000;'};
+  ${({
+    $backgroundColor,
+    $textColor,
+    $textSize,
+    $width,
+    $height,
+    $borderRadius,
+    $isActive,
+    theme,
+  }) => `
+    background-color: ${
+      $backgroundColor === 'default'
+        ? theme.colors.buttonBackground
+        : $backgroundColor
+    };
+    color: ${$textColor === 'default' ? theme.colors.buttonText : $textColor};
+    font-size: ${$textSize === 'default' ? '1rem' : $textSize};
+    width: ${$width === 'default' ? '120px' : $width};
+    height: ${$height === 'default' ? '10px' : $height};
+    border-radius: ${$borderRadius === 'default' ? '15px' : $borderRadius};
+    ${
+      $isActive
+        ? `background-color: ${theme.colors.focusHover}; color: ${theme.colors.focusHoverText};`
+        : ''
+    }
+  `}
 `;
 
 export default StyledButton;
