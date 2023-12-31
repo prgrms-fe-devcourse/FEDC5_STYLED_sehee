@@ -3,9 +3,8 @@ import StyledButton from './style';
 import type { ButtonProp } from './type';
 
 /**
- *
- * @param param0
- * @returns
+ * props에 존재하는 속성들은 해당 prop들을 통해 변경해주세요.
+ * style={{ padding: '10px 20px' }} 과 같이 프롭스에 없는 스타일을 부여해줄 수 있습니다.
  */
 
 const Button = ({
@@ -17,22 +16,22 @@ const Button = ({
   height = 'default',
   borderRadius = 'default',
   isToggleButton = false,
-  onClick,
+  onClickButton,
   style,
 }: ButtonProp) => {
   const [isActive, setIsActive] = useState(false);
 
   const handleClick = () => {
-    if (onClick) {
-      onClick();
+    if (onClickButton) {
+      onClickButton();
     }
   };
 
   const handleToggle = () => {
     setIsActive(!isActive);
 
-    if (onClick) {
-      onClick(isActive);
+    if (onClickButton) {
+      onClickButton(isActive);
     }
   };
 

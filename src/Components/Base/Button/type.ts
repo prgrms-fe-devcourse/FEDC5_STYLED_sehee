@@ -9,8 +9,7 @@ export interface ButtonProp extends ButtonHTMLAttributes<HTMLButtonElement> {
   borderRadius?: 'default' | string;
   isToggleButton?: 'default' | boolean;
 
-  // TODO: isToggleButton=true일 때 active 잘 넘어오는지 체크
-  onClick?: (active?: boolean) => void;
+  onClickButton?: (active?: boolean) => void;
   style?: React.CSSProperties;
 }
 
