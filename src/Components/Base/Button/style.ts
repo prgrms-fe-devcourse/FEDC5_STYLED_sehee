@@ -6,9 +6,6 @@ const StyledButton = styled.button<StyledButtonProp>`
   justify-content: center;
   align-items: center;
 
-  /* 받아오는 프롭이 'default'이다? 글로벌 테마 사용 */
-  /* 다른 문자열 값일 경우, 그 값을 부여 */
-
   ${({
     $backgroundColor,
     $textColor,
