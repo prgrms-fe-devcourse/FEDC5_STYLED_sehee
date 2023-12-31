@@ -96,7 +96,9 @@ export const createPost = async ({
  */
 export const getPostDetail = async (postId: string) => {
   try {
-    const res = await axiosCommonInstance.get(DOMAIN.GET_POST_DETAIL(postId));
+    const res = await axiosCommonInstance.get<PostType>(
+      DOMAIN.GET_POST_DETAIL(postId),
+    );
     return res.data;
   } catch (e) {
     console.error(e);
