@@ -1,8 +1,8 @@
-import { ChangeEvent, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
-interface SearchProps extends HTMLAttributes<HTMLDivElement> {
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
+interface SearchProps extends HTMLAttributes<HTMLInputElement> {
+  onChangehandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmithandler: (e: React.FormEvent<HTMLFormElement>) => void;
   iconProps?: HTMLAttributes<HTMLSpanElement>;
 }
 

@@ -4,17 +4,20 @@ import StyledContainer from './style';
 import Button from '@/Components/Base/Button';
 import SearchProps from './type';
 
-const SearchBar = ({ onChange, onClick, iconProps, ...props }: SearchProps) => {
+const SearchBar = ({
+  onChangehandler,
+  onSubmithandler,
+  iconProps,
+  ...props
+}: SearchProps) => {
   return (
-    <StyledContainer>
+    <StyledContainer onSubmit={onSubmithandler}>
       <Input
         {...props}
-        onChange={onChange}
+        onChange={onChangehandler}
       />
       <Button
-        onClickButton={onClick}
         backgroundColor="transparent"
-        color="black"
         width="fit-content"
         type="submit"
       >
