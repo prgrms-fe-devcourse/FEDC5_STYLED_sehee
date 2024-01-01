@@ -12,7 +12,7 @@ export const StyledLabel = styled.label`
 
 export const StyledInput = styled.input<{ $invalid?: boolean }>`
   width: 100%;
-  padding: ${({ theme }) => `${theme.size.extraSmall}${theme.size.small}`};
+  padding: ${({ theme }) => `${theme.size.extraSmall} ${theme.size.small}`};
   border: 1px solid
     ${({ $invalid, theme }) =>
       $invalid ? theme.colors.alert : theme.colors.border};
