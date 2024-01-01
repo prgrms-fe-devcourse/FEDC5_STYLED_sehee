@@ -1,5 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { StyledWrapper, StyledInput, StyledLabel } from './style';
+import {
+  StyledWrapper,
+  StyledInput,
+  StyledLabel,
+  StyledErrorMessage,
+} from './style';
 import Props from './type';
 
 const Input = ({
@@ -8,6 +13,7 @@ const Input = ({
   invalid = false,
   block = false,
   wrapperProps,
+  errorMessage,
   ...props
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,8 +35,8 @@ const Input = ({
         ref={inputRef}
         {...props}
       />
+      {errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
     </StyledWrapper>
   );
 };
-
 export default Input;

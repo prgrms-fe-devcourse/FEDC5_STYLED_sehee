@@ -5,7 +5,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   initialFocus?: boolean;
   invalid?: boolean;
   block?: boolean;
+  errorMessage?: string;
   wrapperProps?: HTMLAttributes<HTMLDivElement>;
 }
-
 export default Props;
