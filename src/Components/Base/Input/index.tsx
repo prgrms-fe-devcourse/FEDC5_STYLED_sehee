@@ -4,6 +4,7 @@ import {
   StyledInput,
   StyledLabel,
   StyledErrorMessage,
+  StyledContainer,
 } from './style';
 import Props from './type';
 
@@ -29,13 +30,17 @@ const Input = ({
       $block={block}
       {...wrapperProps}
     >
-      {label && <StyledLabel>{label}</StyledLabel>}
+      <StyledContainer>
+        {label && <StyledLabel>{label}</StyledLabel>}
+        {errorMessage && (
+          <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+        )}
+      </StyledContainer>
       <StyledInput
         $invalid={invalid}
         ref={inputRef}
         {...props}
       />
-      {errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
     </StyledWrapper>
   );
 };
