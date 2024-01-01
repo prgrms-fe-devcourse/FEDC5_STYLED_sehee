@@ -12,6 +12,16 @@ const commonTheme = {
   buttonClickHover: 'rgba(0, 0, 0, 0.3)', // 버튼 클릭 시 호버 색상
   follow: 'rgba(119, 82, 254, 1)', // 팔로우 색상
 };
+
+const fontWeight = {
+  regular: 400,
+  medium: 500,
+  semiBold: 600,
+  bold: 700,
+  extraBold: 800,
+  black: 900,
+};
+
 const size = {
   extraSmall: '0.5rem',
   small: '1rem',
@@ -23,11 +33,13 @@ const size = {
   half: '50%',
   none: '0%',
 };
+
 const device = {
   mobile: `(max-width: 480px)`,
   tablet: `(max-width: 768px)`,
   laptop: `(max-width: 1024px)`,
 };
+
 export const lightTheme: DefaultTheme = {
   colors: {
     primary: '#000000', // 메인 색상
@@ -39,7 +51,9 @@ export const lightTheme: DefaultTheme = {
   },
   size,
   device,
+  fontWeight,
 };
+
 export const darkTheme: DefaultTheme = {
   colors: {
     primary: '#FFFFFF', // 메인 색상
@@ -51,5 +65,7 @@ export const darkTheme: DefaultTheme = {
   },
   size,
   device,
+  fontWeight,
 };
+
 export type ThemeTypes = typeof lightTheme;
