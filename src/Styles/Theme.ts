@@ -6,12 +6,20 @@ const commonTheme = {
   alert: '#FF0000', // 알림 색상
   border: '#CCCCCC', // 보더 색상
   backgroundGrey: '#D1CCC7', // 회색 배경 색상
-  backgroundWhite: '#FFFFFF', // 배경 흰색 색상
   focusHover: '#F2F2F2', // 포커스 및 호버 색상
   focusHoverText: '#000000',
   overlay: 'rgba(0, 0, 0, 0.4)', // 오버레이 색상
   buttonClickHover: 'rgba(0, 0, 0, 0.3)', // 버튼 클릭 시 호버 색상
   follow: 'rgba(119, 82, 254, 1)', // 팔로우 색상
+};
+
+const fontWeight = {
+  regular: 400,
+  medium: 500,
+  semiBold: 600,
+  bold: 700,
+  extraBold: 800,
+  black: 900,
 };
 
 const size = {
@@ -36,24 +44,28 @@ export const lightTheme: DefaultTheme = {
   colors: {
     primary: '#000000', // 메인 색상
     text: '#000000', // 글자 색상
+    background: '#FFFFFF', // 배경 색상
     buttonText: '#FFFFFF', // 버튼 텍스트 색상
     buttonBackground: '#000000', // 버튼 배경 색상
     ...commonTheme,
   },
   size,
   device,
+  fontWeight,
 };
 
 export const darkTheme: DefaultTheme = {
   colors: {
     primary: '#FFFFFF', // 메인 색상
     text: '#FFFFFF', // 글자 색상
+    background: '#000000', // 배경 색상
     buttonText: '#000000', // 버튼 텍스트 색상
     buttonBackground: '#FFFFFF', // 버튼 배경 색상
     ...commonTheme,
   },
   size,
   device,
+  fontWeight,
 };
 
 export type ThemeTypes = typeof lightTheme;
