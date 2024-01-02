@@ -6,39 +6,59 @@ import {
   StyledProfileAvatar,
   StyledProfileName,
   StyledProfileContainer,
-  StyledProfileFollowBtn,
   HeartIconStyle,
   StyledPostCardTitle,
-  FillHeartIconStyle,
   StyledPostCardImage,
 } from './style';
 import Icon from '@/Components/Base/Icon';
+import Button from '@/Components/Base/Button';
+import { lightTheme } from '@/Styles/Theme';
 
 const PostCard = ({
   imageUrl,
   content,
   authorName,
-  authorCover,
+  authorThumbnail,
   isFollower,
   isLike,
   width = '80%',
+  fontSize,
 }: PostCardProps) => {
+  const followBtnBgColor = isFollower
+    ? lightTheme.colors.read
+    : lightTheme.colors.follow;
+
+  const followBtnTextColor = lightTheme.colors.buttonText;
+
   return (
-    <StyledPostCardWrapper width={width}>
+    <StyledPostCardWrapper
+      width={width}
+      fontSize={fontSize}
+    >
       <StyledPostCardHeader>
         <StyledProfileContainer>
+          {/* 아바타 컴포넌트 삽입 필요 */}
           <StyledProfileAvatar
-            src={authorCover}
+            src={authorThumbnail}
             alt="프로필 아바타"
           />
           <StyledProfileName>{authorName}</StyledProfileName>
-          <StyledProfileFollowBtn $isFollower={isFollower}>
+          {/* btn hover 배경색 컴포넌트 수정 필요 */}
+          <Button
+            className="follow-btn"
+            width="5rem"
+            height="2rem"
+            borderRadius="0.5rem"
+            textSize="1rem"
+            textColor={followBtnTextColor}
+            backgroundColor={followBtnBgColor}
+          >
             {isFollower ? '팔로잉' : '팔로우'}
-          </StyledProfileFollowBtn>
+          </Button>
         </StyledProfileContainer>
         <Icon
-          name="Favorite"
-          style={isLike ? FillHeartIconStyle : HeartIconStyle}
+          name={isLike ? 'favorite' : 'favorite_border'}
+          style={HeartIconStyle}
         />
       </StyledPostCardHeader>
       <StyledPostCardTitle>{content}</StyledPostCardTitle>
