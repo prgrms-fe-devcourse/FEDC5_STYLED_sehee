@@ -45,7 +45,6 @@ const PostCard = ({
             alt="프로필 아바타"
           />
           <StyledProfileName>{authorName}</StyledProfileName>
-          {/* btn hover 배경색 컴포넌트 수정 필요 */}
           <Button
             className="follow-btn"
             width="5rem"
