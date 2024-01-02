@@ -8,12 +8,16 @@ const SearchBar = ({
   onChangehandler,
   onSubmithandler,
   iconProps,
+  inputProps,
   ...props
 }: SearchProps) => {
   return (
-    <StyledContainer onSubmit={onSubmithandler}>
+    <StyledContainer
+      {...props}
+      onSubmit={onSubmithandler}
+    >
       <Input
-        {...props}
+        {...inputProps}
         onChange={onChangehandler}
       />
       <Button
