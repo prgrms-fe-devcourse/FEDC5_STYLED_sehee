@@ -1,27 +1,39 @@
+import { ForwardedRef, forwardRef } from 'react';
 import { AvatarProp } from './type';
-import { StyledAvatar, StyledImage } from './style';
+import { StyledAvatarWrapper, StyledAvatar } from './style';
 
-const Avatar = ({
-  src = 'default',
-  alt,
-  size = 20,
-  shape = 'circle',
-  mode = 'cover',
-  style,
-}: AvatarProp) => {
-  return (
-    <StyledAvatar $shape={shape}>
-      <StyledImage
-        src={
-          src === 'default' ? `https://via.placeholder.com/${size}.jpg` : src
-        }
-        alt={alt}
-        $size={size}
-        $mode={mode}
-        style={{ ...style }}
-      />
-    </StyledAvatar>
-  );
-};
+const Avatar = forwardRef(
+  (
+    {
+      children,
+      src,
+      alt,
+      size = 20,
+      shape = 'circle',
+      mode = 'cover',
+      wrapperProps,
+      ...props
+    }: AvatarProp,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => {
+    return (
+      <StyledAvatarWrapper
+        $shape={shape}
+        ref={ref}
+        {...wrapperProps}
+      >
+        <StyledAvatar
+          src={src || `https://via.placeholder.com/${size}.jpg`}
+          alt={alt}
+          $size={size}
+          $mode={mode}
+          {...props}
+        />
+      </StyledAvatarWrapper>
+    );
+  },
+);
+
+Avatar.displayName = 'Avatar';
 
 export default Avatar;
