@@ -7,10 +7,7 @@ export interface ButtonProp extends ButtonHTMLAttributes<HTMLButtonElement> {
   width?: 'default' | string;
   height?: 'default' | string;
   borderRadius?: 'default' | string;
-  isToggleButton?: 'default' | boolean;
-
-  onClickButton?: (active?: boolean) => void;
-  style?: React.CSSProperties;
+  isActive?: boolean;
 }
 
 export interface StyledButtonProp
@@ -21,5 +18,5 @@ export interface StyledButtonProp
   $width: string;
   $height: string;
   $borderRadius: string;
-  $isActive: boolean;
+  $isActive?: boolean;
 }
