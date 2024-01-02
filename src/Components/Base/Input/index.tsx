@@ -1,13 +1,19 @@
 import { useEffect, useRef } from 'react';
-import { StyledWrapper, StyledInput, StyledLabel } from './style';
+import {
+  StyledWrapper,
+  StyledInput,
+  StyledLabel,
+  StyledErrorMessage,
+  StyledContainer,
+} from './style';
 import Props from './type';
 
 const Input = ({
   label,
   initialFocus = false,
-  invalid = false,
   block = false,
   wrapperProps,
+  errorMessage,
   ...props
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,14 +29,18 @@ const Input = ({
       $block={block}
       {...wrapperProps}
     >
-      {label && <StyledLabel>{label}</StyledLabel>}
+      <StyledContainer>
+        {label && <StyledLabel>{label}</StyledLabel>}
+        {errorMessage && (
+          <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+        )}
+      </StyledContainer>
       <StyledInput
-        $invalid={invalid}
+        $invalid={!!errorMessage}
         ref={inputRef}
         {...props}
       />
     </StyledWrapper>
   );
 };
-
 export default Input;
