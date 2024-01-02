@@ -46,11 +46,9 @@ const HeaderUser = () => {
               switch (items.name) {
                 case 'notifications':
                   setAlarm(true);
-                  console.log(alarm);
                   break;
                 case 'account_circle':
                   setDropdown(true);
-                  console.log(dropdown);
                   break;
                 default:
                   break;
