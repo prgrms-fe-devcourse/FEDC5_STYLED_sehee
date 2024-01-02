@@ -4,10 +4,16 @@ import IconProps from './type';
 /**
  * 채워지지 않은 아이콘 => className = 'material-symbols-outlined'로 지정
  */
-const Icon = ({ name, className = 'material-icons', ...props }: IconProps) => {
+const Icon = ({
+  name,
+  className = 'material-icons',
+  ref,
+  ...props
+}: IconProps) => {
   return (
     <StyledIconContainer
       {...props}
+      ref={ref}
       className={className}
     >
       {name}
