@@ -11,7 +11,6 @@ import Props from './type';
 const Input = ({
   label,
   initialFocus = false,
-  invalid = false,
   block = false,
   wrapperProps,
   errorMessage,
@@ -37,7 +36,7 @@ const Input = ({
         )}
       </StyledContainer>
       <StyledInput
-        $invalid={invalid}
+        $invalid={!!errorMessage}
         ref={inputRef}
         {...props}
       />
