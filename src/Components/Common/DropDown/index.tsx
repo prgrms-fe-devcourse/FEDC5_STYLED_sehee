@@ -6,6 +6,7 @@ import {
   StyledDropDownButton,
   StyledDropDownItem,
   StyledDropDownOption,
+  StyledLabel,
 } from './style';
 import Icon from '@/Components/Base/Icon';
 
@@ -29,6 +30,7 @@ const DropDown = forwardRef(
       buttonProps,
       optionProps,
       itemProps,
+      labelProps,
       ...props
     }: DropDownProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -39,11 +41,9 @@ const DropDown = forwardRef(
 
     const handleSelect = (option: string) => {
       setSelectedOption(option);
-
       if (onSelect) {
         onSelect(option);
       }
-
       setIsOpen(false);
     };
 
@@ -59,6 +59,16 @@ const DropDown = forwardRef(
         onMouseLeave={() => setIsOpen(false)}
         {...props}
       >
+        {label && (
+          <StyledLabel
+            $labelTextColor={labelTextColor || theme.colors.text}
+            $labelTextSize={labelTextSize || '1.2rem'}
+            $backgroundColor={backgroundColor || theme.colors.background}
+            {...labelProps}
+          >
+            {label}
+          </StyledLabel>
+        )}
         <StyledDropDownButton
           onClick={() => setIsOpen(!isOpen)}
           $width={width || '160px'}
@@ -69,15 +79,23 @@ const DropDown = forwardRef(
           {...buttonProps}
         >
           {selectedOption}
-          <Icon
-            name={
-              selectedOption === '선택 없음' ? 'expand_circle_down' : 'cancel'
-            }
-            isFill
-            onClick={handleCancel}
-            style={{ color: textColor }}
-          />
+          {selectedOption === '선택 없음' ? (
+            <Icon
+              name="expand_circle_down"
+              isFill
+              onClick={() => handleSelect(selectedOption)}
+              style={{ color: textColor }}
+            />
+          ) : (
+            <Icon
+              name="cancel"
+              isFill
+              onClick={handleCancel}
+              style={{ color: textColor }}
+            />
+          )}
         </StyledDropDownButton>
+
         {isOpen && (
           <StyledDropDownOption
             $width={width || '160px'}

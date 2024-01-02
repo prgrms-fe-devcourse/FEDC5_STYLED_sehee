@@ -1,9 +1,24 @@
 import styled from 'styled-components';
-import { StyledDropDownButtonProp, StyledDropDownItemProp } from './type';
+import {
+  StyledDropDownButtonProp,
+  StyledDropDownItemProp,
+  StyledLabelProp,
+} from './type';
 
 export const StyledDropDown = styled.div`
   position: relative;
   display: inline-block;
+`;
+
+export const StyledLabel = styled.span<StyledLabelProp>`
+  position: absolute;
+  left: 8px;
+  top: -10px;
+  color: ${({ $labelTextColor }) => $labelTextColor};
+  font-size: ${({ $labelTextSize }) => $labelTextSize};
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
+  padding: 0px 5px;
+  font-weight: 900;
 `;
 
 export const StyledDropDownButton = styled.button<StyledDropDownButtonProp>`

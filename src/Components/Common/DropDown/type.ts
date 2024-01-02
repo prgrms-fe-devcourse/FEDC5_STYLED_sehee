@@ -19,6 +19,13 @@ export interface DropDownProps {
   buttonProps?: HTMLAttributes<HTMLElement>;
   optionProps?: HTMLAttributes<HTMLElement>;
   itemProps?: HTMLAttributes<HTMLElement>;
+  labelProps?: HTMLAttributes<HTMLElement>;
+}
+
+export interface StyledLabelProp extends HTMLAttributes<HTMLDivElement> {
+  $labelTextColor: string;
+  $labelTextSize: string;
+  $backgroundColor: string;
 }
 
 export interface StyledDropDownButtonProp
