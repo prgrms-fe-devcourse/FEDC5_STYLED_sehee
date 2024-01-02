@@ -1,21 +1,26 @@
 import { ChangeEvent, MouseEvent, useMemo, useRef, useState } from 'react';
-import Icon from '@/Components/Base/Icon';
+import { useTheme } from 'styled-components';
 import {
   StyledImage,
-  StyledInput,
   StyledText,
   StyledWrapper,
   StyledUploadForm,
-  StyledButton,
   IconStyle,
+  getButtonStyle,
 } from './style';
 import { ImageFileType, ImageUploadProps } from './type';
+import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
 import Input from '@/Components/Base/Input';
 
 const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
   const uploadInput = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<ImageFileType | null>(null);
+
+  const { colors } = useTheme();
+  const getButtonBgColor = colors.buttonBackground;
+  const getButtonTextColor = colors.buttonText;
+  const getButtonhoverBgColor = colors.buttonClickHover;
 
   /**
    * 파일 업로드 버튼 클릭 핸들러 함수
@@ -73,13 +78,22 @@ const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
           style={{ fontSize: fontSize && fontSize * 50, ...IconStyle }}
         />
         <StyledText>사진을 선택하여 추가해주세요.</StyledText>
-        <Button onClick={handleClickUpload}>가져오기</Button>
-        {/* <StyledButton onClick={handleClickUpload}>가져오기</StyledButton> */}
-        <StyledInput
+        <Button
+          borderRadius="1rem"
+          backgroundColor={getButtonBgColor}
+          hoverBackgroundColor={getButtonhoverBgColor}
+          textColor={getButtonTextColor}
+          onClick={handleClickUpload}
+          style={getButtonStyle}
+        >
+          가져오기
+        </Button>
+        <Input
           type="file"
           accept="image/*"
           ref={uploadInput}
           onChange={uploadImage}
+          style={{ display: 'none' }}
         />
       </StyledUploadForm>
     </StyledWrapper>

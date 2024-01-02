@@ -28,21 +28,10 @@ export const StyledText = styled.p`
   user-select: none;
 `;
 
-export const StyledButton = styled.button`
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  color: ${({ theme }) => theme.colors.buttonText};
-  background-color: ${({ theme }) => theme.colors.buttonBackground};
-  transition: background-color 50ms ease-in-out;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonClickHover};
-  }
-`;
-
-export const StyledInput = styled.input`
-  display: none;
-`;
+export const getButtonStyle = {
+  padding: '1rem 2rem',
+  transition: 'background-color 50ms ease-in-out',
+};
 
 export const StyledImage = styled.img`
   object-fit: contain;
