@@ -1,7 +1,14 @@
 import Modal from '@/Components/Common/Modal';
 
 const PostModal = ({ onChangeOpen }) => {
-  return <Modal onChangeOpen={onChangeOpen}>post</Modal>;
+  return (
+    <Modal
+      height={20}
+      onChangeOpen={onChangeOpen}
+    >
+      post
+    </Modal>
+  );
 };
 
 export default PostModal;

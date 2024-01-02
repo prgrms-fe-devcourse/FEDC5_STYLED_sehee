@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
-import logoWhite from '@/Assets/Images/STYLED-logo-white.png';
 
 export const StyledHeaderContainer = styled.div`
   height: 9.4rem;
@@ -18,8 +16,8 @@ export const StyledLogoContainer = styled.div`
 `;
 
 export const StyledLogo = styled.img`
-  content: url(${({ theme }) =>
-    theme.colors.background === '#000000' ? logoWhite : logoBlack});
+  width: 9rem;
+  padding: 0.7rem;
 `;
 
 export const StyledNavContainer = styled(StyledLogoContainer)`

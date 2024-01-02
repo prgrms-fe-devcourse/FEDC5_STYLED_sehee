@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 import Icon from '@/Components/Base/Icon';
 import {
   StyledHeaderContainer,
@@ -8,20 +9,17 @@ import {
   StyledNavContainer,
   StyledUserContainer,
 } from './style';
-
 import Button from '@/Components/Base/Button';
-import PostModal from '../Modal/PostModal';
 import AlarmModal from '../Modal/AlarmModal';
-import SearchModal from '../Modal/SearchModal';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
+import logoWhite from '@/Assets/Images/STYLED-logo-white.png';
+import HeaderTab from './HeaderTab';
 
 const Header = () => {
+  const { colors } = useTheme();
   const [isUser, setUser] = useState(false);
-
-  const [post, setPost] = useState(false);
   const [alarm, setAlarm] = useState(false);
-  const [search, setSearch] = useState(false);
 
-  const styledNavIcon = { fontSize: '4.5rem', padding: '1.5rem' };
   const styledUserIcon = { fontSize: '4rem', padding: '1rem' };
 
   /**
@@ -32,61 +30,19 @@ const Header = () => {
 
   return (
     <StyledHeaderContainer>
-      <StyledLogoContainer>
-        <StyledLogo
-          alt="logo"
-          style={{
-            width: '9rem',
-            padding: '1rem',
-          }}
-        />
-      </StyledLogoContainer>
+      <Link to="/">
+        <StyledLogoContainer>
+          <StyledLogo
+            src={colors.background === '#000000' ? logoWhite : logoBlack}
+            alt="logo"
+          />
+        </StyledLogoContainer>
+      </Link>
       <StyledNavContainer>
-        <Link to="/">
-          <Button
-            backgroundColor="transparent"
-            width="fit-content"
-            type="button"
-            borderRadius="0"
-            style={{ height: '100%', borderBottom: '3px solid black' }}
-          >
-            <Icon
-              name="home"
-              isFill={false}
-              style={styledNavIcon}
-            />
-          </Button>
-        </Link>
-        <Button
-          backgroundColor="transparent"
-          width="fit-content"
-          type="button"
-          borderRadius="0"
-          onClick={() => setPost(true)}
-        >
-          <Icon
-            name="add_circle"
-            isFill={false}
-            style={styledNavIcon}
-          />
-          {post && <PostModal onChangeOpen={() => setPost(false)} />}
-        </Button>
-        <Button
-          backgroundColor="transparent"
-          width="fit-content"
-          type="button"
-          borderRadius="0"
-          onClick={() => setSearch(true)}
-        >
-          <Icon
-            name="search"
-            style={styledNavIcon}
-          />
-          {search && <SearchModal onChangeOpen={() => setSearch(false)} />}
-        </Button>
+        <HeaderTab />
       </StyledNavContainer>
       <StyledUserContainer>
-        {!isUser ? (
+        {!isUser ? ( // 추후 수정 필요
           <Button
             type="button"
             height="4rem"

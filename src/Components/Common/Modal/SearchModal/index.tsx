@@ -2,7 +2,10 @@ import Modal from '@/Components/Common/Modal';
 
 const SearchModal = ({ onChangeOpen }) => {
   return (
-    <Modal onChangeOpen={onChangeOpen}>
+    <Modal
+      height={20}
+      onChangeOpen={onChangeOpen}
+    >
       <h1>search</h1>
     </Modal>
   );
