@@ -9,4 +9,5 @@ export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
   isLike: boolean;
   width?: string;
   fontSize?: string;
+  objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
 }

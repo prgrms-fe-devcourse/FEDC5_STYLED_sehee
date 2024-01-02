@@ -23,6 +23,7 @@ const PostCard = ({
   isLike,
   width = '80%',
   fontSize,
+  objectFit = 'fill',
 }: PostCardProps) => {
   const followBtnBgColor = isFollower
     ? lightTheme.colors.read
@@ -66,6 +67,7 @@ const PostCard = ({
         <StyledPostCardImage
           src={imageUrl}
           alt="포스트 카드 이미지"
+          $objectFit={objectFit}
         />
       </StyledPostCardBody>
     </StyledPostCardWrapper>

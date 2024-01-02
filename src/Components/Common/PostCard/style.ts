@@ -5,6 +5,8 @@ export const StyledPostCardWrapper = styled.div<{
   width: string;
   fontSize?: string;
 }>`
+  display: flex;
+  flex-direction: column;
   width: ${(props) => props.width};
   min-width: 15rem;
   border: 1px solid ${({ theme }) => theme.colors.backgroundGrey};
@@ -70,12 +72,16 @@ export const StyledPostCardTitle = styled.div`
 
 export const StyledPostCardBody = styled.div`
   width: 100%;
-  height: 100%;
+  height: 50%;
   border-radius: 0 0 0.5rem 0.5rem;
+  flex-grow: 1;
 `;
 
-export const StyledPostCardImage = styled.img`
+export const StyledPostCardImage = styled.img<{
+  $objectFit: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+}>`
   width: 100%;
   height: 100%;
   border-radius: 0 0 0.5rem 0.5rem;
+  object-fit: ${(props) => props.$objectFit};
 `;
