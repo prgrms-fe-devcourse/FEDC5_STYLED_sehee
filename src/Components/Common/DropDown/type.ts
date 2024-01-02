@@ -1,6 +1,7 @@
-import { HTMLAttributes, ButtonHTMLAttributes } from 'react';
+import { HTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 
 export interface DropDownProps {
+  children?: ReactNode;
   options: string[];
   label?: string;
   labelTextColor?: string;
@@ -26,10 +27,12 @@ export interface StyledDropDownButtonProp
   $height: string;
   $backgroundColor: string;
   $textColor: string;
+  $textSize: string;
 }
 
 export interface StyledDropDownItemProp {
   $itemBackgroundColor: string;
   $itemTextColor: string;
   $itemTextSize: string;
+  $width: string;
 }

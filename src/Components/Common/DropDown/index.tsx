@@ -1,4 +1,5 @@
 import React, { ForwardedRef, forwardRef, useState } from 'react';
+import { useTheme } from 'styled-components';
 import type { DropDownProps } from './type';
 import {
   StyledDropDown,
@@ -11,6 +12,7 @@ import Icon from '@/Components/Base/Icon';
 const DropDown = forwardRef(
   (
     {
+      children,
       options,
       label,
       labelTextColor,
@@ -31,6 +33,7 @@ const DropDown = forwardRef(
     }: DropDownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
+    const theme = useTheme();
     const [selectedOption, setSelectedOption] = useState('선택 없음');
     const [isOpen, setIsOpen] = useState(false);
 
@@ -58,25 +61,38 @@ const DropDown = forwardRef(
       >
         <StyledDropDownButton
           onClick={() => setIsOpen(!isOpen)}
+          $width={width || '160px'}
+          $height={height || '40px'}
+          $backgroundColor={backgroundColor || theme.colors.background}
+          $textColor={textColor || theme.colors.text}
+          $textSize={textSize || theme.size.medium}
           {...buttonProps}
         >
           {selectedOption}
           <Icon
-            name="cancel"
-            isFill={false}
+            name={
+              selectedOption === '선택 없음' ? 'expand_circle_down' : 'cancel'
+            }
+            isFill
             onClick={handleCancel}
             style={{ color: textColor }}
           />
         </StyledDropDownButton>
         {isOpen && (
           <StyledDropDownOption
-            $size={width || '160px'}
+            $width={width || '160px'}
             {...optionProps}
           >
             {options.map((option) => (
               <StyledDropDownItem
                 key={option}
                 onClick={() => handleSelect(option)}
+                $itemBackgroundColor={
+                  itemBackgroundColor || theme.colors.lightGray
+                }
+                $itemTextColor={itemTextColor || theme.colors.text}
+                $itemTextSize={itemTextSize || theme.size.small}
+                $width={width || '160px'}
                 {...itemProps}
               >
                 {option}
