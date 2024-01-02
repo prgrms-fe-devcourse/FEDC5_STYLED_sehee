@@ -1,4 +1,5 @@
 import { ForwardedRef, forwardRef } from 'react';
+import { useTheme } from 'styled-components';
 import StyledButton from './style';
 import type { ButtonProp } from './type';
 
@@ -11,25 +12,31 @@ const Button = forwardRef(
   (
     {
       children,
-      backgroundColor = 'default',
-      textColor = 'default',
-      textSize = 'default',
-      width = 'default',
-      height = 'default',
-      borderRadius = 'default',
+      backgroundColor,
+      textColor,
+      textSize,
+      width,
+      height,
+      borderRadius,
+      hoverBackgroundColor,
+      hoverTextColor,
       isActive,
       ...props
     }: ButtonProp,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
+    const theme = useTheme();
+
     return (
       <StyledButton
-        $backgroundColor={backgroundColor}
-        $textColor={textColor}
-        $textSize={textSize}
-        $width={width}
-        $height={height}
-        $borderRadius={borderRadius}
+        $backgroundColor={backgroundColor || theme.colors.buttonBackground}
+        $textColor={textColor || theme.colors.buttonText}
+        $textSize={textSize || '1rem'}
+        $width={width || '120px'}
+        $height={height || '10px'}
+        $borderRadius={borderRadius || '15px'}
+        $hoverBackgroundColor={hoverBackgroundColor || theme.colors.focusHover}
+        $hoverTextColor={hoverTextColor || theme.colors.focusHoverText}
         $isActive={isActive}
         ref={ref}
         {...props}
