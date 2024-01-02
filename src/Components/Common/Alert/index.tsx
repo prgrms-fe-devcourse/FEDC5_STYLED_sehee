@@ -1,53 +1,64 @@
-import styled from 'styled-components';
-import { HTMLAttributes } from 'react';
 import Button from '@/Components/Base/Button';
 import Modal from '../Modal';
+import { StyledAlertWrapper, StyledButtonWrapper } from './style';
+import { AlertPropsType } from './type';
 
-const StyledWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px;
-`;
-
-const StyledButtonWrapper = styled.div`
-  width: 80%;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-`;
-
-export interface AlertPropsType extends HTMLAttributes<HTMLDivElement> {
-  width?: number;
-  height?: number;
-  message: string;
-  mode: 'alert' | 'confirm';
-  onChangeOpen: (openState: boolean) => void;
-}
-
+/**
+ * @param message Alert에 띄우고 싶은 메시지를 입력하세요.
+ * @param confirmContent confirm 버튼 내용을 커스텀 할 수 있습니다.
+ * @param cancleContent cancle 버튼 내용을 커스텀 할 수 있습니다.
+ * @param mode alert, confirm 2가지 모드를 제공합니다.
+ */
 const Alert = ({
   width = 20,
   height = 15,
-  onChangeOpen,
   message,
+  confirmContent = 'OK',
+  cancleContent = 'CANCEL',
   mode = 'alert',
+  onChangeOpen,
+  onConfirm,
+  onCancle,
 }: AlertPropsType) => {
+  const handleConfirm = () => {
+    if (onConfirm) {
+      onConfirm();
+    }
+    onChangeOpen(false);
+  };
+
+  const handleCancle = () => {
+    if (onCancle) {
+      onCancle();
+    }
+    onChangeOpen(false);
+  };
+
   return (
     <Modal
       width={width}
       height={height}
       onChangeOpen={onChangeOpen}
     >
-      <StyledWrapper>
+      <StyledAlertWrapper>
         <div>{message}</div>
         <StyledButtonWrapper>
-          <Button height="30">OK</Button>
-          {mode === 'confirm' && <Button height="30">CANCEL</Button>}
+          <Button
+            height="30"
+            onClick={handleConfirm}
+          >
+            {confirmContent}
+          </Button>
+          {mode === 'confirm' && (
+            <Button
+              height="30"
+              onClick={handleCancle}
+            >
+              {cancleContent}
+            </Button>
+          )}
         </StyledButtonWrapper>
-      </StyledWrapper>
+      </StyledAlertWrapper>
     </Modal>
   );
 };
