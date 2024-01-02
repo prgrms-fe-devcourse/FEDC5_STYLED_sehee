@@ -1,3 +1,4 @@
+import { useTheme } from 'styled-components';
 import { PostCardProps } from './type';
 import {
   StyledPostCardWrapper,
@@ -12,7 +13,6 @@ import {
 } from './style';
 import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
-import { lightTheme } from '@/Styles/Theme';
 
 const PostCard = ({
   imageUrl,
@@ -25,11 +25,12 @@ const PostCard = ({
   fontSize,
   objectFit = 'fill',
 }: PostCardProps) => {
-  const followBtnBgColor = isFollower
-    ? lightTheme.colors.read
-    : lightTheme.colors.follow;
-
-  const followBtnTextColor = lightTheme.colors.buttonText;
+  const { colors } = useTheme();
+  const followBtnBgColor = isFollower ? colors.read : colors.follow;
+  const followBtnHoverBgColor = isFollower
+    ? 'rgba(0, 149, 246, 0.7)'
+    : 'rgba(119, 82, 254, 0.7)';
+  const followBtnTextColor = colors.buttonText;
 
   return (
     <StyledPostCardWrapper
@@ -53,13 +54,14 @@ const PostCard = ({
             textSize="1rem"
             textColor={followBtnTextColor}
             backgroundColor={followBtnBgColor}
+            hoverBackgroundColor={followBtnHoverBgColor}
           >
             {isFollower ? '팔로잉' : '팔로우'}
           </Button>
         </StyledProfileContainer>
         <Icon
           name={isLike ? 'favorite' : 'favorite_border'}
-          style={HeartIconStyle}
+          style={{ color: `${colors.alert}`, ...HeartIconStyle }}
         />
       </StyledPostCardHeader>
       <StyledPostCardTitle>{content}</StyledPostCardTitle>

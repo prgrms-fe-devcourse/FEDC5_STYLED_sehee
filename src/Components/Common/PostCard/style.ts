@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { lightTheme } from '@/Styles/Theme';
 
 export const StyledPostCardWrapper = styled.div<{
   width: string;
@@ -27,7 +26,7 @@ export const StyledPostCardHeader = styled.div`
 
 export const StyledProfileContainer = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
 `;
 
@@ -38,33 +37,16 @@ export const StyledProfileAvatar = styled.img`
 `;
 
 export const StyledProfileName = styled.span`
-  font-weight: 700;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   cursor: pointer;
 `;
 
-export const StyledProfileFollowBtn = styled.button<{ $isFollower: boolean }>`
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  background-color: ${(props) =>
-    props.$isFollower
-      ? ({ theme }) => theme.colors.read
-      : ({ theme }) => theme.colors.follow};
-  color: ${({ theme }) => theme.colors.buttonText};
-  font-size: 1rem;
-
-  &:hover {
-    background-color: ${(props) =>
-      props.$isFollower ? 'rgba(0, 149, 246, 0.7)' : 'rgba(119, 82, 254, 0.7)'};
-  }
-`;
-
 export const HeartIconStyle = {
-  color: `${lightTheme.colors.alert}`,
   cursor: 'pointer',
 };
 
 export const StyledPostCardTitle = styled.div`
-  padding-left: 1rem;
+  padding: 0 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
