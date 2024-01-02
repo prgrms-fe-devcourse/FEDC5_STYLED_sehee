@@ -16,6 +16,8 @@ const Header = () => {
   /**
    * Todo
    * 1. nav 요소 토글
+   * 2. 페이지 이동
+   * 3. 테마 적용
    */
 
   return (
