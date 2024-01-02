@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import {
   StyledWrapper,
   StyledInput,
@@ -8,39 +8,32 @@ import {
 } from './style';
 import Props from './type';
 
-const Input = ({
-  label,
-  initialFocus = false,
-  block = false,
-  wrapperProps,
-  errorMessage,
-  ...props
-}: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+const Input = forwardRef(
+  (
+    { label, block = false, wrapperProps, errorMessage, ...props }: Props,
+    ref: ForwardedRef<HTMLInputElement>,
+  ) => {
+    return (
+      <StyledWrapper
+        $block={block}
+        {...wrapperProps}
+      >
+        <StyledContainer>
+          {label && <StyledLabel>{label}</StyledLabel>}
+          {errorMessage && (
+            <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+          )}
+        </StyledContainer>
+        <StyledInput
+          $invalid={!!errorMessage}
+          ref={ref}
+          {...props}
+        />
+      </StyledWrapper>
+    );
+  },
+);
 
-  useEffect(() => {
-    if (initialFocus && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [initialFocus]);
+Input.displayName = 'Input';
 
-  return (
-    <StyledWrapper
-      $block={block}
-      {...wrapperProps}
-    >
-      <StyledContainer>
-        {label && <StyledLabel>{label}</StyledLabel>}
-        {errorMessage && (
-          <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
-        )}
-      </StyledContainer>
-      <StyledInput
-        $invalid={!!errorMessage}
-        ref={inputRef}
-        {...props}
-      />
-    </StyledWrapper>
-  );
-};
 export default Input;
