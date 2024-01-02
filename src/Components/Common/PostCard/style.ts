@@ -1,16 +1,19 @@
 import { styled } from 'styled-components';
 import { lightTheme } from '@/Styles/Theme';
 
-export const StyledPostCardWrapper = styled.div<{ width: string }>`
+export const StyledPostCardWrapper = styled.div<{
+  width: string;
+  fontSize?: string;
+}>`
   width: ${(props) => props.width};
   min-width: 15rem;
   border: 1px solid ${({ theme }) => theme.colors.backgroundGrey};
   border-radius: 0.5rem;
   box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
   aspect-ratio: 1;
-  /* 모드에 따른 기본 배경 색깔 오류있는 듯 */
-  /* background-color: ${({ theme }) => theme.colors.primary}; */
+  background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
+  font-size: ${(props) => props.fontSize};
 `;
 
 export const StyledPostCardHeader = styled.div`
@@ -58,12 +61,11 @@ export const HeartIconStyle = {
   cursor: 'pointer',
 };
 
-export const FillHeartIconStyle = {
-  cursor: 'pointer',
-};
-
 export const StyledPostCardTitle = styled.div`
   padding-left: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const StyledPostCardBody = styled.div`
