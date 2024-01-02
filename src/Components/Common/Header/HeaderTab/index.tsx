@@ -5,6 +5,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import PostModal from '../../Modal/PostModal';
 import SearchModal from '../../Modal/SearchModal';
+import { StyledNavContainer } from '../style';
 
 const HeaderTab = () => {
   const [tab, setTab] = useState(0);
@@ -26,12 +27,13 @@ const HeaderTab = () => {
   const styledNavIcon = { fontSize: '4.5rem', padding: '1.5rem' };
 
   return (
-    <>
+    <StyledNavContainer>
       {menuArr.map((items, index) => (
         <Button
           backgroundColor="transparent"
           width="fit-content"
           type="button"
+          hoverBackgroundColor="transparent"
           borderRadius="0"
           key={Number(index)}
           style={
@@ -90,7 +92,7 @@ const HeaderTab = () => {
               )}
         </Button>
       ))}
-    </>
+    </StyledNavContainer>
   );
 };
 
