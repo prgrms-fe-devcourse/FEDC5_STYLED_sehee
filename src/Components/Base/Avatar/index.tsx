@@ -29,6 +29,7 @@ const Avatar = forwardRef(
           $mode={mode}
           {...props}
         />
+        {children}
       </StyledAvatarWrapper>
     );
   },
