@@ -10,6 +10,8 @@ import {
   IconStyle,
 } from './style';
 import { ImageFileType, ImageUploadProps } from './type';
+import Button from '@/Components/Base/Button';
+import Input from '@/Components/Base/Input';
 
 const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
   const uploadInput = useRef<HTMLInputElement>(null);
@@ -21,7 +23,6 @@ const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
    */
   const handleClickUpload = (e: MouseEvent) => {
     e.preventDefault();
-
     uploadInput.current?.click();
   };
 
@@ -72,9 +73,8 @@ const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
           style={{ fontSize: fontSize && fontSize * 50, ...IconStyle }}
         />
         <StyledText>사진을 선택하여 추가해주세요.</StyledText>
-        {/* 버튼 컴포넌트 handleClick에 e.preventDefault 필요 */}
-        {/* <Button onClickButton={handleClickUpload}>가져오기</Button> */}
-        <StyledButton onClick={handleClickUpload}>가져오기</StyledButton>
+        <Button onClick={handleClickUpload}>가져오기</Button>
+        {/* <StyledButton onClick={handleClickUpload}>가져오기</StyledButton> */}
         <StyledInput
           type="file"
           accept="image/*"
