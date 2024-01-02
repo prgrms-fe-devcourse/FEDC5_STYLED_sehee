@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import StyledButton from './style';
 import type { ButtonProp } from './type';
 
@@ -7,49 +7,39 @@ import type { ButtonProp } from './type';
  * style={{ padding: '10px 20px' }} 과 같이 프롭스에 없는 스타일을 부여해줄 수 있습니다.
  */
 
-const Button = ({
-  children,
-  backgroundColor = 'default',
-  textColor = 'default',
-  textSize = 'default',
-  width = 'default',
-  height = 'default',
-  borderRadius = 'default',
-  isToggleButton = false,
-  onClickButton,
-  style,
-}: ButtonProp) => {
-  const [isActive, setIsActive] = useState(false);
+const Button = forwardRef(
+  (
+    {
+      children,
+      backgroundColor = 'default',
+      textColor = 'default',
+      textSize = 'default',
+      width = 'default',
+      height = 'default',
+      borderRadius = 'default',
+      isActive,
+      ...props
+    }: ButtonProp,
+    ref: ForwardedRef<HTMLButtonElement>,
+  ) => {
+    return (
+      <StyledButton
+        $backgroundColor={backgroundColor}
+        $textColor={textColor}
+        $textSize={textSize}
+        $width={width}
+        $height={height}
+        $borderRadius={borderRadius}
+        $isActive={isActive}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </StyledButton>
+    );
+  },
+);
 
-  const handleClick = () => {
-    if (onClickButton) {
-      onClickButton();
-    }
-  };
-
-  const handleToggle = () => {
-    setIsActive(!isActive);
-
-    if (onClickButton) {
-      onClickButton(isActive);
-    }
-  };
-
-  return (
-    <StyledButton
-      onClick={isToggleButton ? handleToggle : handleClick}
-      $backgroundColor={backgroundColor}
-      $textColor={textColor}
-      $textSize={textSize}
-      $width={width}
-      $height={height}
-      $borderRadius={borderRadius}
-      $isActive={isActive}
-      style={{ ...style }}
-    >
-      {children}
-    </StyledButton>
-  );
-};
+Button.displayName = 'Button';
 
 export default Button;
