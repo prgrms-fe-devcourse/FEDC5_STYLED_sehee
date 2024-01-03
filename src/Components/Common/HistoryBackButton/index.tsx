@@ -21,6 +21,7 @@ const HistoryBackButton = ({ ...props }: Props) => {
         height: 'auto',
         ...props.style,
       }}
+      className={props.className}
     >
       <Icon
         name="undo"

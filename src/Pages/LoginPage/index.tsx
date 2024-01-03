@@ -9,6 +9,7 @@ const LoginPage = () => {
     <StyledWrap>
       <StyledContainer>
         <HistoryBackButton
+          className="history-back-button"
           style={{ position: 'absolute', left: '3rem', top: '3rem' }}
         />
         <Logo />
