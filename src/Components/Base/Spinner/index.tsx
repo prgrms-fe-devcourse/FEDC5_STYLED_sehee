@@ -3,6 +3,12 @@ import { useTheme } from 'styled-components';
 import { StyledBackground, StyledSpinner } from './style';
 import { SpinnerProp } from './type';
 
+/**
+ * @param size: 원하시는 크기를 Number 타입으로 전달해주세요 (선택)
+ * @param color, display: 원하시는 색상과 출력 모드를 String 타입으로 전달해주세요 (선택)
+ * @param isFixedCenter, isBackground: 중앙고정, 검은색 배경 여부를 Boolean 타입으로 전달해주세요 (선택, default="false")
+ */
+
 const Spinner = forwardRef(
   (
     {
