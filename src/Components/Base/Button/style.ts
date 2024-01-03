@@ -6,26 +6,20 @@ const StyledButton = styled.button<StyledButtonProp>`
   justify-content: center;
   align-items: center;
 
-  ${({
-    $backgroundColor,
-    $textColor,
-    $textSize,
-    $width,
-    $height,
-    $borderRadius,
-    $isActive,
-    theme,
-  }) => `
-    background-color: ${
-      $backgroundColor === 'default'
-        ? theme.colors.buttonBackground
-        : $backgroundColor
-    };
-    color: ${$textColor === 'default' ? theme.colors.buttonText : $textColor};
-    font-size: ${$textSize === 'default' ? '1rem' : $textSize};
-    width: ${$width === 'default' ? '120px' : $width};
-    height: ${$height === 'default' ? '10px' : $height};
-    border-radius: ${$borderRadius === 'default' ? '15px' : $borderRadius};
+  background-color: ${(props) => props.$backgroundColor};
+  color: ${(props) => props.$textColor};
+  font-size: ${(props) => props.$textSize};
+
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
+  border-radius: ${(props) => props.$borderRadius};
+
+  &:hover {
+    background-color: ${(props) => props.$hoverBackgroundColor};
+    color: ${(props) => props.$hoverTextColor};
+  }
+
+  ${({ $isActive, theme }) => `
     ${
       $isActive
         ? `background-color: ${theme.colors.focusHover}; color: ${theme.colors.focusHoverText};`
