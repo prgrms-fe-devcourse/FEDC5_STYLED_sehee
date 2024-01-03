@@ -26,7 +26,7 @@ export const StyledInfoContainer = styled.div<{ $borderRadius: string }>`
   justify-content: center;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.8);
-  color: ${({ theme }) => theme.colors.buttonText};
+  color: ${({ theme }) => theme.colors.focusHover};
   border-radius: ${({ $borderRadius }) => $borderRadius};
 
   &:hover {
