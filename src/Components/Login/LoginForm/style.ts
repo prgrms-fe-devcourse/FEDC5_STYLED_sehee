@@ -5,7 +5,6 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* gap: ${({ theme }) => theme.size.doubleLarge}; */
 `;
 
 export default StyledForm;
