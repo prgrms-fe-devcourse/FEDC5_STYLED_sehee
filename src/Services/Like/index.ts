@@ -1,4 +1,5 @@
 import { axiosAuthInstance } from '@/Api/axiosInstance';
+import handleError from '@/Api/handleError';
 import { DOMAIN } from '@/Constants/Api';
 import { LikeType } from '@/Types/LikeType';
 
@@ -13,7 +14,7 @@ export const createLike = async (postId: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -31,7 +32,7 @@ export const deleteLike = async (postId: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };

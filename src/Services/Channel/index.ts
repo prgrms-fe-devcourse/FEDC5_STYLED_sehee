@@ -2,6 +2,7 @@ import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import { ChannelType } from '@/Types/ChannelType';
 import { DOMAIN } from '@/Constants/Api';
 import { PostChannelCreateRequestType } from '@/Types/Request';
+import handleError from '@/Api/handleError';
 
 /**
  * @brief 채널 목록을 불러옵니다.
@@ -12,7 +13,7 @@ export const getChannels = async () => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -29,7 +30,7 @@ export const getChannel = async (channelName: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -58,7 +59,7 @@ export const createChannel = async ({
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };

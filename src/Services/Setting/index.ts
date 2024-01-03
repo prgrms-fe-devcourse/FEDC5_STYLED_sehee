@@ -2,6 +2,7 @@ import { axiosAuthInstance } from '@/Api/axiosInstance';
 import { PutUpdateUserRequestType } from '@/Types/Request';
 import { UserType } from '@/Types/UserType';
 import { DOMAIN } from '@/Constants/Api';
+import handleError from '@/Api/handleError';
 
 /**
  * @brief 나의 정보를 변경합니다.
@@ -19,7 +20,7 @@ export const updateMyName = async ({
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -36,7 +37,7 @@ export const updateMyPassword = async (password: string) => {
 
     return true;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return false;
   }
 };

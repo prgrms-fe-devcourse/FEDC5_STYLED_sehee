@@ -2,6 +2,7 @@ import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import { GetUserListRequestType } from '@/Types/Request';
 import { UserType } from '@/Types/UserType';
 import { DOMAIN } from '@/Constants/Api';
+import handleError from '@/Api/handleError';
 
 /**
  * @brief 전체 사용자 목록을 불러옵니다.
@@ -22,7 +23,7 @@ export const getUsers = async ({
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -36,7 +37,7 @@ export const getOnlineUsers = async () => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -50,7 +51,7 @@ export const getUser = async (userId: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -71,13 +72,13 @@ export const updateProfileImage = async (image: File) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
 
 /**
- * @brief 나의 프로필 이미지를 변경합니다.
+ * @brief 나의 커버 이미지를 변경합니다.
  */
 export const updateCoverImage = async (image: File) => {
   try {
@@ -92,7 +93,7 @@ export const updateCoverImage = async (image: File) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };

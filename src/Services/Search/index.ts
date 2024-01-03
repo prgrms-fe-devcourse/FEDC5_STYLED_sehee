@@ -1,4 +1,5 @@
 import { axiosCommonInstance } from '@/Api/axiosInstance';
+import handleError from '@/Api/handleError';
 import { DOMAIN } from '@/Constants/Api';
 import { PostType } from '@/Types/PostType';
 import { UserType } from '@/Types/UserType';
@@ -13,7 +14,7 @@ export const searchUsers = async (query: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -29,7 +30,7 @@ export const searchAll = async (query: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };

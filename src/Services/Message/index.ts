@@ -1,4 +1,5 @@
 import { axiosAuthInstance } from '@/Api/axiosInstance';
+import handleError from '@/Api/handleError';
 import { DOMAIN } from '@/Constants/Api';
 import { ConversationType } from '@/Types/ConversationType';
 import { MessageType } from '@/Types/MessageType';
@@ -15,7 +16,7 @@ export const getConversations = async () => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -33,7 +34,7 @@ export const getMessages = async (userId: string) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -56,7 +57,7 @@ export const createMessage = async ({
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -73,7 +74,7 @@ export const readMessage = async (userId: string) => {
     });
     return true;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return false;
   }
 };

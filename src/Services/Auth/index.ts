@@ -1,4 +1,5 @@
 import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
+import handleError from '@/Api/handleError';
 import { DOMAIN } from '@/Constants/Api';
 import { PostLoginRequestType, PostSignUpRequestType } from '@/Types/Request';
 import { UserResponseType } from '@/Types/Response';
@@ -16,7 +17,7 @@ export const login = async ({ email, password }: PostLoginRequestType) => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -41,7 +42,7 @@ export const signUp = async ({
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -56,7 +57,7 @@ export const logout = async () => {
 
     return true;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return false;
   }
 };
@@ -70,7 +71,7 @@ export const checkAuth = async () => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };

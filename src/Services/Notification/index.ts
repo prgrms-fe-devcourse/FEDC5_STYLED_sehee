@@ -1,4 +1,5 @@
 import { axiosAuthInstance } from '@/Api/axiosInstance';
+import handleError from '@/Api/handleError';
 import { DOMAIN } from '@/Constants/Api';
 import { NotificationType } from '@/Types/NotificationType';
 import { PostNotificationRequestType } from '@/Types/Request';
@@ -14,7 +15,7 @@ export const getNotifications = async () => {
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
@@ -29,7 +30,7 @@ export const readNotifications = async () => {
 
     return true;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return false;
   }
 };
@@ -61,7 +62,7 @@ export const sendNotifications = async ({
 
     return res.data;
   } catch (e) {
-    console.error(e);
+    handleError(e);
     return null;
   }
 };
