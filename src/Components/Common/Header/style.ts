@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledHeaderContainer = styled.div`
+const StyledHeaderContainer = styled.div`
   height: 9.4rem;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.background};
@@ -9,25 +9,4 @@ export const StyledHeaderContainer = styled.div`
   position: sticky;
 `;
 
-export const StyledLogoContainer = styled.div`
-  align-items: center;
-  justify-content: center;
-  display: flex;
-`;
-
-export const StyledLogo = styled.img`
-  width: 9rem;
-  padding: 0.7rem;
-`;
-
-export const StyledNavContainer = styled(StyledLogoContainer)`
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
-`;
-
-export const StyledUserContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  margin-right: 2rem;
-`;
+export default StyledHeaderContainer;

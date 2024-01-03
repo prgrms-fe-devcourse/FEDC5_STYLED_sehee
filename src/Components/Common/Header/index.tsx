@@ -1,28 +1,12 @@
-import { Link } from 'react-router-dom';
-import { useTheme } from 'styled-components';
-import {
-  StyledHeaderContainer,
-  StyledLogo,
-  StyledLogoContainer,
-} from './style';
-import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
-import logoWhite from '@/Assets/Images/STYLED-logo-white.png';
+import StyledHeaderContainer from './style';
 import HeaderTab from './HeaderTab';
 import HeaderUser from './HeaderUser';
+import HeaderLogo from './HeaderLogo';
 
 const Header = () => {
-  const { colors } = useTheme();
-
   return (
     <StyledHeaderContainer>
-      <Link to="/">
-        <StyledLogoContainer>
-          <StyledLogo
-            src={colors.background === '#000000' ? logoWhite : logoBlack}
-            alt="logo"
-          />
-        </StyledLogoContainer>
-      </Link>
+      <HeaderLogo />
       <HeaderTab />
       <HeaderUser />
     </StyledHeaderContainer>

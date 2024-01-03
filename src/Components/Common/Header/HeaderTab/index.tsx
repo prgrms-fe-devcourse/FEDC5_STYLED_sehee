@@ -5,7 +5,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import PostModal from '../../Modal/PostModal';
 import SearchModal from '../../Modal/SearchModal';
-import { StyledNavContainer } from '../style';
+import StyledNavContainer from './style';
 
 const HeaderTab = () => {
   const [tab, setTab] = useState(0);
@@ -35,7 +35,7 @@ const HeaderTab = () => {
           type="button"
           hoverBackgroundColor="transparent"
           borderRadius="0"
-          key={Number(index)}
+          key={items.name}
           style={
             index === tab
               ? {

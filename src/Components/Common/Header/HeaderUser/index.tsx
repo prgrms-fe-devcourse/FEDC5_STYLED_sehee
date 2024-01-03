@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import AlarmModal from '../../Modal/AlarmModal';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
-import { StyledUserContainer } from '../style';
+import StyledUserContainer from './style';
 import Modal from '../../Modal';
 
 const HeaderUser = () => {
-  const [isUser, setUser] = useState(false);
+  const [isAuthUser, setIsAuthUser] = useState(false);
   const [alarm, setAlarm] = useState(false);
   const [dropdown, setDropdown] = useState(false);
 
@@ -21,27 +21,27 @@ const HeaderUser = () => {
 
   return (
     <StyledUserContainer>
-      {!isUser ? (
+      {!isAuthUser ? (
         <Button
           type="button"
           height="4rem"
           textSize="1.65rem"
           width="8rem"
-          key={3}
+          key="login"
           borderRadius="1rem"
-          onClick={() => setUser(true)}
+          onClick={() => setIsAuthUser(true)}
         >
           로그인
         </Button>
       ) : (
-        userArr.map((items, index) => (
+        userArr.map((items) => (
           <Button
             backgroundColor="transparent"
             width="fit-content"
             type="button"
             borderRadius="0"
             hoverBackgroundColor="transparent"
-            key={Number(index) + 4}
+            key={items.name}
             onClick={() => {
               switch (items.name) {
                 case 'notifications':
