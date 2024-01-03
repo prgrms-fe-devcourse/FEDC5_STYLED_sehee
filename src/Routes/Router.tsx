@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { DetailPage, HomePage, NotFoundPage } from '@/Pages';
+import { DetailPage, HomePage, NotFoundPage, LoginPage } from '@/Pages';
 
 const RouterManager = () => {
   return (
@@ -8,6 +8,10 @@ const RouterManager = () => {
         <Route
           path="/"
           element={<HomePage />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
         />
         <Route
           path="/detail"
