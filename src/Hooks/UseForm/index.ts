@@ -10,6 +10,7 @@ const useForm = ({ initialState, callback, validate }: Props) => {
     const { name, value } = e.target;
 
     setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   };
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
