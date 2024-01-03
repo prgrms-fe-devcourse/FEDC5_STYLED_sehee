@@ -1,36 +1,39 @@
-import { useEffect, useRef } from 'react';
-import { StyledWrapper, StyledInput, StyledLabel } from './style';
+import { ForwardedRef, forwardRef } from 'react';
+import {
+  StyledWrapper,
+  StyledInput,
+  StyledLabel,
+  StyledErrorMessage,
+  StyledContainer,
+} from './style';
 import Props from './type';
 
-const Input = ({
-  label,
-  initialFocus = false,
-  invalid = false,
-  block = false,
-  wrapperProps,
-  ...props
-}: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+const Input = forwardRef(
+  (
+    { label, block = false, wrapperProps, errorMessage, ...props }: Props,
+    ref: ForwardedRef<HTMLInputElement>,
+  ) => {
+    return (
+      <StyledWrapper
+        $block={block}
+        {...wrapperProps}
+      >
+        <StyledContainer>
+          {label && <StyledLabel>{label}</StyledLabel>}
+          {errorMessage && (
+            <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+          )}
+        </StyledContainer>
+        <StyledInput
+          $invalid={!!errorMessage}
+          ref={ref}
+          {...props}
+        />
+      </StyledWrapper>
+    );
+  },
+);
 
-  useEffect(() => {
-    if (initialFocus && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [initialFocus]);
-
-  return (
-    <StyledWrapper
-      $block={block}
-      {...wrapperProps}
-    >
-      {label && <StyledLabel>{label}</StyledLabel>}
-      <StyledInput
-        $invalid={invalid}
-        ref={inputRef}
-        {...props}
-      />
-    </StyledWrapper>
-  );
-};
+Input.displayName = 'Input';
 
 export default Input;

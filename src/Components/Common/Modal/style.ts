@@ -1,15 +1,16 @@
 import styled from 'styled-components';
-import { StyledModalContainerType, StyledModalWrapperType } from './type';
+import { StyledModalContainerType } from './type';
 
-export const StyledModalWrapper = styled.div<StyledModalWrapperType>`
+export const StyledModalWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
+  display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 `;
 
 export const StyledModalBackground = styled.div`
