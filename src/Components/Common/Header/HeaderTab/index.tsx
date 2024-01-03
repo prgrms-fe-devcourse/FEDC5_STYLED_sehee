@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from 'styled-components';
-import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import PostModal from '../../Modal/PostModal';
 import SearchModal from '../../Modal/SearchModal';
-import StyledNavContainer from './style';
+import { StyledNavContainer, StyledButton } from './style';
 
 const HeaderTab = () => {
   const [tab, setTab] = useState(0);
   const [post, setPost] = useState(false);
   const [search, setSearch] = useState(false);
-
-  const { colors } = useTheme();
 
   const menuArr = [
     { name: 'home', isFill: false },
@@ -29,21 +25,16 @@ const HeaderTab = () => {
   return (
     <StyledNavContainer>
       {menuArr.map((items, index) => (
-        <Button
+        <StyledButton
           backgroundColor="transparent"
           width="fit-content"
           type="button"
           hoverBackgroundColor="transparent"
+          hoverTextColor="transparent"
           borderRadius="0"
           key={items.name}
-          style={
-            index === tab
-              ? {
-                  height: '100%',
-                  borderBottom: `3px solid ${colors.primary}`,
-                }
-              : { height: '100%' }
-          }
+          $tab={tab}
+          $index={index}
           onClick={() => {
             selectMenuHandler(index);
             switch (items.name) {
@@ -90,7 +81,7 @@ const HeaderTab = () => {
                   }}
                 />
               )}
-        </Button>
+        </StyledButton>
       ))}
     </StyledNavContainer>
   );

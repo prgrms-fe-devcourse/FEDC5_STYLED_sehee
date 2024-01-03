@@ -6,7 +6,7 @@ const StyledHeaderContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
   display: grid;
   grid-template-columns: 1fr 3fr 1.3fr;
-  position: sticky;
+  position: fixed;
 `;
 
 export default StyledHeaderContainer;
