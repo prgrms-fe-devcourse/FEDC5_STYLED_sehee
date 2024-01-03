@@ -1,14 +1,6 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { StyledBackgroundProp, StyledSpinnerProp } from './type';
-
-const rotate = keyframes`
-  0%, 20%, 80%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-`;
+import { rotate } from '@/Styles/Animation';
 
 export const StyledBackground = styled.div<StyledBackgroundProp>`
   display: none;

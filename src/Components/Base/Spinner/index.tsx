@@ -37,18 +37,11 @@ const Spinner = forwardRef(
           ref={ref}
           {...props}
         >
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
+          {Array(12)
+            .fill(null)
+            .map((_, index) => (
+              <div key={index} />
+            ))}
         </StyledSpinner>
       </span>
     );
