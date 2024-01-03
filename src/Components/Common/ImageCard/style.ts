@@ -47,7 +47,7 @@ export const StyledHoverInfo = styled.div`
   justify-content: center;
 `;
 
-export const StyledHoverInfoText = styled.div<{ $fontSize: string }>`
-  font-size: ${({ $fontSize }) => $fontSize};
+export const StyledHoverInfoText = styled.div<{ $fontSize: number }>`
+  font-size: ${({ $fontSize }) => $fontSize}rem;
   padding: 0.7rem 1.2rem;
 `;

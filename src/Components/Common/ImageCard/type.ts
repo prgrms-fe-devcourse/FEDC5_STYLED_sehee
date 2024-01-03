@@ -4,7 +4,7 @@ export interface Props {
   comment: number;
   heart: number;
   borderRadius?: string;
-  fontSize?: string;
+  fontSize?: number;
   size?: string;
   onDetail?: () => void;
 }

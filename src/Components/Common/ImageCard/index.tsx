@@ -16,7 +16,7 @@ const ImageCard = ({
   heart,
   borderRadius = '2rem',
   size = '20rem',
-  fontSize = '1.5rem',
+  fontSize = 1.8,
   onDetail,
   ...props
 }: Props) => {
@@ -39,7 +39,10 @@ const ImageCard = ({
         <StyledHoverInfo>
           <Icon
             name="favorite"
-            style={{ color: colors.buttonText, fontSize }}
+            style={{
+              color: colors.buttonText,
+              fontSize: `${fontSize + 1}rem`,
+            }}
           />
           <StyledHoverInfoText $fontSize={fontSize}>
             {heart}
@@ -48,7 +51,10 @@ const ImageCard = ({
         <StyledHoverInfo>
           <Icon
             name="comment"
-            style={{ color: colors.buttonText, fontSize }}
+            style={{
+              color: colors.buttonText,
+              fontSize: `${fontSize + 1}rem`,
+            }}
           />
           <StyledHoverInfoText $fontSize={fontSize}>
             {comment}
