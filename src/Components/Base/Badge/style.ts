@@ -24,8 +24,8 @@ const StyledBadge = styled.span<StyledBadgeProp>`
         height: ${$size};
         border-radius: 50%;`,
       ellipse: `
-        width: auto;
-        height: auto;
+        width: calc(${$size} * 1.3)rem;;
+        height: ${$size}rem;
         border-radius: 45%;`,
     })[$shape]}
 
