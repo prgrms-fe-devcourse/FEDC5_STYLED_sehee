@@ -4,7 +4,6 @@ import { LikeType } from '@/Types/LikeType';
 
 /**
  * @brief 특정 포스트에 좋아요합니다.
- * @return 실패할 경우, null을 반환합니다.
  */
 export const createLike = async (postId: string) => {
   try {
@@ -21,7 +20,6 @@ export const createLike = async (postId: string) => {
 
 /**
  * @brief 특정 포스트에 좋아요한 것을 취소합니다.
- * @return 실패할 경우, null을 반환합니다.
  */
 export const deleteLike = async (postId: string) => {
   try {
