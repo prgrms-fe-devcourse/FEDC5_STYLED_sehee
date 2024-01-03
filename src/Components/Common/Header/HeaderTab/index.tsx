@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import Icon from '@/Components/Base/Icon';
 import PostModal from '../../Modal/PostModal';
 import SearchModal from '../../Modal/SearchModal';
-import { StyledNavContainer, StyledButton } from './style';
+import StyledButton from './style';
+import { StyledContainer } from '../style';
 
 const HeaderTab = () => {
   const [tab, setTab] = useState(0);
@@ -23,7 +24,7 @@ const HeaderTab = () => {
   const styledNavIcon = { fontSize: '4.5rem', padding: '1.5rem' };
 
   return (
-    <StyledNavContainer>
+    <StyledContainer>
       {menuArr.map((items, index) => (
         <StyledButton
           backgroundColor="transparent"
@@ -83,7 +84,7 @@ const HeaderTab = () => {
               )}
         </StyledButton>
       ))}
-    </StyledNavContainer>
+    </StyledContainer>
   );
 };
 

@@ -9,4 +9,10 @@ const StyledHeaderContainer = styled.div`
   position: fixed;
 `;
 
+export const StyledContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`;
+
 export default StyledHeaderContainer;
