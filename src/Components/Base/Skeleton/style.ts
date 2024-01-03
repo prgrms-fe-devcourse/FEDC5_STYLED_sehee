@@ -1,27 +1,5 @@
-import styled, { keyframes } from 'styled-components';
-
-const skeletonZoomIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
-
-const skeletonLoading = keyframes`
-  0% {
-    background-position-x: 100%;
-  }
-  50% {
-    background-position-x: -100%;
-  }
-  100% {
-    background-position-x: -100%;
-  }
-`;
+import styled from 'styled-components';
+import { skeletonZoomIn, skeletonLoading } from '@/Styles/Animation';
 
 const Base = styled.div`
   display: inline-block;
