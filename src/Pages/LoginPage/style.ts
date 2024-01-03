@@ -25,10 +25,11 @@ export const StyledContainer = styled.div`
     width: ${({ theme }) => theme.size.full};
     border: none;
     justify-content: center;
+    padding: 0 5rem;
 
     > .history-back-button {
       position: absolute !important;
-      left: 9rem !important;
+      left: 4rem !important;
       top: 8rem !important;
     }
   }
