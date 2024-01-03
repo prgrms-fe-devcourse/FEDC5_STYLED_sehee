@@ -23,18 +23,6 @@ const App = () => {
           comment={20}
           heart={20}
         />
-        <ImageCard
-          src={logo}
-          alt="img"
-          comment={20}
-          heart={20}
-        />
-        <ImageCard
-          src={logo}
-          alt="img"
-          comment={20}
-          heart={20}
-        />
         <RouteManager />
       </QueryClientProvider>
     </ThemeProvider>

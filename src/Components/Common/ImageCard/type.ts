@@ -1,7 +1,10 @@
 export interface Props {
   src: string;
-  alt: string;
+  alt?: string;
   comment: number;
   heart: number;
-  width?: string;
+  borderRadius?: string;
+  fontSize?: string;
+  size?: string;
+  onDetail?: () => void;
 }

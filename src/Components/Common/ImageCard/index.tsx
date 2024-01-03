@@ -1,43 +1,61 @@
+import { useTheme } from 'styled-components';
 import Icon from '@/Components/Base/Icon';
 import { Props } from './type';
-import { StyledHover, StyledP } from './style';
+import {
+  StyledContainer,
+  StyledHoverInfo,
+  StyledHoverInfoText,
+  StyledImg,
+  StyledInfoContainer,
+} from './style';
 
 const ImageCard = ({
   src,
-  alt,
+  alt = 'img',
   comment,
   heart,
-  width = '20rem',
+  borderRadius = '2rem',
+  size = '20rem',
+  fontSize = '1.5rem',
+  onDetail,
   ...props
 }: Props) => {
+  const { colors } = useTheme();
   return (
-    <div
-      style={{
-        position: 'relative',
-        borderRadius: '2rem',
-        backgroundColor: '#fffddd',
-        width,
-        height: width,
-        margin: '1rem',
-        boxShadow: '0 0.1rem 0.1rem gray',
-        cursor: 'pointer',
-        display: 'inline-block',
-      }}
+    <StyledContainer
+      $size={size}
+      $borderRadius={borderRadius}
+      onClick={onDetail}
+      {...props}
     >
-      <StyledP
-        className="p-hover"
-        style={{ opacity: '0' }}
-      >
-        <Icon name="favorite" /> {heart}
-        <Icon name="comment" /> {comment}
-      </StyledP>
-      <img
+      <StyledImg
         src={src}
         alt={alt}
-        style={{ padding: '1rem' }}
-        {...props}
       />
-    </div>
+      <StyledInfoContainer
+        $borderRadius={borderRadius}
+        className="imgInfo"
+      >
+        <StyledHoverInfo>
+          <Icon
+            name="favorite"
+            style={{ color: colors.buttonText }}
+          />
+          <StyledHoverInfoText $fontSize={fontSize}>
+            {heart}
+          </StyledHoverInfoText>
+        </StyledHoverInfo>
+        <StyledHoverInfo>
+          <Icon
+            name="comment"
+            style={{ color: colors.buttonText }}
+          />
+          <StyledHoverInfoText $fontSize={fontSize}>
+            {comment}
+          </StyledHoverInfoText>
+        </StyledHoverInfo>
+      </StyledInfoContainer>
+    </StyledContainer>
   );
 };
 
