@@ -10,6 +10,11 @@ import {
 } from './style';
 import Icon from '@/Components/Base/Icon';
 
+/**
+ * @param options: 출력할 옵션들을 배열([])형태로 담아 전달해주세요. (필수)
+ * 이 외의 프롭들은 선택적으로 전달해줄 수 있으며, px / rem 등의 단위가 포함된 String 형태로 전달해주세요.
+ */
+
 const DropDown = forwardRef(
   (
     {
@@ -71,8 +76,8 @@ const DropDown = forwardRef(
         )}
         <StyledDropDownButton
           onClick={() => setIsOpen(!isOpen)}
-          $width={width || '160px'}
-          $height={height || '40px'}
+          $width={width || '16rem'}
+          $height={height || '4rem'}
           $backgroundColor={backgroundColor || theme.colors.background}
           $textColor={textColor || theme.colors.text}
           $textSize={textSize || theme.size.medium}
@@ -98,7 +103,7 @@ const DropDown = forwardRef(
 
         {isOpen && (
           <StyledDropDownOption
-            $width={width || '160px'}
+            $width={width || '16rem'}
             {...optionProps}
           >
             {options.map((option) => (
@@ -110,7 +115,7 @@ const DropDown = forwardRef(
                 }
                 $itemTextColor={itemTextColor || theme.colors.text}
                 $itemTextSize={itemTextSize || theme.size.small}
-                $width={width || '160px'}
+                $width={width || '16rem'}
                 {...itemProps}
               >
                 {option}
