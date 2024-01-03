@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import type { InitialState, ErrorMessages, Props } from './Type';
+import type { InitialState, ErrorMessages, Props } from './type';
 
 const useForm = ({ initialState, callback, validate }: Props) => {
   const [values, setValues] = useState<InitialState>(initialState);
