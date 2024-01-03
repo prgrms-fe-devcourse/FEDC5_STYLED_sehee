@@ -39,7 +39,7 @@ const ImageCard = ({
         <StyledHoverInfo>
           <Icon
             name="favorite"
-            style={{ color: colors.buttonText }}
+            style={{ color: colors.buttonText, fontSize }}
           />
           <StyledHoverInfoText $fontSize={fontSize}>
             {heart}
@@ -48,7 +48,7 @@ const ImageCard = ({
         <StyledHoverInfo>
           <Icon
             name="comment"
-            style={{ color: colors.buttonText }}
+            style={{ color: colors.buttonText, fontSize }}
           />
           <StyledHoverInfoText $fontSize={fontSize}>
             {comment}
