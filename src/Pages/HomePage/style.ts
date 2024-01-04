@@ -30,6 +30,12 @@ export const StyledCategoryTitleContainer = styled.div`
   height: 5rem;
 `;
 
+export const StyledCategoryList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
 export const StyledCategoryTitle = styled.div`
   font-size: ${({ theme }) => theme.size.large};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
