@@ -21,6 +21,12 @@ export const StyledContainer = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.size.large};
 
+  > .history-back-button {
+    position: absolute;
+    left: 3rem;
+    top: 3rem;
+  }
+
   @media ${({ theme }) => theme.device.tablet} {
     width: ${({ theme }) => theme.size.full};
     border: none;
@@ -28,9 +34,9 @@ export const StyledContainer = styled.div`
     padding: 0 5rem;
 
     > .history-back-button {
-      position: absolute !important;
-      left: 4rem !important;
-      top: 8rem !important;
+      position: absolute;
+      left: 4rem;
+      top: 8rem;
     }
   }
 `;

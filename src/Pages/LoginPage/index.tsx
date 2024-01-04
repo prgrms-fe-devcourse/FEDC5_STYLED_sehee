@@ -8,10 +8,7 @@ const LoginPage = () => {
   return (
     <StyledWrap>
       <StyledContainer>
-        <HistoryBackButton
-          className="history-back-button"
-          style={{ position: 'absolute', left: '3rem', top: '3rem' }}
-        />
+        <HistoryBackButton className="history-back-button" />
         <Logo />
         <LoginForm />
         <MoveToSignUpButton />
