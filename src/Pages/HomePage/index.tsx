@@ -1,7 +1,13 @@
 /* eslint no-underscore-dangle: 0 */
 // _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
-import { MouseEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -14,7 +20,6 @@ import {
   StyledUserInfoContainer,
   StyledUserList,
   StyledUserName,
-  StyledUserReadContainer,
   StyledWrapper,
 } from './style';
 import Button from '@/Components/Base/Button';
@@ -34,38 +39,82 @@ const HomePage = () => {
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
   const [currentChannelId, setCurrentChannelId] = useState('all');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchedUserList, setSearchedUserList] = useState<UserType[]>([]);
 
+  /**
+   *
+   * @param e 채널 버튼 클릭 이벤트
+   * @returns eslint 에러때문에 반환, channelId 상태 업데이트
+   */
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
 
     return channelId && setCurrentChannelId(channelId);
   };
 
-  useEffect(() => {
-    /**
-     * 모든 채널을 fetch하는 함수
-     * @return setChannelList 함수 실행 void
-     */
-    const fetchChannelList = async () => {
-      const channelData = await getChannels();
-
-      return channelData && setChannelList(channelData);
-    };
-
-    const fetchUserList = async () => {
-      const userData = await getUsers();
-
-      // 관리자 계정 제외 필터링
-      const filteredUserList = userData?.filter(
-        (user) => user.role !== 'SuperAdmin',
-      );
-
-      return filteredUserList && setUserList(filteredUserList);
-    };
-
-    fetchChannelList();
-    fetchUserList();
+  const handleChangeSearch = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const inputKeyword = e.target.value;
+    setSearchKeyword(inputKeyword);
   }, []);
+
+  /**
+   * 모든 채널을 fetch하는 함수
+   * @return setChannelList 함수 실행 void
+   */
+  const fetchChannelList = async () => {
+    const channelData = await getChannels();
+
+    return channelData && setChannelList(channelData);
+  };
+
+  /**
+   * 모든 유저 리스트를 fetch하는 함수
+   * @returns 관리자 계정 제외한 유저 리스트 setUserList로 업데이트
+   */
+  const fetchUserList = async () => {
+    const userData = await getUsers();
+
+    // 관리자 계정 제외 필터링
+    const filteredUserList = userData?.filter(
+      (user) => user.role !== 'SuperAdmin',
+    );
+
+    return filteredUserList && setUserList(filteredUserList);
+  };
+
+  const matchUserList = useCallback(
+    (users: UserType[], searchQuery: string) => {
+      if (!searchQuery) setSearchedUserList([]);
+
+      const result = users.filter((user) => {
+        const { fullName } = user;
+
+        return (
+          fullName.includes(searchQuery) ||
+          fullName.toLowerCase().includes(searchQuery)
+        );
+      });
+
+      if (result) setSearchedUserList(result);
+
+      return result;
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (channelList.length === 0) fetchChannelList();
+    if (userList.length === 0) fetchUserList();
+
+    matchUserList(userList, searchKeyword);
+  }, [
+    channelList.length,
+    userList.length,
+    matchUserList,
+    searchKeyword,
+    userList,
+  ]);
 
   return (
     <>
@@ -144,9 +193,15 @@ const HomePage = () => {
         </StyledLeftContainer>
         <StyledMainContentContainer />
         <StyledRightContainer>
-          <SearchBar className="user-search" />
+          <SearchBar
+            onChangehandler={handleChangeSearch}
+            className="user-search"
+          />
           <StyledUserList>
-            {userList.map((user) => {
+            {(searchKeyword || searchedUserList.length !== 0
+              ? searchedUserList
+              : userList
+            ).map((user) => {
               return (
                 <StyledUserCardWrapper key={user._id}>
                   <Avatar
