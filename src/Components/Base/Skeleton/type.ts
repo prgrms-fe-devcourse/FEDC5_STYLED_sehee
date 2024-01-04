@@ -9,4 +9,6 @@ export interface SkeletonCircleProp {
 
 export interface SkeletonParagraphProp {
   line?: number;
+  width?: string;
+  height?: string;
 }
