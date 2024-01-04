@@ -13,17 +13,19 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftContainer = styled.div`
-  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   /* background-color: red; */
   flex-basis: 30rem;
+  align-items: center;
   border-right: 0.1rem solid #ddd;
   gap: 1rem;
 `;
 
 export const StyledCategoryTitleContainer = styled.div`
+  padding: 0 1rem;
   width: 90%;
-  padding-right: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,14 +33,17 @@ export const StyledCategoryTitleContainer = styled.div`
 `;
 
 export const StyledCategoryList = styled.div`
+  padding: 0 1rem;
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 `;
 
 export const StyledCategoryTitle = styled.div`
-  font-size: ${({ theme }) => theme.size.large};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-size: ${({ theme }) => theme.size.medium};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  user-select: none;
 `;
 
 export const catergoryButtonStyle = {};
