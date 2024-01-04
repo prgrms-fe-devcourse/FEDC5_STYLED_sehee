@@ -6,6 +6,7 @@ const commonTheme = {
   alert: '#FF0000', // 알림 색상
   border: '#CCCCCC', // 보더 색상
   backgroundGrey: '#D1CCC7', // 회색 배경 색상
+  lightGray: '#F0F0F0', // 밝은 회색 색상
   focusHover: '#F2F2F2', // 포커스 및 호버 색상
   focusHoverText: '#000000',
   overlay: 'rgba(0, 0, 0, 0.4)', // 오버레이 색상
