@@ -17,6 +17,10 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
   .user-avatar {
     position: relative;
   }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.focusHover};
+  }
 `;
 
 export const StyledUserInfoContainer = styled.div`
