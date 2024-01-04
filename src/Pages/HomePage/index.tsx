@@ -15,6 +15,7 @@ import {
   StyledHeaderContainer,
   StyledLeftContainer,
   StyledMainContentContainer,
+  StyledPostCardList,
   StyledRightContainer,
   StyledUserCardWrapper,
   StyledUserInfoContainer,
@@ -32,6 +33,9 @@ import { UserType } from '@/Types/UserType';
 import SearchBar from '@/Components/Common/SearchBar';
 import Avatar from '@/Components/Base/Avatar';
 import Badge from '@/Components/Base/Badge';
+import { getPostByChannel } from '@/Services/Post';
+import { PostType } from '@/Types/PostType';
+import PostCard from '@/Components/Common/PostCard';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -41,6 +45,8 @@ const HomePage = () => {
   const [currentChannelId, setCurrentChannelId] = useState('all');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchedUserList, setSearchedUserList] = useState<UserType[]>([]);
+  const [postList, setPostList] = useState<PostType[]>([]);
+  const [postOffset, setPostOffset] = useState(0);
 
   /**
    *
@@ -50,9 +56,14 @@ const HomePage = () => {
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
 
+    setPostOffset(0);
+
     return channelId && setCurrentChannelId(channelId);
   };
 
+  /**
+   * 유저 목록 상단 검색창 입력 문자 change event 관리하는 핸들러 함수
+   */
   const handleChangeSearch = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const inputKeyword = e.target.value;
     setSearchKeyword(inputKeyword);
@@ -83,6 +94,31 @@ const HomePage = () => {
     return filteredUserList && setUserList(filteredUserList);
   };
 
+  const fetchPostList = useCallback(
+    async (channelId: string) => {
+      const postData = await getPostByChannel(channelId, {
+        offset: postOffset,
+        limit: 10,
+      });
+
+      if (postData?.length !== 0 && postList.length === 0) {
+        const newPostList = postData && [...postList, ...postData];
+
+        setPostOffset(postOffset + 10);
+        return newPostList && setPostList(newPostList);
+      }
+
+      return postList;
+    },
+    [postOffset, postList],
+  );
+
+  /**
+   * 검색 폼으로 유저 전체 목록에서 일치하는 유저 필터링하는 함수
+   * @param users 유저 전체 목록
+   * @param searchQuery 검색어
+   * @return 일치하는 유저 목록 리스트 반환
+   */
   const matchUserList = useCallback(
     (users: UserType[], searchQuery: string) => {
       if (!searchQuery) setSearchedUserList([]);
@@ -115,6 +151,12 @@ const HomePage = () => {
     searchKeyword,
     userList,
   ]);
+
+  useEffect(() => {
+    if (currentChannelId !== 'all') {
+      fetchPostList(currentChannelId);
+    }
+  }, [currentChannelId, fetchPostList]);
 
   return (
     <>
@@ -191,7 +233,21 @@ const HomePage = () => {
             })}
           </StyledCategoryList>
         </StyledLeftContainer>
-        <StyledMainContentContainer />
+        <StyledMainContentContainer>
+          <StyledPostCardList>
+            {postList.map((post) => (
+              <PostCard
+                key={post._id}
+                imageUrl={post.image || ''}
+                content={post.title || ''}
+                authorName={post.author.fullName || ''}
+                authorThumbnail=""
+                isFollower
+                isLike
+              />
+            ))}
+          </StyledPostCardList>
+        </StyledMainContentContainer>
         <StyledRightContainer>
           <SearchBar
             onChangehandler={handleChangeSearch}

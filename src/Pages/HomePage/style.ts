@@ -46,8 +46,21 @@ export const StyledCategoryTitle = styled.div`
 `;
 
 export const StyledMainContentContainer = styled.div`
+  padding: 1rem;
+  width: calc(100% - 60rem);
   height: 100%;
   flex-grow: 1;
+`;
+
+export const StyledPostCardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const StyledRightContainer = styled.div`
