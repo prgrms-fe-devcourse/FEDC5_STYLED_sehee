@@ -10,19 +10,29 @@ import {
   StyledLeftContainer,
   StyledMainContentContainer,
   StyledRightContainer,
+  StyledUserCardWrapper,
+  StyledUserInfoContainer,
+  StyledUserList,
+  StyledUserName,
+  StyledUserReadContainer,
   StyledWrapper,
-  catergoryButtonStyle,
 } from './style';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import { getChannels } from '@/Services/Channel';
 import { ChannelType } from '@/Types/ChannelType';
 import channels from '@/Constants/Channels';
+import { getUsers } from '@/Services/User';
+import { UserType } from '@/Types/UserType';
+import SearchBar from '@/Components/Common/SearchBar';
+import Avatar from '@/Components/Base/Avatar';
+import Badge from '@/Components/Base/Badge';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
+  const [userList, setUserList] = useState<UserType[]>([]);
   const [currentChannelId, setCurrentChannelId] = useState('all');
 
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
@@ -36,13 +46,25 @@ const HomePage = () => {
      * 모든 채널을 fetch하는 함수
      * @return setChannelList 함수 실행 void
      */
-    const fetchChannels = async () => {
+    const fetchChannelList = async () => {
       const channelData = await getChannels();
 
       return channelData && setChannelList(channelData);
     };
 
-    fetchChannels();
+    const fetchUserList = async () => {
+      const userData = await getUsers();
+
+      // 관리자 계정 제외 필터링
+      const filteredUserList = userData?.filter(
+        (user) => user.role !== 'SuperAdmin',
+      );
+
+      return filteredUserList && setUserList(filteredUserList);
+    };
+
+    fetchChannelList();
+    fetchUserList();
   }, []);
 
   return (
@@ -62,7 +84,6 @@ const HomePage = () => {
               textSize={size.medium}
               backgroundColor={colors.background}
               hoverBackgroundColor={colors.backgroundGrey}
-              style={catergoryButtonStyle}
             >
               <Icon
                 name="add"
@@ -89,7 +110,6 @@ const HomePage = () => {
                   : colors.focusHover
               }
               textColor={colors.text}
-              style={catergoryButtonStyle}
               onClick={handleClickChannel}
             >
               전체
@@ -114,7 +134,6 @@ const HomePage = () => {
                       : colors.focusHover
                   }
                   textColor={colors.text}
-                  style={catergoryButtonStyle}
                   onClick={handleClickChannel}
                 >
                   {channels[channel.name]}
@@ -124,7 +143,33 @@ const HomePage = () => {
           </StyledCategoryList>
         </StyledLeftContainer>
         <StyledMainContentContainer />
-        <StyledRightContainer />
+        <StyledRightContainer>
+          <SearchBar className="user-search" />
+          <StyledUserList>
+            {userList.map((user) => {
+              return (
+                <StyledUserCardWrapper key={user._id}>
+                  <Avatar
+                    src={user.coverImage || ''}
+                    className="user-avatar"
+                    size={30}
+                  >
+                    {!user.isOnline && (
+                      <Badge
+                        position="rightBottom"
+                        backgroundColor={colors.online}
+                        style={{ border: `1px solid ${colors.background}` }}
+                      />
+                    )}
+                  </Avatar>
+                  <StyledUserInfoContainer>
+                    <StyledUserName>{user.fullName}</StyledUserName>
+                  </StyledUserInfoContainer>
+                </StyledUserCardWrapper>
+              );
+            })}
+          </StyledUserList>
+        </StyledRightContainer>
       </StyledWrapper>
     </>
   );
