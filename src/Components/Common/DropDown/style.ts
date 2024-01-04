@@ -12,13 +12,14 @@ export const StyledDropDown = styled.div`
 
 export const StyledLabel = styled.span<StyledLabelProp>`
   position: absolute;
-  left: 8px;
-  top: -10px;
+  left: 0.8rem;
+  top: -1rem;
   color: ${({ $labelTextColor }) => $labelTextColor};
   font-size: ${({ $labelTextSize }) => $labelTextSize};
   background-color: ${({ $backgroundColor }) => $backgroundColor};
-  padding: 0px 5px;
-  font-weight: 900;
+  padding: 0rem 0.5rem;
+  font-weight: ${({ theme }) => theme.fontWeight.black};
+  user-select: none;
 `;
 
 export const StyledDropDownButton = styled.button<StyledDropDownButtonProp>`
@@ -29,11 +30,11 @@ export const StyledDropDownButton = styled.button<StyledDropDownButtonProp>`
   height: ${({ $height }) => $height};
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   color: ${({ $textColor }) => $textColor};
-  padding: 10px 12px;
+  padding: 1rem 1.2rem;
   font-size: ${({ $textSize }) => $textSize};
   border: 2px solid black;
   border-radius: 1rem;
-  gap: 12px;
+  gap: 1.2rem;
 `;
 
 export const StyledDropDownOption = styled.div<{ $width: string }>`
@@ -49,10 +50,11 @@ export const StyledDropDownOption = styled.div<{ $width: string }>`
 
 export const StyledDropDownItem = styled.div<StyledDropDownItemProp>`
   width: 100%;
-  padding: 12px 16px;
+  padding: 1.2rem 1.6rem;
   background-color: ${({ $itemBackgroundColor }) => $itemBackgroundColor};
   color: ${({ $itemTextColor }) => $itemTextColor};
   font-size: ${({ $itemTextSize }) => $itemTextSize};
+  user-select: none;
   cursor: pointer;
 
   &:hover {

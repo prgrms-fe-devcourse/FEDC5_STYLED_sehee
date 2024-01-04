@@ -11,7 +11,7 @@ import {
 import Icon from '@/Components/Base/Icon';
 
 /**
- * @param options: 출력할 옵션들을 배열([])형태로 담아 전달해주세요. (필수)
+ * @param options 출력할 옵션들을 배열([])형태로 담아 전달해주세요. (필수)
  * 이 외의 프롭들은 선택적으로 전달해줄 수 있으며, px / rem 등의 단위가 포함된 String 형태로 전달해주세요.
  */
 
