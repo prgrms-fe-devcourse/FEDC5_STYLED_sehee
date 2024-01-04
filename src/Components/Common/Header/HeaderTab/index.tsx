@@ -1,90 +1,41 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Icon from '@/Components/Base/Icon';
-import PostModal from '../../Modal/PostModal';
-import SearchModal from '../../Modal/SearchModal';
-import StyledButton from './style';
-import { StyledContainer } from '../style';
+import AddButton from './AddButton';
+import SearchButton from './SearchButton';
+import HomeButton from './HomeButton';
+import LoginButton from './LoginButton';
+import AlarmButton from './AlarmButton';
+import DirectMessageButton from './DirectMessageButton';
+import AccountButton from './AccountButton';
+import { StyledUserContainer } from './style';
 
 const HeaderTab = () => {
   const [tab, setTab] = useState(0);
-  const [post, setPost] = useState(false);
-  const [search, setSearch] = useState(false);
-
-  const menuArr = [
-    { name: 'home', isFill: false },
-    { name: 'add_circle', isFill: false },
-    { name: 'search', isFill: true },
-  ];
+  const [isAuthUser, setIsAuthUser] = useState(false);
 
   const selectMenuHandler = (index: number) => {
     setTab(index);
+    console.log(tab);
   };
 
   const styledNavIcon = { fontSize: '4.5rem', padding: '1.5rem' };
 
   return (
-    <StyledContainer>
-      {menuArr.map((items, index) => (
-        <StyledButton
-          backgroundColor="transparent"
-          width="fit-content"
-          type="button"
-          hoverBackgroundColor="transparent"
-          hoverTextColor="transparent"
-          borderRadius="0"
-          key={items.name}
-          $tab={tab}
-          $index={index}
-          onClick={() => {
-            selectMenuHandler(index);
-            switch (items.name) {
-              case 'add_circle':
-                setPost(true);
-                break;
-              case 'search':
-                setSearch(true);
-                break;
-              default:
-                break;
-            }
-          }}
-        >
-          {items.name === 'home' ? (
-            <Link to="/">
-              <Icon
-                name={items.name}
-                isFill={items.isFill}
-                style={styledNavIcon}
-              />
-            </Link>
-          ) : (
-            <Icon
-              name={items.name}
-              isFill={items.isFill}
-              style={styledNavIcon}
-            />
-          )}
-          {items.name === 'add_circle'
-            ? post && (
-                <PostModal
-                  onChangeOpen={() => {
-                    setPost(false);
-                    setTab(0);
-                  }}
-                />
-              )
-            : search && (
-                <SearchModal
-                  onChangeOpen={() => {
-                    setSearch(false);
-                    setTab(0);
-                  }}
-                />
-              )}
-        </StyledButton>
-      ))}
-    </StyledContainer>
+    <StyledUserContainer>
+      <HomeButton style={styledNavIcon} />
+      <AddButton style={styledNavIcon} />
+      <SearchButton style={styledNavIcon} />
+      <StyledUserContainer>
+        {!isAuthUser ? (
+          <LoginButton onClick={() => setIsAuthUser(true)} />
+        ) : (
+          <>
+            <AlarmButton style={styledNavIcon} />
+            <DirectMessageButton style={styledNavIcon} />
+            <AccountButton style={styledNavIcon} />
+          </>
+        )}
+      </StyledUserContainer>
+    </StyledUserContainer>
   );
 };
 

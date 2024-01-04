@@ -1,8 +1,12 @@
 import { styled } from 'styled-components';
 
-const StyledLogo = styled.img`
+export const StyledLogo = styled.img`
   width: 9rem;
   padding: 0.7rem;
 `;
 
-export default StyledLogo;
+export const StyledContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`;
