@@ -36,11 +36,11 @@ const MessagesContainer = ({
         return;
       }
       // 빈칸 예외 처리
-      if (inputRef.current.value.length === 0) {
+      if (inputRef.current.value.trim().length === 0) {
         return;
       }
 
-      const message = inputRef.current.value;
+      const message = inputRef.current.value.trim();
       inputRef.current.value = '';
       await createMessage({ message, receiver: receiver._id });
 
