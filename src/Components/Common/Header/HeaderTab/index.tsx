@@ -65,23 +65,34 @@ const HeaderTab = () => {
               style={styledNavIcon}
             />
           )}
-          {items.name === 'add_circle'
-            ? post && (
-                <PostModal
-                  onChangeOpen={() => {
-                    setPost(false);
-                    setTab(0);
-                  }}
-                />
-              )
-            : search && (
-                <SearchModal
-                  onChangeOpen={() => {
-                    setSearch(false);
-                    setTab(0);
-                  }}
-                />
-              )}
+          {(() => {
+            switch (items.name) {
+              case 'add_circle':
+                return (
+                  post && (
+                    <PostModal
+                      onChangeOpen={() => {
+                        setPost(false);
+                        setTab(0);
+                      }}
+                    />
+                  )
+                );
+              case 'search':
+                return (
+                  search && (
+                    <SearchModal
+                      onChangeOpen={() => {
+                        setSearch(false);
+                        setTab(0);
+                      }}
+                    />
+                  )
+                );
+              default:
+                return null;
+            }
+          })()}
         </StyledButton>
       ))}
     </StyledContainer>
