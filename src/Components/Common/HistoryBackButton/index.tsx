@@ -15,6 +15,7 @@ const HistoryBackButton = ({ ...props }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
+      hoverBackgroundColor="transparent"
       onClick={handleOnClick}
       style={{
         width: 'auto',
