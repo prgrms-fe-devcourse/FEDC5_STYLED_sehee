@@ -1,7 +1,7 @@
 import { StyledWrap, StyledContainer } from './style';
 import Logo from '@/Components/Common/Logo';
 import HistoryBackButton from '@/Components/Common/HistoryBackButton';
-import SignUpForm from '@/Components/SignUp/LoginForm';
+import SignUpForm from '@/Components/SignUp/SignUpForm';
 
 const SignUpPage = () => {
   return (
