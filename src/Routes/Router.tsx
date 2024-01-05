@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { DetailPage, HomePage, NotFoundPage, LoginPage } from '@/Pages';
+import SignUpPage from '@/Pages/SignUpPage';
 
 const RouterManager = () => {
   return (
@@ -12,6 +13,10 @@ const RouterManager = () => {
         <Route
           path="/login"
           element={<LoginPage />}
+        />
+        <Route
+          path="/signup"
+          element={<SignUpPage />}
         />
         <Route
           path="/detail"
