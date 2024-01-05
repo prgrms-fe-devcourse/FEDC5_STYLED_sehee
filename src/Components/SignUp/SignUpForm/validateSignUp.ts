@@ -1,11 +1,11 @@
 import validateEmail from '@/Utils/validateEmail';
 import ValidateSignUpProps from './type';
 
-const validateSignUp = ({ username, email, password }: ValidateSignUpProps) => {
+const validateSignUp = ({ fullname, email, password }: ValidateSignUpProps) => {
   const validationErrors: Record<string, string> = {};
 
-  if (typeof username === 'string') {
-    validationErrors.username = '이미 존재하는 유저명입니다.';
+  if (typeof fullname === 'string' && fullname.length > 16) {
+    validationErrors.fullname = '유저명은 16자 이내로 작성해주세요.';
   }
 
   if (typeof email === 'string' && !validateEmail(email)) {

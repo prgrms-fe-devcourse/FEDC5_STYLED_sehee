@@ -1,6 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { DetailPage, HomePage, NotFoundPage, LoginPage } from '@/Pages';
-import SignUpPage from '@/Pages/SignUpPage';
+import {
+  DetailPage,
+  HomePage,
+  NotFoundPage,
+  LoginPage,
+  SignUpPage,
+} from '@/Pages';
 
 const RouterManager = () => {
   return (

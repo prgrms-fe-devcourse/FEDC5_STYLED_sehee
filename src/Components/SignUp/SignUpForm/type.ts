@@ -1,5 +1,5 @@
 export default interface ValidateSignUpProps {
-  username: string;
   email: string;
+  fullname: string;
   password: string;
 }
