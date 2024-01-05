@@ -5,14 +5,8 @@ const StyledHeaderContainer = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.background};
   display: grid;
-  grid-template-columns: 1fr 3fr 1.3fr;
+  grid-template-columns: 1fr 4.3fr;
   position: fixed;
-`;
-
-export const StyledContainer = styled.div`
-  align-items: center;
-  justify-content: center;
-  display: flex;
 `;
 
 export default StyledHeaderContainer;

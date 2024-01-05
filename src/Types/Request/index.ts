@@ -39,6 +39,13 @@ export interface PostCreatePostRequestType {
   channelId: string;
 }
 
+export interface PutUpdatePostRequestType {
+  postId: string;
+  title: string;
+  image: File | null;
+  channelId: string;
+}
+
 export interface PostCommentRequestType {
   comment: string;
   postId: string;

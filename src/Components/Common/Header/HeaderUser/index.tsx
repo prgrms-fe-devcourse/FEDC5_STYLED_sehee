@@ -73,7 +73,9 @@ const HeaderUser = () => {
             {items.name === 'notifications'
               ? alarm && <AlarmModal onChangeOpen={() => setAlarm(false)} />
               : // 추후 수정 필요
-                dropdown && <Modal onChangeOpen={() => setDropdown(false)} />}
+                dropdown && (
+                  <DropDown onChangeOpen={() => setDropdown(false)} />
+                )}
           </Button>
         ))
       )}
