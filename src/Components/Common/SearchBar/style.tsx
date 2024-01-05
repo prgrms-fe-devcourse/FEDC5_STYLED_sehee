@@ -3,8 +3,8 @@ import styled from 'styled-components';
 const StyledContainer = styled.form`
   display: flex;
   align-items: center;
-  left: 50%;
-  position: fixed;
+  justify-content: center;
+  width: max-content;
 `;
 
 export default StyledContainer;
