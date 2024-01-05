@@ -3,7 +3,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from '../type';
 
-const HomeButton = ({ iconStyle, ...props }: Props) => {
+const HomeButton = ({ ...props }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -13,13 +13,12 @@ const HomeButton = ({ iconStyle, ...props }: Props) => {
       hoverTextColor="transparent"
       borderRadius="0"
       onClick={() => {}}
-      {...props}
     >
       <Link to="/">
         <Icon
           name="home"
           isFill={false}
-          style={iconStyle}
+          {...props}
         />
       </Link>
     </Button>
