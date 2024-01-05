@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
+import Props from '../type';
 
-const HomeButton = ({ ...props }) => {
+const HomeButton = ({ iconStyle, ...props }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -12,12 +13,13 @@ const HomeButton = ({ ...props }) => {
       hoverTextColor="transparent"
       borderRadius="0"
       onClick={() => {}}
+      {...props}
     >
       <Link to="/">
         <Icon
           name="home"
           isFill={false}
-          {...props}
+          style={iconStyle}
         />
       </Link>
     </Button>
