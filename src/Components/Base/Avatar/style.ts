@@ -1,11 +1,21 @@
 import styled from 'styled-components';
-import { StyledAvatarWrapperProp, StyledAvatarProp } from './type';
+import { StyledWrapperProp, StyledImageProp, StyledAvatarProp } from './type';
 
-export const StyledAvatarWrapper = styled.div<StyledAvatarWrapperProp>`
+export const StyledWrapper = styled.div<StyledWrapperProp>`
   position: relative;
+  ${({ $size }) => `
+    width: ${$size}px;
+    height: ${$size}px;
+  `}
+`;
+
+export const StyledAvatar = styled.div<StyledAvatarProp>`
   display: inline-block;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 
+  box-sizing: border-box;
   border: 1px solid
     ${({ theme }) => `
       ${theme.colors.border}
@@ -18,11 +28,9 @@ export const StyledAvatarWrapper = styled.div<StyledAvatarWrapperProp>`
     })[$shape || 'square']};
 `;
 
-export const StyledAvatar = styled.img<StyledAvatarProp>`
+export const StyledImage = styled.img<StyledImageProp>`
   display: block;
-  ${({ $size, $mode }) => `
-    width: ${$size}px;
-    height: ${$size}px;
-    object-fit: ${$mode}
-  `}
+  ${({ $mode }) => `object-fit: ${$mode}`};
+  width: 100%;
+  height: 100%;
 `;
