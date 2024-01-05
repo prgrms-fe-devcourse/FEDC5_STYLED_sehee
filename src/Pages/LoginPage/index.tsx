@@ -25,7 +25,12 @@ const LoginPage = () => {
   // 인증 되었으면 접근 불가 처리
   const { mutate, status } = useMutation({
     mutationFn: checkAuth,
-    onSuccess: (response) => response && navigator('/'),
+    onSuccess: (response) => {
+      if (response) {
+        setAuthUser(response);
+        navigator('/');
+      }
+    },
   });
 
   const onSuccessCallback = useCallback(
