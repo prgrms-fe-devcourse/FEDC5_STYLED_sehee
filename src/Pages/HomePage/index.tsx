@@ -94,6 +94,11 @@ const HomePage = () => {
     return filteredUserList && setUserList(filteredUserList);
   };
 
+  /**
+   * 채널이 변경되면 해당 채널에 대한 포스트를 10개씩 불러오는 함수
+   * postOffeset이 10씩 증가하고 중복해서 포스트를 불러오지 않도록 가드 구현
+   * @param channelId 채널 ID
+   */
   const fetchPostList = useCallback(
     async (channelId: string) => {
       const postData = await getPostByChannel(channelId, {
@@ -234,6 +239,7 @@ const HomePage = () => {
           </StyledCategoryList>
         </StyledLeftContainer>
         <StyledMainContentContainer>
+          {/* 포스트 카드 리스트 */}
           <StyledPostCardList>
             {postList.map((post) => (
               <PostCard
@@ -248,11 +254,14 @@ const HomePage = () => {
             ))}
           </StyledPostCardList>
         </StyledMainContentContainer>
+        {/* 유저 목록 네비바 */}
         <StyledRightContainer>
+          {/* 검색바 */}
           <SearchBar
             onChangehandler={handleChangeSearch}
             className="user-search"
           />
+          {/* 유저 리스트 */}
           <StyledUserList>
             {(searchKeyword || searchedUserList.length !== 0
               ? searchedUserList
