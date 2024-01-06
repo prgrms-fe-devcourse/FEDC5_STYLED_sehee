@@ -1,4 +1,8 @@
-const channels = {
+interface ChannelsType {
+  [key: string]: string;
+}
+
+const channels: ChannelsType = {
   casual: '캐주얼',
   street: '스트릿',
   amekaji: '아메카지',
