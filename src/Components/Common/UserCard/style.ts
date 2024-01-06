@@ -9,6 +9,7 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
   padding: 0.5rem 0.5rem;
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
+  border-radius: ${({ $borderRadius }) => $borderRadius};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.size.extraSmall};
@@ -45,10 +46,18 @@ export const StyledUserDetail = styled.p<StyledUserDetailProps>`
   white-space: nowrap;
 `;
 
+export const StyledUserFollowContainer = styled.div`
+  display: flex;
+
+  .follow-button {
+    padding: 1rem;
+  }
+`;
+
 export const StyledUserReadContainer = styled.div<{ $badgeSize: string }>`
-  width: 5%;
+  width: 10%;
   position: relative;
+  display: flex;
   margin-left: 1.3rem;
   margin-bottom: ${({ $badgeSize }) => $badgeSize};
-  background-color: yellow;
 `;

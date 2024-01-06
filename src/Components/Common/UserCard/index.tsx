@@ -7,9 +7,11 @@ import {
   StyledUserName,
   StyledUserDetail,
   StyledUserReadContainer,
+  StyledUserFollowContainer,
 } from './style';
 import { UserCardProps } from './type';
 import Badge from '@/Components/Base/Badge';
+import Button from '@/Components/Base/Button';
 
 /**
  * @param coverImageUrl 아바타 이미지 url
@@ -24,11 +26,14 @@ const UserCard = forwardRef(
     {
       width,
       height,
+      borderRadius,
+      mode = 'normal',
       coverImageUrl,
       avatarSize = 30,
       badgeSize = '0.8rem',
       isOnline = false,
       isRead = false,
+      isFollow = false,
       userName = '',
       userDetail = null,
       userNameSize,
@@ -52,6 +57,7 @@ const UserCard = forwardRef(
         ref={ref}
         $width={width || '100%'}
         $height={height || '100%'}
+        $borderRadius={borderRadius || ''}
         {...props}
       >
         <Avatar
@@ -87,17 +93,33 @@ const UserCard = forwardRef(
             </StyledUserDetail>
           )}
         </StyledUserInfoContainer>
-        <StyledUserReadContainer $badgeSize={badgeSize}>
-          {!isRead && (
-            <Badge
-              position="leftTop"
-              size={badgeSize}
-              backgroundColor={colors.read}
-              style={{ border: `1px solid ${colors.background}` }}
-              onClick={handleClick}
-            />
-          )}
-        </StyledUserReadContainer>
+        {mode === 'follow' && (
+          <StyledUserFollowContainer>
+            <Button
+              width="100%"
+              height="2rem"
+              className="follow-button"
+              borderRadius="0.5rem"
+              backgroundColor={isFollow ? colors.read : colors.follow}
+              hoverBackgroundColor={colors.buttonClickHover}
+            >
+              {isFollow ? '팔로잉' : '팔로우'}
+            </Button>
+          </StyledUserFollowContainer>
+        )}
+        {(mode === 'chat' || mode === 'alarm') && (
+          <StyledUserReadContainer $badgeSize={badgeSize}>
+            {!isRead && (
+              <Badge
+                position="leftTop"
+                size={badgeSize}
+                backgroundColor={colors.read}
+                style={{ border: `1px solid ${colors.background}` }}
+                onClick={handleClick}
+              />
+            )}
+          </StyledUserReadContainer>
+        )}
       </StyledWrapper>
     );
   },
