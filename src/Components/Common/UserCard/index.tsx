@@ -14,11 +14,13 @@ import Badge from '@/Components/Base/Badge';
 import Button from '@/Components/Base/Button';
 
 /**
+ * @param mode normal, chat, alarm, follow 모드 변경 가능
  * @param coverImageUrl 아바타 이미지 url
  * @param avatarSize 아바타 이미지 사이즈 (px)
  * @param badgeSize 배지 사이즈 (rem)
  * @param isOnline 유저 온라인 여부
  * @param isRead 유저 채팅 읽음 여부
+ * @param isFollow 해당 유저 팔로우 여부
  * @param onClick 내부 요소 클릭 이벤트 추출하는 함수
  */
 const UserCard = forwardRef(
@@ -46,6 +48,10 @@ const UserCard = forwardRef(
   ) => {
     const { colors, size, fontWeight } = useTheme();
 
+    /**
+     * UserCard 내 요소 클릭 시 클릭이벤트 전달용 함수
+     * 어떻게 사용 및 확장할지는 추후 결정해야 할듯
+     */
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
       if (onClick && e.target === e.currentTarget) {
         onClick(e);
@@ -60,6 +66,7 @@ const UserCard = forwardRef(
         $borderRadius={borderRadius || ''}
         {...props}
       >
+        {/* 유저 아바타 */}
         <Avatar
           src={coverImageUrl || ''}
           className="user-avatar"
@@ -76,6 +83,7 @@ const UserCard = forwardRef(
             />
           )}
         </Avatar>
+        {/* 유저 아이디 및 세부 상태 정보 */}
         <StyledUserInfoContainer>
           <StyledUserName
             fontSize={userNameSize || size.small}
@@ -93,6 +101,7 @@ const UserCard = forwardRef(
             </StyledUserDetail>
           )}
         </StyledUserInfoContainer>
+        {/* follow 모드 시 팔로우 버튼 */}
         {mode === 'follow' && (
           <StyledUserFollowContainer>
             <Button
@@ -107,6 +116,7 @@ const UserCard = forwardRef(
             </Button>
           </StyledUserFollowContainer>
         )}
+        {/* chat, alarm 모드 시 읽음 배지 */}
         {(mode === 'chat' || mode === 'alarm') && (
           <StyledUserReadContainer $badgeSize={badgeSize}>
             {!isRead && (
