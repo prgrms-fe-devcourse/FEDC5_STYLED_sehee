@@ -7,7 +7,8 @@ import { AUTH_TOKEN_KEY } from '@/Constants/Api';
  * 임시로 세션스토리지 사용 중, 추후에 변경 가능성 있습니다.
  */
 const setAuthorization = (config: InternalAxiosRequestConfig) => {
-  const accessToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
+  const accessToken = JSON.parse(sessionStorage.getItem(AUTH_TOKEN_KEY) || '');
+
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
