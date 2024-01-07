@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { Outlet } from 'react-router-dom';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -291,6 +292,7 @@ const HomePage = () => {
           </StyledUserList>
         </StyledRightContainer>
       </StyledWrapper>
+      <Outlet />
     </>
   );
 };

@@ -8,15 +8,20 @@ const RouterManager = () => {
         <Route
           path="/"
           element={<HomePage />}
-        />
+        >
+          <Route
+            path="modal-detail"
+            element={<DetailPage />}
+          />
+        </Route>
         <Route
           path="/login"
           element={<LoginPage />}
         />
-        <Route
+        {/* <Route
           path="/detail"
           element={<DetailPage />}
-        />
+        /> */}
         <Route
           path="*"
           element={<NotFoundPage />}
