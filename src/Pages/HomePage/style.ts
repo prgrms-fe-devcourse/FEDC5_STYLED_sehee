@@ -65,7 +65,6 @@ export const StyledPostCardList = styled.div`
 
 export const StyledRightContainer = styled.div`
   display: flex;
-  padding: 1rem;
   flex-direction: column;
   position: relative;
   height: 100%;
