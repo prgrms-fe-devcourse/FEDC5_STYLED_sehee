@@ -22,10 +22,6 @@ const Modal = ({
    */
   const handleModalClose = (e: MouseEvent) => {
     e.stopPropagation();
-<<<<<<< HEAD
-=======
-    console.log(e);
->>>>>>> 7af6fd2d0984090018cc6b7f2d995b0c56e75e3e
     if (e.currentTarget === modalBgRef.current && onChangeOpen)
       onChangeOpen(false);
   };
