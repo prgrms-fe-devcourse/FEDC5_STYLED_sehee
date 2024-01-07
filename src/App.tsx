@@ -4,6 +4,7 @@ import { lightTheme, darkTheme } from '@/Styles/Theme';
 import GlobalStyle from '@/Styles/Global';
 import RouteManager from '@/Routes/Router';
 import { useDarkModeStore } from './Stores';
+import UserManager from './Components/UserManager';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <RouteManager />
+        <UserManager />
       </QueryClientProvider>
     </ThemeProvider>
   );
