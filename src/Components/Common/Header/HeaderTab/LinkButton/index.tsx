@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
-import Props from '../type';
+import Props from './type';
 
-const HomeButton = ({ ...props }: Props) => {
+const LinkButton = ({ isFill, name, link, setLink, style }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -12,17 +12,17 @@ const HomeButton = ({ ...props }: Props) => {
       hoverBackgroundColor="transparent"
       hoverTextColor="transparent"
       borderRadius="0"
-      onClick={() => {}}
+      onClick={setLink}
     >
-      <Link to="/">
+      <Link to={link}>
         <Icon
-          name="home"
-          isFill={false}
-          {...props}
+          isFill={isFill}
+          name={name}
+          style={style}
         />
       </Link>
     </Button>
   );
 };
 
-export default HomeButton;
+export default LinkButton;

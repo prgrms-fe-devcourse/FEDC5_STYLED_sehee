@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
+import Props from './type';
 
-const DirectMessageButton = ({ ...props }) => {
+const ModalButton = ({ style, name, isFill, setModalOpen }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -10,16 +10,15 @@ const DirectMessageButton = ({ ...props }) => {
       type="button"
       borderRadius="0"
       hoverBackgroundColor="transparent"
+      onClick={setModalOpen}
     >
-      <Link to="/directmessage">
-        <Icon
-          name="send"
-          isFill={false}
-          {...props}
-        />
-      </Link>
+      <Icon
+        name={name}
+        isFill={isFill}
+        style={style}
+      />
     </Button>
   );
 };
 
-export default DirectMessageButton;
+export default ModalButton;
