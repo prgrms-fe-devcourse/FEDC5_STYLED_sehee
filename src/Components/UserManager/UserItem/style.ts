@@ -5,7 +5,7 @@ export const StyledContainer = styled.li<{ $isOnline: boolean }>`
   align-items: center;
   gap: ${({ theme }) => theme.size.small};
   background-color: ${({ theme }) => theme.colors.background};
-  order: ${({ $isOnline }) => ($isOnline ? 1 : 0)};
+  order: ${({ $isOnline }) => ($isOnline ? 0 : 1)};
   padding: ${({ theme }) => theme.size.small};
 
   &:hover {
