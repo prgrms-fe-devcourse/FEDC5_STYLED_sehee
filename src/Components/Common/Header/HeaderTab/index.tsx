@@ -9,14 +9,16 @@ import ModalButton from './ModalButton';
 import AlarmModal from '../../Modal/AlarmModal';
 import SearchModal from '../../Modal/SearchModal';
 import PasswordModal from '../../Modal/PasswordModal';
+import useClickAway from '@/Hooks/UseClickAway';
 
 const HeaderTab = () => {
   // url에 따라 현재 무슨 페이지인지 가져와야..
   const [tab, setTab] = useState<
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
   >('home');
-  const [isAuthUser, setIsAuthUser] = useState(false);
   const [prev, setPrev] = useState(tab);
+
+  const [isAuthUser, setIsAuthUser] = useState(false);
 
   const [post, setPost] = useState(false);
   const [search, setSearch] = useState(false);
@@ -25,15 +27,18 @@ const HeaderTab = () => {
 
   const options = ['마이페이지', '로그아웃', '비밀번호 변경'];
   const [drop, setDrop] = useState(false);
+
   const navigate = useNavigate();
 
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
       navigate('/profile');
+      setPrev(tab);
       setTab('account');
       setDrop(false);
     }
     if (option === '로그아웃') {
+      navigate('/');
       setTab('home');
       setDrop(false);
     }
@@ -48,7 +53,9 @@ const HeaderTab = () => {
       'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
     >,
   ) => {
-    setPrev(tab);
+    if (tab === 'home' || tab === 'message') {
+      setPrev(tab);
+    }
     setTab(option);
   };
 
@@ -195,7 +202,7 @@ const HeaderTab = () => {
           style={{
             position: 'absolute',
             right: '0',
-            top: '9.5rem',
+            top: '10rem',
           }}
           options={options}
           onSelect={(option) => {
