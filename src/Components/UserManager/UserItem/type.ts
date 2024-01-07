@@ -1,5 +1,6 @@
 export interface Props {
-  coverImage: string;
+  id: string;
+  coverImage?: string;
   isOnline: boolean;
   fullName: string;
 }
