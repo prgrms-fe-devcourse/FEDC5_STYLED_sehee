@@ -5,7 +5,7 @@ export interface ModalPropsType extends HTMLAttributes<HTMLDivElement> {
   height?: number;
   borderRadius?: number;
   flexDirection?: 'row' | 'column';
-  onChangeOpen: (openState: boolean) => void;
+  onChangeOpen?: (openState: boolean) => void;
 }
 
 export interface StyledModalContainerType
