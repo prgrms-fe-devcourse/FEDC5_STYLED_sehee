@@ -1,10 +1,10 @@
 import validateEmail from '@/Utils/validateEmail';
-import ValidateSignUpProps from './type';
+import { ValidateSignUpProps } from './type';
 
-const validateSignUp = ({ fullname, email, password }: ValidateSignUpProps) => {
+const validateSignUp = ({ fullName, email, password }: ValidateSignUpProps) => {
   const validationErrors: Record<string, string> = {};
 
-  if (typeof fullname === 'string' && fullname.length > 16) {
+  if (typeof fullName === 'string' && fullName.length > 16) {
     validationErrors.fullname = '유저명은 16자 이내로 작성해주세요.';
   }
 

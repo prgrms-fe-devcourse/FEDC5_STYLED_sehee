@@ -1,75 +1,57 @@
 import { useTheme } from 'styled-components';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from '@/Hooks';
+
 import StyledForm from './style';
 import SignUpButton from '@/Components/Base/Button';
 import Input from '@/Components/Base/Input';
-import { useForm } from '@/Hooks';
 import validateSignUp from './validateSignUp';
-import { signUp } from '@/Services/Auth';
-import Alert from '@/Components/Common/Alert';
 import Spinner from '@/Components/Base/Spinner';
-import ValidateSignUpProps from './type';
 
-// TODO API로직 React-query를 통한 리팩토링
+import ERROR_MESSAGES from '@/Constants/Message';
+import { signUp, login } from '@/Services/Auth';
+import { PostSignUpRequestType } from '@/Types/Request';
+import { Props } from './type';
 
-const SignUpForm = () => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [isDisabled, setIsDisabled] = useState(false);
-
+const SignUpForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { colors, size } = useTheme();
-  const { values, errors, isLoading, handleOnChange, handleOnSubmit } = useForm(
-    {
-      initialState: { email: '', fullname: '', password: '' },
-      callback: () => {
-        // !ERROR: 'InitialState' 형식의 인수는 'ValidateSignUpProps' 형식의 매개 변수에 할당될 수 없습니다.
-        handleSignUp(values);
-      },
-      validate: () => {
-        const { email, fullname, password } = values;
 
-        if (
-          typeof email === 'string' &&
-          typeof fullname === 'string' &&
-          typeof password === 'string'
-        ) {
-          return validateSignUp({ email, fullname, password });
+  /**
+   * @brief 회원가입 폼을 제출할 경우 처리되는 Mutation입니다.
+   * @brief 입력받은 Form 데이터를 바탕으로 회원가입, 로그인, 홈 이동을 순차적으로 처리합니다.
+   */
+  const { mutate, status } = useMutation({
+    mutationFn: (signUpFormData: PostSignUpRequestType) =>
+      signUp(signUpFormData),
+    onSuccess: async (response) => {
+      if (response) {
+        const loginResponse = await login({
+          email: values.email,
+          password: values.password,
+        });
+        if (loginResponse) {
+          onSuccessCallback(loginResponse);
+        } else {
+          onErrorCallback(ERROR_MESSAGES.LOGIN);
         }
-
-        return {};
-      },
-    },
-  );
-
-  const handleSignUp = async (val: ValidateSignUpProps) => {
-    const { email, fullname, password } = val;
-    try {
-      const data = await signUp({ email, fullName: fullname, password });
-
-      if (!data) {
-        setAlertMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
-        setShowAlert(true);
-      } else {
-        // TODO: 회원가입 성공 시 해당 value로 바로 로그인, 이후 메인 페이지로 이동
       }
-    } catch (error) {
-      // TODO: 받아오는 Error에 따른 Alert 처리
-      // 현재는 API 내부에서 null을 반환하기 때문에 해당 조건을 기준으로 처리하였음
-    }
-  };
+    },
+    onError: () => onErrorCallback(ERROR_MESSAGES.SIGN_UP),
+  });
+
+  const { values, errors, isLoading, handleOnChange, handleOnSubmit } =
+    useForm<PostSignUpRequestType>({
+      initialState: { email: '', fullName: '', password: '' },
+      callback: (): void => mutate({ ...values }),
+      validate: (formValues) => validateSignUp(formValues),
+    });
 
   const inputStyle = {
     padding: size.large,
     fontSize: size.medium,
   };
-
-  useEffect(() => {
-    const hasErrors = Object.values(errors).some((error) => error !== '');
-    const hasEmptyValues = Object.values(values).some((value) => value === '');
-
-    setIsDisabled(hasErrors || hasEmptyValues);
-  }, [errors, values]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -83,12 +65,12 @@ const SignUpForm = () => {
       <StyledForm onSubmit={handleOnSubmit}>
         <Input
           ref={inputRef}
-          type="fullname"
-          name="fullname"
+          type="fullName"
+          name="fullName"
           label="이름"
           placeholder="이름"
           required
-          errorMessage={errors.fullname}
+          errorMessage={errors.fullName}
           onChange={handleOnChange}
           style={inputStyle}
         />
@@ -118,7 +100,7 @@ const SignUpForm = () => {
           textColor={colors.buttonText}
           backgroundColor={colors.buttonBackground}
           borderRadius={size.small}
-          disabled={isDisabled}
+          disabled={status === 'pending'}
           style={{
             padding: size.doubleLarge,
             marginTop: size.large,
@@ -127,16 +109,6 @@ const SignUpForm = () => {
           회원가입
         </SignUpButton>
       </StyledForm>
-      {showAlert && (
-        <Alert
-          width={50}
-          height={30}
-          message={alertMessage}
-          onChangeOpen={() => setShowAlert(false)}
-          onConfirm={() => setShowAlert(false)}
-          style={{ fontSize: '6rem' }}
-        />
-      )}
     </>
   );
 };
