@@ -14,4 +14,6 @@ export interface StyledModalContainerType
   height: number;
   $borderRadius: number;
   $flexDirection: 'row' | 'column';
+  $backgroundColor: string;
+  $color: string;
 }

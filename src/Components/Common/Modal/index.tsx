@@ -1,5 +1,6 @@
 import { MouseEvent, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useTheme } from 'styled-components';
 import { ModalPropsType } from './type';
 import {
   StyledModalWrapper,
@@ -25,6 +26,7 @@ const Modal = ({
   onChangeOpen,
 }: ModalPropsType) => {
   const modalBgRef = useRef(null);
+  const theme = useTheme();
 
   /**
    * 모달 바깥 배경을 클릭하면 currentTarget를 확인후
@@ -47,6 +49,8 @@ const Modal = ({
         height={height}
         $borderRadius={borderRadius}
         $flexDirection={flexDirection}
+        $backgroundColor={theme.colors.background}
+        $color={theme.colors.text}
       >
         {children}
       </StyledModalContainer>
