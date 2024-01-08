@@ -146,6 +146,10 @@ const HomePage = () => {
     [],
   );
 
+  /**
+   * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
+   * @param postId 포스트 ID
+   */
   const goPostDetail = (postId: string) => {
     navigate(`/modal-detail/${postId}`);
   };
