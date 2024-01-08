@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -40,6 +40,7 @@ import PostCard from '@/Components/Common/PostCard';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
+  const navigate = useNavigate();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -144,6 +145,10 @@ const HomePage = () => {
     },
     [],
   );
+
+  const goPostDetail = (postId: string) => {
+    navigate(`/modal-detail/${postId}`);
+  };
 
   useEffect(() => {
     if (channelList.length === 0) fetchChannelList();
@@ -251,6 +256,7 @@ const HomePage = () => {
                 authorThumbnail=""
                 isFollower
                 isLike
+                onImageClick={() => goPostDetail(post._id)}
               />
             ))}
           </StyledPostCardList>

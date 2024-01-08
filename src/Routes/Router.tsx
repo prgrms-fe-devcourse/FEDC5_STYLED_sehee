@@ -10,7 +10,7 @@ const RouterManager = () => {
           element={<HomePage />}
         >
           <Route
-            path="modal-detail"
+            path="modal-detail/:postId"
             element={<DetailPage />}
           />
         </Route>
