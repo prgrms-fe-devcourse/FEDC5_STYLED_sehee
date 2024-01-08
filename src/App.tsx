@@ -1,9 +1,10 @@
 import { ThemeProvider } from 'styled-components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { lightTheme } from '@/Styles/Theme';
+import { lightTheme, darkTheme } from '@/Styles/Theme';
 import GlobalStyle from '@/Styles/Global';
 import RouteManager from '@/Routes/Router';
-import { checkAuth, login, signUp } from './Services/Auth';
+import { login, signUp } from './Services/Auth';
+import { useDarkModeStore } from './Stores';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,6 +13,8 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  const { isDarkMode } = useDarkModeStore();
+
   const handleLogin = async () => {
     const data = await login({ email: 'test1', password: 'test1' });
     console.log(data);
@@ -21,12 +24,8 @@ const App = () => {
     await signUp({ email: 'test6', password: 'test6', fullName: '테스트5' });
   };
 
-  const check = async () => {
-    const data = await checkAuth();
-    console.log(data);
-  };
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <button

@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { AvatarProp } from './type';
-import { StyledAvatarWrapper, StyledAvatar } from './style';
+import { StyledImage, StyledAvatar, StyledWrapper } from './style';
 
 const Avatar = forwardRef(
   (
@@ -12,25 +12,31 @@ const Avatar = forwardRef(
       shape = 'circle',
       mode = 'cover',
       wrapperProps,
+      containerProps,
       ...props
     }: AvatarProp,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     return (
-      <StyledAvatarWrapper
-        $shape={shape}
+      <StyledWrapper
+        $size={size}
         ref={ref}
         {...wrapperProps}
       >
         <StyledAvatar
-          src={src || `https://via.placeholder.com/${size}.jpg`}
-          alt={alt}
-          $size={size}
-          $mode={mode}
-          {...props}
-        />
+          $shape={shape}
+          {...containerProps}
+        >
+          <StyledImage
+            src={src || `https://via.placeholder.com/${size}.jpg`}
+            alt={alt}
+            $size={size}
+            $mode={mode}
+            {...props}
+          />
+        </StyledAvatar>
         {children}
-      </StyledAvatarWrapper>
+      </StyledWrapper>
     );
   },
 );
