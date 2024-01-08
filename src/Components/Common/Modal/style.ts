@@ -27,7 +27,7 @@ export const StyledModalContainer = styled.div<StyledModalContainerType>`
   z-index: 10;
   background: white;
   overflow: hidden;
-  border-radius: ${(props) => props.$borderRadius}px;
+  border-radius: ${(props) => props.$borderRadius}rem;
   ${(props) =>
     props.$flexDirection !== 'row'
       ? 'flex-direction: column; align-items: center;'
