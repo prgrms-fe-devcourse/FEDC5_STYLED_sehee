@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import type { Props } from './type';
 
 const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
@@ -10,16 +10,13 @@ const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
     const { name, value } = e.target;
 
     setValues({ ...values, [name]: value });
-    setErrors({ ...errors, [name]: '' });
   };
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const newErrors = validate ? validate(values) : {};
-
-    if (Object.keys(newErrors).length === 0 && callback) {
+    if (Object.keys(errors).length === 0 && callback) {
       const result = callback();
 
       if (result instanceof Promise) {
@@ -27,9 +24,15 @@ const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
       }
     }
 
-    setErrors(newErrors);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const newErrors = validate ? validate(values) : {};
+
+    setErrors(newErrors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   return {
     values,
