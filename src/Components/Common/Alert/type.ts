@@ -4,6 +4,7 @@ export interface AlertPropsType extends HTMLAttributes<HTMLDivElement> {
   width?: number;
   height?: number;
   message: string;
+  fontSize?: number;
   confirmContent?: string;
   cancleContent?: string;
   mode?: 'alert' | 'confirm';
