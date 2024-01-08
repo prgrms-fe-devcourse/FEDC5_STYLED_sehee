@@ -12,7 +12,7 @@ import PasswordModal from '../../Modal/PasswordModal';
 import useClickAway from '@/Hooks/UseClickAway';
 
 const HeaderTab = () => {
-  // url에 따라 현재 무슨 페이지인지 가져와야..
+  // 현재 페이지 가져오기
   const [tab, setTab] = useState<
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
   >('home');
@@ -27,6 +27,19 @@ const HeaderTab = () => {
 
   const options = ['마이페이지', '로그아웃', '비밀번호 변경'];
   const [drop, setDrop] = useState(false);
+
+  const ref = useClickAway((e) => {
+    const text = (e.target as HTMLLIElement).textContent;
+    console.log(text);
+    if (
+      text !== 'account_circle' &&
+      text !== '마이페이지' &&
+      text !== '로그아웃' &&
+      text !== '비밀번호 변경'
+    ) {
+      setDrop(false);
+    }
+  });
 
   const navigate = useNavigate();
 
@@ -199,6 +212,7 @@ const HeaderTab = () => {
       )}
       {drop && (
         <DropDown
+          ref={ref}
           style={{
             position: 'absolute',
             right: '0',
