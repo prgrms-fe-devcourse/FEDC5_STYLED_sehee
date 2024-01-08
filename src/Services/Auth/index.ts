@@ -1,6 +1,6 @@
 import { axiosAuthInstance, axiosCommonInstance } from '@/Api/axiosInstance';
 import handleError from '@/Api/handleError';
-import { DOMAIN } from '@/Constants/Api';
+import { AUTH_TOKEN_KEY, DOMAIN } from '@/Constants/Api';
 import { PostLoginRequestType, PostSignUpRequestType } from '@/Types/Request';
 import { UserResponseType } from '@/Types/Response';
 import { UserType } from '@/Types/UserType';
@@ -14,6 +14,8 @@ export const login = async ({ email, password }: PostLoginRequestType) => {
       email,
       password,
     });
+
+    sessionStorage.setItem(AUTH_TOKEN_KEY, res.data.token);
 
     return res.data;
   } catch (e) {

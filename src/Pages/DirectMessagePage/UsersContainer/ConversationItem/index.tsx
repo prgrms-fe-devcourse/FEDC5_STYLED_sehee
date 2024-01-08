@@ -6,6 +6,7 @@ import { myId } from '../../DUMMY_DATA';
 import UserItem from '../UserItem';
 
 const ConversationItem = ({ conversation, onClick }: ConversationItemProps) => {
+  // 마지막으로 보낸 메세지를 받은 사람이 receiver, 마지막으로 보낸 메세지를 보낸 사람이 sender
   const [receiver, setReceiver] = useState(conversation.receiver);
   useEffect(() => {
     setReceiver(

@@ -65,7 +65,7 @@ const MessageModal = ({
     >
       <StyledContainer>
         <StyledHeader>새로운 메시지</StyledHeader>
-
+        {/* 여기서부터 */}
         <SearchBar
           style={{ paddingBottom: '1rem', maxWidth: '80%' }}
           inputProps={{ ref: inputRef }}
@@ -91,6 +91,7 @@ const MessageModal = ({
             </StyledUserItemContainer>
           ))}
         </StyledBody>
+        {/* 여기까지 */}
         <Button
           height="3rem"
           width="60%"
