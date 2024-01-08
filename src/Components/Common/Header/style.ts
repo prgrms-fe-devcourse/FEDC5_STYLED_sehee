@@ -7,6 +7,7 @@ const StyledHeaderContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 4.3fr;
   position: fixed;
+  z-index: 9;
 `;
 
 export default StyledHeaderContainer;
