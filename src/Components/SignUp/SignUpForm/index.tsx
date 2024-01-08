@@ -15,6 +15,7 @@ import ValidateSignUpProps from './type';
 const SignUpForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { colors, size } = useTheme();
@@ -58,6 +59,18 @@ const SignUpForm = () => {
     }
   };
 
+  const inputStyle = {
+    padding: size.large,
+    fontSize: size.medium,
+  };
+
+  useEffect(() => {
+    const hasErrors = Object.values(errors).some((error) => error !== '');
+    const hasEmptyValues = Object.values(values).some((value) => value === '');
+
+    setIsDisabled(hasErrors || hasEmptyValues);
+  }, [errors, values]);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -77,11 +90,7 @@ const SignUpForm = () => {
           required
           errorMessage={errors.fullname}
           onChange={handleOnChange}
-          style={{
-            // textAlign: 'center',
-            padding: size.large,
-            fontSize: size.medium,
-          }}
+          style={inputStyle}
         />
         <Input
           type="email"
@@ -91,11 +100,7 @@ const SignUpForm = () => {
           required
           errorMessage={errors.email}
           onChange={handleOnChange}
-          style={{
-            // textAlign: 'center',
-            padding: size.large,
-            fontSize: size.medium,
-          }}
+          style={inputStyle}
         />
         <Input
           type="password"
@@ -105,11 +110,7 @@ const SignUpForm = () => {
           required
           errorMessage={errors.password}
           onChange={handleOnChange}
-          style={{
-            // textAlign: 'center',
-            padding: size.large,
-            fontSize: size.medium,
-          }}
+          style={inputStyle}
         />
         <SignUpButton
           width={size.full}
@@ -117,6 +118,7 @@ const SignUpForm = () => {
           textColor={colors.buttonText}
           backgroundColor={colors.buttonBackground}
           borderRadius={size.small}
+          disabled={isDisabled}
           style={{
             padding: size.doubleLarge,
             marginTop: size.large,
