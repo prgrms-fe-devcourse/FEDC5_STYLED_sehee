@@ -27,7 +27,6 @@ const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
     setIsLoading(false);
   };
 
-  // validate 함수 반드시 useCallback으로 전달
   useEffect(() => {
     const newErrors = validate ? validate(values) : {};
 
