@@ -1,7 +1,11 @@
-import Modal from '@/Components/Common/Modal';
+import { useParams } from 'react-router-dom';
+import PostDetailModal from './PostDetailModal';
 
 const DetailPage = () => {
-  return <Modal>detail 모달</Modal>;
+  const { postId } = useParams();
+
+  console.log(postId);
+  return <PostDetailModal postImageUrl="https://picsum.photos​/200" />;
 };
 
 export default DetailPage;
