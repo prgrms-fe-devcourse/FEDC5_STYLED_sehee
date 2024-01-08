@@ -1,4 +1,5 @@
 import { MouseEvent, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ModalPropsType } from './type';
 import {
   StyledModalWrapper,
@@ -6,11 +7,20 @@ import {
   StyledModalContainer,
 } from './style';
 
+/**
+ *
+ * @param width 단위 % (optional)
+ * @param height 단위 % (optional)
+ * @param borderRadius 단위 rem (optional)
+ * @param flexDirection 모달 내 요소 flex 정렬 기준 : row | column (optional)
+ * @param onChangeOpen 외부에서 모달 open 핸들러 함수 (optional)
+ * @returns
+ */
 const Modal = ({
   children,
   width = 80,
   height = 80,
-  borderRadius = 5,
+  borderRadius = 0.5,
   flexDirection = 'row',
   onChangeOpen,
 }: ModalPropsType) => {
@@ -26,7 +36,7 @@ const Modal = ({
       onChangeOpen(false);
   };
 
-  return (
+  return createPortal(
     <StyledModalWrapper>
       <StyledModalBackground
         ref={modalBgRef}
@@ -40,7 +50,8 @@ const Modal = ({
       >
         {children}
       </StyledModalContainer>
-    </StyledModalWrapper>
+    </StyledModalWrapper>,
+    document.body,
   );
 };
 
