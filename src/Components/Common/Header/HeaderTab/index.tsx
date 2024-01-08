@@ -1,6 +1,5 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -21,22 +20,6 @@ const HeaderTab = () => {
   >('home');
   const [prev, setPrev] = useState(tab);
   const [isAuthUser, setIsAuthUser] = useState(false);
-
-  /**
-   * 로그인한 사용자인지
-   */
-  const { mutate } = useMutation({
-    mutationFn: checkAuth,
-    onSuccess: (response) => {
-      if (response) {
-        setIsAuthUser(true);
-      }
-    },
-  });
-
-  useEffect(() => {
-    mutate();
-  }, [mutate]);
 
   const [post, setPost] = useState(false);
   const [search, setSearch] = useState(false);
@@ -63,16 +46,46 @@ const HeaderTab = () => {
 
   const navigate = useNavigate();
 
-  /**
-   * 로그아웃
-   */
-  const logoutUser = async () => {
-    await logout();
-    sessionStorage.removeItem('AUTH_TOKEN');
-    navigate('/');
-    setTab('home');
-    setIsAuthUser(false);
+  // 로그인 상태 확인 함수
+  const checkLoginStatus = async () => {
+    try {
+      // 서버에 인증 여부 확인
+      const authData = await checkAuth();
+
+      // 로그인 상태인 경우
+      if (authData) {
+        // 로그인 상태로 업데이트
+        setIsAuthUser(true);
+      } else {
+        // 로그아웃 상태로 업데이트
+        setIsAuthUser(false);
+      }
+    } catch (error) {
+      console.error('로그인 상태 확인 중 오류 발생:', error);
+    }
   };
+
+  // 로그아웃 처리 함수
+  const handleLogout = async () => {
+    try {
+      // 세션 스토리지에서 토큰 삭제
+      sessionStorage.removeItem('AUTH_TOKEN');
+
+      // 로그아웃 상태로 업데이트
+      setIsAuthUser(false);
+      setTab('home');
+      navigate('/');
+
+      // 실제 로그아웃 처리
+      await logout();
+    } catch (error) {
+      console.error('로그아웃 중 오류 발생:', error);
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
 
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
@@ -82,7 +95,7 @@ const HeaderTab = () => {
       setDrop(false);
     }
     if (option === '로그아웃') {
-      logoutUser();
+      handleLogout();
       setDrop(false);
     }
     if (option === '비밀번호 변경') {
