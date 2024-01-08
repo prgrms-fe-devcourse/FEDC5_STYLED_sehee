@@ -1,6 +1,10 @@
 import Button from '@/Components/Base/Button';
 import Modal from '../Modal';
-import { StyledAlertWrapper, StyledButtonWrapper } from './style';
+import {
+  StyledAlertWrapper,
+  StyledButtonWrapper,
+  StyledMessage,
+} from './style';
 import { AlertPropsType } from './type';
 
 /**
@@ -13,6 +17,7 @@ const Alert = ({
   width = 20,
   height = 15,
   message,
+  fontSize = 1,
   confirmContent = 'OK',
   cancleContent = 'CANCEL',
   mode = 'alert',
@@ -41,7 +46,7 @@ const Alert = ({
       onChangeOpen={onChangeOpen}
     >
       <StyledAlertWrapper>
-        <div>{message}</div>
+        <StyledMessage $fontSize={fontSize}>{message}</StyledMessage>
         <StyledButtonWrapper>
           <Button
             height="30"
