@@ -1,15 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import type { InitialState, ErrorMessages, Props } from './Type';
+import type { Props } from './type';
 
-const useForm = ({ initialState, callback, validate }: Props) => {
-  const [values, setValues] = useState<InitialState>(initialState);
-  const [errors, setErrors] = useState<ErrorMessages>({});
+const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
+  const [values, setValues] = useState<T>(initialState);
+  const [errors, setErrors] = useState<Partial<T>>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   };
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {

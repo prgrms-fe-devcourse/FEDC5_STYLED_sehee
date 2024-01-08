@@ -1,8 +1,9 @@
 import { ThemeProvider } from 'styled-components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { lightTheme } from '@/Styles/Theme';
+import { lightTheme, darkTheme } from '@/Styles/Theme';
 import GlobalStyle from '@/Styles/Global';
 import RouteManager from '@/Routes/Router';
+import { useDarkModeStore } from './Stores';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,8 +12,10 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  const { isDarkMode } = useDarkModeStore();
+
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <RouteManager />
