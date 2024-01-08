@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -13,6 +13,7 @@ import useClickAway from '@/Hooks/UseClickAway';
 
 const HeaderTab = () => {
   // 현재 페이지 가져오기
+
   const [tab, setTab] = useState<
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
   >('home');
@@ -38,6 +39,7 @@ const HeaderTab = () => {
       text !== '비밀번호 변경'
     ) {
       setDrop(false);
+      setTab(prev);
     }
   });
 
@@ -169,7 +171,10 @@ const HeaderTab = () => {
                 name="account_circle"
                 style={styledNavIcon}
                 isFill
-                setModalOpen={() => setDrop(!drop)}
+                setModalOpen={() => {
+                  setDrop(false);
+                  setTab(prev);
+                }}
               />
             ) : (
               <ModalButton
@@ -178,7 +183,7 @@ const HeaderTab = () => {
                 isFill={false}
                 setModalOpen={() => {
                   onSetModal('account');
-                  setDrop(!drop);
+                  setDrop(true);
                 }}
               />
             )}
