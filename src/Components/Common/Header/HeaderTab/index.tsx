@@ -1,5 +1,6 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -10,6 +11,7 @@ import AlarmModal from '../../Modal/AlarmModal';
 import SearchModal from '../../Modal/SearchModal';
 import PasswordModal from '../../Modal/PasswordModal';
 import useClickAway from '@/Hooks/UseClickAway';
+import { checkAuth, logout } from '@/Services/Auth';
 
 const HeaderTab = () => {
   // 현재 페이지 가져오기
@@ -18,8 +20,23 @@ const HeaderTab = () => {
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
   >('home');
   const [prev, setPrev] = useState(tab);
-
   const [isAuthUser, setIsAuthUser] = useState(false);
+
+  /**
+   * 로그인한 사용자인지
+   */
+  const { mutate } = useMutation({
+    mutationFn: checkAuth,
+    onSuccess: (response) => {
+      if (response) {
+        setIsAuthUser(true);
+      }
+    },
+  });
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
 
   const [post, setPost] = useState(false);
   const [search, setSearch] = useState(false);
@@ -31,6 +48,7 @@ const HeaderTab = () => {
 
   const ref = useClickAway((e) => {
     const text = (e.target as HTMLLIElement).textContent;
+    console.log(e.target);
     console.log(text);
     if (
       text !== 'account_circle' &&
@@ -45,6 +63,17 @@ const HeaderTab = () => {
 
   const navigate = useNavigate();
 
+  /**
+   * 로그아웃
+   */
+  const logoutUser = async () => {
+    await logout();
+    sessionStorage.removeItem('AUTH_TOKEN');
+    navigate('/');
+    setTab('home');
+    setIsAuthUser(false);
+  };
+
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
       navigate('/profile');
@@ -53,8 +82,7 @@ const HeaderTab = () => {
       setDrop(false);
     }
     if (option === '로그아웃') {
-      navigate('/');
-      setTab('home');
+      logoutUser();
       setDrop(false);
     }
     if (option === '비밀번호 변경') {
@@ -130,7 +158,7 @@ const HeaderTab = () => {
           />
         )}
         {!isAuthUser ? (
-          <LoginButton onClick={() => setIsAuthUser(true)} />
+          <LoginButton onClick={() => navigate('/login')} />
         ) : (
           <>
             {tab === 'alarm' ? (

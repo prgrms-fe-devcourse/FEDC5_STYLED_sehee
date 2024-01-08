@@ -18,6 +18,7 @@ const useClickAway = (handler: (e: Event) => void) => {
     if (!element) return;
 
     const handleEvent = (e: Event) => {
+      console.log(e.target as Node);
       if (element.contains(e.target as Node)) {
         return;
       }
