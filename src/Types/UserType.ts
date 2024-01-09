@@ -20,7 +20,7 @@ export interface UserType {
   _id: string;
   fullName: string;
   email: string;
-  createdA: string;
+  createdAt: string;
   updatedAt: string;
   jwt?: string;
 }
