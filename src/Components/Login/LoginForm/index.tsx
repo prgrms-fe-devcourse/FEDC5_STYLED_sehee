@@ -48,7 +48,6 @@ const LoginForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
         errorMessage={errors.email}
         onChange={handleOnChange}
         style={{
-          textAlign: 'center',
           padding: size.large,
           fontSize: size.medium,
         }}
@@ -62,7 +61,6 @@ const LoginForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
         errorMessage={errors.password}
         onChange={handleOnChange}
         style={{
-          textAlign: 'center',
           padding: size.large,
           fontSize: size.medium,
         }}
