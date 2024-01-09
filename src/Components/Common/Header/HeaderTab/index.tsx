@@ -259,10 +259,12 @@ const HeaderTab = () => {
       {drop && (
         <DropDown
           ref={ref}
-          style={{
-            position: 'absolute',
-            right: '0',
-            top: '10rem',
+          buttonProps={{
+            style: {
+              position: 'absolute',
+              right: '0',
+              top: '10rem',
+            },
           }}
           options={options}
           onSelect={(option) => {
