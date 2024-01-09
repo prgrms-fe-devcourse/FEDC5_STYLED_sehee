@@ -4,6 +4,7 @@ import {
   HomePage,
   NotFoundPage,
   LoginPage,
+  SignUpPage,
   DirectMessagePage,
 } from '@/Pages';
 
@@ -17,6 +18,10 @@ const RouterManager = () => {
       <Route
         path="/login"
         element={<LoginPage />}
+      />
+      <Route
+        path="/signup"
+        element={<SignUpPage />}
       />
       <Route
         path="/detail"
