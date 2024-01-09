@@ -1,6 +1,6 @@
 interface Props {
   style: object;
-  isFill: boolean;
+  color: string;
   name: string;
   setModalOpen?: () => void;
 }

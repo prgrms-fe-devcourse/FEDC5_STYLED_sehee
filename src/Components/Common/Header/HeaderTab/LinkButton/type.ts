@@ -1,5 +1,5 @@
 interface Props {
-  isFill: boolean;
+  color: string;
   name: string;
   link: string;
   setLink?: () => void;

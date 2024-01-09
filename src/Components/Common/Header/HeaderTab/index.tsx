@@ -1,6 +1,7 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTheme } from 'styled-components';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -17,6 +18,7 @@ const HeaderTab = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const location = useLocation();
+  const { colors } = useTheme();
 
   const [tab, setTab] = useState<
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
@@ -113,14 +115,14 @@ const HeaderTab = () => {
         {tab === 'home' ? (
           <LinkButton
             name="home"
-            isFill
+            color={colors.primary}
             link="/"
             style={styledNavIcon}
           />
         ) : (
           <LinkButton
             name="home"
-            isFill={false}
+            color={colors.background}
             link="/"
             setLink={() => setTab('home')}
             style={styledNavIcon}
@@ -130,13 +132,13 @@ const HeaderTab = () => {
           <ModalButton
             name="add_circle"
             style={styledNavIcon}
-            isFill
+            color={colors.primary}
           />
         ) : (
           <ModalButton
             name="add_circle"
             style={styledNavIcon}
-            isFill={false}
+            color={colors.background}
             setModalOpen={() => {
               onSetModal('add');
               setPost(true);
@@ -147,13 +149,13 @@ const HeaderTab = () => {
           <ModalButton
             name="search"
             style={styledNavIcon}
-            isFill
+            color={colors.primary}
           />
         ) : (
           <ModalButton
             name="search"
             style={styledNavIcon}
-            isFill={false}
+            color={colors.background}
             setModalOpen={() => {
               onSetModal('search');
               setSearch(true);
@@ -168,13 +170,13 @@ const HeaderTab = () => {
               <ModalButton
                 name="notifications"
                 style={styledNavIcon}
-                isFill
+                color={colors.primary}
               />
             ) : (
               <ModalButton
                 name="notifications"
                 style={styledNavIcon}
-                isFill={false}
+                color={colors.background}
                 setModalOpen={() => {
                   onSetModal('alarm');
                   setAlarm(true);
@@ -184,14 +186,14 @@ const HeaderTab = () => {
             {tab === 'message' ? (
               <LinkButton
                 name="send"
-                isFill
+                color={colors.primary}
                 link="/directmessage"
                 style={styledNavIcon}
               />
             ) : (
               <LinkButton
                 name="send"
-                isFill={false}
+                color={colors.background}
                 link="/directmessage"
                 setLink={() => setTab('message')}
                 style={styledNavIcon}
@@ -201,7 +203,7 @@ const HeaderTab = () => {
               <ModalButton
                 name="account_circle"
                 style={styledNavIcon}
-                isFill
+                color={colors.primary}
                 setModalOpen={() => {
                   setDrop(!drop);
                   setTab(prev);
@@ -211,7 +213,7 @@ const HeaderTab = () => {
               <ModalButton
                 name="account_circle"
                 style={styledNavIcon}
-                isFill={false}
+                color={colors.background}
                 setModalOpen={() => {
                   onSetModal('account');
                   setDrop(!drop);
