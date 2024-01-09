@@ -1,9 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import type { InitialState, ErrorMessages, Props } from './Type';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import type { Props } from './type';
 
-const useForm = ({ initialState, callback, validate }: Props) => {
-  const [values, setValues] = useState<InitialState>(initialState);
-  const [errors, setErrors] = useState<ErrorMessages>({});
+const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
+  const [values, setValues] = useState<T>(initialState);
+  const [errors, setErrors] = useState<Partial<T>>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,9 +16,7 @@ const useForm = ({ initialState, callback, validate }: Props) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const newErrors = validate ? validate(values) : {};
-
-    if (Object.keys(newErrors).length === 0 && callback) {
+    if (Object.keys(errors).length === 0 && callback) {
       const result = callback();
 
       if (result instanceof Promise) {
@@ -26,9 +24,15 @@ const useForm = ({ initialState, callback, validate }: Props) => {
       }
     }
 
-    setErrors(newErrors);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const newErrors = validate ? validate(values) : {};
+
+    setErrors(newErrors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   return {
     values,

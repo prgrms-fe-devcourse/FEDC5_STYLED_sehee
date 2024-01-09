@@ -5,8 +5,8 @@ export const StyledModalWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,9 +25,11 @@ export const StyledModalContainer = styled.div<StyledModalContainerType>`
   height: ${(props) => props.height}%;
   display: flex;
   z-index: 10;
-  background: white;
+  background: ${(props) => props.$backgroundColor};
+  border: 1px solid white;
+  color: ${(props) => props.$color};
   overflow: hidden;
-  border-radius: ${(props) => props.$borderRadius}px;
+  border-radius: ${(props) => props.$borderRadius}rem;
   ${(props) =>
     props.$flexDirection !== 'row'
       ? 'flex-direction: column; align-items: center;'
