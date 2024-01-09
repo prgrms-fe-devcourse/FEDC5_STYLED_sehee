@@ -16,3 +16,7 @@ export const StyledButtonWrapper = styled.div`
   justify-content: center;
   gap: 10px;
 `;
+
+export const StyledMessage = styled.div<{ $fontSize: number }>`
+  font-size: ${(props) => props.$fontSize}rem;
+`;

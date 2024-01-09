@@ -5,9 +5,9 @@ import {
   StyledLabelProp,
 } from './type';
 
-export const StyledDropDown = styled.div`
+export const StyledDropDown = styled.div<{ $isShow: boolean }>`
   position: relative;
-  display: inline-block;
+  display: ${(props) => (props.$isShow ? 'inline-block' : 'none')};
 `;
 
 export const StyledLabel = styled.span<StyledLabelProp>`
