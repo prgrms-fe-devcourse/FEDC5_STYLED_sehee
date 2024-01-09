@@ -15,11 +15,18 @@ const DetailPage = () => {
   const [postAuthorId, setPostAuthorId] = useState('');
   const [authorData, setAuthorData] = useState<UserType | null>(null);
 
+  /**
+   * 수정된 여부에 따라 시간 다르게 표시하는 함수
+   */
   const updateTime =
     postDetail?.createdAt === postDetail?.updatedAt
       ? postDetail?.createdAt
       : `수정됨 ${postDetail?.updatedAt}`;
 
+  /**
+   * 포스트 id로 해당 포스트 정보 fetch 함수
+   * @param id 포스트 id
+   */
   const fetchPostDetail = async (id: string) => {
     const getPostDetailRes = await getPostDetail(id);
     if (getPostDetailRes) {
@@ -29,6 +36,10 @@ const DetailPage = () => {
     }
   };
 
+  /**
+   * 포스트 author 정보 fetch 함수
+   * @param id 유저(포스트 author) id
+   */
   const fetchPostAuthor = async (id: string) => {
     const getUserRes = await getUser(id);
     if (getUserRes) {

@@ -90,8 +90,12 @@ const PostDetailModal = ({
     // TODO: DM 페이지 라우팅 연결
   };
 
-  // TODO: 댓글 게시 api 연결
-  const handleClickComment = () => {};
+  /**
+   * 댓글 게시하는 함수
+   */
+  const handleClickComment = () => {
+    // TODO: 댓글 게시 api 연결
+  };
 
   return isPostDetailModalOpen ? (
     <>
@@ -100,6 +104,7 @@ const PostDetailModal = ({
         height={70}
         onChangeOpen={handleCloseModal}
       >
+        {/* 왼쪽 사진 이미지 영역 */}
         <StyledImageCardContainer>
           {postImageUrl && postImageUrl.length !== 0 ? (
             <StyledImage src={postImageUrl} />
@@ -107,8 +112,10 @@ const PostDetailModal = ({
             <StyledIcon src="src/Assets/Images/STYLED-logo-black.png" />
           )}
         </StyledImageCardContainer>
+        {/* 오른쪽 포스트 관련 정보 영역 */}
         <StyledPostContentContainer>
           <StyledAuthorInfo>
+            {/* author 정보 및 팔로우 버튼 */}
             {/*  TODO: 유저 이름 클릭 시 유저 페이지 이동 구현 */}
             <UserCard
               width="fit-content"
@@ -119,6 +126,7 @@ const PostDetailModal = ({
               // Todo: 팔로우 여부 추가
               className="post-detail-user-card"
             />
+            {/* 점 세개 추가 모달 버튼 */}
             <Button
               width="3rem"
               height="3rem"
@@ -130,6 +138,7 @@ const PostDetailModal = ({
             </Button>
           </StyledAuthorInfo>
           <StyledPostMainInfo>
+            {/* 포스트 author 및 상세 내용, 게시 시간 정보 */}
             <StyledPostMainTopContainer>
               <UserCard
                 width="fit-content"
@@ -143,6 +152,7 @@ const PostDetailModal = ({
             </StyledPostMainTopContainer>
             {/* TODO: 내용 많을 시 말줄임표 및 클릭 시 말줄임표 해제 */}
             <StyledPostContent>{postContents}</StyledPostContent>
+            {/* 포스트 댓글 영역 */}
             <StyledCommentHistory>
               댓글
               {postComment &&
@@ -165,6 +175,7 @@ const PostDetailModal = ({
                 )}
             </StyledCommentHistory>
           </StyledPostMainInfo>
+          {/* 좋아요, 댓글, DM 버튼 영역 */}
           <StyledLikeCommentChat>
             <StyledButtonContainer>
               <Button
@@ -210,6 +221,7 @@ const PostDetailModal = ({
                 />
               </Button>
             </StyledButtonContainer>
+            {/* 포스트 좋아요 정보 */}
             <StledLikeContainer>
               <UserCard
                 width="fit-content"
@@ -225,6 +237,7 @@ const PostDetailModal = ({
               <StyledLikeText className="like-extra-text">{`외 ${postLike?.length}명`}</StyledLikeText>
               <StyledLikeText>이 좋아합니다.</StyledLikeText>
             </StledLikeContainer>
+            {/* 댓글 게시 영역 */}
             <StyledCommentContainer>
               {/* TODO: Input 컴포넌트를 textarea 태그로 바꿀 수 있는 옵션이 있어야 할듯 */}
               <Input
@@ -247,6 +260,7 @@ const PostDetailModal = ({
           </StyledLikeCommentChat>
         </StyledPostContentContainer>
       </Modal>
+      {/* 점 세개 모달 PostDotModal */}
       {isDotModalOpen && (
         <PostDotModal
           onChangeOpen={handleCloseDotModal}
