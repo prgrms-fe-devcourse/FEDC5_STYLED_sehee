@@ -20,32 +20,32 @@ const HeaderTab = () => {
   const location = useLocation();
   const { colors } = useTheme();
 
+  // 새로고침 시에도 tab 유지되게
+  const storedTab: string | null = sessionStorage.getItem('tab');
+  const initialTab:
+    | 'home'
+    | 'add'
+    | 'search'
+    | 'alarm'
+    | 'message'
+    | 'account' = storedTab || 'home';
+
+  // tab 상태와 이를 변경하는 함수
   const [tab, setTab] = useState<
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
-  >('home');
+  >(initialTab);
   const [prev, setPrev] = useState(tab);
 
-  // url에 따라 현재 페이지 가져오기
+  // tab이 변경될 때마다 localStorage에 저장
   useEffect(() => {
-    let tabLocation:
-      | 'home'
-      | 'add'
-      | 'search'
-      | 'alarm'
-      | 'message'
-      | 'account' = 'home';
-    if (location.pathname === '/') {
-      tabLocation = 'home';
+    if (
+      tab === 'home' ||
+      tab === 'message' ||
+      (tab === 'account' && location.pathname === '/profile')
+    ) {
+      sessionStorage.setItem('tab', tab);
     }
-    if (location.pathname === '/directmessage') {
-      tabLocation = 'message';
-    }
-    if (location.pathname === '/profile') {
-      tabLocation = 'account';
-    }
-
-    setTab(tabLocation);
-  }, [location.pathname]);
+  }, [tab, location]);
 
   const [post, setPost] = useState(false);
   const [search, setSearch] = useState(false);
@@ -62,7 +62,8 @@ const HeaderTab = () => {
       text !== 'account_circle' &&
       text !== '마이페이지' &&
       text !== '로그아웃' &&
-      text !== '비밀번호 변경'
+      text !== '비밀번호 변경' &&
+      drop
     ) {
       setDrop(false);
       setTab(prev);
@@ -108,7 +109,11 @@ const HeaderTab = () => {
       'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
     >,
   ) => {
-    if (tab === 'home' || tab === 'message') {
+    if (
+      tab === 'home' ||
+      tab === 'message' ||
+      (tab === 'account' && location.pathname === '/profile')
+    ) {
       setPrev(tab);
     }
     setTab(option);
@@ -272,6 +277,7 @@ const HeaderTab = () => {
         <PasswordModal
           onChangeOpen={() => {
             setPassword(false);
+            console.log(prev);
             setTab(prev);
           }}
         />
