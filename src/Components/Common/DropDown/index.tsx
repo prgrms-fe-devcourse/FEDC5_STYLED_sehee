@@ -36,7 +36,7 @@ const DropDown = forwardRef(
       optionProps,
       itemProps,
       labelProps,
-      isShow,
+      isShow = true,
       ...props
     }: DropDownProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -61,7 +61,7 @@ const DropDown = forwardRef(
     return (
       <StyledDropDown
         ref={ref}
-        $isShow={isShow || true}
+        $isShow={isShow}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
         {...props}

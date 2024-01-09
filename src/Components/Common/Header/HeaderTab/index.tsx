@@ -249,21 +249,19 @@ const HeaderTab = () => {
           }}
         />
       )}
-      {drop && (
-        <DropDown
-          ref={ref}
-          isShow={drop}
-          style={{
-            position: 'absolute',
-            right: '0',
-            top: '10rem',
-          }}
-          options={options}
-          onSelect={(option) => {
-            onSelectOption(option);
-          }}
-        />
-      )}
+      <DropDown
+        ref={ref}
+        isShow={drop}
+        style={{
+          position: 'absolute',
+          right: '0',
+          top: '10rem',
+        }}
+        options={options}
+        onSelect={(option) => {
+          onSelectOption(option);
+        }}
+      />
       {password && (
         <PasswordModal
           onChangeOpen={() => {
