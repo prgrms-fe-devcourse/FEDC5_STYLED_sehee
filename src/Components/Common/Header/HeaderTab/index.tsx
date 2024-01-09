@@ -34,9 +34,15 @@ const HeaderTab = () => {
       | 'alarm'
       | 'message'
       | 'account' = 'home';
-    if (location.pathname === '/') tabLocation = 'home';
-    if (location.pathname === '/directmessage') tabLocation = 'message';
-    if (location.pathname === '/profile') tabLocation = 'account';
+    if (location.pathname === '/') {
+      tabLocation = 'home';
+    }
+    if (location.pathname === '/directmessage') {
+      tabLocation = 'message';
+    }
+    if (location.pathname === '/profile') {
+      tabLocation = 'account';
+    }
 
     setTab(tabLocation);
   }, [location.pathname]);
@@ -58,7 +64,6 @@ const HeaderTab = () => {
       text !== '로그아웃' &&
       text !== '비밀번호 변경'
     ) {
-      console.log(text);
       setDrop(false);
       setTab(prev);
     }
@@ -78,13 +83,14 @@ const HeaderTab = () => {
       queryClient.setQueryData(['auth'], null);
       sessionStorage.removeItem('AUTH_TOKEN');
       navigate('/');
+      setTab('home');
     },
   });
 
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
-      navigate('/profile');
       setDrop(!drop);
+      navigate('/profile');
       setPrev(tab);
     }
     if (option === '로그아웃') {

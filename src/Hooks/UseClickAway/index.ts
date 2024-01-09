@@ -7,7 +7,6 @@ const events = ['mousedown', 'touchstart'];
 const useClickAway = (handler: (e: Event) => void) => {
   const ref = useRef(null);
   const savedHandler = useRef(handler);
-  console.log('hi');
 
   // handler함수가 바뀌면 저장한다.
   useEffect(() => {
