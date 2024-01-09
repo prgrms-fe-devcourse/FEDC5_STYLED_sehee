@@ -36,6 +36,7 @@ const DropDown = forwardRef(
       optionProps,
       itemProps,
       labelProps,
+      isShow,
       ...props
     }: DropDownProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -60,6 +61,7 @@ const DropDown = forwardRef(
     return (
       <StyledDropDown
         ref={ref}
+        $isShow={isShow || true}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
         {...props}
@@ -74,33 +76,47 @@ const DropDown = forwardRef(
             {label}
           </StyledLabel>
         )}
-        <StyledDropDownButton
-          onClick={() => setIsOpen(!isOpen)}
-          $width={width || '16rem'}
-          $height={height || '4rem'}
-          $backgroundColor={backgroundColor || theme.colors.background}
-          $textColor={textColor || theme.colors.text}
-          $textSize={textSize || theme.size.medium}
-          {...buttonProps}
-        >
-          {selectedOption}
-          {selectedOption === '선택 없음' ? (
-            <Icon
-              name="expand_circle_down"
-              isFill
-              onClick={() => handleSelect(selectedOption)}
-              style={{ color: textColor }}
-            />
-          ) : (
-            <Icon
-              name="cancel"
-              isFill
-              onClick={handleCancel}
-              style={{ color: textColor }}
-            />
-          )}
-        </StyledDropDownButton>
 
+        {children ? (
+          <StyledDropDownButton
+            onClick={() => setIsOpen(!isOpen)}
+            $width={width || '4rem'}
+            $height={height || '4rem'}
+            $backgroundColor={backgroundColor || theme.colors.background}
+            $textColor={textColor || theme.colors.text}
+            $textSize={textSize || theme.size.medium}
+            {...buttonProps}
+          >
+            {children}
+          </StyledDropDownButton>
+        ) : (
+          <StyledDropDownButton
+            onClick={() => setIsOpen(!isOpen)}
+            $width={width || '16rem'}
+            $height={height || '4rem'}
+            $backgroundColor={backgroundColor || theme.colors.background}
+            $textColor={textColor || theme.colors.text}
+            $textSize={textSize || theme.size.medium}
+            {...buttonProps}
+          >
+            {selectedOption}
+            {selectedOption === '선택 없음' ? (
+              <Icon
+                name="expand_circle_down"
+                isFill
+                onClick={() => handleSelect(selectedOption)}
+                style={{ color: textColor }}
+              />
+            ) : (
+              <Icon
+                name="cancel"
+                isFill
+                onClick={handleCancel}
+                style={{ color: textColor }}
+              />
+            )}
+          </StyledDropDownButton>
+        )}
         {isOpen && (
           <StyledDropDownOption
             $width={width || '16rem'}
