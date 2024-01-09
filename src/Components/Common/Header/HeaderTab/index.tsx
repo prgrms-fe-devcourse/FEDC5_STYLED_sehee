@@ -25,7 +25,7 @@ const HeaderTab = () => {
   >('home');
   const [prev, setPrev] = useState(tab);
 
-  // 현재 페이지 가져오기
+  // url에 따라 현재 페이지 가져오기
   useEffect(() => {
     let tabLocation:
       | 'home'
@@ -49,6 +49,7 @@ const HeaderTab = () => {
   const options = ['마이페이지', '로그아웃', '비밀번호 변경'];
   const [drop, setDrop] = useState(false);
 
+  // 드롭다운 이외의 영역 클릭시 드롭다운 off
   const ref = useClickAway((e) => {
     const text = (e.target as HTMLLIElement).textContent;
     if (
