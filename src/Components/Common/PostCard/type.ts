@@ -10,4 +10,9 @@ export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
   width?: string;
   fontSize?: string;
   objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+  onImageClick?: () => void;
+  onUserNameClick?: () => void;
+  onUserAvatarClick?: () => void;
+  onFollowBtnClick?: () => void;
+  onLikeIconClick?: () => void;
 }

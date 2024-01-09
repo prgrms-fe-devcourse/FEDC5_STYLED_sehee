@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -39,6 +40,7 @@ import PostCard from '@/Components/Common/PostCard';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
+  const navigate = useNavigate();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -143,6 +145,14 @@ const HomePage = () => {
     },
     [],
   );
+
+  /**
+   * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
+   * @param postId 포스트 ID
+   */
+  const goPostDetail = (postId: string) => {
+    navigate(`/modal-detail/${postId}`);
+  };
 
   useEffect(() => {
     if (channelList.length === 0) fetchChannelList();
@@ -250,6 +260,7 @@ const HomePage = () => {
                 authorThumbnail=""
                 isFollower
                 isLike
+                onImageClick={() => goPostDetail(post._id)}
               />
             ))}
           </StyledPostCardList>
@@ -291,6 +302,7 @@ const HomePage = () => {
           </StyledUserList>
         </StyledRightContainer>
       </StyledWrapper>
+      <Outlet />
     </>
   );
 };
