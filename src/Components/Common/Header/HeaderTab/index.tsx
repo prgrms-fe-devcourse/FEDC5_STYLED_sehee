@@ -70,11 +70,8 @@ const HeaderTab = () => {
     }
   });
 
-  // 사용자 인증 확인 함수
-  const { data: isAuthUser } = useQuery({
-    queryKey: ['auth'],
-    queryFn: checkAuth,
-  });
+  // 사용자 인증 확인
+  const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
 
   // useMutation으로 로그아웃 처리
   const { mutate } = useMutation({
