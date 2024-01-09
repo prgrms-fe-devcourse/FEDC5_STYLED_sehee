@@ -1,5 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { DetailPage, HomePage, NotFoundPage, LoginPage } from '@/Pages';
+import {
+  DetailPage,
+  HomePage,
+  NotFoundPage,
+  LoginPage,
+  SignUpPage,
+} from '@/Pages';
 
 const RouterManager = () => {
   return (
@@ -18,10 +24,10 @@ const RouterManager = () => {
           path="/login"
           element={<LoginPage />}
         />
-        {/* <Route
-          path="/detail"
-          element={<DetailPage />}
-        /> */}
+        <Route
+          path="/signup"
+          element={<SignUpPage />}
+        />
         <Route
           path="*"
           element={<NotFoundPage />}
