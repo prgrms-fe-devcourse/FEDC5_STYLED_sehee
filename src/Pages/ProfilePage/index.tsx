@@ -10,13 +10,58 @@ const user = {
   emailVerified: true,
   banned: false,
   isOnline: true,
-  posts: [],
+  posts: [
+    {
+      likes: [1, 2, 3, 4, 5, 6],
+      comments: [1, 2, 3, 4, 5],
+      _id: 'hi',
+      image: profile,
+    },
+    {
+      likes: [1, 2, 3, 4, 5, 6],
+      comments: [1, 2, 3, 4, 5],
+      _id: 'h',
+      image: profile,
+    },
+    {
+      likes: [1, 2, 3, 4, 5, 6],
+      comments: [1, 2, 3, 4, 5],
+      _id: 'i',
+      image: profile,
+    },
+    {
+      likes: [1, 2, 3, 4, 5, 6],
+      comments: [1, 2, 3, 4, 5],
+      _id: 'hie',
+      image: profile,
+    },
+    {
+      likes: [1, 2, 3, 4, 5, 6],
+      comments: [1, 2, 3, 4, 5],
+      _id: 'hwi',
+      image: profile,
+    },
+  ],
   likes: [],
   followers: [],
   following: [],
   _id: '123',
   fullName: 'lee',
 };
+
+/**
+ * 
+ * likes: LikeType[];
+  comments: CommentType[];
+  _id: string;
+  image?: string;
+  imagePublicId?: string;
+  title: string;
+  channel: ChannelType;
+  author: UserType;
+  createdAt: string;
+  updatedAt: string;
+ */
 
 const ProfilePage = () => {
   const { colors } = useTheme();
@@ -41,7 +86,6 @@ const ProfilePage = () => {
           src={user.image}
           size={140}
         />
-
         <div>
           <div
             style={{
@@ -84,22 +128,25 @@ const ProfilePage = () => {
             <span style={{ fontSize: '1.4rem', marginRight: '1rem' }}>
               게시물 {user.posts.length}
             </span>
-            <span style={{ fontSize: '1.4rem', marginRight: '1rem' }}>
-              팔로워 {user.followers.length}
-            </span>
-            <span style={{ fontSize: '1.4rem', marginRight: '1rem' }}>
-              팔로잉 {user.following.length}
-            </span>
+            <button type="button">
+              <span style={{ fontSize: '1.4rem', marginRight: '1rem' }}>
+                팔로워 {user.followers.length}
+              </span>
+            </button>
+            <button type="button">
+              <span style={{ fontSize: '1.4rem', marginRight: '1rem' }}>
+                팔로잉 {user.following.length}
+              </span>
+            </button>
           </div>
         </div>
       </div>
       <hr style={{ width: '75%' }} />
       <div
         style={{
-          padding: '3rem 10rem 10% 10rem',
-          width: '100%',
-          display: 'center',
+          padding: '3rem 0 15rem 0',
           justifyContent: 'center',
+          display: 'flex',
         }}
       >
         <div
@@ -107,36 +154,19 @@ const ProfilePage = () => {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             justifyItems: 'center',
+            width: '65%',
           }}
         >
-          <ImageCard
-            src={user.image}
-            comment={0}
-            size="25rem"
-            heart={0}
-            style={{ backgroundColor: 'black' }}
-          />
-          <ImageCard
-            src={user.image}
-            size="25rem"
-            comment={0}
-            heart={0}
-            style={{ backgroundColor: 'black' }}
-          />
-          <ImageCard
-            src={user.image}
-            size="25rem"
-            comment={0}
-            heart={0}
-            style={{ backgroundColor: 'black' }}
-          />
-          <ImageCard
-            src={user.image}
-            size="25rem"
-            comment={0}
-            heart={0}
-            style={{ backgroundColor: 'black' }}
-          />
+          {user.posts.map((post) => (
+            <ImageCard
+              // eslint-disable-next-line no-underscore-dangle
+              key={post._id}
+              src={post.image}
+              comment={post.comments.length}
+              size="90%"
+              heart={post.likes.length}
+            />
+          ))}
         </div>
       </div>
     </div>
