@@ -1,5 +1,6 @@
-import { SetStateAction, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -14,12 +15,21 @@ import { checkAuth, logout } from '@/Services/Auth';
 
 const HeaderTab = () => {
   // 현재 페이지 가져오기
+  const location = useLocation();
 
   const [tab, setTab] = useState<
     'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
   >('home');
   const [prev, setPrev] = useState(tab);
-  const [isAuthUser, setIsAuthUser] = useState(false);
+
+  useEffect(() => {
+    let tabLocation = 'home';
+    if (location.pathname === '/') tabLocation = 'home';
+    if (location.pathname === '/directmessage') tabLocation = 'message';
+    if (location.pathname === '/profile') tabLocation = 'account';
+
+    setTab(tabLocation);
+  }, [location.pathname]);
 
   const [post, setPost] = useState(false);
   const [search, setSearch] = useState(false);
@@ -31,14 +41,13 @@ const HeaderTab = () => {
 
   const ref = useClickAway((e) => {
     const text = (e.target as HTMLLIElement).textContent;
-    console.log(e.target);
-    console.log(text);
     if (
       text !== 'account_circle' &&
       text !== '마이페이지' &&
       text !== '로그아웃' &&
       text !== '비밀번호 변경'
     ) {
+      console.log(text);
       setDrop(false);
       setTab(prev);
     }
@@ -46,61 +55,35 @@ const HeaderTab = () => {
 
   const navigate = useNavigate();
 
-  // 로그인 상태 확인 함수
-  const checkLoginStatus = async () => {
-    try {
-      // 서버에 인증 여부 확인
-      const authData = await checkAuth();
+  const queryClient = useQueryClient();
 
-      // 로그인 상태인 경우
-      if (authData) {
-        // 로그인 상태로 업데이트
-        setIsAuthUser(true);
-      } else {
-        // 로그아웃 상태로 업데이트
-        setIsAuthUser(false);
-      }
-    } catch (error) {
-      console.error('로그인 상태 확인 중 오류 발생:', error);
-    }
-  };
+  // 사용자 인증 확인 함수
+  const { data: isAuthUser } = useQuery({
+    queryKey: ['auth'],
+    queryFn: checkAuth,
+  });
 
-  // 로그아웃 처리 함수
-  const handleLogout = async () => {
-    try {
-      // 세션 스토리지에서 토큰 삭제
+  // useMutation으로 로그아웃 처리
+  const { mutate } = useMutation({
+    mutationFn: logout,
+    onSuccess: async () => {
+      // 로그아웃 성공 시
+      queryClient.setQueryData(['auth'], null);
       sessionStorage.removeItem('AUTH_TOKEN');
-
-      // 로그아웃 상태로 업데이트
-      setIsAuthUser(false);
-      setTab('home');
       navigate('/');
-
-      // 실제 로그아웃 처리
-      await logout();
-    } catch (error) {
-      console.error('로그아웃 중 오류 발생:', error);
-    }
-  };
-
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
+    },
+  });
 
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
       navigate('/profile');
       setPrev(tab);
-      setTab('account');
-      setDrop(false);
     }
     if (option === '로그아웃') {
-      handleLogout();
-      setDrop(false);
+      mutate();
     }
     if (option === '비밀번호 변경') {
       setPassword(true);
-      setDrop(false);
     }
   };
 
@@ -213,7 +196,7 @@ const HeaderTab = () => {
                 style={styledNavIcon}
                 isFill
                 setModalOpen={() => {
-                  setDrop(false);
+                  setDrop(!drop);
                   setTab(prev);
                 }}
               />
@@ -224,7 +207,7 @@ const HeaderTab = () => {
                 isFill={false}
                 setModalOpen={() => {
                   onSetModal('account');
-                  setDrop(true);
+                  setDrop(!drop);
                 }}
               />
             )}
@@ -259,12 +242,11 @@ const HeaderTab = () => {
       {drop && (
         <DropDown
           ref={ref}
-          buttonProps={{
-            style: {
-              position: 'absolute',
-              right: '0',
-              top: '10rem',
-            },
+          isShow={drop}
+          style={{
+            position: 'absolute',
+            right: '0',
+            top: '10rem',
           }}
           options={options}
           onSelect={(option) => {
