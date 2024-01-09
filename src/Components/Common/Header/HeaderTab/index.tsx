@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LoginButton from './LoginButton';
@@ -14,7 +14,8 @@ import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 
 const HeaderTab = () => {
-  // 현재 페이지 가져오기
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const location = useLocation();
 
   const [tab, setTab] = useState<
@@ -22,8 +23,15 @@ const HeaderTab = () => {
   >('home');
   const [prev, setPrev] = useState(tab);
 
+  // 현재 페이지 가져오기
   useEffect(() => {
-    let tabLocation = 'home';
+    let tabLocation:
+      | 'home'
+      | 'add'
+      | 'search'
+      | 'alarm'
+      | 'message'
+      | 'account' = 'home';
     if (location.pathname === '/') tabLocation = 'home';
     if (location.pathname === '/directmessage') tabLocation = 'message';
     if (location.pathname === '/profile') tabLocation = 'account';
@@ -53,10 +61,6 @@ const HeaderTab = () => {
     }
   });
 
-  const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
-
   // 사용자 인증 확인 함수
   const { data: isAuthUser } = useQuery({
     queryKey: ['auth'],
@@ -77,12 +81,15 @@ const HeaderTab = () => {
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
       navigate('/profile');
+      setDrop(!drop);
       setPrev(tab);
     }
     if (option === '로그아웃') {
+      setDrop(!drop);
       mutate();
     }
     if (option === '비밀번호 변경') {
+      setDrop(!drop);
       setPassword(true);
     }
   };
