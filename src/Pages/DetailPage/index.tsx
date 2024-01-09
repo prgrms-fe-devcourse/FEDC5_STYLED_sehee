@@ -8,10 +8,17 @@ import { UserType } from '@/Types/UserType';
 
 const DetailPage = () => {
   const { postId } = useParams();
+  // TODO: 경과시간 계산
+  // const nowTime = new Date().toISOString();
 
   const [postDetail, setPostDetail] = useState<PostType | null>(null);
   const [postAuthorId, setPostAuthorId] = useState('');
   const [authorData, setAuthorData] = useState<UserType | null>(null);
+
+  const updateTime =
+    postDetail?.createdAt === postDetail?.updatedAt
+      ? postDetail?.createdAt
+      : `수정됨 ${postDetail?.updatedAt}`;
 
   const fetchPostDetail = async (id: string) => {
     const getPostDetailRes = await getPostDetail(id);
@@ -34,8 +41,14 @@ const DetailPage = () => {
     if (postAuthorId) fetchPostAuthor(postAuthorId);
   }, [postId, postAuthorId]);
 
+  console.log(postDetail);
+
   return (
     <PostDetailModal
+      postComment={postDetail?.comments}
+      postLike={postDetail?.likes}
+      postContents={postDetail?.title || ''}
+      postEditTime={updateTime || ''}
       postImageUrl={postDetail?.image || ''}
       postAuthor={postDetail?.author.fullName || ''}
       authorAvatar={authorData?.image || ''}

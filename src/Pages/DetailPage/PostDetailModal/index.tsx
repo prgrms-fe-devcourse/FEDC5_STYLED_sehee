@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
@@ -11,6 +12,16 @@ import {
   StyledAuthorInfo,
   StyledPostMainInfo,
   StyledLikeCommentChat,
+  StyledPostContent,
+  StyledEditTime,
+  StyledPostMainTopContainer,
+  StyledCommentHistory,
+  StyledComment,
+  StyledText,
+  StyledLikeText,
+  StyledButtonContainer,
+  StledLikeContainer,
+  StyledCommentContainer,
 } from './style';
 import UserCard from '@/Components/Common/UserCard';
 import Button from '@/Components/Base/Button';
@@ -18,9 +29,13 @@ import Icon from '@/Components/Base/Icon';
 import PostDotModal from './PostDotModal';
 
 const PostDetailModal = ({
+  postLike,
+  postComment,
+  postContents,
   postImageUrl,
   postAuthor,
   authorAvatar,
+  postEditTime,
 }: PostDetailModalProps) => {
   const navigate = useNavigate();
   const { colors } = useTheme();
@@ -58,7 +73,7 @@ const PostDetailModal = ({
         <StyledPostContentContainer>
           <StyledAuthorInfo>
             <UserCard
-              width="70%"
+              width="fit-content"
               mode="follow"
               badgeSize="0"
               userName={postAuthor}
@@ -76,8 +91,99 @@ const PostDetailModal = ({
               <Icon name="more_horiz" />
             </Button>
           </StyledAuthorInfo>
-          <StyledPostMainInfo />
-          <StyledLikeCommentChat />
+          <StyledPostMainInfo>
+            <StyledPostMainTopContainer>
+              <UserCard
+                width="fit-content"
+                badgeSize="0"
+                userName={postAuthor}
+                coverImageUrl={authorAvatar}
+                className="post-detail-user-card"
+              />
+              <StyledEditTime>{postEditTime}</StyledEditTime>
+            </StyledPostMainTopContainer>
+            <StyledPostContent>{postContents}</StyledPostContent>
+            <StyledCommentHistory>
+              댓글
+              {postComment &&
+                postComment.map(
+                  ({ author, _id, comment, createdAt, updatedAt }) => (
+                    <StyledComment key={_id}>
+                      <UserCard
+                        width="fit-content"
+                        badgeSize="0"
+                        userName={author.fullName}
+                        coverImageUrl=""
+                        userDetail={
+                          createdAt === updatedAt ? createdAt : updatedAt
+                        }
+                        className="post-detail-user-card"
+                      />
+                      <StyledText>{comment}</StyledText>
+                    </StyledComment>
+                  ),
+                )}
+            </StyledCommentHistory>
+          </StyledPostMainInfo>
+          <StyledLikeCommentChat>
+            <StyledButtonContainer>
+              <Button
+                width="2rem"
+                height="2rem"
+                borderRadius="0"
+                backgroundColor={colors.background}
+                hoverBackgroundColor={colors.background}
+              >
+                <Icon
+                  isFill={false}
+                  name="favorite"
+                  className="post-detail-modal-heart-btn"
+                />
+              </Button>
+              <Button
+                width="2rem"
+                height="2rem"
+                borderRadius="0"
+                backgroundColor={colors.background}
+                hoverBackgroundColor={colors.background}
+              >
+                <Icon
+                  isFill={false}
+                  name="maps_ugc"
+                  className="post-detail-modal-btn"
+                />
+              </Button>
+              <Button
+                width="2rem"
+                height="2rem"
+                borderRadius="0"
+                backgroundColor={colors.background}
+                hoverBackgroundColor={colors.background}
+              >
+                <Icon
+                  isFill={false}
+                  name="question_answer"
+                  className="post-detail-modal-btn"
+                />
+              </Button>
+            </StyledButtonContainer>
+            <StledLikeContainer>
+              <UserCard
+                width="fit-content"
+                badgeSize="0"
+                userName={
+                  postLike && postLike.length !== 0 ? postLike[0]._id : ''
+                }
+                coverImageUrl=""
+                userDetail=""
+                className="post-detail-user-card"
+              />
+              <StyledLikeText>님</StyledLikeText>
+              <StyledLikeText className="like-extra-text">{`외 ${postLike?.length}명`}</StyledLikeText>
+              <StyledLikeText>이 좋아합니다.</StyledLikeText>
+            </StledLikeContainer>
+            <StyledCommentContainer />
+          </StyledLikeCommentChat>
         </StyledPostContentContainer>
       </Modal>
       {isDotModalOpen && (

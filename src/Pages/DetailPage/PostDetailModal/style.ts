@@ -16,7 +16,21 @@ export const StyledIcon = styled.img``;
 
 export const StyledPostContentContainer = styled.div`
   width: 60%;
-  border-radius: 0.5rem 0.5rem 0 0;
+
+  .post-detail-user-card {
+    h1 {
+      font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+      cursor: pointer;
+
+      &:hover {
+        color: ${({ theme }) => theme.colors.backgroundGrey};
+      }
+    }
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.background};
+    }
+  }
 `;
 
 export const StyledAuthorInfo = styled.div`
@@ -27,10 +41,6 @@ export const StyledAuthorInfo = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
 
   .post-detail-user-card {
-    &:hover {
-      background-color: ${({ theme }) => theme.colors.background};
-    }
-
     & > :nth-child(2) {
       width: auto;
       flex-grow: 0;
@@ -39,6 +49,105 @@ export const StyledAuthorInfo = styled.div`
   }
 `;
 
-export const StyledPostMainInfo = styled.div``;
+export const StyledPostMainInfo = styled.div`
+  height: 50%;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
+  overflow-y: auto;
+`;
 
-export const StyledLikeCommentChat = styled.div``;
+export const StyledPostMainTopContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const StyledEditTime = styled.div``;
+
+export const StyledPostContent = styled.div`
+  padding-left: 4rem;
+  padding-right: 1rem;
+`;
+
+export const StyledCommentHistory = styled.div`
+  padding: 1rem 0;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledComment = styled.div`
+  display: flex;
+`;
+
+export const StyledText = styled.div`
+  padding: 0.5rem;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`;
+
+export const StyledLikeCommentChat = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  padding: 0.5rem 1rem;
+
+  .post-detail-user-card {
+    padding-right: 0;
+  }
+
+  .like-extra-text {
+    padding-left: 0.5rem;
+    font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.backgroundGrey};
+    }
+  }
+`;
+
+export const StyledButtonContainer = styled.div`
+  width: fit-content;
+  display: flex;
+  height: 3rem;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+
+  .post-detail-modal-heart-btn {
+    &.material-icons {
+      color: ${({ theme }) => theme.colors.alert};
+    }
+
+    &.material-symbols-outlined:hover {
+      color: ${({ theme }) => theme.colors.alert};
+    }
+  }
+
+  .post-detail-modal-btn {
+    &:hover {
+      color: ${({ theme }) => theme.colors.backgroundGrey};
+    }
+  }
+`;
+
+export const StledLikeContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  .post-detail-user-card {
+    padding-right: 0;
+  }
+
+  .like-extra-text {
+    padding-left: 0.5rem;
+    font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.backgroundGrey};
+    }
+  }
+`;
+
+export const StyledLikeText = styled.div``;
+
+export const StyledCommentContainer = styled.div``;
