@@ -15,6 +15,8 @@ export const StyledImage = styled.img`
 export const StyledIcon = styled.img``;
 
 export const StyledPostContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 60%;
 
   .post-detail-user-card {
@@ -54,6 +56,7 @@ export const StyledPostMainInfo = styled.div`
   padding: 0.5rem 1rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   overflow-y: auto;
+  flex-grow: 1;
 `;
 
 export const StyledPostMainTopContainer = styled.div`
@@ -87,6 +90,8 @@ export const StyledText = styled.div`
 export const StyledLikeCommentChat = styled.div`
   display: flex;
   flex-direction: column;
+  height: fit-content;
+  max-height: 30%;
 
   padding: 0.5rem 1rem;
 
@@ -150,4 +155,22 @@ export const StledLikeContainer = styled.div`
 
 export const StyledLikeText = styled.div``;
 
-export const StyledCommentContainer = styled.div``;
+export const StyledCommentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  & > :first-child {
+    width: 80%;
+  }
+
+  .post-detail-comment-input {
+    border: 0;
+    outline: 0;
+  }
+`;
+
+export const postCommentBtnStyle = {
+  padding: '1rem 1.5rem',
+};

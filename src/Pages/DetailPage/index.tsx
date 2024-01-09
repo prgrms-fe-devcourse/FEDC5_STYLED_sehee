@@ -41,8 +41,6 @@ const DetailPage = () => {
     if (postAuthorId) fetchPostAuthor(postAuthorId);
   }, [postId, postAuthorId]);
 
-  console.log(postDetail);
-
   return (
     <PostDetailModal
       postComment={postDetail?.comments}

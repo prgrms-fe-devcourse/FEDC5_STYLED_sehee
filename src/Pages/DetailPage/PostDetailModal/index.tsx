@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { PostDetailModalProps } from './type';
@@ -22,11 +22,13 @@ import {
   StyledButtonContainer,
   StledLikeContainer,
   StyledCommentContainer,
+  postCommentBtnStyle,
 } from './style';
 import UserCard from '@/Components/Common/UserCard';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import PostDotModal from './PostDotModal';
+import Input from '@/Components/Base/Input';
 
 const PostDetailModal = ({
   postLike,
@@ -40,8 +42,21 @@ const PostDetailModal = ({
   const navigate = useNavigate();
   const { colors } = useTheme();
 
+  const commentInputRef = useRef<HTMLInputElement>(null);
+
   const [isPostDetailModalOpen, setIsPostDetailModalOpen] = useState(true);
   const [isDotModalOpen, setIsDotModalOpen] = useState(false);
+  const [isCommentBtnDisabled, setIsCommentBtnDisabled] = useState(true);
+  // TODO: 좋아요 연동 초기값
+  const [isLike, setIsLike] = useState(false);
+
+  /**
+   * 댓글 입력 창이 비었을 경우 게시 버튼 비활성화하는 함수
+   */
+  const handleChangeCommentInput = useCallback(() => {
+    const isInputEmpty = commentInputRef.current?.value !== '';
+    setIsCommentBtnDisabled(!isInputEmpty);
+  }, []);
 
   /**
    * 모달 close 상태 변경 및 메인페이지 이동 함수
@@ -52,9 +67,31 @@ const PostDetailModal = ({
     setIsPostDetailModalOpen(state);
   };
 
+  /**
+   * 점 세개 추가 모달 닫는 함수
+   * @param state 점세개 추가 모달 open 여부 상태
+   */
   const handleCloseDotModal = (state: boolean) => {
     setIsDotModalOpen(state);
   };
+
+  /**
+   * 좋아요 버튼 클릭 동작 함수
+   */
+  const handleClickLikeBtn = () => {
+    // TODO: 좋아요 api 추가
+    setIsLike(!isLike);
+  };
+
+  /**
+   * DM 버튼 클릭 동작 함수
+   */
+  const handleClickDMBtn = () => {
+    // TODO: DM 페이지 라우팅 연결
+  };
+
+  // TODO: 댓글 게시 api 연결
+  const handleClickComment = () => {};
 
   return isPostDetailModalOpen ? (
     <>
@@ -72,6 +109,7 @@ const PostDetailModal = ({
         </StyledImageCardContainer>
         <StyledPostContentContainer>
           <StyledAuthorInfo>
+            {/*  TODO: 유저 이름 클릭 시 유저 페이지 이동 구현 */}
             <UserCard
               width="fit-content"
               mode="follow"
@@ -100,8 +138,10 @@ const PostDetailModal = ({
                 coverImageUrl={authorAvatar}
                 className="post-detail-user-card"
               />
+              {/* TODO: 경과 시간 계산 구현 */}
               <StyledEditTime>{postEditTime}</StyledEditTime>
             </StyledPostMainTopContainer>
+            {/* TODO: 내용 많을 시 말줄임표 및 클릭 시 말줄임표 해제 */}
             <StyledPostContent>{postContents}</StyledPostContent>
             <StyledCommentHistory>
               댓글
@@ -133,9 +173,10 @@ const PostDetailModal = ({
                 borderRadius="0"
                 backgroundColor={colors.background}
                 hoverBackgroundColor={colors.background}
+                onClick={handleClickLikeBtn}
               >
                 <Icon
-                  isFill={false}
+                  isFill={isLike}
                   name="favorite"
                   className="post-detail-modal-heart-btn"
                 />
@@ -146,6 +187,7 @@ const PostDetailModal = ({
                 borderRadius="0"
                 backgroundColor={colors.background}
                 hoverBackgroundColor={colors.background}
+                onClick={() => commentInputRef.current?.focus()}
               >
                 <Icon
                   isFill={false}
@@ -159,6 +201,7 @@ const PostDetailModal = ({
                 borderRadius="0"
                 backgroundColor={colors.background}
                 hoverBackgroundColor={colors.background}
+                onClick={handleClickDMBtn}
               >
                 <Icon
                   isFill={false}
@@ -182,7 +225,25 @@ const PostDetailModal = ({
               <StyledLikeText className="like-extra-text">{`외 ${postLike?.length}명`}</StyledLikeText>
               <StyledLikeText>이 좋아합니다.</StyledLikeText>
             </StledLikeContainer>
-            <StyledCommentContainer />
+            <StyledCommentContainer>
+              {/* TODO: Input 컴포넌트를 textarea 태그로 바꿀 수 있는 옵션이 있어야 할듯 */}
+              <Input
+                ref={commentInputRef}
+                placeholder="댓글 달기..."
+                onChange={handleChangeCommentInput}
+                className="post-detail-comment-input"
+              />
+              <Button
+                disabled={isCommentBtnDisabled}
+                width="fit-content"
+                height="2.5rem"
+                borderRadius="0.5rem"
+                style={postCommentBtnStyle}
+                onClick={handleClickComment}
+              >
+                게시
+              </Button>
+            </StyledCommentContainer>
           </StyledLikeCommentChat>
         </StyledPostContentContainer>
       </Modal>
@@ -190,6 +251,7 @@ const PostDetailModal = ({
         <PostDotModal
           onChangeOpen={handleCloseDotModal}
           onCloseDotModal={handleCloseDotModal}
+          onCancelFollow={setIsLike}
         />
       )}
     </>

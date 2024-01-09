@@ -8,19 +8,21 @@ import {
 import Button from '@/Components/Base/Button';
 import buttonInfo from './postDotModalConst';
 
-const PostDotModal = ({ onChangeOpen, onCloseDotModal }: PostDotModalProps) => {
+const PostDotModal = ({
+  onChangeOpen,
+  onCloseDotModal,
+  onCancelFollow,
+}: PostDotModalProps) => {
   const { colors } = useTheme();
 
-  const handleDeletePost = () => {
-    console.log('게시물 삭제');
-  };
+  // TODO: 포스트 수정, 삭제, 팔로우 취소 api 연결
+  const handleDeletePost = () => {};
 
-  const handleEditPost = () => {
-    console.log('게시물 수정');
-  };
+  const handleEditPost = () => {};
 
   const handleCancelFollow = () => {
-    console.log('팔로우 취소');
+    onCancelFollow(false);
+    onCloseDotModal(false);
   };
 
   const handleCloseDotModal = () => {
