@@ -4,7 +4,7 @@ import IconProps from './type';
 
 const Icon = forwardRef(
   (
-    { name, isFill = true, className = 'hi', ...props }: IconProps,
+    { name, isFill = true, className = '', ...props }: IconProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ) => {
     return (
