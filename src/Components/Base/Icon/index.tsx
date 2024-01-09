@@ -4,14 +4,18 @@ import IconProps from './type';
 
 const Icon = forwardRef(
   (
-    { name, isFill = true, ...props }: IconProps,
+    { name, isFill = true, className = 'hi', ...props }: IconProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ) => {
     return (
       <StyledIconContainer
         {...props}
         ref={ref}
-        className={isFill ? 'material-icons' : 'material-symbols-outlined'}
+        className={
+          isFill
+            ? `material-icons ${className}`
+            : `material-symbols-outlined  ${className}`
+        }
       >
         {name}
       </StyledIconContainer>
