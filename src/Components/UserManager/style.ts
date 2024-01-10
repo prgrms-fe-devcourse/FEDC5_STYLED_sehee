@@ -8,6 +8,11 @@ const StyledWrapper = styled.section`
   border-left: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+
+  @media ${({ theme }) => theme.device.laptop} {
+    display: none;
+  }
 `;
 
 export default StyledWrapper;

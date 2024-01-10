@@ -44,6 +44,7 @@ const UserManager = () => {
    * @returns {void} 반환값 없음
    */
   const loadMoreUsers = useCallback(() => {
+    console.log('렌더링');
     if (!userList || userList.length === 0) {
       return setUsersOption((prevOptions) => ({
         offset: prevOptions.offset,
