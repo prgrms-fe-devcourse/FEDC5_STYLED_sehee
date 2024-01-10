@@ -50,6 +50,8 @@ export const StyledCategoryTitle = styled.div`
 `;
 
 export const StyledMainContentContainer = styled.div`
+  display: flex;
+  align-items: center;
   padding: 1rem;
   width: calc(100% - 60rem);
   height: 100%;
@@ -65,6 +67,13 @@ export const StyledPostCardList = styled.div`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+`;
+
+export const StyledNoPost = styled.div`
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  font-size: ${({ theme }) => theme.size.large};
 `;
 
 export const StyledRightContainer = styled.div`

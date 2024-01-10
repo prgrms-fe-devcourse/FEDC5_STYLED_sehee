@@ -17,6 +17,7 @@ import {
   StyledHeaderContainer,
   StyledLeftContainer,
   StyledMainContentContainer,
+  StyledNoPost,
   StyledPostCardList,
   StyledWrapper,
 } from './style';
@@ -54,6 +55,8 @@ const HomePage = () => {
    */
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
+
+    if (channelId !== currentChannelId) setPostList([]);
 
     setPostOffset(0);
 
@@ -263,19 +266,23 @@ const HomePage = () => {
         </StyledLeftContainer>
         <StyledMainContentContainer>
           {/* 포스트 카드 리스트 */}
-          <StyledPostCardList>
-            {postList.map((post) => (
-              <PostCard
-                key={post._id}
-                imageUrl={post.image || ''}
-                content={post.title || ''}
-                authorName={post.author.fullName || ''}
-                authorThumbnail=""
-                isFollower
-                isLike
-              />
-            ))}
-          </StyledPostCardList>
+          {postList.length !== 0 ? (
+            <StyledPostCardList>
+              {postList.map((post) => (
+                <PostCard
+                  key={post._id}
+                  imageUrl={post.image || ''}
+                  content={post.title || ''}
+                  authorName={post.author.fullName || ''}
+                  authorThumbnail=""
+                  isFollower
+                  isLike
+                />
+              ))}
+            </StyledPostCardList>
+          ) : (
+            <StyledNoPost>페이지가 없습니다.</StyledNoPost>
+          )}
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
