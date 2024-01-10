@@ -6,6 +6,7 @@ import StyledWrapper from './style';
 import { getOnlineUsers, getUsers } from '@/Services/User';
 import { UserType } from '@/Types/UserType';
 import QUERY_KEYS from '@/Constants/queryKeys';
+// import Skeleton from '../Base/Skeleton';
 
 const UserManager = () => {
   const [usersOption, setUsersOption] = useState({ offset: 0, limit: 10 });
@@ -18,7 +19,7 @@ const UserManager = () => {
    * @property {UserType[]} data.userList - 불러온 사용자 목록
    * @property {boolean} isLoading - 데이터 로딩 상태
    */
-  const { data: userList, isLoading } = useQuery({
+  const { data: userList, isLoading: allIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.USER_LIST, usersOption.offset, usersOption.limit],
     queryFn: () => getUsers(usersOption),
   });
@@ -30,7 +31,7 @@ const UserManager = () => {
    * @property {UserType[]} data.onlineUserList - 현재 접속 중인 사용자 목록
    * @options {refetchInterval} - 2초마다 API를 재요청하여 데이터를 최신 상태로 유지
    */
-  const { data: onlineUserList } = useQuery({
+  const { data: onlineUserList, isLoading: onlineIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
     queryFn: getOnlineUsers,
     refetchInterval: 2000,
@@ -65,13 +66,28 @@ const UserManager = () => {
   return (
     <StyledWrapper>
       {/* <UserSearchForm /> */}
-      <UserList
-        isLoading={isLoading}
-        isEnd={userList?.length === 0}
-        userList={allUserList}
-        onlineUserList={onlineUserList || []}
-        loadMoreUsers={loadMoreUsers}
-      />
+      {/* {allIsLoading ||
+        (onlineIsLoading && (
+          <SkeletonList
+            length={9}
+            style={{ flexGrow: 1 }}
+          >
+            <Skeleton.Circle size="5rem" />
+            <Skeleton.Paragraph
+              line={2}
+              style={{ width: '100%' }}
+            />
+          </SkeletonList>
+        ))} */}
+      {!allIsLoading && !onlineIsLoading && (
+        <UserList
+          isLoading={allIsLoading}
+          isEnd={userList?.length === 0}
+          userList={allUserList}
+          onlineUserList={onlineUserList || []}
+          loadMoreUsers={loadMoreUsers}
+        />
+      )}
     </StyledWrapper>
   );
 };
