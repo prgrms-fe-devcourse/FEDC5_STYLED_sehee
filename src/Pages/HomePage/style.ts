@@ -20,6 +20,10 @@ export const StyledLeftContainer = styled.div`
   align-items: center;
   border-right: 0.1rem solid #ddd;
   gap: 1rem;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    display: none;
+  }
 `;
 
 export const StyledCategoryTitleContainer = styled.div`
