@@ -1,5 +1,5 @@
 import validateEmail from '@/Utils/validateEmail';
-import ValidateLoginProps from './type';
+import { ValidateLoginProps } from './type';
 
 const validateLogin = ({ email, password }: ValidateLoginProps) => {
   const validationErrors: Record<string, string> = {};
