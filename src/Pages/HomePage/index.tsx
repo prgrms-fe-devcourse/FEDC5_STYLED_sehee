@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -29,9 +30,12 @@ import { getPostByChannel } from '@/Services/Post';
 import { PostType } from '@/Types/PostType';
 import PostCard from '@/Components/Common/PostCard';
 import UserManager from '@/Components/UserManager';
+import useAuthUserStore from '@/Stores/AuthUser';
+import { checkAuth } from '@/Services/Auth';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
+  const { setAuthUser } = useAuthUserStore();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -63,6 +67,21 @@ const HomePage = () => {
   }, []);
 
   /**
+   * 메인페이지 최초 접속 시 사용자 인증 여부 확인하고
+   * user 데이터를 스토어에 저장하는 useQuery 훅
+   */
+  const { data: userObj, isSuccess } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: checkAuth,
+  });
+
+  useEffect(() => {
+    if (isSuccess && userObj) {
+      setAuthUser(userObj);
+    }
+  }, [isSuccess, setAuthUser, userObj]);
+
+  /**
    * 모든 채널을 fetch하는 함수
    * @return setChannelList 함수 실행 void
    */
@@ -81,7 +100,7 @@ const HomePage = () => {
 
     // 관리자 계정 제외 필터링
     const filteredUserList = userData?.filter(
-      (user) => user.role !== 'SuperAdmin',
+      ({ role }) => role !== 'SuperAdmin',
     );
 
     return filteredUserList && setUserList(filteredUserList);
@@ -121,9 +140,7 @@ const HomePage = () => {
     (users: UserType[], searchQuery: string) => {
       if (!searchQuery) setSearchedUserList([]);
 
-      const result = users.filter((user) => {
-        const { fullName } = user;
-
+      const result = users.filter(({ fullName }) => {
         return (
           fullName.includes(searchQuery) ||
           fullName.toLowerCase().includes(searchQuery)
