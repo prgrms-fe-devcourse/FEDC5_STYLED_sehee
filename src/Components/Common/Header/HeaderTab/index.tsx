@@ -28,10 +28,11 @@ const HeaderTab = () => {
       tab === 'message' ||
       (tab === 'account' && location.pathname.includes('/profile'))
     ) {
+      setPrev(tab);
       sessionStorage.setItem('prev', prev);
     }
     sessionStorage.setItem('tab', tab);
-  }, [tab, prev, location]);
+  }, [tab, prev, setPrev, location]);
 
   const [alarm, setAlarm] = useState(false);
 
