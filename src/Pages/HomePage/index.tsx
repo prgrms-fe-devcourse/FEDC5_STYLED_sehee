@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -18,6 +18,7 @@ import {
   StyledLeftContainer,
   StyledMainContentContainer,
   StyledNoPost,
+  StyledObserver,
   StyledPostCardList,
   StyledWrapper,
 } from './style';
@@ -37,8 +38,8 @@ import { checkAuth } from '@/Services/Auth';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
-  const navigate = useNavigate();
   const { user: authUser, setAuthUser } = useAuthUserStore();
+  const [refInView, inView] = useInView();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -56,9 +57,10 @@ const HomePage = () => {
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
 
-    if (channelId !== currentChannelId) setPostList([]);
-
-    setPostOffset(0);
+    if (channelId !== currentChannelId) {
+      setPostList([]);
+      setPostOffset(0);
+    }
 
     return channelId && setCurrentChannelId(channelId);
   };
@@ -79,12 +81,6 @@ const HomePage = () => {
     queryKey: ['currentUser'],
     queryFn: checkAuth,
   });
-
-  useEffect(() => {
-    if (isSuccess && userObj) {
-      setAuthUser(userObj);
-    }
-  }, [isSuccess, setAuthUser, userObj]);
 
   /**
    * 모든 채널을 fetch하는 함수
@@ -123,7 +119,7 @@ const HomePage = () => {
         limit: 10,
       });
 
-      if (postData?.length !== 0 && postList.length === 0) {
+      if (postData?.length !== 0 && postData) {
         const newPostList = postData && [...postList, ...postData];
 
         setPostOffset(postOffset + 10);
@@ -160,15 +156,6 @@ const HomePage = () => {
   );
 
   useEffect(() => {
-    if (!authUser._id) {
-      // eslint-disable-next-line no-alert
-      if (window.confirm('님 로그인 안됨. 로그인 하실꺼임?')) {
-        navigate('/login');
-      }
-    }
-  }, [authUser._id, navigate]);
-
-  useEffect(() => {
     if (channelList.length === 0) fetchChannelList();
     if (userList.length === 0) fetchUserList();
 
@@ -182,10 +169,20 @@ const HomePage = () => {
   ]);
 
   useEffect(() => {
-    if (currentChannelId !== 'all') {
+    if ((currentChannelId !== 'all' && postOffset === 0) || inView) {
       fetchPostList(currentChannelId);
     }
-  }, [currentChannelId, fetchPostList]);
+  }, [currentChannelId, fetchPostList, inView, postOffset]);
+
+  /**
+   * 로그인 인증 시 유저 정보 갱신
+   */
+
+  useEffect(() => {
+    if (isSuccess && userObj) {
+      setAuthUser(userObj);
+    }
+  }, [isSuccess, setAuthUser, userObj]);
 
   return (
     <>
@@ -268,17 +265,20 @@ const HomePage = () => {
           {/* 포스트 카드 리스트 */}
           {postList.length !== 0 ? (
             <StyledPostCardList>
-              {postList.map((post) => (
-                <PostCard
-                  key={post._id}
-                  imageUrl={post.image || ''}
-                  content={post.title || ''}
-                  authorName={post.author.fullName || ''}
-                  authorThumbnail=""
-                  isFollower
-                  isLike
-                />
-              ))}
+              {postList.length !== 0
+                ? postList.map((post) => (
+                    <PostCard
+                      key={post._id}
+                      imageUrl={post.image || ''}
+                      content={post.title || ''}
+                      authorName={post.author.fullName || ''}
+                      authorThumbnail=""
+                      isFollower
+                      isLike
+                    />
+                  ))
+                : null}
+              <StyledObserver ref={refInView} />
             </StyledPostCardList>
           ) : (
             <StyledNoPost>페이지가 없습니다.</StyledNoPost>

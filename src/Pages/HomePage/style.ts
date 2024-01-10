@@ -51,6 +51,7 @@ export const StyledCategoryTitle = styled.div`
 
 export const StyledMainContentContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding: 1rem;
   width: calc(100% - 60rem);
@@ -67,6 +68,12 @@ export const StyledPostCardList = styled.div`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+`;
+
+export const StyledObserver = styled.div`
+  width: 100%;
+  flex-basis: 1rem;
+  flex-shrink: 0;
 `;
 
 export const StyledNoPost = styled.div`
