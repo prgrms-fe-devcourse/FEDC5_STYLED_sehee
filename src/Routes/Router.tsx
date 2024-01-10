@@ -6,6 +6,10 @@ import {
   LoginPage,
   SignUpPage,
   DirectMessagePage,
+  ProfilePage,
+  AddPostPage,
+  SearchPage,
+  EditPasswordPage,
 } from '@/Pages';
 
 const RouterManager = () => {
@@ -26,6 +30,22 @@ const RouterManager = () => {
       <Route
         path="/detail"
         element={<DetailPage />}
+      />
+      <Route
+        path="/search"
+        element={<SearchPage />}
+      />
+      <Route
+        path="/add-post"
+        element={<AddPostPage />}
+      />
+      <Route
+        path="/profile/:userId"
+        element={<ProfilePage />}
+      />
+      <Route
+        path="/edit-password/:userId"
+        element={<EditPasswordPage />}
       />
       <Route
         path="/directmessage"

@@ -6,11 +6,8 @@ import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
 import LinkButton from './LinkButton';
-import PostModal from '../../Modal/PostModal';
 import ModalButton from './ModalButton';
 import AlarmModal from '../../Modal/AlarmModal';
-import SearchModal from '../../Modal/SearchModal';
-import PasswordModal from '../../Modal/PasswordModal';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 
@@ -45,12 +42,10 @@ const HeaderTab = () => {
     ) {
       sessionStorage.setItem('tab', tab);
     }
-  }, [tab, location]);
+    sessionStorage.setItem('prev', prev);
+  }, [tab, prev, location]);
 
-  const [post, setPost] = useState(false);
-  const [search, setSearch] = useState(false);
   const [alarm, setAlarm] = useState(false);
-  const [password, setPassword] = useState(false);
 
   const options = ['마이페이지', '로그아웃', '비밀번호 변경'];
   const [drop, setDrop] = useState(false);
@@ -73,6 +68,11 @@ const HeaderTab = () => {
   // 사용자 인증 확인
   const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
 
+  const { data } = useQuery({
+    queryKey: ['auth'],
+    queryFn: checkAuth,
+  });
+
   // useMutation으로 로그아웃 처리
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -88,7 +88,8 @@ const HeaderTab = () => {
   const onSelectOption = (option: string) => {
     if (option === '마이페이지') {
       setDrop(!drop);
-      navigate('/profile');
+      // eslint-disable-next-line no-underscore-dangle
+      navigate(`/profile/${data?._id}`);
       setPrev(tab);
     }
     if (option === '로그아웃') {
@@ -97,7 +98,8 @@ const HeaderTab = () => {
     }
     if (option === '비밀번호 변경') {
       setDrop(!drop);
-      setPassword(true);
+      // eslint-disable-next-line no-underscore-dangle
+      navigate(`/edit-password/${data?._id}`);
     }
   };
 
@@ -138,37 +140,35 @@ const HeaderTab = () => {
           />
         )}
         {tab === 'add' ? (
-          <ModalButton
+          <LinkButton
             name="add_circle"
-            style={styledNavIcon}
             color={colors.primary}
+            link="/add-post"
+            style={styledNavIcon}
           />
         ) : (
-          <ModalButton
+          <LinkButton
             name="add_circle"
-            style={styledNavIcon}
             color={colors.background}
-            setModalOpen={() => {
-              onSetModal('add');
-              setPost(true);
-            }}
+            link="/add-post"
+            setLink={() => setTab('add')}
+            style={styledNavIcon}
           />
         )}
         {tab === 'search' ? (
-          <ModalButton
+          <LinkButton
             name="search"
-            style={styledNavIcon}
             color={colors.primary}
+            link="/search"
+            style={styledNavIcon}
           />
         ) : (
-          <ModalButton
+          <LinkButton
             name="search"
-            style={styledNavIcon}
             color={colors.background}
-            setModalOpen={() => {
-              onSetModal('search');
-              setSearch(true);
-            }}
+            link="/search"
+            setLink={() => setTab('search')}
+            style={styledNavIcon}
           />
         )}
         {!isAuthUser ? (
@@ -232,27 +232,10 @@ const HeaderTab = () => {
           </>
         )}
       </StyledUserContainer>
-
-      {post && (
-        <PostModal
-          onChangeOpen={() => {
-            setPost(false);
-            setTab(prev);
-          }}
-        />
-      )}
       {alarm && (
         <AlarmModal
           onChangeOpen={() => {
             setAlarm(false);
-            setTab(prev);
-          }}
-        />
-      )}
-      {search && (
-        <SearchModal
-          onChangeOpen={() => {
-            setSearch(false);
             setTab(prev);
           }}
         />
@@ -270,15 +253,6 @@ const HeaderTab = () => {
           onSelectOption(option);
         }}
       />
-      {password && (
-        <PasswordModal
-          onChangeOpen={() => {
-            setPassword(false);
-            console.log(prev);
-            setTab(prev);
-          }}
-        />
-      )}
     </>
   );
 };
