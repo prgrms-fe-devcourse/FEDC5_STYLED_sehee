@@ -16,11 +16,6 @@ import {
   StyledLeftContainer,
   StyledMainContentContainer,
   StyledPostCardList,
-  StyledRightContainer,
-  StyledUserCardWrapper,
-  StyledUserInfoContainer,
-  StyledUserList,
-  StyledUserName,
   StyledWrapper,
 } from './style';
 import Button from '@/Components/Base/Button';
@@ -30,12 +25,10 @@ import { ChannelType } from '@/Types/ChannelType';
 import channels from '@/Constants/Channels';
 import { getUsers } from '@/Services/User';
 import { UserType } from '@/Types/UserType';
-import SearchBar from '@/Components/Common/SearchBar';
-import Avatar from '@/Components/Base/Avatar';
-import Badge from '@/Components/Base/Badge';
 import { getPostByChannel } from '@/Services/Post';
 import { PostType } from '@/Types/PostType';
 import PostCard from '@/Components/Common/PostCard';
+import UserManager from '@/Components/UserManager';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -254,42 +247,7 @@ const HomePage = () => {
             ))}
           </StyledPostCardList>
         </StyledMainContentContainer>
-        {/* 유저 목록 네비바 */}
-        <StyledRightContainer>
-          {/* 검색바 */}
-          <SearchBar
-            onChangehandler={handleChangeSearch}
-            className="user-search"
-          />
-          {/* 유저 리스트 */}
-          <StyledUserList>
-            {(searchKeyword || searchedUserList.length !== 0
-              ? searchedUserList
-              : userList
-            ).map((user) => {
-              return (
-                <StyledUserCardWrapper key={user._id}>
-                  <Avatar
-                    src={user.coverImage || ''}
-                    className="user-avatar"
-                    size={30}
-                  >
-                    {!user.isOnline && (
-                      <Badge
-                        position="rightBottom"
-                        backgroundColor={colors.online}
-                        style={{ border: `1px solid ${colors.background}` }}
-                      />
-                    )}
-                  </Avatar>
-                  <StyledUserInfoContainer>
-                    <StyledUserName>{user.fullName}</StyledUserName>
-                  </StyledUserInfoContainer>
-                </StyledUserCardWrapper>
-              );
-            })}
-          </StyledUserList>
-        </StyledRightContainer>
+        <UserManager />
       </StyledWrapper>
     </>
   );
