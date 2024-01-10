@@ -6,13 +6,13 @@ const NotificationList = ({ list }: Props) => {
   return (
     <StyledNotificationList>
       {list.map(({ author, date, text, type, typeId, _id, seen }) => {
-        const { coverImage } = author;
+        const { image } = author;
 
         return (
           <NotificationItem
             key={_id}
             id={_id}
-            src={coverImage}
+            src={image}
             text={text}
             date={date}
             type={type}
