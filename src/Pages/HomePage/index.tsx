@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -35,7 +36,8 @@ import { checkAuth } from '@/Services/Auth';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
-  const { setAuthUser } = useAuthUserStore();
+  const navigate = useNavigate();
+  const { user: authUser, setAuthUser } = useAuthUserStore();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -155,6 +157,15 @@ const HomePage = () => {
   );
 
   useEffect(() => {
+    if (!authUser._id) {
+      // eslint-disable-next-line no-alert
+      if (window.confirm('님 로그인 안됨. 로그인 하실꺼임?')) {
+        navigate('/login');
+      }
+    }
+  }, [authUser._id, navigate]);
+
+  useEffect(() => {
     if (channelList.length === 0) fetchChannelList();
     if (userList.length === 0) fetchUserList();
 
@@ -183,19 +194,21 @@ const HomePage = () => {
           <StyledCategoryTitleContainer>
             <StyledCategoryTitle>카테고리</StyledCategoryTitle>
             {/* 카테고리 채널 추가 버튼 */}
-            <Button
-              width={size.large}
-              height={size.large}
-              borderRadius="0.5rem"
-              textSize={size.medium}
-              backgroundColor={colors.background}
-              hoverBackgroundColor={colors.backgroundGrey}
-            >
-              <Icon
-                name="add"
-                style={{ color: `grey`, fontSize: `${size.large}` }}
-              />
-            </Button>
+            {authUser.role === 'SuperAdmin' && (
+              <Button
+                width={size.large}
+                height={size.large}
+                borderRadius="0.5rem"
+                textSize={size.medium}
+                backgroundColor={colors.background}
+                hoverBackgroundColor={colors.backgroundGrey}
+              >
+                <Icon
+                  name="add"
+                  style={{ color: `grey`, fontSize: `${size.large}` }}
+                />
+              </Button>
+            )}
           </StyledCategoryTitleContainer>
           {/* 채널 버튼 리스트 */}
           <StyledCategoryList>
