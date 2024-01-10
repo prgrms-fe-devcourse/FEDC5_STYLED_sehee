@@ -9,12 +9,11 @@ export const StyledContainer = styled.li<{ $isOnline: boolean }>`
   padding: ${({ theme }) => theme.size.small};
 
   &:hover {
-    border-radius: ${({ theme }) => theme.size.medium};
     background-color: ${({ theme }) => theme.colors.buttonClickHover};
     cursor: pointer;
 
     > span {
-      color: ${({ theme }) => theme.colors.buttonText};
+      color: ${({ theme }) => theme.colors.focusHoverText};
     }
   }
 `;

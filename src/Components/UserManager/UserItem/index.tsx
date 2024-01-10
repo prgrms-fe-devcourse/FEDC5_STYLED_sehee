@@ -17,7 +17,7 @@ const UserItem = forwardRef(
       'https://user-images.githubusercontent.com/17202261/101670093-195d9180-3a96-11eb-9bd4-9f31cbe44aea.png';
 
     const handleOnClick = () => {
-      navigator(`/user/${id}`);
+      navigator(`/profile/${id}`);
     };
 
     return (
