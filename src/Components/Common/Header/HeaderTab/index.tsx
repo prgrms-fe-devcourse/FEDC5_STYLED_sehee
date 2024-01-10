@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
@@ -10,6 +10,7 @@ import ModalButton from './ModalButton';
 import AlarmModal from '../../Modal/AlarmModal';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
+import useTabStore from '@/Stores/Tab';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
@@ -17,32 +18,19 @@ const HeaderTab = () => {
   const location = useLocation();
   const { colors } = useTheme();
 
-  // 새로고침 시에도 tab 유지되게
-  const storedTab: string | null = sessionStorage.getItem('tab');
-  const initialTab:
-    | 'home'
-    | 'add'
-    | 'search'
-    | 'alarm'
-    | 'message'
-    | 'account' = storedTab || 'home';
+  // tab
+  const { tab, prev, setTab, setPrev } = useTabStore();
 
-  // tab 상태와 이를 변경하는 함수
-  const [tab, setTab] = useState<
-    'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
-  >(initialTab);
-  const [prev, setPrev] = useState(tab);
-
-  // tab이 변경될 때마다 localStorage에 저장
+  // tab이 변경될 때마다 sessionStorage에 저장
   useEffect(() => {
     if (
       tab === 'home' ||
       tab === 'message' ||
-      (tab === 'account' && location.pathname === '/profile')
+      (tab === 'account' && location.pathname.includes('/profile'))
     ) {
-      sessionStorage.setItem('tab', tab);
+      sessionStorage.setItem('prev', prev);
     }
-    sessionStorage.setItem('prev', prev);
+    sessionStorage.setItem('tab', tab);
   }, [tab, prev, location]);
 
   const [alarm, setAlarm] = useState(false);
@@ -90,7 +78,7 @@ const HeaderTab = () => {
       setDrop(!drop);
       // eslint-disable-next-line no-underscore-dangle
       navigate(`/profile/${data?._id}`);
-      setPrev(tab);
+      setPrev('account');
     }
     if (option === '로그아웃') {
       setDrop(!drop);
@@ -104,9 +92,7 @@ const HeaderTab = () => {
   };
 
   const onSetModal = (
-    option: SetStateAction<
-      'home' | 'add' | 'search' | 'alarm' | 'message' | 'account'
-    >,
+    option: 'home' | 'add' | 'search' | 'alarm' | 'message' | 'account',
   ) => {
     if (
       tab === 'home' ||
