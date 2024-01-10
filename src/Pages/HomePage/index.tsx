@@ -36,6 +36,7 @@ import Badge from '@/Components/Base/Badge';
 import { getPostByChannel } from '@/Services/Post';
 import { PostType } from '@/Types/PostType';
 import PostCard from '@/Components/Common/PostCard';
+import NotificationModal from '@/Components/NotificationModal';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -291,6 +292,7 @@ const HomePage = () => {
           </StyledUserList>
         </StyledRightContainer>
       </StyledWrapper>
+      <NotificationModal onClose={() => {}} />
     </>
   );
 };
