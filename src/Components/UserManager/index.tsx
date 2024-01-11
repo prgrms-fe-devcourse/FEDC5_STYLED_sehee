@@ -1,83 +1,79 @@
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import UserList from './UserList';
-// import UserSearchForm from './UserSearchForm';
+import UserSearchForm from './UserSearchForm';
 import StyledWrapper from './style';
 import { getOnlineUsers, getUsers } from '@/Services/User';
-import { UserType } from '@/Types/UserType';
 import QUERY_KEYS from '@/Constants/queryKeys';
-// import Skeleton from '../Base/Skeleton';
+import { UserType } from '@/Types/UserType';
+import SkeletonList from '../Common/SkeletonList';
+import Skeleton from '../Base/Skeleton';
 
 const UserManager = () => {
-  const [offset, setOffset] = useState(0);
-  const [allUserList, setAllUserList] = useState<UserType[]>([]);
   const limit = 10;
   const refetchTime = 2000;
 
-  const {
-    data: userList,
-    isLoading: userListIsLoading,
-    isSuccess,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.USER_LIST, offset, limit],
-    queryFn: () => getUsers({ offset, limit }),
-    select: (data) => data?.filter((user) => user.role !== 'SuperAdmin') || [],
+  const { data: onlineUserList } = useQuery({
+    queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
+    queryFn: getOnlineUsers,
+    refetchInterval: refetchTime,
   });
 
-  const { data: onlineUserList, isLoading: onlineUserListIsLoading } = useQuery(
-    {
-      queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
-      queryFn: getOnlineUsers,
-      refetchInterval: refetchTime,
+  const {
+    data: userList,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useInfiniteQuery({
+    queryKey: ['ONLINE_USER_LIST'],
+    queryFn: ({ pageParam }) => getUsers({ offset: pageParam, limit }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length !== 0) {
+        return allPages.length * limit;
+      }
+      return null;
     },
-  );
+    select: (response) => {
+      const filteredData = response.pages
+        .map((page) => page?.filter(({ role }) => role !== 'SuperAdmin'))
+        .flat();
 
-  const loadMoreUsers = useCallback(() => {
-    if (!userList || userList.length === 0 || !isSuccess) {
-      return;
+      return { ...response, pages: filteredData };
+    },
+  });
+
+  const loadMoreUsers = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-
-    setOffset((prevOffset) => prevOffset + limit);
-  }, [isSuccess, userList]);
-
-  useEffect(() => {
-    if (!userList || userList.length === 0 || !isSuccess) {
-      return;
-    }
-
-    setAllUserList((prevList) => {
-      const prevListIds = new Set(prevList.map(({ _id }) => _id));
-      const newAllUsers = userList.filter(({ _id }) => !prevListIds.has(_id));
-
-      return [...prevList, ...newAllUsers];
-    });
-  }, [isSuccess, userList]);
-
-  console.log(onlineUserList);
+  };
 
   return (
     <StyledWrapper>
-      {/* <UserSearchForm /> */}
-      {/* {userListIsLoading ||
-        (onlineUserListIsLoading && (
+      <UserSearchForm />
+      {!isFetching ||
+        (!userList && (
           <SkeletonList
-            length={9}
-            style={{ flexGrow: 1 }}
+            length={6}
+            style={{ flex: '1 0 90%' }}
           >
             <Skeleton.Circle size="5rem" />
             <Skeleton.Paragraph
-              line={2}
+              line={1}
               style={{ width: '100%' }}
             />
           </SkeletonList>
-        ))} */}
-      {!userListIsLoading && !onlineUserListIsLoading && (
-        <UserList
-          userList={allUserList}
-          onlineUserList={onlineUserList || []}
-          loadMoreUsers={loadMoreUsers}
-        />
-      )}
+        ))}
+      <UserList
+        userList={
+          userList?.pages?.filter(
+            (user): user is UserType => user !== undefined,
+          ) || []
+        }
+        onlineUserList={onlineUserList || []}
+        loadMoreUsers={loadMoreUsers}
+      />
     </StyledWrapper>
   );
 };
