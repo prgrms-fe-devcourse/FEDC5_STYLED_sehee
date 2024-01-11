@@ -265,19 +265,17 @@ const HomePage = () => {
           {/* 포스트 카드 리스트 */}
           {postList.length !== 0 ? (
             <StyledPostCardList>
-              {postList.length !== 0
-                ? postList.map((post) => (
-                    <PostCard
-                      key={post._id}
-                      imageUrl={post.image || ''}
-                      content={post.title || ''}
-                      authorName={post.author.fullName || ''}
-                      authorThumbnail=""
-                      isFollower
-                      isLike
-                    />
-                  ))
-                : null}
+              {postList.map((post) => (
+                <PostCard
+                  key={post._id}
+                  imageUrl={post.image || ''}
+                  content={post.title || ''}
+                  authorName={post.author.fullName || ''}
+                  authorThumbnail=""
+                  isFollower
+                  isLike
+                />
+              ))}
               <StyledObserver ref={refInView} />
             </StyledPostCardList>
           ) : (
