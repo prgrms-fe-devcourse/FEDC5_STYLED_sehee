@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createMessage,
@@ -8,6 +9,8 @@ import {
 import { MessageType } from '@/Types/MessageType';
 import { PostCreateMessageRequestType } from '@/Types/Request';
 import { ConversationType } from '@/Types/ConversationType';
+import { UserType } from '@/Types/UserType';
+import { searchUsers } from '@/Services/Search';
 
 export const useFetchConversations = () => {
   const { data, isLoading, refetch } = useQuery<ConversationType[] | null>({
@@ -27,7 +30,14 @@ export const useFetchConversations = () => {
 export const useFetchMessages = (userId: string) => {
   const { data, isLoading, refetch } = useQuery<MessageType[] | null>({
     queryKey: ['messages'],
-    queryFn: () => getMessages(userId),
+    queryFn: async () => {
+      const messages = await getMessages(userId);
+      return messages
+        ? messages.sort(
+            (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
+          )
+        : [];
+    },
     enabled: !!userId,
   });
 
@@ -35,6 +45,26 @@ export const useFetchMessages = (userId: string) => {
     messages: data,
     isMessagesLoading: isLoading,
     messagesRefetch: refetch,
+  };
+};
+
+export const useSearchUsers = (query: string, myId: string) => {
+  const { data, isLoading, refetch } = useQuery<UserType[] | null>({
+    queryKey: ['searchUsers', query],
+    queryFn: async () => {
+      if (!query) {
+        return []; // query가 비어있는 경우 빈 배열 반환
+      }
+      const users = await searchUsers(query);
+      return users ? users.filter((user) => user._id !== myId) : [];
+    },
+    // enabled: !!query,
+  });
+
+  return {
+    users: data,
+    isUsersLoading: isLoading,
+    usersRefetch: refetch,
   };
 };
 
