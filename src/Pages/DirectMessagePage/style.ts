@@ -8,6 +8,7 @@ export const StyledContainer = styled.div`
   top: 9.4rem;
   background-color: white;
   overflow: hidden;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 export const StyledDiv = styled.div`

@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useRef, useState } from 'react';
-import Avatar from '@/Components/Base/Avatar';
+import { useNavigate } from 'react-router-dom';
 import {
   AlertContainer,
   MessageItemContainer,
@@ -16,6 +16,7 @@ import { createMessage } from '@/Services/Message';
 import DirectMessageSkeleton from '../Skeleton';
 import { sendNotifications } from '@/Services/Notification';
 import Alert from '@/Components/Common/Alert';
+import UserCard from '@/Components/Common/UserCard';
 
 const MessageList = ({
   receiver,
@@ -28,6 +29,7 @@ const MessageList = ({
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const navigator = useNavigate();
 
   // 선택한 채팅방이 달라질 때마다 messages를 다시 가지고 온다.
   useEffect(() => {
@@ -88,6 +90,10 @@ const MessageList = ({
     }
   };
 
+  const handleClickMyName = () => {
+    navigator(`/profile/${receiver._id}`);
+  };
+
   return (
     <StyledContainer>
       {isMessagesLoading || !messages || isAlertOpen ? (
@@ -109,11 +115,15 @@ const MessageList = ({
       ) : (
         <>
           <StyledHeader>
-            <Avatar
-              src={receiver.image || ''}
-              size={40}
+            <UserCard
+              mode="header"
+              coverImageUrl={receiver.image || ''}
+              avatarSize={40}
+              userName={receiver.fullName}
+              userNameSize="1.5rem"
+              onClick={handleClickMyName}
+              style={{}}
             />
-            <div>{receiver.fullName}</div>
           </StyledHeader>
           <StyledBody ref={scrollRef}>
             {messages.map((message, index) => (

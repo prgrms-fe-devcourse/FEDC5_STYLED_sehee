@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StyledContainer, StyledHeader, StyledBody } from './style';
 import { ConversationListProps } from './type';
 import Icon from '@/Components/Base/Icon';
@@ -20,6 +21,7 @@ const ConversationList = ({
   loginUser,
 }: ConversationListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigator = useNavigate();
 
   const getReceiver = (conversation: ConversationType) => {
     return conversation.receiver._id === loginUser._id
@@ -27,17 +29,28 @@ const ConversationList = ({
       : conversation.receiver;
   };
 
-  const handleClick = async (receiver: UserType) => {
+  const handleClickUser = async (receiver: UserType) => {
     setReceiver(receiver);
     await readMessage(receiver._id);
     conversationsRefetch();
   };
 
+  const handleClickMyName = () => {
+    navigator(`/profile/${loginUser._id}`);
+  };
+
   return (
     <StyledContainer>
       <StyledHeader>
-        {/* @TODO: 추후에 본인 이름 넣도록 변경 예정 */}
-        <div>{loginUser.fullName}</div>
+        <UserCard
+          mode="header"
+          coverImageUrl={loginUser.image || ''}
+          avatarSize={40}
+          userName={loginUser.fullName}
+          userNameSize="1.5rem"
+          onClick={handleClickMyName}
+          style={{}}
+        />
         <Icon
           onClick={() => setIsModalOpen(true)}
           name="edit_square"
@@ -69,7 +82,7 @@ const ConversationList = ({
                   userNameSize="1.5rem"
                   userDetail={conversation.message}
                   date={date}
-                  onClick={() => handleClick(receiver)}
+                  onClick={() => handleClickUser(receiver)}
                 />
               </div>
             );

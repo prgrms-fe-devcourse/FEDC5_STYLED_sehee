@@ -8,6 +8,7 @@ export const StyledContainer = styled.div`
 export const StyledHeader = styled.div`
   display: flex;
   height: 7rem;
+  padding-right: 1rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: space-around;
   align-items: center;

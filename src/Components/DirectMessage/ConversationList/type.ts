@@ -6,4 +6,5 @@ export interface ConversationListProps {
   conversations: ConversationType[] | null | undefined;
   isConversationsLoading: boolean;
   conversationsRefetch: () => void;
+  loginUser: Partial<UserType>;
 }
