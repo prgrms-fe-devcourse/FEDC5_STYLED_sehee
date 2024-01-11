@@ -22,7 +22,7 @@ const UserList = ({
 
   return (
     <StyledUserList>
-      {userList.map(({ _id, coverImage, fullName }: UserType, index) => {
+      {userList.map(({ _id, image, fullName }: UserType, index) => {
         const isLast = userList.length === index + 1;
         const isOnline = onlineUserList.some(
           ({ _id: onlineUserId }: UserType) => onlineUserId === _id,
@@ -32,7 +32,7 @@ const UserList = ({
           <UserItem
             key={_id}
             id={_id}
-            coverImage={coverImage}
+            image={image}
             isOnline={isOnline}
             fullName={fullName}
             ref={isLast ? ref : null}

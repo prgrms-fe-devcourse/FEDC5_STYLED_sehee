@@ -9,7 +9,7 @@ import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 
 const UserItem = forwardRef(
   (
-    { id, coverImage, isOnline, fullName }: Props,
+    { id, image, isOnline, fullName }: Props,
     ref: ForwardedRef<HTMLLIElement>,
   ) => {
     const { colors } = useTheme();
@@ -26,7 +26,7 @@ const UserItem = forwardRef(
         ref={ref}
       >
         <Avatar
-          src={coverImage || DEFAULT_USER_IMAGE_SRC}
+          src={image || DEFAULT_USER_IMAGE_SRC}
           alt="사용자 이미지"
           size={40}
         >
