@@ -121,7 +121,9 @@ const HeaderTab = () => {
         <LinkButton
           name="add_circle"
           color={tab === 'add' ? colors.primary : colors.background}
-          link="/add-post"
+          link={`${
+            location.pathname !== '/' ? location.pathname : ''
+          }/add-post`}
           setLink={() => setTab('add')}
           style={styledNavIcon}
         />
@@ -129,7 +131,7 @@ const HeaderTab = () => {
         <LinkButton
           name="search"
           color={tab === 'search' ? colors.primary : colors.background}
-          link="/search"
+          link={`${location.pathname !== '/' ? location.pathname : ''}/search`}
           setLink={() => setTab('search')}
           style={styledNavIcon}
         />

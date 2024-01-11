@@ -25,6 +25,14 @@ const RouterManager = () => {
           path="add-channel"
           element={<AddChannelModal />}
         />
+        <Route
+          path="search"
+          element={<SearchPage />}
+        />
+        <Route
+          path="add-post"
+          element={<AddPostPage />}
+        />
       </Route>
       <Route
         path="/login"
@@ -39,14 +47,6 @@ const RouterManager = () => {
         element={<DetailPage />}
       />
       <Route
-        path="/search"
-        element={<SearchPage />}
-      />
-      <Route
-        path="/add-post"
-        element={<AddPostPage />}
-      />
-      <Route
         path="/profile/:userId"
         element={<ProfilePage />}
       />
@@ -57,7 +57,16 @@ const RouterManager = () => {
       <Route
         path="/directmessage"
         element={<DirectMessagePage />}
-      />
+      >
+        <Route
+          path="search"
+          element={<SearchPage />}
+        />
+        <Route
+          path="add-post"
+          element={<AddPostPage />}
+        />
+      </Route>
       <Route
         path="*"
         element={<NotFoundPage />}
