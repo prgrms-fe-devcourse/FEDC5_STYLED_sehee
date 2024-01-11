@@ -3,7 +3,6 @@ import {
   DetailPage,
   HomePage,
   NotFoundPage,
-  ProfilePage,
   LoginPage,
   SignUpPage,
   DirectMessagePage,

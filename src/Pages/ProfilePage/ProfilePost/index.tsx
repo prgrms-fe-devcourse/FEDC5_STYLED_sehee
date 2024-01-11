@@ -2,7 +2,7 @@ import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
 import { UserType } from '@/Types/UserType';
 
-const ProfilePost = ({ user }: UserType) => {
+const ProfilePost = ({ userData }: UserType) => {
   return (
     <div
       style={{
@@ -19,7 +19,7 @@ const ProfilePost = ({ user }: UserType) => {
           width: '65%',
         }}
       >
-        {user.posts.map((post: PostType) => (
+        {userData.posts.map((post: PostType) => (
           <ImageCard
             // eslint-disable-next-line no-underscore-dangle
             key={post._id}

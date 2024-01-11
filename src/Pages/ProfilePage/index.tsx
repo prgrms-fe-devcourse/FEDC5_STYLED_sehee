@@ -1,51 +1,10 @@
 import { useTheme } from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import profile from '@/Assets/Images/STYLED-logo-black.png';
 import ProfileInfo from './ProfileInfo';
-
-const user = {
-  image: profile,
-  role: '?',
-  emailVerified: true,
-  banned: false,
-  isOnline: true,
-  posts: [
-    {
-      likes: [1, 2, 3, 4, 5, 6],
-      comments: [1, 2, 3, 4, 5],
-      _id: 'hi',
-      image: profile,
-    },
-    {
-      likes: [1, 2, 3, 4, 5, 6],
-      comments: [1, 2, 3, 4, 5],
-      _id: 'h',
-      image: profile,
-    },
-    {
-      likes: [1, 2, 3, 4, 5, 6],
-      comments: [1, 2, 3, 4, 5],
-      _id: 'i',
-      image: profile,
-    },
-    {
-      likes: [1, 2, 3, 4, 5, 6],
-      comments: [1, 2, 3, 4, 5],
-      _id: 'hie',
-      image: profile,
-    },
-    {
-      likes: [1, 2, 3, 4, 5, 6],
-      comments: [1, 2, 3, 4, 5],
-      _id: 'hwi',
-      image: profile,
-    },
-  ],
-  likes: [],
-  followers: [],
-  following: [],
-  _id: '123',
-  fullName: 'lee',
-};
+import ProfilePost from './ProfilePost';
+import { checkAuth } from '@/Services/Auth';
 
 /**
  * 
@@ -63,19 +22,28 @@ const user = {
 
 const ProfilePage = () => {
   const { colors } = useTheme();
+  const { userId } = useParams(); // URL에서 사용자 ID를 가져옴
+  const navigate = useNavigate();
+
   return (
-    <div
-      style={{
-        marginTop: '9.4rem',
-        backgroundColor: colors.background,
-        height: '100%',
-        textAlign: 'center',
-      }}
-    >
-      <ProfileInfo user={user} />
-      <hr style={{ width: '75%' }} />
-      <ProfilePage user={user} />
-    </div>
+    <>
+      <div style={{ height: '9.4rem' }} />
+      <div
+        style={{
+          backgroundColor: colors.background,
+          height: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <ProfileInfo
+          userData={user}
+          // eslint-disable-next-line no-underscore-dangle
+          myprofile={userId === user._id}
+        />
+        <hr style={{ width: '75%' }} />
+        <ProfilePost userData={user} />
+      </div>
+    </>
   );
 };
 
