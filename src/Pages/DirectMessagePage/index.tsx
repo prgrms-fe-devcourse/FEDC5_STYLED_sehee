@@ -55,6 +55,5 @@ const DirectMessagePage = () => {
       )}
     </StyledContainer>
   );
-};
 
 export default DirectMessagePage;
