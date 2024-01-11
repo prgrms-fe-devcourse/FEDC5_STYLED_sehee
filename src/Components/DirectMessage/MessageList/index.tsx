@@ -1,11 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
   AlertContainer,
   MessageItemContainer,
   StyledBody,
   StyledContainer,
+  StyledFooter,
   StyledHeader,
 } from './style';
 import Input from '@/Components/Base/Input';
@@ -17,8 +19,13 @@ import DirectMessageSkeleton from '../Skeleton';
 import { sendNotifications } from '@/Services/Notification';
 import Alert from '@/Components/Common/Alert';
 import UserCard from '@/Components/Common/UserCard';
+import Icon from '@/Components/Base/Icon';
+import Button from '@/Components/Base/Button';
 
 const MessageList = ({
+  isClickedUserCard,
+  setIsClickedUserCard,
+  isMobileSize = false,
   receiver,
   conversationsRefetch,
   loginUser,
@@ -30,6 +37,15 @@ const MessageList = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const navigator = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [receiver]);
 
   // 선택한 채팅방이 달라질 때마다 messages를 다시 가지고 온다.
   useEffect(() => {
@@ -45,48 +61,52 @@ const MessageList = ({
     }
   }, [messages]);
 
+  const sendMessage = async () => {
+    if (!inputRef || !inputRef.current) {
+      return;
+    }
+    // 빈칸 예외 처리
+    if (inputRef.current.value.trim().length === 0) {
+      return;
+    }
+
+    const content = inputRef.current.value.trim();
+    inputRef.current.value = '';
+
+    const message = await createMessage({
+      message: content,
+      receiver: receiver._id,
+    });
+
+    if (!message) {
+      setIsAlertOpen(true);
+      return;
+    }
+
+    // 상대방에게 알림을 보낸다.
+    const notification = await sendNotifications({
+      notificationType: 'MESSAGE',
+      notificationTypeId: message._id,
+      userId: receiver._id,
+      postId: null,
+    });
+
+    if (!notification) {
+      setIsAlertOpen(true);
+      return;
+    }
+
+    // 사이드바의 마지막 메시지와 현재 messages를 갱신
+    conversationsRefetch();
+    messagesRefetch();
+  };
+
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     // 한글 입력 시 이벤트가 2번 발생하는 현상 방지
     if (e.nativeEvent.isComposing) return;
 
     if (e.key === 'Enter') {
-      if (!inputRef || !inputRef.current) {
-        return;
-      }
-      // 빈칸 예외 처리
-      if (inputRef.current.value.trim().length === 0) {
-        return;
-      }
-
-      const content = inputRef.current.value.trim();
-      inputRef.current.value = '';
-
-      const message = await createMessage({
-        message: content,
-        receiver: receiver._id,
-      });
-
-      if (!message) {
-        setIsAlertOpen(true);
-        return;
-      }
-
-      // 상대방에게 알림을 보낸다.
-      const notification = await sendNotifications({
-        notificationType: 'MESSAGE',
-        notificationTypeId: message._id,
-        userId: receiver._id,
-        postId: null,
-      });
-
-      if (!notification) {
-        setIsAlertOpen(true);
-        return;
-      }
-
-      // 사이드바의 마지막 메시지와 현재 messages를 갱신
-      conversationsRefetch();
-      messagesRefetch();
+      sendMessage();
     }
   };
 
@@ -94,9 +114,14 @@ const MessageList = ({
     navigator(`/profile/${receiver._id}`);
   };
 
+  const handleClickBack = () => {
+    if (setIsClickedUserCard) {
+      setIsClickedUserCard(false);
+    }
+  };
   return (
-    <StyledContainer>
-      {isMessagesLoading || !messages || isAlertOpen ? (
+    <StyledContainer $isClickedUserCard={isClickedUserCard}>
+      {isLoading || isMessagesLoading || !messages || isAlertOpen ? (
         <>
           <DirectMessageSkeleton.MessageList />
           {isAlertOpen && (
@@ -122,8 +147,22 @@ const MessageList = ({
               userName={receiver.fullName}
               userNameSize="1.5rem"
               onClick={handleClickMyName}
-              style={{}}
             />
+            {isMobileSize && (
+              <Button
+                backgroundColor="transparent"
+                hoverBackgroundColor="transparent"
+                onClick={handleClickBack}
+                width="auto"
+                height="auto"
+              >
+                <Icon
+                  name="undo"
+                  className="undo-icon"
+                  isFill={false}
+                />
+              </Button>
+            )}
           </StyledHeader>
           <StyledBody ref={scrollRef}>
             {messages.map((message, index) => (
@@ -138,20 +177,32 @@ const MessageList = ({
                 />
               </MessageItemContainer>
             ))}
+          </StyledBody>
+          <StyledFooter>
             <Input
               ref={inputRef}
+              wrapperProps={{ style: { display: 'flex', width: '90%' } }}
               onKeyDown={(e) => handleKeyDown(e)}
               placeholder="메시지 입력..."
               style={{
-                position: 'fixed',
-                width: '60%',
-                right: '5%',
-                bottom: '5%',
                 padding: '1.5rem 3rem 1.5rem 3rem',
                 borderRadius: '3rem',
               }}
             />
-          </StyledBody>
+            <Button
+              width="3.5rem"
+              height="3.5rem"
+              borderRadius="0"
+              backgroundColor="transparent"
+              hoverBackgroundColor="transparent"
+              onClick={() => sendMessage()}
+            >
+              <Icon
+                name="arrow_circle_up"
+                className="send-icon"
+              />
+            </Button>
+          </StyledFooter>
         </>
       )}
     </StyledContainer>

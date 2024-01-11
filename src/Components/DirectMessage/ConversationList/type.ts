@@ -7,4 +7,6 @@ export interface ConversationListProps {
   isConversationsLoading: boolean;
   conversationsRefetch: () => void;
   loginUser: Partial<UserType>;
+  setIsClickedUserCard?: (state: boolean) => void;
+  isMobileSize?: boolean;
 }

@@ -8,7 +8,10 @@ export const StyledContainer = styled.div`
   top: 9.4rem;
   background-color: white;
   overflow: hidden;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media ${({ theme }) => theme.device.tablet} {
+    flex-direction: column;
+  }
 `;
 
 export const StyledDiv = styled.div`
@@ -17,4 +20,8 @@ export const StyledDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${({ theme }) => theme.device.mobile} {
+    display: none;
+  }
 `;
