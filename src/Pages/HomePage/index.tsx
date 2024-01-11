@@ -119,7 +119,7 @@ const HomePage = () => {
         limit: 10,
       });
 
-      if (postData?.length !== 0 && postData) {
+      if (postData?.length !== 0) {
         const newPostList = postData && [...postList, ...postData];
 
         setPostOffset(postOffset + 10);
