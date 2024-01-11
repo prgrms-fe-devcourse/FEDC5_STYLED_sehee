@@ -1,9 +1,9 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 
 export interface AlertPropsType extends HTMLAttributes<HTMLDivElement> {
   width?: number;
   height?: number;
-  message: string;
+  message: string | ReactNode;
   fontSize?: number;
   confirmContent?: string;
   cancleContent?: string;
