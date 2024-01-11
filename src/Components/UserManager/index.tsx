@@ -9,65 +9,54 @@ import QUERY_KEYS from '@/Constants/queryKeys';
 // import Skeleton from '../Base/Skeleton';
 
 const UserManager = () => {
-  const [usersOption, setUsersOption] = useState({ offset: 0, limit: 10 });
+  const [offset, setOffset] = useState(0);
   const [allUserList, setAllUserList] = useState<UserType[]>([]);
+  const limit = 10;
+  const refetchTime = 2000;
 
-  /**
-   * 전체 사용자 목록을 불러오는 API 요청을 수행하는 useQuery 훅
-   * @const
-   * @type {Object}
-   * @property {UserType[]} data.userList - 불러온 사용자 목록
-   * @property {boolean} isLoading - 데이터 로딩 상태
-   */
-  const { data: userList, isLoading: allIsLoading } = useQuery({
-    queryKey: [QUERY_KEYS.USER_LIST, usersOption.offset, usersOption.limit],
-    queryFn: () => getUsers(usersOption),
+  const {
+    data: userList,
+    isLoading: userListIsLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.USER_LIST, offset, limit],
+    queryFn: () => getUsers({ offset, limit }),
   });
 
-  /**
-   * 현재 접속중인 사용자 목록을 불러오는 API 요청을 수행하는 useQuery 훅
-   * @const
-   * @type {Object}
-   * @property {UserType[]} data.onlineUserList - 현재 접속 중인 사용자 목록
-   * @options {refetchInterval} - 2초마다 API를 재요청하여 데이터를 최신 상태로 유지
-   */
-  const { data: onlineUserList, isLoading: onlineIsLoading } = useQuery({
-    queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
-    queryFn: getOnlineUsers,
-    refetchInterval: 2000,
-  });
+  const { data: onlineUserList, isLoading: onlineUserListIsLoading } = useQuery(
+    {
+      queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
+      queryFn: getOnlineUsers,
+      refetchInterval: refetchTime,
+    },
+  );
 
-  /**
-   * 더 많은 유저를 불러오기 위해 offset과 limit을 증가시키는 함수
-   * 만약 받아온 유저목록이 undefined거나 빈 배열일 경우 offset과 limit를 증가시키지 않음
-   * @function loadMoreUsers
-   * @returns {void} 반환값 없음
-   */
   const loadMoreUsers = useCallback(() => {
-    if (!userList || userList.length === 0) {
-      return setUsersOption((prevOptions) => ({
-        offset: prevOptions.offset,
-        limit: prevOptions.limit,
-      }));
+    if (!userList || userList.length === 0 || !isSuccess) {
+      return;
     }
 
-    return setUsersOption((prevOptions) => ({
-      offset: prevOptions.offset + 10,
-      limit: prevOptions.limit + 10,
-    }));
-  }, [userList]);
+    setOffset((prevOffset) => prevOffset + limit);
+  }, [isSuccess, userList]);
 
   useEffect(() => {
-    if (userList && userList.length !== 0) {
-      setAllUserList((prevList) => [...prevList, ...userList]);
+    if (!userList || userList.length === 0 || !isSuccess) {
+      return;
     }
-  }, [userList]);
+
+    setAllUserList((prevList) => {
+      const prevListIds = new Set(prevList.map(({ _id }) => _id));
+      const newAllUsers = userList.filter(({ _id }) => !prevListIds.has(_id));
+
+      return [...prevList, ...newAllUsers];
+    });
+  }, [isSuccess, userList]);
 
   return (
     <StyledWrapper>
       {/* <UserSearchForm /> */}
-      {/* {allIsLoading ||
-        (onlineIsLoading && (
+      {/* {userListIsLoading ||
+        (onlineUserListIsLoading && (
           <SkeletonList
             length={9}
             style={{ flexGrow: 1 }}
@@ -79,10 +68,8 @@ const UserManager = () => {
             />
           </SkeletonList>
         ))} */}
-      {!allIsLoading && !onlineIsLoading && (
+      {!userListIsLoading && !onlineUserListIsLoading && (
         <UserList
-          isLoading={allIsLoading}
-          isEnd={userList?.length === 0}
           userList={allUserList}
           onlineUserList={onlineUserList || []}
           loadMoreUsers={loadMoreUsers}

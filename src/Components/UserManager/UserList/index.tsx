@@ -1,24 +1,18 @@
 import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import { Props } from './type';
 import UserItem from '../UserItem';
 import { UserType } from '@/Types/UserType';
 import StyledUserList from './style';
 
-const UserList = ({
-  isLoading,
-  isEnd,
-  userList,
-  onlineUserList,
-  loadMoreUsers,
-}: Props) => {
+const UserList = ({ userList, onlineUserList, loadMoreUsers }: Props) => {
   const { ref, inView } = useInView({ threshold: 0 });
 
   useEffect(() => {
-    if (inView && !isEnd && !isLoading) {
+    if (inView) {
       loadMoreUsers();
     }
-  }, [inView, loadMoreUsers, isEnd, isLoading]);
+  }, [inView, loadMoreUsers]);
 
   return (
     <StyledUserList>
@@ -43,4 +37,6 @@ const UserList = ({
   );
 };
 
-export default UserList;
+const MemoizedUserList = memo(UserList);
+
+export default MemoizedUserList;
