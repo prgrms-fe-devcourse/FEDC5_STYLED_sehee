@@ -16,7 +16,8 @@ export const StyledLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  flex-basis: 30rem;
+  flex-basis: 20rem;
+  flex-shrink: 1;
   align-items: center;
   border-right: 0.1rem solid #ddd;
   gap: 1rem;
@@ -26,6 +27,7 @@ export const StyledCategoryTitleContainer = styled.div`
   padding: 0 1rem;
   width: 90%;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   height: 5rem;
@@ -37,6 +39,10 @@ export const StyledCategoryList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow-y: auto;
+  .category-button {
+    flex-shrink: 0;
+  }
 `;
 
 export const StyledCategoryTitle = styled.div`
@@ -47,7 +53,7 @@ export const StyledCategoryTitle = styled.div`
 
 export const StyledMainContentContainer = styled.div`
   padding: 1rem;
-  width: calc(100% - 60rem);
+  width: calc(100% - 50rem);
   height: 100%;
   flex-grow: 1;
 `;

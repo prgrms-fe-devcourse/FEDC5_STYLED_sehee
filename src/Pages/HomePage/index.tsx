@@ -210,6 +210,7 @@ const HomePage = () => {
               }
               textColor={colors.text}
               onClick={handleClickChannel}
+              className="category-button"
             >
               전체
             </Button>
@@ -234,6 +235,7 @@ const HomePage = () => {
                   }
                   textColor={colors.text}
                   onClick={handleClickChannel}
+                  className="category-button"
                 >
                   {channels[channel.name] || channel.name}
                 </Button>
