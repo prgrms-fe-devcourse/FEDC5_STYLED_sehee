@@ -110,6 +110,7 @@ const ConversationList = ({
           onChangeOpen={setIsModalOpen}
           setIsModalOpen={setIsModalOpen}
           loginUser={loginUser}
+          isMobileSize={isMobileSize}
         />
       )}
     </StyledContainer>

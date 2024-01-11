@@ -16,6 +16,7 @@ const MessageModal = ({
   onChangeOpen,
   setIsModalOpen,
   loginUser,
+  isMobileSize = false,
 }: MessageModalProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<UserType | null>(null);
@@ -62,7 +63,7 @@ const MessageModal = ({
     <Modal
       onChangeOpen={onChangeOpen}
       height={60}
-      width={40}
+      width={isMobileSize ? 70 : 40}
     >
       <StyledContainer>
         <StyledHeader>새로운 메시지</StyledHeader>
