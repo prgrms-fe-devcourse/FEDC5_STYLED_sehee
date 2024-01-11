@@ -21,6 +21,7 @@ const UserManager = () => {
   } = useQuery({
     queryKey: [QUERY_KEYS.USER_LIST, offset, limit],
     queryFn: () => getUsers({ offset, limit }),
+    select: (data) => data?.filter((user) => user.role !== 'SuperAdmin') || [],
   });
 
   const { data: onlineUserList, isLoading: onlineUserListIsLoading } = useQuery(
@@ -51,6 +52,8 @@ const UserManager = () => {
       return [...prevList, ...newAllUsers];
     });
   }, [isSuccess, userList]);
+
+  console.log(onlineUserList);
 
   return (
     <StyledWrapper>

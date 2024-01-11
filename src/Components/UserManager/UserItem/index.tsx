@@ -6,22 +6,27 @@ import { Props } from './type';
 import Badge from '@/Components/Base/Badge';
 import { StyledContainer, StyledUserName } from './style';
 import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
+import useAuthUserStore from '@/Stores/AuthUser';
 
 const UserItem = forwardRef(
   (
     { id, image, isOnline, fullName }: Props,
     ref: ForwardedRef<HTMLLIElement>,
   ) => {
+    const {
+      user: { _id: authId },
+    } = useAuthUserStore();
     const { colors } = useTheme();
-    const navigator = useNavigate();
+    const navigate = useNavigate();
 
     const handleOnClick = () => {
-      navigator(`/profile/${id}`);
+      navigate(`/profile/${id}`);
     };
 
     return (
       <StyledContainer
         $isOnline={isOnline}
+        $isAuth={authId === id}
         onClick={handleOnClick}
         ref={ref}
       >
@@ -29,6 +34,7 @@ const UserItem = forwardRef(
           src={image || DEFAULT_USER_IMAGE_SRC}
           alt="사용자 이미지"
           size={40}
+          wrapperProps={{ style: { flexShrink: 0 } }}
         >
           {isOnline && (
             <Badge
