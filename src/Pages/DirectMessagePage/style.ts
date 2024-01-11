@@ -11,7 +11,7 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledDiv = styled.div`
-  width: 100%;
+  width: 70%;
   height: 100%;
   display: flex;
   justify-content: center;

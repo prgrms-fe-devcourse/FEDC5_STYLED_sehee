@@ -23,3 +23,15 @@ export const StyledBody = styled.div`
   overflow-y: scroll;
   height: calc(95% - 7rem);
 `;
+
+export const MessageItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+export const AlertContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;

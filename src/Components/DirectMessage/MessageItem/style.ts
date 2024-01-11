@@ -26,3 +26,9 @@ export const StyledTime = styled.div`
   color: darkgrey;
   font-size: 0.7rem;
 `;
+
+export const StyledDate = styled.div`
+  display: flex;
+  justify-content: center;
+  color: darkgrey;
+`;

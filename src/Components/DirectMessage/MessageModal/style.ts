@@ -21,9 +21,10 @@ export const StyledHeader = styled.div`
 `;
 
 export const StyledBody = styled.div`
-  width: 70%;
+  width: 75%;
   height: 65%;
   overflow: scroll;
+  margin-top: 1rem;
 `;
 
 export const StyledUserContainer = styled.div`
@@ -43,7 +44,7 @@ export const StyledUserItemContainer = styled.div`
   align-items: center;
   &:hover {
     background-color: ${({ theme }) => theme.colors.focusHover};
-    border-radius: 1rem;
+    // border-radius: 1rem;
   }
   padding-right: 1rem;
 `;
