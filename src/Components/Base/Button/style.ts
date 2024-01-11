@@ -19,6 +19,12 @@ const StyledButton = styled.button<StyledButtonProp>`
     color: ${(props) => props.$hoverTextColor};
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    background-color: ${(props) => props.$hoverBackgroundColor};
+    color: ${(props) => props.$hoverTextColor};
+  }
+
   ${({ $isActive, theme }) => `
     ${
       $isActive
@@ -26,6 +32,10 @@ const StyledButton = styled.button<StyledButtonProp>`
         : ''
     }
   `}
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export default StyledButton;

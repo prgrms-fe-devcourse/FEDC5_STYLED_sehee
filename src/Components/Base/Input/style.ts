@@ -14,6 +14,7 @@ export const StyledContainer = styled.div`
 
 export const StyledLabel = styled.label`
   display: block;
+  user-select: none;
 `;
 
 export const StyledInput = styled.input<{ $invalid?: boolean }>`
