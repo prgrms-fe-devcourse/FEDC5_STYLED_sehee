@@ -1,39 +1,67 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+
 import {
   DetailPage,
   HomePage,
   NotFoundPage,
   LoginPage,
   SignUpPage,
+  DirectMessagePage,
+  ProfilePage,
+  AddPostPage,
+  SearchPage,
+  EditPasswordPage,
 } from '@/Pages';
 
 const RouterManager = () => {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
+      <Route
+        path="/"
+        element={<HomePage />}
+      >
         <Route
-          path="/"
-          element={<HomePage />}
-        >
-          <Route
-            path="modal-detail/:postId"
-            element={<DetailPage />}
-          />
-        </Route>
-        <Route
-          path="/login"
-          element={<LoginPage />}
+          path="modal-detail/:postId"
+          element={<DetailPage />}
         />
-        <Route
-          path="/signup"
-          element={<SignUpPage />}
-        />
-        <Route
-          path="*"
-          element={<NotFoundPage />}
-        />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
+      <Route
+        path="/signup"
+        element={<SignUpPage />}
+      />
+      <Route
+        path="/detail"
+        element={<DetailPage />}
+      />
+      <Route
+        path="/search"
+        element={<SearchPage />}
+      />
+      <Route
+        path="/add-post"
+        element={<AddPostPage />}
+      />
+      <Route
+        path="/profile/:userId"
+        element={<ProfilePage />}
+      />
+      <Route
+        path="/edit-password/:userId"
+        element={<EditPasswordPage />}
+      />
+      <Route
+        path="/directmessage"
+        element={<DirectMessagePage />}
+      />
+      <Route
+        path="*"
+        element={<NotFoundPage />}
+      />
+    </Routes>
   );
 };
 

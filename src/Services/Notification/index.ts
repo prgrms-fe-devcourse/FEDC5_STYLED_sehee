@@ -38,10 +38,11 @@ export const readNotifications = async () => {
 /**
  * @brief 상대방에게 알림을 보냅니다.
  * @param notificationType 'COMMENT' | 'FOLLOW' | 'LIKE' | 'MESSAGE'
+ * @param userId 상대방 id
  * @details {} 중괄호 내부에 반드시 notificationType, notificationTypeId, userId, postId, 설정해야 합니다.
  * notificationTypeId는 type에 해당하는 객체의 id를 넣어주세요.
  * ex) COMMENT: 댓글 id | FOLLOW: 팔로우 id | LIKE: 좋아요 id | MESSAGE: 메시지 id
- * @exception type이 FOLLOW일 경우엔 postId는 null로 보내주세요.
+ * @exception type이 FOLLOW, MESSAGE일 경우엔 postId는 null로 보내주세요.
  */
 export const sendNotifications = async ({
   notificationType,
