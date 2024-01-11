@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -32,6 +33,7 @@ import UserManager from '@/Components/UserManager';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
+  const navigate = useNavigate();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -137,6 +139,10 @@ const HomePage = () => {
     [],
   );
 
+  const handleCreateChannel = () => {
+    navigate('/add-channel');
+  };
+
   useEffect(() => {
     if (channelList.length === 0) fetchChannelList();
     if (userList.length === 0) fetchUserList();
@@ -173,6 +179,7 @@ const HomePage = () => {
               textSize={size.medium}
               backgroundColor={colors.background}
               hoverBackgroundColor={colors.backgroundGrey}
+              onClick={handleCreateChannel}
             >
               <Icon
                 name="add"
@@ -249,6 +256,7 @@ const HomePage = () => {
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
+      <Outlet />
     </>
   );
 };
