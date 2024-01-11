@@ -1,8 +1,8 @@
 import React from 'react';
+import { Props } from './type';
 
-const AsideHeader = () => {
-  // ChannerId와 onSubmit을 상위로 전달
-  // 유저 스토어에서 현재 유저 상태를 받아와야 함
+const AsideHeader = ({ onSelectChannelId, onSubmit }: Props) => {
+  // TODO: 유저 스토어에서 현재 유저 상태를 받아와야 함
 
   return (
     <wrapper>
