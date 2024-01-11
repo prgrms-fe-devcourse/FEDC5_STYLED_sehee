@@ -35,6 +35,7 @@ import PostCard from '@/Components/Common/PostCard';
 import UserManager from '@/Components/UserManager';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { checkAuth } from '@/Services/Auth';
+import filterSuperUser from '@/Utils/checkSuperUser';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -98,13 +99,11 @@ const HomePage = () => {
    */
   const fetchUserList = async () => {
     const userData = await getUsers();
-
     // 관리자 계정 제외 필터링
-    const filteredUserList = userData?.filter(
-      ({ role }) => role !== 'SuperAdmin',
-    );
 
-    return filteredUserList && setUserList(filteredUserList);
+    const withoutSuperUser = userData && filterSuperUser(userData);
+
+    return withoutSuperUser && setUserList(withoutSuperUser);
   };
 
   /**
