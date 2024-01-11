@@ -87,8 +87,12 @@ const HeaderTab = () => {
     }
     if (option === '비밀번호 변경') {
       setDrop(!drop);
-      // eslint-disable-next-line no-underscore-dangle
-      navigate(`/edit-password/${data?._id}`);
+      navigate(
+        `${
+          location.pathname !== '/' ? location.pathname : ''
+          // eslint-disable-next-line no-underscore-dangle
+        }/edit-password/${data?._id}`,
+      );
     }
   };
 
