@@ -110,112 +110,59 @@ const HeaderTab = () => {
   return (
     <>
       <StyledUserContainer>
-        {tab === 'home' ? (
-          <LinkButton
-            name="home"
-            color={colors.primary}
-            link="/"
-            style={styledNavIcon}
-          />
-        ) : (
-          <LinkButton
-            name="home"
-            color={colors.background}
-            link="/"
-            setLink={() => setTab('home')}
-            style={styledNavIcon}
-          />
-        )}
-        {tab === 'add' ? (
-          <LinkButton
-            name="add_circle"
-            color={colors.primary}
-            link="/add-post"
-            style={styledNavIcon}
-          />
-        ) : (
-          <LinkButton
-            name="add_circle"
-            color={colors.background}
-            link="/add-post"
-            setLink={() => setTab('add')}
-            style={styledNavIcon}
-          />
-        )}
-        {tab === 'search' ? (
-          <LinkButton
-            name="search"
-            color={colors.primary}
-            link="/search"
-            style={styledNavIcon}
-          />
-        ) : (
-          <LinkButton
-            name="search"
-            color={colors.background}
-            link="/search"
-            setLink={() => setTab('search')}
-            style={styledNavIcon}
-          />
-        )}
+        <LinkButton
+          name="home"
+          color={tab === 'home' ? colors.primary : colors.background}
+          link="/"
+          setLink={() => setTab('home')}
+          style={styledNavIcon}
+        />
+
+        <LinkButton
+          name="add_circle"
+          color={tab === 'add' ? colors.primary : colors.background}
+          link="/add-post"
+          setLink={() => setTab('add')}
+          style={styledNavIcon}
+        />
+
+        <LinkButton
+          name="search"
+          color={tab === 'search' ? colors.primary : colors.background}
+          link="/search"
+          setLink={() => setTab('search')}
+          style={styledNavIcon}
+        />
         {!isAuthUser ? (
           <LoginButton onClick={() => navigate('/login')} />
         ) : (
           <>
-            {tab === 'alarm' ? (
-              <ModalButton
-                name="notifications"
-                style={styledNavIcon}
-                color={colors.primary}
-              />
-            ) : (
-              <ModalButton
-                name="notifications"
-                style={styledNavIcon}
-                color={colors.background}
-                setModalOpen={() => {
-                  onSetModal('alarm');
-                  setAlarm(true);
-                }}
-              />
-            )}
-            {tab === 'message' ? (
-              <LinkButton
-                name="send"
-                color={colors.primary}
-                link="/directmessage"
-                style={styledNavIcon}
-              />
-            ) : (
-              <LinkButton
-                name="send"
-                color={colors.background}
-                link="/directmessage"
-                setLink={() => setTab('message')}
-                style={styledNavIcon}
-              />
-            )}
-            {tab === 'account' ? (
-              <ModalButton
-                name="account_circle"
-                style={styledNavIcon}
-                color={colors.primary}
-                setModalOpen={() => {
-                  setDrop(!drop);
-                  setTab(prev);
-                }}
-              />
-            ) : (
-              <ModalButton
-                name="account_circle"
-                style={styledNavIcon}
-                color={colors.background}
-                setModalOpen={() => {
-                  onSetModal('account');
-                  setDrop(!drop);
-                }}
-              />
-            )}
+            <ModalButton
+              name="notifications"
+              style={styledNavIcon}
+              color={tab === 'alarm' ? colors.primary : colors.background}
+              setModalOpen={() => {
+                onSetModal('alarm');
+                setAlarm(true);
+              }}
+            />
+
+            <LinkButton
+              name="send"
+              color={tab === 'message' ? colors.primary : colors.background}
+              link="/directmessage"
+              setLink={() => setTab('message')}
+              style={styledNavIcon}
+            />
+            <ModalButton
+              name="account_circle"
+              style={styledNavIcon}
+              color={tab === 'account' ? colors.primary : colors.background}
+              setModalOpen={() => {
+                onSetModal('account');
+                setDrop(!drop);
+              }}
+            />
           </>
         )}
       </StyledUserContainer>
