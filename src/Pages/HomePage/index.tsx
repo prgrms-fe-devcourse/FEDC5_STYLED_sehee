@@ -32,6 +32,7 @@ import { UserType } from '@/Types/UserType';
 import { getPostByChannel } from '@/Services/Post';
 import { PostType } from '@/Types/PostType';
 import PostCard from '@/Components/Common/PostCard';
+import NotificationModal from '@/Components/NotificationModal';
 import UserManager from '@/Components/UserManager';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { checkAuth } from '@/Services/Auth';
@@ -283,6 +284,7 @@ const HomePage = () => {
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
+      <NotificationModal onClose={() => {}} />
     </>
   );
 };
