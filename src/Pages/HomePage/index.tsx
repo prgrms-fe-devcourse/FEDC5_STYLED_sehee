@@ -139,7 +139,10 @@ const HomePage = () => {
     [],
   );
 
-  const handleCreateChannel = () => {
+  /**
+   * 채널 생성 모달 여는 함수
+   */
+  const handleOpenCreateChannel = () => {
     navigate('/add-channel');
   };
 
@@ -179,7 +182,7 @@ const HomePage = () => {
               textSize={size.medium}
               backgroundColor={colors.background}
               hoverBackgroundColor={colors.backgroundGrey}
-              onClick={handleCreateChannel}
+              onClick={handleOpenCreateChannel}
             >
               <Icon
                 name="add"
@@ -232,7 +235,7 @@ const HomePage = () => {
                   textColor={colors.text}
                   onClick={handleClickChannel}
                 >
-                  {channels[channel.name]}
+                  {channels[channel.name] || channel.name}
                 </Button>
               );
             })}
