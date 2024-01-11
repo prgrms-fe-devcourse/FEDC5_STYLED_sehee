@@ -1,4 +1,11 @@
-import { ChangeEvent, MouseEvent, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTheme } from 'styled-components';
 import {
   StyledImage,
@@ -13,7 +20,12 @@ import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
 import Input from '@/Components/Base/Input';
 
-const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
+const ImageUpload = ({
+  width,
+  height,
+  fontSize,
+  onUpload,
+}: ImageUploadProps) => {
   const uploadInput = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<ImageFileType | null>(null);
 
@@ -49,6 +61,12 @@ const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (imageFile && onUpload) {
+      onUpload(imageFile);
+    }
+  }, [imageFile, onUpload]);
 
   /**
    * 업로드한 이미지가 있는지에 따라 업로드 폼과 이미지를 교체하는 함수
