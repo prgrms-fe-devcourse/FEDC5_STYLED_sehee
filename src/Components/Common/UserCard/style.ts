@@ -37,8 +37,9 @@ export const StyledUserName = styled.h1<StyledUserNameProps>`
   white-space: nowrap;
 `;
 
-export const StyledUserDetail = styled.p<StyledUserDetailProps>`
+export const StyledUserDetail = styled.div<StyledUserDetailProps>`
   font-size: ${({ fontSize }) => fontSize};
+  font-weight: ${({ fontWeight }) => fontWeight};
   color: #9f9f9f;
   display: block;
   overflow: hidden;
