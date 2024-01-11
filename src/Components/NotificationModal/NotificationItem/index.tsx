@@ -11,15 +11,15 @@ import {
 } from './style';
 
 const NotificationItem = ({ src, text, date, type, typeId, isSeen }: Props) => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   const handleOnClick = () => {
     if (type === 'comment' || type === 'post') {
-      navigator(`/detail-modal/${typeId}`);
+      navigate(`/detail-modal/${typeId}`);
     }
 
     if (type === 'follow') {
-      navigator(`/profile/${typeId}`);
+      navigate(`/profile/${typeId}`);
     }
   };
 
@@ -32,6 +32,7 @@ const NotificationItem = ({ src, text, date, type, typeId, isSeen }: Props) => {
         src={src || defaultUSerImage}
         alt="사용자 이미지"
         size={50}
+        wrapperProps={{ style: { flexShrink: 0 } }}
       />
       <StyledContainer>
         <StyledText>{text}</StyledText>

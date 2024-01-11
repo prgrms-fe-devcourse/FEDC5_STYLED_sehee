@@ -20,10 +20,9 @@ export const StyledItem = styled.li<{ $isSeen: boolean }>`
 `;
 
 export const StyledContainer = styled.div`
-  width: 70%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   overflow: hidden;
 `;
 
@@ -40,4 +39,5 @@ export const StyledIsSeen = styled.div`
   height: ${({ theme }) => theme.size.small};
   border-radius: ${({ theme }) => theme.size.half};
   background-color: ${({ theme }) => theme.colors.read};
+  flex-shrink: 0;
 `;

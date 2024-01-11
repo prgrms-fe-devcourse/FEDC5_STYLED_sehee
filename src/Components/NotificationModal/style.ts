@@ -8,6 +8,8 @@ const StyledWrapper = styled.article`
   border-radius: ${({ theme }) => theme.size.small};
   display: flex;
   flex-direction: column;
+  position: absolute;
+  z-index: 9;
 `;
 
 export default StyledWrapper;
