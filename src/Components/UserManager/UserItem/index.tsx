@@ -5,6 +5,7 @@ import Avatar from '@/Components/Base/Avatar';
 import { Props } from './type';
 import Badge from '@/Components/Base/Badge';
 import { StyledContainer, StyledUserName } from './style';
+import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 
 const UserItem = forwardRef(
   (
@@ -13,8 +14,6 @@ const UserItem = forwardRef(
   ) => {
     const { colors } = useTheme();
     const navigator = useNavigate();
-    const defaultImage =
-      'https://user-images.githubusercontent.com/17202261/101670093-195d9180-3a96-11eb-9bd4-9f31cbe44aea.png';
 
     const handleOnClick = () => {
       navigator(`/profile/${id}`);
@@ -27,7 +26,7 @@ const UserItem = forwardRef(
         ref={ref}
       >
         <Avatar
-          src={coverImage || defaultImage}
+          src={coverImage || DEFAULT_USER_IMAGE_SRC}
           alt="사용자 이미지"
           size={40}
         >
