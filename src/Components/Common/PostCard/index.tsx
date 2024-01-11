@@ -36,6 +36,8 @@ const PostCard = ({
     ? 'rgba(0, 149, 246, 0.7)'
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
+  const defaultImage =
+    'https://user-images.githubusercontent.com/17202261/101670093-195d9180-3a96-11eb-9bd4-9f31cbe44aea.png';
 
   return (
     <StyledPostCardWrapper
@@ -46,7 +48,8 @@ const PostCard = ({
         <StyledProfileContainer>
           {/* 아바타 컴포넌트 삽입 필요 */}
           <StyledProfileAvatar
-            src={authorThumbnail}
+            // TODO: 인혁님꺼 Constants의 defaultImage 이후 import 필요
+            src={authorThumbnail || defaultImage}
             alt="프로필 아바타"
             onClick={onUserAvatarClick}
           />
