@@ -75,7 +75,9 @@ const UserCard = forwardRef(
         $width={width || '100%'}
         $height={height || '100%'}
         $borderRadius={borderRadius || ''}
+        $mode={mode}
         {...props}
+        onClick={handleClick}
       >
         {/* 유저 아바타 */}
         <Avatar

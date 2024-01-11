@@ -20,8 +20,11 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.focusHover};
+    background-color: ${({ $mode }) =>
+      $mode !== 'header' && (({ theme }) => theme.colors.focusHover)};
   }
+
+  cursor: ${({ $mode }) => $mode === 'header' && 'pointer'};
 `;
 
 export const StyledUserInfoContainer = styled.div`
