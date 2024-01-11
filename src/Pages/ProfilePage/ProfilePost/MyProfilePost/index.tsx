@@ -8,7 +8,6 @@ import { PostLikeProps } from './type';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import { getPostByUser } from '@/Services/Post';
-import handleError from '@/Api/handleError';
 import { GetChannelPostRequestType } from '@/Types/Request';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHeadContainer from './style';
@@ -39,7 +38,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
 
       return specificPost;
     } catch (e) {
-      handleError(e);
+      console.error('error to get like post');
       return null;
     }
   };
