@@ -26,6 +26,10 @@ const StyledButton = styled.button<StyledButtonProp>`
         : ''
     }
   `}
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export default StyledButton;
