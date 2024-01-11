@@ -12,6 +12,7 @@ import {
 import { UserCardProps } from './type';
 import Badge from '@/Components/Base/Badge';
 import Button from '@/Components/Base/Button';
+import Input from '@/Components/Base/Input';
 
 /**
  * @param mode normal, chat, alarm, follow 모드 변경 가능
@@ -38,10 +39,14 @@ const UserCard = forwardRef(
       isFollow = false,
       userName = '',
       userDetail = null,
+      date = '',
       userNameSize,
       userNameWeight,
       userDetailSize,
       onClick,
+      inputValue,
+      inputChecked,
+      inputOnChange,
       ...props
     }: UserCardProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -55,6 +60,12 @@ const UserCard = forwardRef(
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
       if (onClick && e.target === e.currentTarget) {
         onClick(e);
+      }
+    };
+
+    const handleInputClick = () => {
+      if (inputOnChange) {
+        inputOnChange();
       }
     };
 
@@ -87,7 +98,9 @@ const UserCard = forwardRef(
         <StyledUserInfoContainer>
           <StyledUserName
             fontSize={userNameSize || size.small}
-            fontWeight={userNameWeight || fontWeight.medium}
+            fontWeight={
+              userNameWeight || (!isRead ? fontWeight.black : fontWeight.medium)
+            }
             onClick={handleClick}
           >
             {userName}
@@ -95,9 +108,11 @@ const UserCard = forwardRef(
           {userDetail && (
             <StyledUserDetail
               fontSize={userDetailSize || '0.8rem'}
+              fontWeight={!isRead ? fontWeight.black : fontWeight.regular}
               onClick={handleClick}
             >
               {userDetail}
+              {mode === 'chat' && <div>{date}</div>}
             </StyledUserDetail>
           )}
         </StyledUserInfoContainer>
@@ -129,6 +144,15 @@ const UserCard = forwardRef(
               />
             )}
           </StyledUserReadContainer>
+        )}
+        {/* radio 모드 시 radio input */}
+        {mode === 'radio' && (
+          <Input
+            type="radio"
+            value={inputValue}
+            checked={inputChecked}
+            onChange={handleInputClick}
+          />
         )}
       </StyledWrapper>
     );
