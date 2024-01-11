@@ -15,7 +15,8 @@ const ImageCard = ({
   comment,
   heart,
   borderRadius = '2rem',
-  size = '20rem',
+  width = '20rem',
+  height = '20rem',
   fontSize = 1.8,
   onDetail,
   ...props
@@ -23,7 +24,8 @@ const ImageCard = ({
   const { colors } = useTheme();
   return (
     <StyledContainer
-      $size={size}
+      $width={width}
+      $height={height}
       $borderRadius={borderRadius}
       onClick={onDetail}
       {...props}

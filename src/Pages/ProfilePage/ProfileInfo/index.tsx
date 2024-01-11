@@ -1,15 +1,9 @@
 import Avatar from '@/Components/Base/Avatar';
-import { UserType } from '@/Types/UserType';
-import FollowProfile from './FollowInfo';
+import FollowInfo from './FollowInfo';
 import { StyledProfileInfoContainer } from './style';
 import MyProfileInfo from './MyProfileInfo';
-import Button from '@/Components/Base/Button';
 import UserProfileInfo from './UserProfileInfo';
-
-interface Props {
-  userData: UserType;
-  myprofile: boolean;
-}
+import { Props } from './type';
 
 const ProfileInfo = ({ userData, myprofile }: Props) => {
   return (
@@ -18,6 +12,7 @@ const ProfileInfo = ({ userData, myprofile }: Props) => {
         <Avatar
           src={userData.image}
           size={140}
+          style={{ cursor: 'pointer' }}
           onClick={() => console.log('change image')}
         />
       ) : (
@@ -33,7 +28,7 @@ const ProfileInfo = ({ userData, myprofile }: Props) => {
           <UserProfileInfo name={userData.fullName} />
         )}
 
-        <FollowProfile
+        <FollowInfo
           posts={userData.posts.length}
           followers={userData.followers.length}
           following={userData.following.length}

@@ -1,10 +1,8 @@
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
+import { NameProps } from '../type';
 
-interface Props {
-  name: string;
-}
-const UserProfileInfo = ({ name }: Props) => {
+const UserProfileInfo = ({ name }: NameProps) => {
   return (
     <StyledButtonContainer>
       <StyledName>{name}</StyledName>
