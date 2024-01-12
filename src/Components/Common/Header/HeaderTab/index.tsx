@@ -7,20 +7,36 @@ import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
 import LinkButton from './LinkButton';
 import ModalButton from './ModalButton';
-import AlarmModal from '../../Modal/AlarmModal';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 import useTabStore from '@/Stores/Tab';
 import NotificationModal from '@/Components/NotificationModal';
+import QUERY_KEYS from '@/Constants/queryKeys';
+import { getNotifications } from '@/Services/Notification';
+import useAuthUserStore from '@/Stores/AuthUser';
+import Badge from '@/Components/Base/Badge';
+import filterNotificationLength from './filterNotificationLength';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const location = useLocation();
-  const { colors } = useTheme();
+  const { size, colors } = useTheme();
+  const {
+    user: { _id: userId },
+  } = useAuthUserStore();
+  const refetchTime = 2000;
 
   // tab
   const { tab, prev, setTab, setPrev } = useTabStore();
+
+  const { data: notificationLength } = useQuery({
+    queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
+    queryFn: getNotifications,
+    refetchInterval: refetchTime,
+    enabled: !!userId,
+    select: (notifications) => filterNotificationLength(notifications || []),
+  });
 
   // tab이 변경될 때마다 sessionStorage에 저장
   useEffect(() => {
@@ -106,7 +122,20 @@ const HeaderTab = () => {
     setTab(option);
   };
 
-  const styledNavIcon = { fontSize: '4.5rem', padding: '1.5rem' };
+  const styledNavIcon = {
+    fontSize: '4.5rem',
+    padding: '1.5rem',
+  };
+
+  const notificationTotal = notificationLength
+    ? notificationLength.commentLength +
+      notificationLength.followLength +
+      notificationLength.postLength
+    : 0;
+
+  const messageTotal = notificationLength
+    ? notificationLength?.messageLength
+    : 0;
 
   return (
     <>
@@ -146,7 +175,20 @@ const HeaderTab = () => {
                 onSetModal('alarm');
                 setAlarm((prevIsShow) => !prevIsShow);
               }}
-            />
+            >
+              {notificationTotal > 0 && (
+                <Badge
+                  position="rightTop"
+                  backgroundColor={colors.alert}
+                  textColor={colors.text}
+                  textSize={size.large}
+                  size={size.doubleLarge}
+                  style={{ right: size.small, top: size.small }}
+                >
+                  {notificationTotal}
+                </Badge>
+              )}
+            </ModalButton>
 
             <LinkButton
               name="send"
@@ -154,10 +196,23 @@ const HeaderTab = () => {
               link="/directmessage"
               setLink={() => setTab('message')}
               style={styledNavIcon}
-            />
+            >
+              {messageTotal > 0 && (
+                <Badge
+                  position="rightTop"
+                  backgroundColor={colors.alert}
+                  textColor={colors.text}
+                  textSize={size.large}
+                  size={size.doubleLarge}
+                  style={{ right: size.small, top: size.small }}
+                >
+                  {messageTotal}
+                </Badge>
+              )}
+            </LinkButton>
             <ModalButton
               name="account_circle"
-              style={styledNavIcon}
+              style={{ ...styledNavIcon }}
               color={tab === 'account' ? colors.primary : colors.background}
               setModalOpen={() => {
                 onSetModal('account');
