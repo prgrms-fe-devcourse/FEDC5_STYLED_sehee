@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Props } from './type';
 import { StyledWrapper, StyledTextArea } from './style';
 
-const TitleEditor = ({ onEditing }: Props) => {
+const TitleEditor = ({ onEditing, initialValue }: Props) => {
   const [value, setValue] = useState('');
   const $ref = useRef<HTMLTextAreaElement>(null);
 
@@ -12,6 +12,12 @@ const TitleEditor = ({ onEditing }: Props) => {
     setValue(newValue);
     onEditing(newValue);
   };
+
+  useEffect(() => {
+    if (initialValue) {
+      setValue(initialValue);
+    }
+  }, [initialValue]);
 
   useEffect(() => {
     $ref.current?.focus();

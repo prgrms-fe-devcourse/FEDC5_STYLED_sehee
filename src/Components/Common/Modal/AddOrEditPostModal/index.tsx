@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '../../Alert';
@@ -9,7 +9,7 @@ import Modal from '..';
 import Spinner from '@/Components/Base/Spinner';
 import TitleEditor from './TitleEditor';
 
-import { createPost } from '@/Services/Post';
+import { createPost, getPostDetail } from '@/Services/Post';
 import { getChannel } from '@/Services/Channel';
 
 import {
@@ -23,6 +23,7 @@ import { ImageFileType } from '../../ImageUpload/type';
 import { PostCreatePostRequestType } from '@/Types/Request';
 import { Props } from './type';
 import validatePostFieldProps from './validatePostField';
+import QUERY_KEYS from '@/Constants/queryKeys';
 
 // * 하위 컴포넌트로부터 갱신된 데이터를 통합적으로 관리
 
@@ -42,8 +43,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const [image, setImage] = useState<ImageFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { postId } = useParams();
-
-  console.log(postId);
 
   /**
    * @brief 카테고리명을 채널ID로 변환하는 mutateChannel과, 포스트 작성을 요청하는 mutatePost함수가 연쇄적으로 호출됩니다.
@@ -75,6 +74,25 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
     mutateChannel(category);
   };
 
+  /**
+   * 컴포넌트의 역할이 '게시글 수정'일 때의 로직 ▼
+   * @brief param을 통해 가져온 postId가 존재할 경우, 각 폼에 초기값을 할당합니다.
+   */
+  const { data: editingPost } = useQuery({
+    queryKey: postId
+      ? [QUERY_KEYS.EDITING_POST_ID, postId]
+      : [QUERY_KEYS.EDITING_POST_ID, 'no-id'],
+    queryFn: () => (postId ? getPostDetail(postId) : null),
+    enabled: !!postId,
+  });
+
+  useEffect(() => {
+    if (editingPost) {
+      setTitle(editingPost.title);
+      setCategory(editingPost.channel.name);
+    }
+  }, [editingPost]);
+
   return isAuthUser ? (
     <>
       {(postStatus === 'pending' || channelStatus === 'pending') && (
@@ -98,7 +116,10 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
               onSubmit={handleSubmit}
               onSelectChannel={setCategory}
             />
-            <TitleEditor onEditing={setTitle} />
+            <TitleEditor
+              onEditing={setTitle}
+              initialValue={editingPost?.title}
+            />
           </StyledAside>
         </StyledWrapper>
 
