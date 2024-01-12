@@ -1,4 +1,7 @@
+import { PostType } from '@/Types/PostType';
+
 export interface Props {
-  onSelectChannelId?: (channelId: string) => void;
+  onSelectChannel?: (channelName: string) => void;
   onSubmit?: () => void;
+  post?: PostType;
 }

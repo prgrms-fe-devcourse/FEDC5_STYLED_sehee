@@ -6,6 +6,10 @@ import Modal from '..';
 import ImageUpload from '../../ImageUpload';
 import { StyledAside, StyledHeader, StyledMain, StyledWrapper } from './style';
 import { ImageFileType } from '../../ImageUpload/type';
+import useAuthUserStore from '@/Stores/AuthUser';
+import { useQuery } from '@tanstack/react-query';
+import { checkAuth } from '@/Services/Auth';
+import Alert from '../../Alert';
 
 // * 하위 컴포넌트로부터 갱신된 데이터를 통합적으로 관리
 
@@ -22,12 +26,14 @@ const CreatePostModal = ({ post, onChangeOpen }: Props) => {
   const [category, setCategory] = useState<string>();
   const [title, setTitle] = useState<string>();
 
+  const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
+
   const handleImageUpload = (imageFile: ImageFileType | null) => {
     console.log(imageFile);
   };
   const handleSubmit = () => {};
 
-  return (
+  return isAuthUser ? (
     <Modal onChangeOpen={onChangeOpen}>
       <StyledWrapper>
         <StyledMain>
@@ -41,12 +47,17 @@ const CreatePostModal = ({ post, onChangeOpen }: Props) => {
         <StyledAside>
           <AsideHeader
             onSubmit={handleSubmit}
-            onSelectChannelId={setCategory}
+            onSelectChannel={setCategory}
           />
           <TitleEditor onEditing={setTitle} />
         </StyledAside>
       </StyledWrapper>
     </Modal>
+  ) : (
+    <Alert
+      message="로그인 후 이용해주세요"
+      onChangeOpen={onChangeOpen}
+    />
   );
 };
 
