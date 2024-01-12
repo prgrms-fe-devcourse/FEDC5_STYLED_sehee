@@ -4,7 +4,8 @@ export interface ImageUploadProps extends HTMLAttributes<HTMLDivElement> {
   width: string;
   height: string;
   fontSize?: number;
-  onUpload?: (imageFile: ImageFileType | null) => void;
+  onUpload?: (imageFile: ImageFileType | string | null) => void;
+  initialValue?: string;
 }
 
 export interface ImageFileType {

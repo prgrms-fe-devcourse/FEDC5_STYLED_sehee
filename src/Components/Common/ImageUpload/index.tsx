@@ -25,14 +25,23 @@ const ImageUpload = ({
   height,
   fontSize,
   onUpload,
+  initialValue,
 }: ImageUploadProps) => {
   const uploadInput = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<ImageFileType | null>(null);
+  const [imageFile, setImageFile] = useState<ImageFileType | string | null>(
+    null,
+  );
 
   const { colors } = useTheme();
   const getButtonBgColor = colors.buttonBackground;
   const getButtonTextColor = colors.buttonText;
   const getButtonhoverBgColor = colors.buttonClickHover;
+
+  useEffect(() => {
+    if (initialValue) {
+      setImageFile(initialValue);
+    }
+  }, [initialValue]);
 
   /**
    * 파일 업로드 버튼 클릭 핸들러 함수
@@ -75,8 +84,8 @@ const ImageUpload = ({
   const showUploadImage = useMemo(() => {
     return imageFile ? (
       <StyledImage
-        src={imageFile.imageUrl}
-        alt={imageFile.type}
+        src={typeof imageFile === 'string' ? imageFile : imageFile?.imageUrl}
+        alt={typeof imageFile === 'string' ? 'uploaded-image' : imageFile?.type}
         onClick={handleClickUpload}
       />
     ) : null;

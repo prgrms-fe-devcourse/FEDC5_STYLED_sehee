@@ -7,5 +7,5 @@ export interface Props {
 export interface PostFieldProps {
   title: string;
   category: string;
-  image: ImageFileType | null;
+  image: ImageFileType | string | null;
 }
