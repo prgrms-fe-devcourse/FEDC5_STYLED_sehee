@@ -10,15 +10,25 @@ import {
   StyledText,
 } from './style';
 
-const NotificationItem = ({ src, text, date, type, typeId, isSeen }: Props) => {
+const NotificationItem = ({
+  src,
+  text,
+  date,
+  type,
+  typeId,
+  isSeen,
+  onClose,
+}: Props) => {
   const navigate = useNavigate();
 
   const handleOnClick = () => {
     if (type === 'comment' || type === 'post') {
+      onClose();
       navigate(`/detail-modal/${typeId}`);
     }
 
     if (type === 'follow') {
+      onClose();
       navigate(`/profile/${typeId}`);
     }
   };

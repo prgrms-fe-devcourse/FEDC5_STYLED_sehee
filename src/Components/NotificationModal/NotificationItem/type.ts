@@ -6,4 +6,5 @@ export interface Props {
   type: string;
   typeId: string;
   isSeen: boolean;
+  onClose: () => void;
 }

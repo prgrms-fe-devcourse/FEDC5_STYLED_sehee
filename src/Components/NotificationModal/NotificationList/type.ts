@@ -9,4 +9,5 @@ export interface Props {
     type: string;
     typeId: string;
   })[];
+  onClose: () => void;
 }

@@ -62,7 +62,12 @@ const NotificationModal = ({ onClose }: Props) => {
           <Skeleton.Circle size="1rem" />
         </SkeletonList>
       )}
-      {!isLoading && <NotificationList list={notificationList || []} />}
+      {!isLoading && (
+        <NotificationList
+          list={notificationList || []}
+          onClose={onClose}
+        />
+      )}
     </StyledWrapper>
   );
 };

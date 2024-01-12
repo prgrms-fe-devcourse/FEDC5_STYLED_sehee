@@ -11,6 +11,7 @@ import AlarmModal from '../../Modal/AlarmModal';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 import useTabStore from '@/Stores/Tab';
+import NotificationModal from '@/Components/NotificationModal';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
@@ -143,7 +144,7 @@ const HeaderTab = () => {
               color={tab === 'alarm' ? colors.primary : colors.background}
               setModalOpen={() => {
                 onSetModal('alarm');
-                setAlarm(true);
+                setAlarm((prevIsShow) => !prevIsShow);
               }}
             />
 
@@ -167,8 +168,8 @@ const HeaderTab = () => {
         )}
       </StyledUserContainer>
       {alarm && (
-        <AlarmModal
-          onChangeOpen={() => {
+        <NotificationModal
+          onClose={() => {
             setAlarm(false);
             setTab(prev);
           }}
