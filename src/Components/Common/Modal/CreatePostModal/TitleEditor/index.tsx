@@ -3,7 +3,6 @@ import { Props } from './type';
 import { StyledWrapper, StyledTextArea } from './style';
 
 const TitleEditor = ({ onEditing }: Props) => {
-  // 입력받은 텍스트 value를 상위로 전달
   const [value, setValue] = useState('');
   const $ref = useRef<HTMLTextAreaElement>(null);
 

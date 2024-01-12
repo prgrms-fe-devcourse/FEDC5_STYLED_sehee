@@ -37,6 +37,7 @@ const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
         />
         <Button // 공유, 수정하기 버튼
           onClick={onSubmit}
+          width="8rem"
           height="4rem"
           textSize="middle"
           style={{ padding: '0px 10px', minWidth: '7rem' }}

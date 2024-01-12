@@ -9,6 +9,7 @@ export const StyledWrapper = styled.div`
 export const StyledMain = styled.main`
   width: 60%;
   height: 100%;
+  border-right: 0.1rem solid lightgray;
 `;
 export const StyledAside = styled.aside`
   display: flex;
@@ -19,8 +20,10 @@ export const StyledAside = styled.aside`
 `;
 export const StyledHeader = styled.div`
   width: 100%;
-  padding: 1rem 0rem;
+  padding: 2rem 0rem;
   display: flex;
   justify-content: center;
   font-size: large;
+  cursor: default;
+  user-select: none;
 `;

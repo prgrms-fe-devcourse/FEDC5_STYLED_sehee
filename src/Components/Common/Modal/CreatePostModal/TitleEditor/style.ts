@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledWrapper = styled.div`
   width: 100%;
   height: auto;
-  padding: 1rem;
+  padding: 0 2rem 2rem 2rem;
   flex-grow: 1;
 `;
 export const StyledTextArea = styled.textarea`
