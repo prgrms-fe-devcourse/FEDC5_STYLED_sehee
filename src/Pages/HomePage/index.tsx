@@ -3,7 +3,11 @@
 import { useTheme } from 'styled-components';
 import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 import {
@@ -21,10 +25,8 @@ import {
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import { getChannels } from '@/Services/Channel';
-import { ChannelType } from '@/Types/ChannelType';
 import channels from '@/Constants/Channels';
 import { getPostByChannel } from '@/Services/Post';
-import { PostType } from '@/Types/PostType';
 import PostCard from '@/Components/Common/PostCard';
 import UserManager from '@/Components/UserManager';
 import useAuthUserStore from '@/Stores/AuthUser';
@@ -34,13 +36,12 @@ import QUERY_KEYS from '@/Constants/queryKeys';
 const HomePage = () => {
   const { colors, size } = useTheme();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const [refInView, inView] = useInView();
 
-  // const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [currentChannelId, setCurrentChannelId] = useState('all');
-  const [postList, setPostList] = useState<PostType[]>([]);
 
   /**
    *
@@ -50,8 +51,10 @@ const HomePage = () => {
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
 
+    // 다른 채널 클릭 시 무한 스크롤 쿼리 초기화
     if (channelId !== currentChannelId) {
-      setPostList([]);
+      queryClient.removeQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
     }
 
     return channelId && setCurrentChannelId(channelId);
@@ -76,7 +79,7 @@ const HomePage = () => {
   const {
     data: channelList,
     isSuccess: isChannelListSuccess,
-    isLoading: isChannelListLoading,
+    // isLoading: isChannelListLoading,
   } = useQuery({
     queryKey: [QUERY_KEYS.CHANNEL_LIST],
     queryFn: getChannels,
@@ -89,15 +92,14 @@ const HomePage = () => {
    * @param channelId 채널 ID
    */
   const {
-    status,
-    fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
     data,
-    isSuccess,
+    fetchNextPage,
+    // fetchPreviousPage,
+    // hasPreviousPage,
+    // isFetchingNextPage,
+    // isFetchingPreviousPage,
+    // isSuccess,
   } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.POST_BY_ID, currentChannelId],
     queryFn: ({ pageParam }) =>
@@ -113,8 +115,8 @@ const HomePage = () => {
       !isCheckAuthLoading &&
       !!userObj &&
       isChannelListSuccess &&
-      currentChannelId !== 'all' &&
-      inView,
+      currentChannelId !== 'all',
+    // inView,
   });
 
   /**
@@ -128,7 +130,7 @@ const HomePage = () => {
    * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
    * @param postId 포스트 ID
    */
-  const goPostDetail = (postId: string) => {
+  const handleClickPostImage = (postId: string) => {
     navigate(`/modal-detail/${postId}`);
   };
 
@@ -142,11 +144,11 @@ const HomePage = () => {
    * 로그인 인증 시 유저 정보 갱신
    */
 
-  useEffect(() => {
-    if (isSuccess && userObj) {
-      setAuthUser(userObj);
-    }
-  }, [isSuccess, setAuthUser, userObj]);
+  // useEffect(() => {
+  //   if (isSuccess && userObj) {
+  //     setAuthUser(userObj);
+  //   }
+  // }, [isSuccess, setAuthUser, userObj]);
 
   return (
     <>
@@ -246,6 +248,7 @@ const HomePage = () => {
                       authUser &&
                       post.likes.some(({ _id }) => _id === authUser._id)
                     }
+                    onImageClick={() => handleClickPostImage(post._id)}
                   />
                 ));
               })
@@ -253,11 +256,17 @@ const HomePage = () => {
               <StyledNoPost>페이지가 없습니다.</StyledNoPost>
             )}
             {/* {currentChannelId !== 'all' && data && data.pages.length > 0 && ( */}
-            <StyledObserver
+            {hasNextPage && (
+              <StyledObserver
+                className="observer"
+                ref={refInView}
+              />
+            )}
+            {/* <StyledObserver
               className="observer"
               ref={refInView}
-            />
-            {/* )} */}
+            /> */}
+            {/* // )} */}
           </StyledPostCardList>
         </StyledMainContentContainer>
         <UserManager />
