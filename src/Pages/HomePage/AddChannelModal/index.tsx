@@ -48,12 +48,6 @@ const AddChannelModal = () => {
   const { mutate } = useMutation({
     mutationFn: createChannel,
     onSuccess: () => handleCloseModal(false),
-    // onMutate: async() => {
-
-    // }
-    // onSettled: () => {
-
-    // }
   });
 
   /**
