@@ -59,7 +59,7 @@ const MessageList = ({
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const sendMessage = async () => {
     if (!inputRef || !inputRef.current) {
