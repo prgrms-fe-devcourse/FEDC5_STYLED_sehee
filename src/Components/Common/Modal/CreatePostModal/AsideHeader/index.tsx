@@ -1,12 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { Props } from './type';
-import { StyledContainer, StyledHeader, StyledWrapper } from './style';
+
 import Button from '@/Components/Base/Button';
 import DropDown from '@/Components/Common/DropDown';
-import channels from '@/Constants/Channels';
-import { checkAuth } from '@/Services/Auth';
 import Avatar from '@/Components/Base/Avatar';
 import Skeleton from '@/Components/Base/Skeleton';
+
+import { StyledContainer, StyledHeader, StyledWrapper } from './style';
+import channels from '@/Constants/Channels';
+import { checkAuth } from '@/Services/Auth';
+import { Props } from './type';
+
+/**
+ * @brief 채널 선택 드롭다운, 포스트 작성 제출 버튼, 유저 프로필 정보를 담고 있는 AisdeHeader 컴포넌트입니다.
+ * @param 드롭다운 옵션을 선택하거나 제출 버튼을 클릭하면 onSelectChannel, onSubmit 콜백을 상위 컴포넌트에게 전달합니다.
+ */
 
 const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
   const { data } = useQuery({

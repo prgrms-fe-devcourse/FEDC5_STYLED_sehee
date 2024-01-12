@@ -7,9 +7,12 @@ export const StyledWrapper = styled.div`
   display: flex;
 `;
 export const StyledMain = styled.main`
+  display: flex;
+  flex-direction: column;
   width: 60%;
   height: 100%;
   border-right: 0.1rem solid lightgray;
+  overflow-y: auto;
 `;
 export const StyledAside = styled.aside`
   display: flex;
@@ -17,11 +20,14 @@ export const StyledAside = styled.aside`
   width: 40%;
   height: 100%;
   background-color: white;
+  overflow-y: auto;
 `;
-export const StyledHeader = styled.div`
+export const StyledMainHeader = styled.div`
   width: 100%;
+  height: auto;
   padding: 2rem 0rem;
   display: flex;
+  /* flex-grow: 1; */
   justify-content: center;
   font-size: large;
   cursor: default;
