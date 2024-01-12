@@ -15,6 +15,7 @@ export const StyledContainer = styled.div<{
   cursor: pointer;
   display: flex;
   align-items: center;
+  overflow: hidden;
 `;
 
 export const StyledInfoContainer = styled.div<{ $borderRadius: string }>`
