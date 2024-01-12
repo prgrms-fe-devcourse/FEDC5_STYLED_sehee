@@ -22,7 +22,7 @@ export const StyledContainer = styled.li<{
     $isAuth && theme.colors.buttonClickHover};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonClickHover};
+    background-color: ${({ theme }) => theme.colors.focusHover};
     cursor: pointer;
 
     > span {
