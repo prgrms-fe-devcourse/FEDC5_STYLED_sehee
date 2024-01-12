@@ -10,7 +10,8 @@ export const StyledContainer = styled.div<{
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
   margin: 1rem;
-  box-shadow: 0 0.1rem 0.1rem gray;
+  box-shadow: 0 0.1rem 0.1rem ${({ theme }) => theme.colors.backgroundGrey};
+  border: 1px solid ${({ theme }) => theme.colors.backgroundGrey};
   cursor: pointer;
   display: flex;
   align-items: center;

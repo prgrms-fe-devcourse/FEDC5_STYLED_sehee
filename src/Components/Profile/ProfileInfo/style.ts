@@ -15,4 +15,5 @@ export const StyledButtonContainer = styled.div`
 export const StyledName = styled.div`
   font-size: 2.7rem;
   padding: 0 6rem 0 3rem;
+  color: ${({ theme }) => theme.colors.primary};
 `;
