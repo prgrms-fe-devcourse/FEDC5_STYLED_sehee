@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'react';
 
 export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
+  postId: string;
   imageUrl: string;
   content: string;
   authorName: string;

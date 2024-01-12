@@ -1,4 +1,5 @@
 import { useTheme } from 'styled-components';
+import { useMutation } from '@tanstack/react-query';
 import { PostCardProps } from './type';
 import {
   StyledPostCardWrapper,
@@ -13,8 +14,10 @@ import {
 } from './style';
 import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
+import { createLike } from '@/Services/Like';
 
 const PostCard = ({
+  postId,
   imageUrl,
   content,
   authorName,
@@ -31,6 +34,15 @@ const PostCard = ({
     ? 'rgba(0, 149, 246, 0.7)'
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
+
+  const handleClickLike = (postId) => {
+    console.log(postId);
+  };
+
+  const { data } = useMutation({
+    mutationFn: createLike,
+    // onSuccess:
+  });
 
   return (
     <StyledPostCardWrapper
@@ -61,6 +73,7 @@ const PostCard = ({
         <Icon
           name={isLike ? 'favorite' : 'favorite_border'}
           style={{ color: `${colors.alert}`, ...HeartIconStyle }}
+          onClick={() => handleClickLike(postId)}
         />
       </StyledPostCardHeader>
       <StyledPostCardTitle>{content}</StyledPostCardTitle>
