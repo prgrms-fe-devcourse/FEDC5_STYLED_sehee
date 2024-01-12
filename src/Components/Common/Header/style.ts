@@ -8,6 +8,7 @@ const StyledHeaderContainer = styled.div`
   grid-template-columns: 1fr 4.3fr;
   position: fixed;
   z-index: 9;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.backgroundGrey};
 `;
 
 export default StyledHeaderContainer;
