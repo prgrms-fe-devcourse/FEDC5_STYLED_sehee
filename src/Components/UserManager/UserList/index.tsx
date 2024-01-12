@@ -3,7 +3,7 @@ import { useEffect, memo } from 'react';
 import { Props } from './type';
 import UserItem from '../UserItem';
 import { UserType } from '@/Types/UserType';
-import StyledUserList from './style';
+import { StyledUserList, StyledNonList } from './style';
 
 const UserList = ({ userList, onlineUserList, loadMoreUsers }: Props) => {
   const { ref, inView } = useInView({ threshold: 0 });
@@ -33,6 +33,9 @@ const UserList = ({ userList, onlineUserList, loadMoreUsers }: Props) => {
           />
         );
       })}
+      {userList.length === 0 && (
+        <StyledNonList>사용자 목록이 없습니다.</StyledNonList>
+      )}
     </StyledUserList>
   );
 };
