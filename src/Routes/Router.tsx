@@ -19,7 +19,12 @@ const RouterManager = () => {
       <Route
         path="/"
         element={<HomePage />}
-      />
+      >
+        <Route
+          path="modal-detail/:postId"
+          element={<DetailPage />}
+        />
+      </Route>
       <Route
         path="/login"
         element={<LoginPage />}
