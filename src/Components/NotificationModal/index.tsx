@@ -6,7 +6,10 @@ import CategoryList from './CategoryList';
 import { getNotifications, readNotifications } from '@/Services/Notification';
 import StyledWrapper from './style';
 import NotificationList from './NotificationList';
-import filterNotification from './filterNotification';
+import {
+  addNotificationsData,
+  filterNotificationsByCategory,
+} from './filterNotification';
 import Skeleton from '../Base/Skeleton';
 import SkeletonList from '../Common/SkeletonList';
 import QUERY_KEYS from '@/Constants/queryKeys';
@@ -20,6 +23,7 @@ const NotificationModal = ({ onClose }: Props) => {
   const { data, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
     queryFn: getNotifications,
+    select: (notifications) => addNotificationsData(notifications || []),
   });
 
   const { mutate } = useMutation({
@@ -27,18 +31,15 @@ const NotificationModal = ({ onClose }: Props) => {
     onSuccess: onClose,
   });
 
-  const setCategory = (category: CategoryType) => {
-    setSelectedCategory(category);
-  };
+  const setCategory = (category: CategoryType) => setSelectedCategory(category);
 
-  const notificationList = useMemo(() => {
-    return filterNotification(data || [], selectedCategory);
-  }, [data, selectedCategory]);
+  const notificationList = useMemo(
+    () => filterNotificationsByCategory(data || [], selectedCategory),
+    [data, selectedCategory],
+  );
 
   useEffect(() => {
-    return () => {
-      mutate();
-    };
+    return () => mutate();
   }, [mutate]);
 
   return (

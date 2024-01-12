@@ -1,12 +1,10 @@
 import { NotificationType } from '@/Types/NotificationType';
 import calculateDays from '@/Utils/calculateDays';
 
-const filterNotificationsByCategory = (
+export const filterNotificationsByCategory = (
   notifications: NotificationType[],
   selectedCategory: string,
 ) => {
-  if (!notifications) return [];
-
   return notifications.filter(({ comment, follow, post, message }) => {
     switch (selectedCategory) {
       case '댓글':
@@ -21,7 +19,7 @@ const filterNotificationsByCategory = (
   });
 };
 
-const addNotificationsData = (notifications: NotificationType[]) => {
+export const addNotificationsData = (notifications: NotificationType[]) => {
   return notifications.map((notification) => {
     const { createdAt, comment, follow, post, author } = notification;
 
@@ -54,18 +52,3 @@ const addNotificationsData = (notifications: NotificationType[]) => {
     return result;
   });
 };
-
-const filterNotification = (
-  notifications: NotificationType[],
-  selectedCategory: string,
-) => {
-  const filterList = filterNotificationsByCategory(
-    notifications,
-    selectedCategory,
-  );
-  const result = addNotificationsData(filterList);
-
-  return result;
-};
-
-export default filterNotification;
