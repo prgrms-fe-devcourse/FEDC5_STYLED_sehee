@@ -1,4 +1,3 @@
-import { useTheme } from 'styled-components';
 import Icon from '@/Components/Base/Icon';
 import { Props } from './type';
 import {
@@ -21,7 +20,6 @@ const ImageCard = ({
   onDetail,
   ...props
 }: Props) => {
-  const { colors } = useTheme();
   return (
     <StyledContainer
       $width={width}
@@ -42,7 +40,7 @@ const ImageCard = ({
           <Icon
             name="favorite"
             style={{
-              color: colors.buttonText,
+              color: '#FFFFFF',
               fontSize: `${fontSize + 1}rem`,
             }}
           />
@@ -54,7 +52,7 @@ const ImageCard = ({
           <Icon
             name="comment"
             style={{
-              color: colors.buttonText,
+              color: '#FFFFFF',
               fontSize: `${fontSize + 1}rem`,
             }}
           />
