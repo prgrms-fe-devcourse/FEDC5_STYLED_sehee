@@ -2,7 +2,12 @@ import { NotificationType } from '@/Types/NotificationType';
 import calculateDays from '@/Utils/calculateDays';
 
 export const filterNotificationsByCategory = (
-  notifications: NotificationType[],
+  notifications: (NotificationType & {
+    text: string;
+    date: string;
+    type: string;
+    typeId: string;
+  })[],
   selectedCategory: string,
 ) => {
   return notifications.filter(({ comment, follow, post, message }) => {

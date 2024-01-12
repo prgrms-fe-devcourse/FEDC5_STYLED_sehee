@@ -65,7 +65,7 @@ const NotificationModal = ({ onClose }: Props) => {
       )}
       {!isLoading && (
         <NotificationList
-          list={notificationList || []}
+          list={notificationList}
           onClose={onClose}
         />
       )}
