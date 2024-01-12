@@ -1,4 +1,3 @@
-import { styled } from 'styled-components';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
