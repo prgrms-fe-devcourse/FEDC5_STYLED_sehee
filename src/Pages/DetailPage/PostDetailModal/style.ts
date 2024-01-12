@@ -62,6 +62,12 @@ export const StyledPostMainInfo = styled.div`
 export const StyledPostMainTopContainer = styled.div`
   display: flex;
   align-items: center;
+
+  .post-detail-user-card {
+    > :first-child {
+      flex-shrink: 0;
+    }
+  }
 `;
 
 export const StyledEditTime = styled.div``;
@@ -140,6 +146,10 @@ export const StledLikeContainer = styled.div`
 
   .post-detail-user-card {
     padding-right: 0;
+
+    > :first-child {
+      flex-shrink: 0;
+    }
   }
 
   .like-extra-text {
