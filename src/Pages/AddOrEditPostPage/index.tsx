@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreatePostModal from '@/Components/Common/Modal/CreatePostModal';
+import AddOrEditPostModal from '@/Components/Common/Modal/AddOrEditPostModal';
 import useTabStore from '@/Stores/Tab';
 
-const AddPostPage = () => {
+const AddOrEditPostPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const { prev, setTab } = useTabStore();
 
@@ -15,8 +15,8 @@ const AddPostPage = () => {
   };
 
   return isModalOpen ? (
-    <CreatePostModal onChangeOpen={handleCloseModal} />
+    <AddOrEditPostModal onChangeOpen={handleCloseModal} />
   ) : null;
 };
 
-export default AddPostPage;
+export default AddOrEditPostPage;

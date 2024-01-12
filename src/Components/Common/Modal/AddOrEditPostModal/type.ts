@@ -1,8 +1,6 @@
-import { PostType } from '@/Types/PostType';
 import { ImageFileType } from '../../ImageUpload/type';
 
 export interface Props {
-  post?: PostType;
   onChangeOpen: (state: boolean) => void;
 }
 

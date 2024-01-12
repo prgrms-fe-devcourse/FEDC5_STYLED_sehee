@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '../../Alert';
 import AsideHeader from './AsideHeader';
@@ -34,13 +34,16 @@ import validatePostFieldProps from './validatePostField';
 // DONE: 기타 에러 핸들링
 // TODO: 게시글 수정 모달로 확장 (post 있는 상태면 해당 값으로 초기화, 아니면 빈 값으로)
 
-const CreatePostModal = ({ post, onChangeOpen }: Props) => {
+const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const navigate = useNavigate();
   const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
   const [category, setCategory] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [image, setImage] = useState<ImageFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { postId } = useParams();
+
+  console.log(postId);
 
   /**
    * @brief 카테고리명을 채널ID로 변환하는 mutateChannel과, 포스트 작성을 요청하는 mutatePost함수가 연쇄적으로 호출됩니다.
@@ -115,4 +118,4 @@ const CreatePostModal = ({ post, onChangeOpen }: Props) => {
   );
 };
 
-export default CreatePostModal;
+export default AddOrEditPostModal;
