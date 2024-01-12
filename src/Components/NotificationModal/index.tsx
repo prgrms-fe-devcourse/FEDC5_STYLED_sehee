@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useMemo, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import NotificationHeader from './NotificationHeader';
 import { CategoryType, Props } from './type';
 import CategoryList from './CategoryList';
-import { getNotifications } from '@/Services/Notification';
+import { getNotifications, readNotifications } from '@/Services/Notification';
 import StyledWrapper from './style';
 import NotificationList from './NotificationList';
 import filterNotification from './filterNotification';
@@ -22,6 +22,11 @@ const NotificationModal = ({ onClose }: Props) => {
     queryFn: getNotifications,
   });
 
+  const { mutate } = useMutation({
+    mutationFn: readNotifications,
+    onSuccess: onClose,
+  });
+
   const setCategory = (category: CategoryType) => {
     setSelectedCategory(category);
   };
@@ -29,6 +34,12 @@ const NotificationModal = ({ onClose }: Props) => {
   const notificationList = useMemo(() => {
     return filterNotification(data || [], selectedCategory);
   }, [data, selectedCategory]);
+
+  useEffect(() => {
+    return () => {
+      mutate();
+    };
+  }, [mutate]);
 
   return (
     <StyledWrapper>
