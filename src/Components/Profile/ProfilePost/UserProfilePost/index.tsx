@@ -5,6 +5,7 @@ import { PostType } from '@/Types/PostType';
 import { PostProps } from './type';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHr from './style';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 
 const UserProfilePost = ({ posts }: PostProps) => {
   return (
@@ -19,7 +20,7 @@ const UserProfilePost = ({ posts }: PostProps) => {
             >
               <ImageCard
                 key={post._id}
-                src={post.image || ''}
+                src={post.image || logoBlack}
                 comment={post.comments.length}
                 width="90%"
                 height="22.5rem"

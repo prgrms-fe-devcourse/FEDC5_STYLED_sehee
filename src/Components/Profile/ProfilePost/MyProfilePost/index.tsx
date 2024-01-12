@@ -11,6 +11,7 @@ import { getPostByUser } from '@/Services/Post';
 import { GetChannelPostRequestType } from '@/Types/Request';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHeadContainer from './style';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 
 const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
@@ -125,7 +126,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
                 >
                   <ImageCard
                     key={post._id}
-                    src={post.image || ''}
+                    src={post.image || logoBlack}
                     comment={post.comments.length}
                     width="90%"
                     height="22.5rem"
@@ -143,7 +144,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
                 >
                   <ImageCard
                     key={post._id}
-                    src={post.image || ''}
+                    src={post.image || logoBlack}
                     comment={post.comments.length}
                     width="90%"
                     height="22.5rem"
