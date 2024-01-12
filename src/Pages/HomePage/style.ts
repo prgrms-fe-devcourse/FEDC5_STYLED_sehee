@@ -21,6 +21,10 @@ export const StyledLeftContainer = styled.div`
   align-items: center;
   border-right: 0.1rem solid #ddd;
   gap: 1rem;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    display: none;
+  }
 `;
 
 export const StyledCategoryTitleContainer = styled.div`
@@ -52,6 +56,9 @@ export const StyledCategoryTitle = styled.div`
 `;
 
 export const StyledMainContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 1rem;
   width: calc(100% - 50rem);
   height: 100%;
@@ -67,6 +74,19 @@ export const StyledPostCardList = styled.div`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+`;
+
+export const StyledObserver = styled.div`
+  width: 100%;
+  flex-basis: 1rem;
+  flex-shrink: 0;
+`;
+
+export const StyledNoPost = styled.div`
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  font-size: ${({ theme }) => theme.size.large};
 `;
 
 export const StyledRightContainer = styled.div`

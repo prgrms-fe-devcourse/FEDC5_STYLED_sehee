@@ -27,6 +27,10 @@ const RouterManager = () => {
           path="*"
           element={<ModalRouter />}
         />
+        <Route
+          path="modal-detail/:postId"
+          element={<DetailPage />}
+        />
       </Route>
       <Route
         path="/login"

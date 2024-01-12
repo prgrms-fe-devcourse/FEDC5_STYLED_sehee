@@ -12,7 +12,7 @@ const ModalButton = ({ style, name, color, setModalOpen }: Props) => {
       hoverBackgroundColor="transparent"
       onClick={setModalOpen}
       style={{
-        height: '100%',
+        height: '93.5%',
         borderBottom: `3px solid ${color}`,
       }}
     >

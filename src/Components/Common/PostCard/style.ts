@@ -57,6 +57,7 @@ export const StyledPostCardBody = styled.div`
   height: 50%;
   border-radius: 0 0 0.5rem 0.5rem;
   flex-grow: 1;
+  cursor: pointer;
 `;
 
 export const StyledPostCardImage = styled.img<{
