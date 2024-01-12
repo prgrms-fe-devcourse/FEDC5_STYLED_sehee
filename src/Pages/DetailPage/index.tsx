@@ -60,6 +60,7 @@ const DetailPage = () => {
       postEditTime={updateTime || ''}
       postImageUrl={postDetail?.image || ''}
       postAuthor={postDetail?.author.fullName || ''}
+      postAuthorId={postAuthorId}
       authorAvatar={authorData?.image || ''}
     />
   );

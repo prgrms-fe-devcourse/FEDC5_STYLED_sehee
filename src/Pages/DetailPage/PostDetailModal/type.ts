@@ -7,6 +7,7 @@ export interface PostDetailModalProps {
   postContents: string;
   postImageUrl: string;
   postAuthor: string;
+  postAuthorId: string;
   authorAvatar: string;
   postEditTime: string;
 }

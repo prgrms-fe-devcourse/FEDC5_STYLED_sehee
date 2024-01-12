@@ -1,4 +1,5 @@
 import { useTheme } from 'styled-components';
+import { useParams } from 'react-router-dom';
 import Modal from '@/Components/Common/Modal';
 import {
   PostDotModalProps,
@@ -7,13 +8,18 @@ import {
 } from './style';
 import Button from '@/Components/Base/Button';
 import buttonInfo from './postDotModalConst';
+import useAuthUserStore from '@/Stores/AuthUser';
+import USER_ROLE from '@/Constants/userRole';
 
 const PostDotModal = ({
+  isFollow,
+  postAuthorId,
   onChangeOpen,
   onCloseDotModal,
   onCancelFollow,
 }: PostDotModalProps) => {
   const { colors } = useTheme();
+  const { user: authUser } = useAuthUserStore();
 
   /**
    * 포스트 삭제 함수
@@ -56,31 +62,45 @@ const PostDotModal = ({
       onChangeOpen={onChangeOpen}
       flexDirection="column"
     >
-      {buttonInfo.map((title, index) => (
-        // 추가 버튼 확장성을 고려해 배열로 매핑하여 렌더링
-        <Button
-          key={title}
-          width="100%"
-          height="25%"
-          borderRadius={index > 0 ? '0' : '0.5rem'}
-          style={index > 0 ? notFirstDotModalButtonStyle : dotModalButtonStyle}
-          textColor={
-            title === '게시물 삭제' || title === '팔로우 취소'
-              ? colors.alert
-              : colors.text
-          }
-          hoverTextColor={
-            title === '게시물 삭제' || title === '팔로우 취소'
-              ? colors.alert
-              : colors.text
-          }
-          backgroundColor={colors.background}
-          hoverBackgroundColor={colors.background}
-          onClick={handlerFuncList[index]}
-        >
-          {title}
-        </Button>
-      ))}
+      {buttonInfo.map((title, index) => {
+        const isAdmin = authUser.role === USER_ROLE.ADMIN_USER;
+        // eslint-disable-next-line no-underscore-dangle
+        const isMyPost = authUser._id === postAuthorId;
+        const isAdvancedTitle =
+          title === '게시물 삭제' || title === '게시물 수정';
+        if (isAdvancedTitle && !(isAdmin || isMyPost)) return null;
+
+        if (title === '팔로우 취소' && !isFollow) {
+          return null;
+        }
+
+        return (
+          <Button
+            key={title}
+            width="100%"
+            height="25%"
+            borderRadius={index > 0 ? '0' : '0.5rem'}
+            style={
+              index > 0 ? notFirstDotModalButtonStyle : dotModalButtonStyle
+            }
+            textColor={
+              title === '게시물 삭제' || title === '팔로우 취소'
+                ? colors.alert
+                : colors.text
+            }
+            hoverTextColor={
+              title === '게시물 삭제' || title === '팔로우 취소'
+                ? colors.alert
+                : colors.text
+            }
+            backgroundColor={colors.background}
+            hoverBackgroundColor={colors.background}
+            onClick={handlerFuncList[index]}
+          >
+            {title}
+          </Button>
+        );
+      })}
     </Modal>
   );
 };

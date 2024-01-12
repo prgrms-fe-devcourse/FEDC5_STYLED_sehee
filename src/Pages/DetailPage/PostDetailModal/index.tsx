@@ -36,6 +36,7 @@ const PostDetailModal = ({
   postContents,
   postImageUrl,
   postAuthor,
+  postAuthorId,
   authorAvatar,
   postEditTime,
 }: PostDetailModalProps) => {
@@ -49,6 +50,7 @@ const PostDetailModal = ({
   const [isCommentBtnDisabled, setIsCommentBtnDisabled] = useState(true);
   // TODO: 좋아요 연동 초기값
   const [isLike, setIsLike] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
 
   /**
    * 댓글 입력 창이 비었을 경우 게시 버튼 비활성화하는 함수
@@ -73,6 +75,14 @@ const PostDetailModal = ({
    */
   const handleCloseDotModal = (state: boolean) => {
     setIsDotModalOpen(state);
+  };
+
+  /**
+   * 팔로우 버튼 클릭 동작 함수
+   */
+  const handleClickFollowBtn = () => {
+    // TODO: 좋아요 api 추가
+    setIsFollow(!isFollow);
   };
 
   /**
@@ -124,7 +134,9 @@ const PostDetailModal = ({
               userName={postAuthor}
               coverImageUrl={authorAvatar}
               // Todo: 팔로우 여부 추가
+              isFollow={isFollow}
               className="post-detail-user-card"
+              onClickFollowBtn={handleClickFollowBtn}
             />
             {/* 점 세개 추가 모달 버튼 */}
             <Button
@@ -263,9 +275,11 @@ const PostDetailModal = ({
       {/* 점 세개 모달 PostDotModal */}
       {isDotModalOpen && (
         <PostDotModal
+          isFollow={isFollow}
+          postAuthorId={postAuthorId}
           onChangeOpen={handleCloseDotModal}
           onCloseDotModal={handleCloseDotModal}
-          onCancelFollow={setIsLike}
+          onCancelFollow={setIsFollow}
         />
       )}
     </>
