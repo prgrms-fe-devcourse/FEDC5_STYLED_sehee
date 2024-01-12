@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
@@ -164,7 +164,9 @@ const HomePage = () => {
    */
   const handleOpenCreateChannel = () => {
     navigate('/add-channel');
+  };
 
+  /*
    * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
    * @param postId 포스트 ID
    */
