@@ -15,7 +15,7 @@ import { Props } from './type';
  * @param 드롭다운 옵션을 선택하거나 제출 버튼을 클릭하면 onSelectChannel, onSubmit 콜백을 상위 컴포넌트에게 전달합니다.
  */
 
-const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
+const AsideHeader = ({ onSelectChannel, onSubmit, initialValue }: Props) => {
   const { data } = useQuery({
     queryKey: ['currentUser'],
     queryFn: checkAuth,
@@ -41,6 +41,7 @@ const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
         <DropDown // 카테고리 드롭다운
           options={Object.values(channels)}
           onSelect={handleSelect}
+          initialValue={initialValue}
         />
         <Button // 공유, 수정하기 버튼
           onClick={onSubmit}
@@ -49,7 +50,7 @@ const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
           textSize="middle"
           style={{ padding: '0px 10px', minWidth: '7rem' }}
         >
-          {post ? '수정하기' : '공유하기'}
+          {initialValue ? '수정하기' : '공유하기'}
         </Button>
       </StyledHeader>
       <StyledContainer>

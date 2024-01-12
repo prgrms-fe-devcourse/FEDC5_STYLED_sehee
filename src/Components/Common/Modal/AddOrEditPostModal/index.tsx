@@ -104,7 +104,9 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
       <Modal onChangeOpen={onChangeOpen}>
         <StyledWrapper>
           <StyledMain>
-            <StyledMainHeader>새로운 포스트</StyledMainHeader>
+            <StyledMainHeader>
+              {editingPost ? '게시물 수정하기' : '새로운 게시물'}
+            </StyledMainHeader>
             <ImageUpload
               width="100%"
               height="80%"
@@ -115,6 +117,7 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
             <AsideHeader
               onSubmit={handleSubmit}
               onSelectChannel={setCategory}
+              initialValue={editingPost?.channel.name}
             />
             <TitleEditor
               onEditing={setTitle}
