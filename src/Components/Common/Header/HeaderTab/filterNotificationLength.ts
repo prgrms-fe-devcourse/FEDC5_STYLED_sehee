@@ -5,7 +5,9 @@ const filterNotificationLength = (notifications: NotificationType[]) => {
     (acc, notification) => {
       const { post, follow, comment, message, seen } = notification;
 
-      if (!seen) {
+      console.log(notification);
+
+      if (seen) {
         return acc;
       }
 
