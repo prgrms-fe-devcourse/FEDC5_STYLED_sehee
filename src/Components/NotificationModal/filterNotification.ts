@@ -16,8 +16,7 @@ const filterNotificationsByCategory = (
       case '좋아요':
         return !!post;
       default:
-        return true;
-      // return !message; // 전체인 경우 message가 없는 알림만 반환
+        return !message;
     }
   });
 };
@@ -48,10 +47,6 @@ const addNotificationsData = (notifications: NotificationType[]) => {
       result.text = `${author.fullName}님이 게시글 좋아요를 눌렀습니다.`;
       result.type = 'post';
       result.typeId = post;
-    } else {
-      result.text = `${author.fullName}님이 게시글 좋아요를 눌렀습니다.`;
-      result.type = 'post';
-      result.typeId = post as string;
     }
 
     result.date = String(calculateDays(createdAt));
