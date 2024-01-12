@@ -20,7 +20,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
     userId: string,
     postId: string,
     { offset = 0, limit = 100 }: GetChannelPostRequestType = {},
-  ) => {
+  ): Promise<PostType | null> => {
     try {
       // 특정 사용자의 포스트 목록 가져오기
       const userPosts = await getPostByUser(userId, { offset, limit });
@@ -30,13 +30,22 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
       }
 
       // 특정 아이디의 포스트 찾기
-      const specificPost = userPosts.find((post) => post._id === postId);
+      const postIdPost = userPosts.find((post) => post._id === postId);
 
-      if (!specificPost) {
-        getLikePostById(userId, postId);
+      if (!postIdPost) {
+        if (limit >= userPosts.length) {
+          return null;
+        }
+
+        // 포스트 더 많이 살펴보기
+        const morePost = await getLikePostById(userId, postId, {
+          offset: offset + limit,
+          limit,
+        });
+        return morePost;
       }
 
-      return specificPost;
+      return postIdPost;
     } catch (e) {
       console.error('error to get like post');
       return null;
@@ -44,12 +53,12 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
   };
 
   // 좋아요한 포스트
-  const likePosts: PostType[] = [];
+  const [likePosts, setLikePosts] = useState([]);
 
   likes.forEach((like) => {
     const post = getLikePostById(like.user, like.post);
     if (!post) {
-      likePosts.push(post);
+      setLikePosts([...likePosts, post]);
     }
   });
 
