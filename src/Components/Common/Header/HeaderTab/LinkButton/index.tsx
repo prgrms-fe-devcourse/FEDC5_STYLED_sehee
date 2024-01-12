@@ -14,7 +14,7 @@ const LinkButton = ({ color, name, link, setLink, style }: Props) => {
       borderRadius="0"
       onClick={setLink}
       style={{
-        height: '100%',
+        height: '93.5%',
         borderBottom: `3px solid ${color}`,
       }}
     >

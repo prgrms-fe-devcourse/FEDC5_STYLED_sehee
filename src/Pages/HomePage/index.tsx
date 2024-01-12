@@ -1,9 +1,11 @@
 /* eslint no-underscore-dangle: 0 */
 // _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
-import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
+
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -31,6 +33,8 @@ import QUERY_KEYS from '@/Constants/queryKeys';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
+  const navigate = useNavigate();
+
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const [refInView, inView] = useInView();
 
@@ -113,11 +117,36 @@ const HomePage = () => {
       inView,
   });
 
+  /**
+   * 채널 생성 모달 여는 함수
+   */
+  const handleOpenCreateChannel = () => {
+    navigate('/add-channel');
+  };
+
+  /*
+   * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
+   * @param postId 포스트 ID
+   */
+  const goPostDetail = (postId: string) => {
+    navigate(`/modal-detail/${postId}`);
+  };
+
   useEffect(() => {
     if (hasNextPage && inView) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage, status]);
+  }, [hasNextPage, inView, fetchNextPage]);
+
+  /**
+   * 로그인 인증 시 유저 정보 갱신
+   */
+
+  useEffect(() => {
+    if (isSuccess && userObj) {
+      setAuthUser(userObj);
+    }
+  }, [isSuccess, setAuthUser, userObj]);
 
   return (
     <>
@@ -165,6 +194,7 @@ const HomePage = () => {
               }
               textColor={colors.text}
               onClick={handleClickChannel}
+              className="category-button"
             >
               전체
             </Button>
@@ -189,8 +219,9 @@ const HomePage = () => {
                   }
                   textColor={colors.text}
                   onClick={handleClickChannel}
+                  className="category-button"
                 >
-                  {channels[channel.name]}
+                  {channels[channel.name] || channel.name}
                 </Button>
               );
             })}
@@ -230,6 +261,7 @@ const HomePage = () => {
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
+      <Outlet />
     </>
   );
 };
