@@ -23,8 +23,8 @@ import Alert from '../../Alert';
 
 const CreatePostModal = ({ post, onChangeOpen }: Props) => {
   // TODO: post 있는 상태면 해당 값으로 초기화, 아니면 빈 값으로
-  const [category, setCategory] = useState<string>();
-  const [title, setTitle] = useState<string>();
+  const [category, setCategory] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
 
   const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
 

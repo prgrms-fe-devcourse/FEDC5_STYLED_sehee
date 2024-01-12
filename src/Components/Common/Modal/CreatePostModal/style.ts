@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const StyledWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: yellow;
 
   display: flex;
 `;
@@ -12,6 +11,8 @@ export const StyledMain = styled.main`
   height: 100%;
 `;
 export const StyledAside = styled.aside`
+  display: flex;
+  flex-direction: column;
   width: 40%;
   height: 100%;
   background-color: white;

@@ -1,3 +1,3 @@
 export interface Props {
-  onEditing: (title?: string) => void;
+  onEditing: (title: string) => void;
 }

@@ -9,14 +9,10 @@ import Avatar from '@/Components/Base/Avatar';
 import Skeleton from '@/Components/Base/Skeleton';
 
 const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
-  // TODO: 유저 스토어에서 현재 유저 상태를 받아와야 함
-  // 새로고침 등 적용하면 스토어 날아가서, jwt토큰으로 setAuthUser 다시 저장해주어야 함
-
   const { data } = useQuery({
     queryKey: ['currentUser'],
     queryFn: checkAuth,
   });
-  console.log(data);
 
   const reversedChannel = Object.entries(channels).reduce(
     (acc: Record<string, string>, [key, value]) => {
@@ -49,8 +45,6 @@ const AsideHeader = ({ onSelectChannel, onSubmit, post }: Props) => {
         </Button>
       </StyledHeader>
       <StyledContainer>
-        {/* TODO: 프로필 업로드 구현 시 실제 데이터로 바인딩 */}
-
         {data ? (
           <>
             <Avatar // 유저 프로필
