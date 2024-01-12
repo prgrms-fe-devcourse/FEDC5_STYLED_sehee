@@ -8,9 +8,11 @@ import {
   useEffect,
   useState,
 } from 'react';
+
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import { Outlet, useNavigate } from 'react-router-dom';
+
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -41,6 +43,7 @@ import filterSuperUser from '@/Utils/checkSuperUser';
 const HomePage = () => {
   const { colors, size } = useTheme();
   const navigate = useNavigate();
+
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const [refInView, inView] = useInView();
 
@@ -157,6 +160,11 @@ const HomePage = () => {
   );
 
   /**
+   * 채널 생성 모달 여는 함수
+   */
+  const handleOpenCreateChannel = () => {
+    navigate('/add-channel');
+
    * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
    * @param postId 포스트 ID
    */
@@ -239,6 +247,7 @@ const HomePage = () => {
               }
               textColor={colors.text}
               onClick={handleClickChannel}
+              className="category-button"
             >
               전체
             </Button>
@@ -263,8 +272,9 @@ const HomePage = () => {
                   }
                   textColor={colors.text}
                   onClick={handleClickChannel}
+                  className="category-button"
                 >
-                  {channels[channel.name]}
+                  {channels[channel.name] || channel.name}
                 </Button>
               );
             })}
