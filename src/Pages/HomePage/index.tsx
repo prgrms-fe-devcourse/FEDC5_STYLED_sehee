@@ -221,6 +221,7 @@ const HomePage = () => {
                 textSize={size.medium}
                 backgroundColor={colors.background}
                 hoverBackgroundColor={colors.backgroundGrey}
+                onClick={handleOpenCreateChannel}
               >
                 <Icon
                   name="add"
