@@ -2,6 +2,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 import { PostDetailModalProps } from './type';
 import Modal from '@/Components/Common/Modal';
 import {
@@ -29,6 +30,10 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import PostDotModal from './PostDotModal';
 import Input from '@/Components/Base/Input';
+import QUERY_KEYS from '@/Constants/queryKeys';
+import { getUser } from '@/Services/User';
+import { calculateDate } from '@/Utils/UTCtoKST';
+import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 
 const PostDetailModal = ({
   postLike,
@@ -107,6 +112,17 @@ const PostDetailModal = ({
     // TODO: 댓글 게시 api 연결
   };
 
+  /**
+   * 좋아요한 첫 번째 사람의 정보를 가져오는 useQuery 훅
+   * ~명이 좋아합니다에 필요해서 추가
+   */
+  const postLikeList = postLike && postLike?.length !== 0 && postLike[0].user;
+  const { data: firstLikeUser } = useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_BY_ID, postLikeList],
+    queryFn: () => getUser(postLikeList || ''),
+    enabled: !!postLikeList,
+  });
+
   return isPostDetailModalOpen ? (
     <>
       <Modal
@@ -132,8 +148,7 @@ const PostDetailModal = ({
               mode="follow"
               badgeSize="0"
               userName={postAuthor}
-              coverImageUrl={authorAvatar}
-              // Todo: 팔로우 여부 추가
+              coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
               isFollow={isFollow}
               className="post-detail-user-card"
               onClickFollowBtn={handleClickFollowBtn}
@@ -156,7 +171,7 @@ const PostDetailModal = ({
                 width="fit-content"
                 badgeSize="0"
                 userName={postAuthor}
-                coverImageUrl={authorAvatar}
+                coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
                 className="post-detail-user-card"
               />
               {/* TODO: 경과 시간 계산 구현 */}
@@ -166,7 +181,7 @@ const PostDetailModal = ({
             <StyledPostContent>{postContents}</StyledPostContent>
             {/* 포스트 댓글 영역 */}
             <StyledCommentHistory>
-              댓글
+              {postComment?.length !== 0 && '댓글'}
               {postComment &&
                 postComment.map(
                   ({ author, _id, comment, createdAt, updatedAt }) => (
@@ -175,9 +190,12 @@ const PostDetailModal = ({
                         width="fit-content"
                         badgeSize="0"
                         userName={author.fullName}
-                        coverImageUrl=""
+                        // TODO: 댓글 단 사람에 대한 프로필 이미지 불러오는 useQuery 필요
+                        coverImageUrl={DEFAULT_USER_IMAGE_SRC}
                         userDetail={
-                          createdAt === updatedAt ? createdAt : updatedAt
+                          createdAt === updatedAt
+                            ? calculateDate(createdAt)
+                            : calculateDate(updatedAt)
                         }
                         className="post-detail-user-card"
                       />
@@ -235,19 +253,27 @@ const PostDetailModal = ({
             </StyledButtonContainer>
             {/* 포스트 좋아요 정보 */}
             <StledLikeContainer>
-              <UserCard
-                width="fit-content"
-                badgeSize="0"
-                userName={
-                  postLike && postLike.length !== 0 ? postLike[0]._id : ''
-                }
-                coverImageUrl=""
-                userDetail=""
-                className="post-detail-user-card"
-              />
-              <StyledLikeText>님</StyledLikeText>
-              <StyledLikeText className="like-extra-text">{`외 ${postLike?.length}명`}</StyledLikeText>
-              <StyledLikeText>이 좋아합니다.</StyledLikeText>
+              {postLike && postLike.length !== 0 ? (
+                <>
+                  <UserCard
+                    width="fit-content"
+                    badgeSize="0"
+                    userName={firstLikeUser?.fullName}
+                    coverImageUrl={
+                      firstLikeUser?.image || DEFAULT_USER_IMAGE_SRC
+                    }
+                    className="post-detail-user-card"
+                  />
+                  <StyledLikeText>님</StyledLikeText>
+                  {postLike.length > 1 && (
+                    <StyledLikeText className="like-extra-text">
+                      {`외 ${postLike.length - 1}명`}
+                    </StyledLikeText>
+                  )}
+
+                  <StyledLikeText>이 좋아합니다.</StyledLikeText>
+                </>
+              ) : null}
             </StledLikeContainer>
             {/* 댓글 게시 영역 */}
             <StyledCommentContainer>

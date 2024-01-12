@@ -1,67 +1,50 @@
+/* eslint-disable no-underscore-dangle */
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import PostDetailModal from './PostDetailModal';
 import { getPostDetail } from '@/Services/Post';
-import { PostType } from '@/Types/PostType';
 import { getUser } from '@/Services/User';
-import { UserType } from '@/Types/UserType';
+import { calculateDate } from '@/Utils/UTCtoKST';
+import QUERY_KEYS from '@/Constants/queryKeys';
 
 const DetailPage = () => {
   const { postId } = useParams();
-  // TODO: 경과시간 계산
-  // const nowTime = new Date().toISOString();
-
-  const [postDetail, setPostDetail] = useState<PostType | null>(null);
-  const [postAuthorId, setPostAuthorId] = useState('');
-  const [authorData, setAuthorData] = useState<UserType | null>(null);
 
   /**
-   * 수정된 여부에 따라 시간 다르게 표시하는 함수
+   * postId로 해당 포스트 정보를 얻는 useQuery 훅
+   */
+  const { data: postDetailData, isLoading: isPostDetailLoading } = useQuery({
+    queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID, postId],
+    queryFn: () => getPostDetail(postId || ''),
+  });
+
+  /**
+   * 수정된 여부에 따라 시간 다르게 표시
    */
   const updateTime =
-    postDetail?.createdAt === postDetail?.updatedAt
-      ? postDetail?.createdAt
-      : `수정됨 ${postDetail?.updatedAt}`;
+    postDetailData?.createdAt === postDetailData?.updatedAt
+      ? postDetailData && calculateDate(postDetailData.updatedAt)
+      : postDetailData && `수정됨 ${calculateDate(postDetailData.updatedAt)}`;
 
   /**
-   * 포스트 id로 해당 포스트 정보 fetch 함수
-   * @param id 포스트 id
+   * 포스트 author id로 해당 author 정보 얻는 useQuery 훅
    */
-  const fetchPostDetail = async (id: string) => {
-    const getPostDetailRes = await getPostDetail(id);
-    if (getPostDetailRes) {
-      // eslint-disable-next-line no-underscore-dangle
-      setPostAuthorId(getPostDetailRes.author._id);
-      setPostDetail(getPostDetailRes);
-    }
-  };
-
-  /**
-   * 포스트 author 정보 fetch 함수
-   * @param id 유저(포스트 author) id
-   */
-  const fetchPostAuthor = async (id: string) => {
-    const getUserRes = await getUser(id);
-    if (getUserRes) {
-      setAuthorData(getUserRes);
-    }
-  };
-
-  useEffect(() => {
-    if (postId) fetchPostDetail(postId);
-    if (postAuthorId) fetchPostAuthor(postAuthorId);
-  }, [postId, postAuthorId]);
+  const { data: postAuthor } = useQuery({
+    queryKey: [QUERY_KEYS.USER_BY_AUTHOR_ID, postDetailData?.author._id],
+    queryFn: () => getUser(postDetailData?.author._id || ''),
+    enabled: !isPostDetailLoading,
+  });
 
   return (
     <PostDetailModal
-      postComment={postDetail?.comments}
-      postLike={postDetail?.likes}
-      postContents={postDetail?.title || ''}
+      postComment={postDetailData?.comments}
+      postLike={postDetailData?.likes}
+      postContents={postDetailData?.title || ''}
       postEditTime={updateTime || ''}
-      postImageUrl={postDetail?.image || ''}
-      postAuthor={postDetail?.author.fullName || ''}
-      postAuthorId={postAuthorId}
-      authorAvatar={authorData?.image || ''}
+      postImageUrl={postDetailData?.image || ''}
+      postAuthor={postDetailData?.author.fullName || ''}
+      postAuthorId={postAuthor?._id || ''}
+      authorAvatar={postAuthor?.image || ''}
     />
   );
 };

@@ -1,5 +1,4 @@
 import { useTheme } from 'styled-components';
-import { useParams } from 'react-router-dom';
 import Modal from '@/Components/Common/Modal';
 import {
   PostDotModalProps,

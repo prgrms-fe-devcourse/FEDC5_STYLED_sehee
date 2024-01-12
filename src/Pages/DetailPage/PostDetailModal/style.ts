@@ -86,6 +86,12 @@ export const StyledCommentHistory = styled.div`
 
 export const StyledComment = styled.div`
   display: flex;
+
+  .post-detail-user-card {
+    > :first-child {
+      flex-shrink: 0;
+    }
+  }
 `;
 
 export const StyledText = styled.div`
