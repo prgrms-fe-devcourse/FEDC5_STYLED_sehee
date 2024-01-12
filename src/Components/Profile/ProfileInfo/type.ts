@@ -6,5 +6,5 @@ export interface NameProps {
 
 export interface Props {
   userData: UserType;
-  myprofile: boolean;
+  isMyProfile: boolean;
 }

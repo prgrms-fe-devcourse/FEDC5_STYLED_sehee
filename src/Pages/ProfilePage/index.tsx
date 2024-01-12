@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import ProfileInfo from './ProfileInfo';
-import ProfilePost from './ProfilePost';
 import { checkAuth } from '@/Services/Auth';
 import { getUser } from '@/Services/User';
 import { UserType } from '@/Types/UserType';
 import { StyledBackground, StyledHeaderContainer } from './style';
+import ProfileInfo from '@/Components/Profile/ProfileInfo';
+import ProfilePost from '@/Components/Profile/ProfilePost';
 
 const ProfilePage = () => {
   const { userId } = useParams() || ''; // URL에서 사용자 ID를 가져오기
@@ -44,12 +44,11 @@ const ProfilePage = () => {
       <StyledBackground>
         <ProfileInfo
           userData={profileUser}
-          myprofile={isCurrentUserProfile}
+          isMyProfile={isCurrentUserProfile}
         />
-
         <ProfilePost
           userData={profileUser}
-          myprofile={isCurrentUserProfile}
+          isMyProfile={isCurrentUserProfile}
         />
       </StyledBackground>
     </>

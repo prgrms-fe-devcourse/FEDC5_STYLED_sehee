@@ -5,10 +5,10 @@ import MyProfileInfo from './MyProfileInfo';
 import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
 
-const ProfileInfo = ({ userData, myprofile }: Props) => {
+const ProfileInfo = ({ userData, isMyProfile }: Props) => {
   return (
     <StyledProfileInfoContainer>
-      {myprofile ? (
+      {isMyProfile ? (
         <Avatar
           src={userData.image}
           size={140}
@@ -22,7 +22,7 @@ const ProfileInfo = ({ userData, myprofile }: Props) => {
         />
       )}
       <div>
-        {myprofile ? (
+        {isMyProfile ? (
           <MyProfileInfo name={userData.fullName} />
         ) : (
           <UserProfileInfo name={userData.fullName} />
