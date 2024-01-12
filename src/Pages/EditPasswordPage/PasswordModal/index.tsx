@@ -2,14 +2,15 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '@/Components/Common/Modal';
 import useTabStore from '@/Stores/Tab';
-import PasswordForm from './PasswordForm';
+import PasswordForm from '../../../Components/EditPassword/PasswordForm';
 import Alert from '@/Components/Common/Alert';
+import { StyledPasswordContainer } from '../../../Components/EditPassword/PasswordForm/style';
 
 const PasswordModal = () => {
   const [isPasswordModalOpen, setPasswordModalOpen] = useState(true);
   const navigate = useNavigate();
   const { prev, setTab } = useTabStore();
-  const [alertMessage, setAlertMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleCloseModal = (state: boolean) => {
     navigate(-1);
@@ -17,23 +18,28 @@ const PasswordModal = () => {
     setTab(prev);
   };
 
-  const onErrorCallback = useCallback((errorMessage: string) => {
-    setAlertMessage(errorMessage);
+  const onSuccessCallback = useCallback((success: boolean) => {
+    setIsSuccess(success);
   }, []);
 
   return isPasswordModalOpen ? (
     <>
       <Modal
         height={45}
-        width={40}
+        width={38}
         onChangeOpen={handleCloseModal}
       >
-        <PasswordForm onErrorCallback={onErrorCallback} />
+        <StyledPasswordContainer>
+          <PasswordForm onSuccessCallback={onSuccessCallback} />
+        </StyledPasswordContainer>
       </Modal>
-      {alertMessage && (
+      {isSuccess && (
         <Alert
-          message={alertMessage}
-          onChangeOpen={() => setAlertMessage('')}
+          message="비밀번호 변경에 성공했습니다"
+          onChangeOpen={() => {
+            setIsSuccess(false);
+            handleCloseModal(false);
+          }}
         />
       )}
     </>

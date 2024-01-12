@@ -1,10 +1,7 @@
-interface Ptype {
-  newPassword: string;
-  verifyPassword: string;
-}
+import { Passwordtype } from './type';
 
-const validatePassword = ({ newPassword, verifyPassword }: Ptype) => {
-  const validationErrors: Partial<Ptype> = {};
+const validatePassword = ({ newPassword, verifyPassword }: Passwordtype) => {
+  const validationErrors: Partial<Passwordtype> = {};
 
   if (
     newPassword &&
