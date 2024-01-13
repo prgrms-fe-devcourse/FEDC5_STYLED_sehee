@@ -37,6 +37,10 @@ const MessageModal = ({
         }
         const query = inputRef.current.value.trim();
         setSearchQuery(query);
+
+        setTimeout(() => {
+          setIsTyping(false);
+        }, 300);
       }, 500),
     [],
   );
@@ -44,12 +48,7 @@ const MessageModal = ({
   const handleInputChange = async () => {
     setSelected(null);
     setIsTyping(true);
-
     debouncedSearch();
-
-    setTimeout(() => {
-      setIsTyping(false);
-    }, 1000);
   };
 
   const handleClickButton = async () => {
