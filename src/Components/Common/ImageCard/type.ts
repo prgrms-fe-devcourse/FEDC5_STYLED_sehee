@@ -5,6 +5,7 @@ export interface Props {
   heart: number;
   borderRadius?: string;
   fontSize?: number;
-  size?: string;
+  height?: string;
+  width?: string;
   onDetail?: () => void;
 }

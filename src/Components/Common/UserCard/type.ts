@@ -4,7 +4,7 @@ export interface UserCardProps extends HTMLAttributes<HTMLDivElement> {
   width?: string;
   height?: string;
   borderRadius?: string;
-  mode?: 'follow' | 'chat' | 'alarm' | 'normal' | 'radio';
+  mode?: 'follow' | 'chat' | 'alarm' | 'normal' | 'radio' | 'header';
   coverImageUrl?: string;
   avatarSize?: number;
   badgeSize?: string;
@@ -20,13 +20,14 @@ export interface UserCardProps extends HTMLAttributes<HTMLDivElement> {
   inputValue?: string;
   inputChecked?: boolean;
   inputOnChange?: () => void;
-  onFollowClick?: () => void;
+  onClickFollowBtn?: () => void;
 }
 
 export interface StyledWrapperProps {
   $width: string;
   $height: string;
   $borderRadius: string;
+  $mode?: 'follow' | 'chat' | 'alarm' | 'normal' | 'radio' | 'header';
 }
 
 export interface StyledUserNameProps {

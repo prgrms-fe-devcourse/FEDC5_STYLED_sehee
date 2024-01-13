@@ -87,8 +87,12 @@ const HeaderTab = () => {
     }
     if (option === '비밀번호 변경') {
       setDrop(!drop);
-      // eslint-disable-next-line no-underscore-dangle
-      navigate(`/edit-password/${data?._id}`);
+      navigate(
+        `${
+          location.pathname !== '/' ? location.pathname : ''
+          // eslint-disable-next-line no-underscore-dangle
+        }/edit-password/${data?._id}`,
+      );
     }
   };
 
@@ -121,7 +125,9 @@ const HeaderTab = () => {
         <LinkButton
           name="add_circle"
           color={tab === 'add' ? colors.primary : colors.background}
-          link="/add-post"
+          link={`${
+            location.pathname !== '/' ? location.pathname : ''
+          }/add-post`}
           setLink={() => setTab('add')}
           style={styledNavIcon}
         />
@@ -129,7 +135,7 @@ const HeaderTab = () => {
         <LinkButton
           name="search"
           color={tab === 'search' ? colors.primary : colors.background}
-          link="/search"
+          link={`${location.pathname !== '/' ? location.pathname : ''}/search`}
           setLink={() => setTab('search')}
           style={styledNavIcon}
         />
