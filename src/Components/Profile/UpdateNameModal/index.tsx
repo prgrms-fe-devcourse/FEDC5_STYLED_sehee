@@ -25,7 +25,7 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
 
   const { values, errors, isLoading, handleOnChange, handleOnSubmit } =
     useForm<NameType>({
-      initialState: { username: name },
+      initialState: { username: '' },
       callback: (): void =>
         mutate({ fullName: name, username: values.username }),
       validate: (username) => validateName(username),
@@ -58,7 +58,6 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
               errorMessage={errors.username}
               required
               wrapperProps={{ style: { padding: '1rem' } }}
-              defaultValue={name}
             />
             <Button
               type="button"

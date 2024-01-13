@@ -20,14 +20,14 @@ const ProfilePage = () => {
     queryFn: () => getUser(userId || ''),
   });
 
+  const currentUser = currentUserQuery.data;
+  const profileUser = profileUserQuery.data;
+
   useEffect(() => {
     currentUserQuery.refetch();
     profileUserQuery.refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
-
-  const currentUser = currentUserQuery.data;
-  const profileUser = profileUserQuery.data;
+  }, [userId, currentUser]);
 
   if (!profileUser) {
     // 프로필 사용자 정보를 가져오지 못한 경우
