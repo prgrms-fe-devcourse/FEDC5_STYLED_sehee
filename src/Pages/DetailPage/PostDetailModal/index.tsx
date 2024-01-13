@@ -1,5 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import { useCallback, useMemo, useRef, useState } from 'react';
+import {
+  KeyboardEventHandler,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
@@ -18,12 +24,13 @@ import {
   StyledPostMainTopContainer,
   StyledCommentHistory,
   StyledComment,
-  StyledText,
+  StyledTextContainer,
   StyledLikeText,
   StyledButtonContainer,
   StledLikeContainer,
   StyledCommentContainer,
   postCommentBtnStyle,
+  StyledText,
 } from './style';
 import UserCard from '@/Components/Common/UserCard';
 import Button from '@/Components/Base/Button';
@@ -38,6 +45,7 @@ import { getPostDetail } from '@/Services/Post';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
+import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
 
 const PostDetailModal = ({
   postLike,
@@ -50,7 +58,7 @@ const PostDetailModal = ({
   postEditTime,
 }: PostDetailModalProps) => {
   const navigate = useNavigate();
-  const { colors } = useTheme();
+  const { colors, size } = useTheme();
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
 
@@ -112,10 +120,53 @@ const PostDetailModal = ({
   };
 
   /**
+   * 유저 ID 또는 아바타 클릭 시 해당 유저 페이지 이동 함수
+   */
+  const handleClickUser = (userId: string) => {
+    navigate(`/profile/${userId}`);
+  };
+
+  const { commentById } = useCreateComment();
+  const { deleteCommentById } = useDeleteComment();
+  /**
    * 댓글 게시하는 함수
    */
+  const sendComment = () => {
+    const commentText = commentInputRef.current?.value;
+
+    if (commentText && postDetailData)
+      commentById(
+        {
+          comment: commentText,
+          postId: postDetailData._id,
+        },
+        {
+          onSuccess: () => {
+            if (commentInputRef.current) commentInputRef.current.value = '';
+            handleChangeCommentInput();
+          },
+        },
+      );
+  };
+  /**
+   * 댓글 게시 버튼으로 댓글 게시하는 함수
+   */
   const handleClickComment = () => {
-    // TODO: 댓글 게시 api 연결
+    sendComment();
+  };
+  /**
+   * Enter 버튼으로 댓글 게시하는 함수
+   */
+  const handleCommentInputEnter: KeyboardEventHandler<HTMLInputElement> = (
+    e,
+  ) => {
+    if (e.code === 'Enter') {
+      sendComment();
+    }
+  };
+
+  const handleClickDeleteComment = (commentId: string) => {
+    deleteCommentById(commentId);
   };
 
   const { followByUserId } = useFollowByUserId();
@@ -196,7 +247,6 @@ const PostDetailModal = ({
         <StyledPostContentContainer>
           <StyledAuthorInfo>
             {/* author 정보 및 팔로우 버튼 */}
-            {/*  TODO: 유저 이름 클릭 시 유저 페이지 이동 구현 */}
             <UserCard
               width="fit-content"
               mode="follow"
@@ -206,6 +256,9 @@ const PostDetailModal = ({
               isFollow={isFollow !== null ? isFollow : isMyFollow}
               className="post-detail-user-card"
               onClickFollowBtn={handleClickFollowBtn}
+              onClickUser={() =>
+                handleClickUser(postDetailData?.author._id || '')
+              }
             />
             {/* 점 세개 추가 모달 버튼 */}
             <Button
@@ -227,34 +280,56 @@ const PostDetailModal = ({
                 userName={postAuthor}
                 coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
                 className="post-detail-user-card"
+                onClickUser={() =>
+                  handleClickUser(postDetailData?.author._id || '')
+                }
               />
               <StyledEditTime>{postEditTime}</StyledEditTime>
             </StyledPostMainTopContainer>
-            {/* TODO: 내용 많을 시 말줄임표 및 클릭 시 말줄임표 해제 */}
             <StyledPostContent>{postContents}</StyledPostContent>
             {/* 포스트 댓글 영역 */}
             <StyledCommentHistory>
               {postComment?.length !== 0 && '댓글'}
               {postComment &&
                 postComment.map(
-                  ({ author, _id, comment, createdAt, updatedAt }) => (
-                    <StyledComment key={_id}>
-                      <UserCard
-                        width="fit-content"
-                        badgeSize="0"
-                        userName={author.fullName}
-                        // TODO: 댓글 단 사람에 대한 프로필 이미지 불러오는 useQuery 필요
-                        coverImageUrl={DEFAULT_USER_IMAGE_SRC}
-                        userDetail={
-                          createdAt === updatedAt
-                            ? calculateDate(createdAt)
-                            : calculateDate(updatedAt)
-                        }
-                        className="post-detail-user-card"
-                      />
-                      <StyledText>{comment}</StyledText>
-                    </StyledComment>
-                  ),
+                  ({ author, _id, comment, createdAt, updatedAt }) => {
+                    return (
+                      <StyledComment key={_id}>
+                        <UserCard
+                          width="fit-content"
+                          badgeSize="0"
+                          userName={author.fullName}
+                          // TODO: 댓글 단 사람에 대한 프로필 이미지 불러오는 useQuery 필요
+                          coverImageUrl={author.image || DEFAULT_USER_IMAGE_SRC}
+                          userDetail={
+                            createdAt === updatedAt
+                              ? calculateDate(createdAt)
+                              : calculateDate(updatedAt)
+                          }
+                          className="post-detail-user-card"
+                          onClickUser={() => handleClickUser(author._id)}
+                        />
+                        <StyledTextContainer>
+                          <StyledText>{comment}</StyledText>
+                          {author._id === authUser._id && (
+                            <Button
+                              width={size.medium}
+                              height={size.medium}
+                              backgroundColor={colors.background}
+                              hoverBackgroundColor={colors.background}
+                              style={{ padding: '0' }}
+                              onClick={() => handleClickDeleteComment(_id)}
+                            >
+                              <Icon
+                                name="close"
+                                style={{ fontSize: '1.5rem' }}
+                              />
+                            </Button>
+                          )}
+                        </StyledTextContainer>
+                      </StyledComment>
+                    );
+                  },
                 )}
             </StyledCommentHistory>
           </StyledPostMainInfo>
@@ -316,6 +391,9 @@ const PostDetailModal = ({
                       firstLikeUser?.image || DEFAULT_USER_IMAGE_SRC
                     }
                     className="post-detail-user-card"
+                    onClickUser={() =>
+                      handleClickUser(firstLikeUser?._id || '')
+                    }
                   />
                   <StyledLikeText>님</StyledLikeText>
                   {postLike.length > 1 && (
@@ -336,6 +414,7 @@ const PostDetailModal = ({
                 placeholder="댓글 달기..."
                 onChange={handleChangeCommentInput}
                 className="post-detail-comment-input"
+                onKeyUp={handleCommentInputEnter}
               />
               <Button
                 disabled={isCommentBtnDisabled}
@@ -354,11 +433,14 @@ const PostDetailModal = ({
       {/* 점 세개 모달 PostDotModal */}
       {isDotModalOpen && (
         <PostDotModal
+          postId={postDetailData?._id || ''}
           isFollow={isFollow !== null ? isFollow : isMyFollow}
           postAuthorId={postAuthorId}
           onChangeOpen={handleCloseDotModal}
           onCloseDotModal={handleCloseDotModal}
-          onCancelFollow={setIsFollow}
+          onCancelFollow={() => {
+            handleClickFollowBtn();
+          }}
         />
       )}
     </>

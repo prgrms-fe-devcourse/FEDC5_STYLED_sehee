@@ -1,4 +1,5 @@
 export interface PostDotModalProps {
+  postId: string;
   isFollow?: boolean;
   postAuthorId: string;
   onChangeOpen: (openState: boolean) => void;
