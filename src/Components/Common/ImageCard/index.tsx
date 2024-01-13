@@ -1,4 +1,3 @@
-import { useTheme } from 'styled-components';
 import Icon from '@/Components/Base/Icon';
 import { Props } from './type';
 import {
@@ -15,15 +14,16 @@ const ImageCard = ({
   comment,
   heart,
   borderRadius = '2rem',
-  size = '20rem',
+  width = '20rem',
+  height = '20rem',
   fontSize = 1.8,
   onDetail,
   ...props
 }: Props) => {
-  const { colors } = useTheme();
   return (
     <StyledContainer
-      $size={size}
+      $width={width}
+      $height={height}
       $borderRadius={borderRadius}
       onClick={onDetail}
       {...props}
@@ -40,7 +40,7 @@ const ImageCard = ({
           <Icon
             name="favorite"
             style={{
-              color: colors.buttonText,
+              color: '#FFFFFF',
               fontSize: `${fontSize + 1}rem`,
             }}
           />
@@ -52,7 +52,7 @@ const ImageCard = ({
           <Icon
             name="comment"
             style={{
-              color: colors.buttonText,
+              color: '#FFFFFF',
               fontSize: `${fontSize + 1}rem`,
             }}
           />

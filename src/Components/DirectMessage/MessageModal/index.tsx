@@ -16,6 +16,8 @@ const MessageModal = ({
   onChangeOpen,
   setIsModalOpen,
   loginUser,
+  isMobileSize = false,
+  setIsClickedUserCard,
 }: MessageModalProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<UserType | null>(null);
@@ -24,6 +26,7 @@ const MessageModal = ({
     searchQuery,
     loginUser?._id || '',
   );
+  const [isTyping, setIsTyping] = useState(false);
 
   // 디바운싱을 이용해 onChange 성능을 개선한다.
   const debouncedSearch = useMemo(
@@ -34,14 +37,19 @@ const MessageModal = ({
         }
         const query = inputRef.current.value.trim();
         setSearchQuery(query);
-      }, 1000),
+      }, 500),
     [],
   );
 
   const handleInputChange = async () => {
-    // @TODO 타자 치는 동안 스켈레톤 나오게 하는 방법 모색하기.
     setSelected(null);
+    setIsTyping(true);
+
     debouncedSearch();
+
+    setTimeout(() => {
+      setIsTyping(false);
+    }, 1000);
   };
 
   const handleClickButton = async () => {
@@ -49,6 +57,9 @@ const MessageModal = ({
       return;
     }
     setReceiver(selected);
+    if (isMobileSize && setIsClickedUserCard) {
+      setIsClickedUserCard(true);
+    }
     setIsModalOpen(false);
   };
 
@@ -56,7 +67,7 @@ const MessageModal = ({
     <Modal
       onChangeOpen={onChangeOpen}
       height={60}
-      width={40}
+      width={isMobileSize ? 70 : 40}
     >
       <StyledContainer>
         <StyledHeader>새로운 메시지</StyledHeader>
@@ -66,25 +77,27 @@ const MessageModal = ({
           placeholder="유저 이름으로 검색하세요."
         />
         <StyledBody>
-          {(isUsersLoading || !users) && <DirectMessageSkeleton.UserCard />}
+          {(isTyping || isUsersLoading || !users) && (
+            <DirectMessageSkeleton.UserCard />
+          )}
           {users?.length === 0 ? (
             <div>계정을 찾을 수 없습니다.</div>
           ) : (
             users?.map((user) => (
-              <div key={user._id}>
-                <UserCard
-                  mode="radio"
-                  coverImageUrl={user.image}
-                  avatarSize={40}
-                  userName={user.fullName}
-                  userNameSize="1.5rem"
-                  userDetail={user.email}
-                  inputValue={user._id}
-                  inputChecked={selected?._id === user._id}
-                  onClick={() => setSelected(user)}
-                  inputOnChange={() => setSelected(user)}
-                />
-              </div>
+              <UserCard
+                height="auto"
+                key={user._id}
+                mode="radio"
+                coverImageUrl={user.image}
+                avatarSize={40}
+                userName={user.fullName}
+                userNameSize="1.5rem"
+                userDetail={user.email}
+                inputValue={user._id}
+                inputChecked={selected?._id === user._id}
+                onClick={() => setSelected(user)}
+                inputOnChange={() => setSelected(user)}
+              />
             ))
           )}
         </StyledBody>
