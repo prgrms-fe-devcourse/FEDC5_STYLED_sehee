@@ -31,6 +31,11 @@ const NotificationItem = ({
       onClose();
       navigate(`/profile/${typeId}`);
     }
+
+    if (type === 'message') {
+      onClose();
+      navigate('/directmessage');
+    }
   };
 
   return (

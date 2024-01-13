@@ -14,7 +14,7 @@ export interface NotificationListType {
   messageList: string[];
 }
 
-export type CategoryType = '전체' | '댓글' | '팔로우' | '좋아요';
+export type CategoryType = '전체' | '메세지' | '댓글' | '팔로우' | '좋아요';
 
 export interface PostSendNotificationsType {
   messageId: string;
