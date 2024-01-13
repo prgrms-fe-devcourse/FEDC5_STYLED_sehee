@@ -2,7 +2,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { PostDetailModalProps } from './type';
 import Modal from '@/Components/Common/Modal';
 import {
@@ -34,9 +34,10 @@ import QUERY_KEYS from '@/Constants/queryKeys';
 import { getUser } from '@/Services/User';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
-import { createLike, deleteLike } from '@/Services/Like';
 import { getPostDetail } from '@/Services/Post';
 import useAuthUserStore from '@/Stores/AuthUser';
+import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
+import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 
 const PostDetailModal = ({
   postLike,
@@ -51,18 +52,21 @@ const PostDetailModal = ({
   const navigate = useNavigate();
   const { colors } = useTheme();
   const { postId } = useParams();
-  const queryClient = useQueryClient();
   const { user: authUser } = useAuthUserStore();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: postDetailData, isSuccess } = useQuery({
+  const { data: postDetailData } = useQuery({
     queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID, postId],
     queryFn: () => getPostDetail(postId || ''),
   });
 
   const isMyLike = postDetailData?.likes.some(
     ({ user }) => user === authUser._id,
+  );
+
+  const isMyFollow = postDetailData?.author.followers.some(
+    (follower) => authUser.following?.some(({ _id }) => _id === follower),
   );
 
   const myLikeList = useMemo(() => {
@@ -72,7 +76,7 @@ const PostDetailModal = ({
   const [isPostDetailModalOpen, setIsPostDetailModalOpen] = useState(true);
   const [isDotModalOpen, setIsDotModalOpen] = useState(false);
   const [isCommentBtnDisabled, setIsCommentBtnDisabled] = useState(true);
-  const [isFollow, setIsFollow] = useState(false);
+  const [isFollow, setIsFollow] = useState<boolean | null>(null);
   const [isLike, setIsLike] = useState<boolean | null>(null);
 
   /**
@@ -101,18 +105,9 @@ const PostDetailModal = ({
   };
 
   /**
-   * 팔로우 버튼 클릭 동작 함수
-   */
-  const handleClickFollowBtn = () => {
-    // TODO: 팔로우 api 추가
-    setIsFollow(!isFollow);
-  };
-
-  /**
    * DM 버튼 클릭 동작 함수
    */
   const handleClickDMBtn = () => {
-    // TODO: DM 페이지 라우팅 연결
     navigate('/directmessage');
   };
 
@@ -123,45 +118,51 @@ const PostDetailModal = ({
     // TODO: 댓글 게시 api 연결
   };
 
-  const { mutate: likeById } = useMutation({
-    mutationFn: (likePostId: string) => createLike(likePostId),
-    onSuccess: () => {
-      setIsLike(true);
-    },
-    onSettled: () => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.POST_BY_ID],
+  const { followByUserId } = useFollowByUserId();
+  const { unfollowByUserId } = useUnfollowByUserId();
+  /**
+   * 팔로우 버튼 클릭 동작 함수
+   */
+  const handleClickFollowBtn = () => {
+    const newFollowState = isFollow === null ? !isMyFollow : !isFollow;
+    const targetUserId = postDetailData?.author._id || '';
+    if (newFollowState) {
+      followByUserId(targetUserId, {
+        onSuccess: () => {
+          setIsFollow(true);
+        },
       });
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID],
+    } else if (myLikeList) {
+      authUser.following?.forEach(({ user, _id: followId }) => {
+        if (user === targetUserId) {
+          unfollowByUserId(followId);
+          setIsFollow(false);
+        }
       });
-    },
-  });
+    }
+  };
 
-  const { mutate: disLikeById } = useMutation({
-    mutationFn: (disLikeId: string) => deleteLike(disLikeId),
-    onSuccess: () => {
-      setIsLike(false);
-    },
-    onSettled: () => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.POST_BY_ID],
-      });
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID],
-      });
-    },
-  });
-
+  const { likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
   /**
    * 좋아요 버튼 클릭 동작 함수
    */
   const handleClickLikeBtn = () => {
     const newLikeState = isLike === null ? !isMyLike : !isLike;
     if (newLikeState && postId) {
-      likeById(postId);
+      likeById(postId, {
+        onSuccess: () => {
+          setIsLike(true);
+        },
+      });
     } else if (myLikeList) {
-      myLikeList?.forEach(({ _id: likeId }) => disLikeById(likeId));
+      myLikeList?.forEach(({ _id: likeId }) =>
+        disLikeById(likeId, {
+          onSuccess: () => {
+            setIsLike(false);
+          },
+        }),
+      );
     }
   };
 
@@ -169,11 +170,11 @@ const PostDetailModal = ({
    * 좋아요한 첫 번째 사람의 정보를 가져오는 useQuery 훅
    * ~명이 좋아합니다에 필요해서 추가
    */
-  const postLikeList = postLike && postLike?.length !== 0 && postLike[0].user;
+  const firstLikeUserId = postLike && postLike.length !== 0 && postLike[0].user;
   const { data: firstLikeUser } = useQuery({
-    queryKey: [QUERY_KEYS.GET_USER_BY_ID, postLikeList],
-    queryFn: () => getUser(postLikeList || ''),
-    enabled: !!postLikeList,
+    queryKey: [QUERY_KEYS.GET_USER_BY_ID, firstLikeUserId],
+    queryFn: () => getUser(firstLikeUserId || ''),
+    enabled: !!firstLikeUserId,
   });
 
   return isPostDetailModalOpen ? (
@@ -202,7 +203,7 @@ const PostDetailModal = ({
               badgeSize="0"
               userName={postAuthor}
               coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
-              isFollow={isFollow}
+              isFollow={isFollow !== null ? isFollow : isMyFollow}
               className="post-detail-user-card"
               onClickFollowBtn={handleClickFollowBtn}
             />
@@ -227,7 +228,6 @@ const PostDetailModal = ({
                 coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
                 className="post-detail-user-card"
               />
-              {/* TODO: 경과 시간 계산 구현 */}
               <StyledEditTime>{postEditTime}</StyledEditTime>
             </StyledPostMainTopContainer>
             {/* TODO: 내용 많을 시 말줄임표 및 클릭 시 말줄임표 해제 */}
@@ -311,7 +311,7 @@ const PostDetailModal = ({
                   <UserCard
                     width="fit-content"
                     badgeSize="0"
-                    userName={firstLikeUser?.fullName}
+                    userName={firstLikeUser?.fullName || 'STYLED 관리자'}
                     coverImageUrl={
                       firstLikeUser?.image || DEFAULT_USER_IMAGE_SRC
                     }
@@ -354,7 +354,7 @@ const PostDetailModal = ({
       {/* 점 세개 모달 PostDotModal */}
       {isDotModalOpen && (
         <PostDotModal
-          isFollow={isFollow}
+          isFollow={isFollow !== null ? isFollow : isMyFollow}
           postAuthorId={postAuthorId}
           onChangeOpen={handleCloseDotModal}
           onCloseDotModal={handleCloseDotModal}

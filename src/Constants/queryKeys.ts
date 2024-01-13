@@ -8,6 +8,8 @@ const QUERY_KEYS = {
   GET_USER_BY_ID: 'getUserById',
   POST_DETAIL_BY_ID: 'postDetailById',
   USER_BY_AUTHOR_ID: 'userByAuthorId',
+  FOLLOW_BY_USER_ID: 'followByUserId',
+  UNFOLLOW_BY_USER_ID: 'unfollowByUserId',
 };
 
 export default QUERY_KEYS;
