@@ -18,6 +18,7 @@ export const useLikeById = () => {
       queryClient.refetchQueries({
         queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID],
       });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.CHECK_AUTH] });
     },
   });
 
@@ -43,6 +44,7 @@ export const useDisLikeById = () => {
       queryClient.refetchQueries({
         queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID],
       });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.CHECK_AUTH] });
     },
   });
 
