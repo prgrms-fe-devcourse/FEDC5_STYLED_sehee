@@ -7,19 +7,18 @@ import { StyledContainer, StyledDiv } from './style';
 import MessageList from '@/Components/DirectMessage/MessageList';
 import ConversationList from '@/Components/DirectMessage/ConversationList';
 import { useFetchConversations } from '@/Hooks/Api/Message';
-import { UserType } from '@/Types/UserType';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { checkAuth } from '@/Services/Auth';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 
 const DirectMessagePage = () => {
+  const navigator = useNavigate();
   const { conversations, isConversationsLoading, conversationsRefetch } =
     useFetchConversations();
-  const [receiver, setReceiver] = useState<UserType | null>(null);
-  const navigator = useNavigate();
+  const { setAuthUser, user } = useAuthUserStore();
+  const { receiver, setReceiver } = useMessageReceiver();
   const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
   const [isClickedUserCard, setIsClickedUserCard] = useState(false);
-
-  const { setAuthUser, user } = useAuthUserStore();
 
   const { data: userData, isSuccess } = useQuery({
     queryKey: ['currentUser'],
