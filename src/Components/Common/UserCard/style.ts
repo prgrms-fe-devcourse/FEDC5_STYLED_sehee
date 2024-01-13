@@ -6,13 +6,13 @@ import {
 } from './type';
 
 export const StyledWrapper = styled.div<StyledWrapperProps>`
-  padding: 0.5rem 0.5rem;
+  padding: 1rem;
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
   border-radius: ${({ $borderRadius }) => $borderRadius};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.size.extraSmall};
+  gap: ${({ theme }) => theme.size.small};
   background-color: ${({ theme }) => theme.colors.background};
 
   .user-avatar {

@@ -73,7 +73,7 @@ const UserCard = forwardRef(
       <StyledWrapper
         ref={ref}
         $width={width || '100%'}
-        $height={height || '100%'}
+        $height={height || 'auto'}
         $borderRadius={borderRadius || ''}
         $mode={mode}
         {...props}

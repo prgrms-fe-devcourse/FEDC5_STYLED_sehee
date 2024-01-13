@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import './bounce.css';
+import { bounce } from '@/Styles/Animation';
 
 export const StyledMessageItem = styled.div`
   display: inline-block;
@@ -13,7 +13,7 @@ export const StyledMessageItem = styled.div`
   // 메세지 보낼 때마다 움직이는 애니메이션
   transform: scale(0);
   transform-origin: 0 0;
-  animation: bounce 500ms linear both;
+  animation: ${bounce} 500ms linear both;
 `;
 
 export const StyledMessageWrapper = styled.div<{
