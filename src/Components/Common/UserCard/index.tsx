@@ -47,6 +47,7 @@ const UserCard = forwardRef(
       inputValue,
       inputChecked,
       inputOnChange,
+      onClickFollowBtn,
       ...props
     }: UserCardProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -128,6 +129,7 @@ const UserCard = forwardRef(
               borderRadius="0.5rem"
               backgroundColor={isFollow ? colors.read : colors.follow}
               hoverBackgroundColor={colors.buttonClickHover}
+              onClick={onClickFollowBtn}
             >
               {isFollow ? '팔로잉' : '팔로우'}
             </Button>

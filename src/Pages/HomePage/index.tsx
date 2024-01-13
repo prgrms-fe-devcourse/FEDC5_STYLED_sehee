@@ -8,6 +8,11 @@ import {
   useEffect,
   useState,
 } from 'react';
+
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
+
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -15,6 +20,8 @@ import {
   StyledHeaderContainer,
   StyledLeftContainer,
   StyledMainContentContainer,
+  StyledNoPost,
+  StyledObserver,
   StyledPostCardList,
   StyledWrapper,
 } from './style';
@@ -29,9 +36,16 @@ import { getPostByChannel } from '@/Services/Post';
 import { PostType } from '@/Types/PostType';
 import PostCard from '@/Components/Common/PostCard';
 import UserManager from '@/Components/UserManager';
+import useAuthUserStore from '@/Stores/AuthUser';
+import { checkAuth } from '@/Services/Auth';
+import filterSuperUser from '@/Utils/checkSuperUser';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
+  const navigate = useNavigate();
+
+  const { user: authUser, setAuthUser } = useAuthUserStore();
+  const [refInView, inView] = useInView();
 
   const [channelList, setChannelList] = useState<ChannelType[]>([]);
   const [userList, setUserList] = useState<UserType[]>([]);
@@ -49,7 +63,10 @@ const HomePage = () => {
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
 
-    setPostOffset(0);
+    if (channelId !== currentChannelId) {
+      setPostList([]);
+      setPostOffset(0);
+    }
 
     return channelId && setCurrentChannelId(channelId);
   };
@@ -61,6 +78,15 @@ const HomePage = () => {
     const inputKeyword = e.target.value;
     setSearchKeyword(inputKeyword);
   }, []);
+
+  /**
+   * 메인페이지 최초 접속 시 사용자 인증 여부 확인하고
+   * user 데이터를 스토어에 저장하는 useQuery 훅
+   */
+  const { data: userObj, isSuccess } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: checkAuth,
+  });
 
   /**
    * 모든 채널을 fetch하는 함수
@@ -78,13 +104,11 @@ const HomePage = () => {
    */
   const fetchUserList = async () => {
     const userData = await getUsers();
-
     // 관리자 계정 제외 필터링
-    const filteredUserList = userData?.filter(
-      (user) => user.role !== 'SuperAdmin',
-    );
 
-    return filteredUserList && setUserList(filteredUserList);
+    const withoutSuperUser = userData && filterSuperUser(userData);
+
+    return withoutSuperUser && setUserList(withoutSuperUser);
   };
 
   /**
@@ -99,7 +123,7 @@ const HomePage = () => {
         limit: 10,
       });
 
-      if (postData?.length !== 0 && postList.length === 0) {
+      if (postData?.length !== 0) {
         const newPostList = postData && [...postList, ...postData];
 
         setPostOffset(postOffset + 10);
@@ -121,9 +145,7 @@ const HomePage = () => {
     (users: UserType[], searchQuery: string) => {
       if (!searchQuery) setSearchedUserList([]);
 
-      const result = users.filter((user) => {
-        const { fullName } = user;
-
+      const result = users.filter(({ fullName }) => {
         return (
           fullName.includes(searchQuery) ||
           fullName.toLowerCase().includes(searchQuery)
@@ -136,6 +158,21 @@ const HomePage = () => {
     },
     [],
   );
+
+  /**
+   * 채널 생성 모달 여는 함수
+   */
+  const handleOpenCreateChannel = () => {
+    navigate('/add-channel');
+  };
+
+  /*
+   * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
+   * @param postId 포스트 ID
+   */
+  const goPostDetail = (postId: string) => {
+    navigate(`/modal-detail/${postId}`);
+  };
 
   useEffect(() => {
     if (channelList.length === 0) fetchChannelList();
@@ -151,10 +188,20 @@ const HomePage = () => {
   ]);
 
   useEffect(() => {
-    if (currentChannelId !== 'all') {
+    if ((currentChannelId !== 'all' && postOffset === 0) || inView) {
       fetchPostList(currentChannelId);
     }
-  }, [currentChannelId, fetchPostList]);
+  }, [currentChannelId, fetchPostList, inView, postOffset]);
+
+  /**
+   * 로그인 인증 시 유저 정보 갱신
+   */
+
+  useEffect(() => {
+    if (isSuccess && userObj) {
+      setAuthUser(userObj);
+    }
+  }, [isSuccess, setAuthUser, userObj]);
 
   return (
     <>
@@ -166,19 +213,22 @@ const HomePage = () => {
           <StyledCategoryTitleContainer>
             <StyledCategoryTitle>카테고리</StyledCategoryTitle>
             {/* 카테고리 채널 추가 버튼 */}
-            <Button
-              width={size.large}
-              height={size.large}
-              borderRadius="0.5rem"
-              textSize={size.medium}
-              backgroundColor={colors.background}
-              hoverBackgroundColor={colors.backgroundGrey}
-            >
-              <Icon
-                name="add"
-                style={{ color: `grey`, fontSize: `${size.large}` }}
-              />
-            </Button>
+            {authUser.role === 'SuperAdmin' && (
+              <Button
+                width={size.large}
+                height={size.large}
+                borderRadius="0.5rem"
+                textSize={size.medium}
+                backgroundColor={colors.background}
+                hoverBackgroundColor={colors.backgroundGrey}
+                onClick={handleOpenCreateChannel}
+              >
+                <Icon
+                  name="add"
+                  style={{ color: `grey`, fontSize: `${size.large}` }}
+                />
+              </Button>
+            )}
           </StyledCategoryTitleContainer>
           {/* 채널 버튼 리스트 */}
           <StyledCategoryList>
@@ -200,6 +250,7 @@ const HomePage = () => {
               }
               textColor={colors.text}
               onClick={handleClickChannel}
+              className="category-button"
             >
               전체
             </Button>
@@ -224,8 +275,9 @@ const HomePage = () => {
                   }
                   textColor={colors.text}
                   onClick={handleClickChannel}
+                  className="category-button"
                 >
-                  {channels[channel.name]}
+                  {channels[channel.name] || channel.name}
                 </Button>
               );
             })}
@@ -233,22 +285,29 @@ const HomePage = () => {
         </StyledLeftContainer>
         <StyledMainContentContainer>
           {/* 포스트 카드 리스트 */}
-          <StyledPostCardList>
-            {postList.map((post) => (
-              <PostCard
-                key={post._id}
-                imageUrl={post.image || ''}
-                content={post.title || ''}
-                authorName={post.author.fullName || ''}
-                authorThumbnail=""
-                isFollower
-                isLike
-              />
-            ))}
-          </StyledPostCardList>
+          {postList.length !== 0 ? (
+            <StyledPostCardList>
+              {postList.map((post) => (
+                <PostCard
+                  key={post._id}
+                  imageUrl={post.image || ''}
+                  content={post.title || ''}
+                  authorName={post.author.fullName || ''}
+                  authorThumbnail=""
+                  isFollower
+                  isLike
+                  onImageClick={() => goPostDetail(post._id)}
+                />
+              ))}
+              <StyledObserver ref={refInView} />
+            </StyledPostCardList>
+          ) : (
+            <StyledNoPost>페이지가 없습니다.</StyledNoPost>
+          )}
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
+      <Outlet />
     </>
   );
 };

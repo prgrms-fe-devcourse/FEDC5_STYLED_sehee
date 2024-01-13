@@ -20,6 +20,7 @@ export interface UserCardProps extends HTMLAttributes<HTMLDivElement> {
   inputValue?: string;
   inputChecked?: boolean;
   inputOnChange?: () => void;
+  onClickFollowBtn?: () => void;
 }
 
 export interface StyledWrapperProps {
