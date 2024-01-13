@@ -131,16 +131,6 @@ const HeaderTab = () => {
     padding: '1.5rem',
   };
 
-  const notificationTotal = notificationLength
-    ? notificationLength.commentLength +
-      notificationLength.followLength +
-      notificationLength.postLength
-    : 0;
-
-  const messageTotal = notificationLength
-    ? notificationLength?.messageLength
-    : 0;
-
   return (
     <>
       <StyledUserContainer>
@@ -182,7 +172,7 @@ const HeaderTab = () => {
                 setAlarm((prevIsShow) => !prevIsShow);
               }}
             >
-              {notificationTotal > 0 && (
+              {notificationLength && (
                 <Badge
                   position="rightTop"
                   backgroundColor={colors.alert}
@@ -191,7 +181,7 @@ const HeaderTab = () => {
                   size={size.doubleLarge}
                   style={{ right: size.small, top: size.small }}
                 >
-                  {notificationTotal}
+                  {notificationLength}
                 </Badge>
               )}
             </ModalButton>
@@ -202,20 +192,7 @@ const HeaderTab = () => {
               link="/directmessage"
               setLink={() => setTab('message')}
               style={styledNavIcon}
-            >
-              {messageTotal > 0 && (
-                <Badge
-                  position="rightTop"
-                  backgroundColor={colors.alert}
-                  textColor={colors.text}
-                  textSize={size.large}
-                  size={size.doubleLarge}
-                  style={{ right: size.small, top: size.small }}
-                >
-                  {messageTotal}
-                </Badge>
-              )}
-            </LinkButton>
+            />
             <ModalButton
               name="account_circle"
               style={{ ...styledNavIcon }}
