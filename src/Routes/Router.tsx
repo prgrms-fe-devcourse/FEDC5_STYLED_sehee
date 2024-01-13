@@ -41,16 +41,16 @@ const RouterManager = () => {
         element={<SignUpPage />}
       />
       <Route
-        path="/detail"
-        element={<DetailPage />}
-      />
-      <Route
         path="/profile/:userId"
         element={<ProfilePage />}
       >
         <Route
           path="*"
           element={<ModalRouter />}
+        />
+        <Route
+          path="modal-detail/:postId"
+          element={<DetailPage />}
         />
       </Route>
       <Route
