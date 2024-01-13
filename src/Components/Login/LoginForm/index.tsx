@@ -14,14 +14,12 @@ const LoginForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
   const { colors, size } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 로그인 처리
   const { mutate, status } = useMutation({
     mutationFn: (loginFormData: PostLoginRequestType) => login(loginFormData),
     onSuccess: (response) =>
       response ? onSuccessCallback(response) : onErrorCallback(),
   });
 
-  // 로그인 폼
   const { values, errors, handleOnChange, handleOnSubmit } =
     useForm<PostLoginRequestType>({
       initialState: { email: '', password: '' },
@@ -29,7 +27,6 @@ const LoginForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
       validate: (formValues) => validateLogin(formValues),
     });
 
-  // 초기 포커스 설정
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
