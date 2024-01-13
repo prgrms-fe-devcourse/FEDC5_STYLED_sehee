@@ -1,93 +1,111 @@
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { useTheme } from 'styled-components';
 import UserList from './UserList';
-// import UserSearchForm from './UserSearchForm';
 import StyledWrapper from './style';
 import { getOnlineUsers, getUsers } from '@/Services/User';
-import { UserType } from '@/Types/UserType';
 import QUERY_KEYS from '@/Constants/queryKeys';
-// import Skeleton from '../Base/Skeleton';
+import SkeletonList from '../Common/SkeletonList';
+import Skeleton from '../Base/Skeleton';
+import SearchBar from '../Common/SearchBar';
+import { useForm } from '@/Hooks';
+import validateSearchUser from './validateSearchUser';
+import { searchUsers } from '@/Services/Search';
+import { UserType } from '@/Types/UserType';
 
 const UserManager = () => {
-  const [usersOption, setUsersOption] = useState({ offset: 0, limit: 10 });
-  const [allUserList, setAllUserList] = useState<UserType[]>([]);
+  const { size } = useTheme();
+  const [isSubmit, setIsSubmit] = useState(false);
+  const limit = 10;
+  const refetchTime = 2000;
 
-  /**
-   * 전체 사용자 목록을 불러오는 API 요청을 수행하는 useQuery 훅
-   * @const
-   * @type {Object}
-   * @property {UserType[]} data.userList - 불러온 사용자 목록
-   * @property {boolean} isLoading - 데이터 로딩 상태
-   */
-  const { data: userList, isLoading: allIsLoading } = useQuery({
-    queryKey: [QUERY_KEYS.USER_LIST, usersOption.offset, usersOption.limit],
-    queryFn: () => getUsers(usersOption),
+  const { values, errors, handleOnChange, handleOnSubmit } = useForm({
+    initialState: { userName: '' },
+    callback: () => setIsSubmit(true),
+    validate: validateSearchUser,
   });
 
-  /**
-   * 현재 접속중인 사용자 목록을 불러오는 API 요청을 수행하는 useQuery 훅
-   * @const
-   * @type {Object}
-   * @property {UserType[]} data.onlineUserList - 현재 접속 중인 사용자 목록
-   * @options {refetchInterval} - 2초마다 API를 재요청하여 데이터를 최신 상태로 유지
-   */
-  const { data: onlineUserList, isLoading: onlineIsLoading } = useQuery({
+  const { data: searchUserList, isFetching: isFetchingSearch } = useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_USER_LIST, values.userName],
+    queryFn: () => searchUsers(values.userName),
+    enabled: isSubmit && !errors.userName,
+  });
+
+  const { data: onlineUserList } = useQuery({
     queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
     queryFn: getOnlineUsers,
-    refetchInterval: 2000,
+    refetchInterval: refetchTime,
   });
 
-  /**
-   * 더 많은 유저를 불러오기 위해 offset과 limit을 증가시키는 함수
-   * 만약 받아온 유저목록이 undefined거나 빈 배열일 경우 offset과 limit를 증가시키지 않음
-   * @function loadMoreUsers
-   * @returns {void} 반환값 없음
-   */
+  const {
+    data: userList,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching: isFetchingUserList,
+  } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.USER_LIST],
+    queryFn: ({ pageParam }) => getUsers({ offset: pageParam, limit }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage?.length ? allPages.length * limit : null,
+    select: ({ pages }) =>
+      pages.flatMap(
+        (page) => page?.filter((user) => user?.role !== 'SuperAdmin') ?? [],
+      ),
+  });
+
+  const handleSearchChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      handleOnChange(e);
+      setIsSubmit(false);
+    },
+    [handleOnChange],
+  );
+
   const loadMoreUsers = useCallback(() => {
-    if (!userList || userList.length === 0) {
-      return setUsersOption((prevOptions) => ({
-        offset: prevOptions.offset,
-        limit: prevOptions.limit,
-      }));
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    return setUsersOption((prevOptions) => ({
-      offset: prevOptions.offset + 10,
-      limit: prevOptions.limit + 10,
-    }));
-  }, [userList]);
-
-  useEffect(() => {
-    if (userList && userList.length !== 0) {
-      setAllUserList((prevList) => [...prevList, ...userList]);
-    }
-  }, [userList]);
+  const userListToShow = useMemo(() => {
+    return searchUserList && isSubmit
+      ? searchUserList
+      : userList?.filter((user): user is UserType => user !== undefined) || [];
+  }, [searchUserList, isSubmit, userList]);
 
   return (
     <StyledWrapper>
-      {/* <UserSearchForm /> */}
-      {/* {allIsLoading ||
-        (onlineIsLoading && (
+      <SearchBar
+        style={{ width: '100%' }}
+        onChangehandler={handleSearchChange}
+        onSubmithandler={handleOnSubmit}
+        inputProps={{
+          name: 'userName',
+          type: 'text',
+          placeholder: '사용자 이름 입력',
+          style: { padding: size.small, fontSize: size.medium },
+        }}
+      />
+      {isFetchingSearch ||
+        (isFetchingUserList && (
           <SkeletonList
-            length={9}
-            style={{ flexGrow: 1 }}
+            length={10}
+            style={{ flex: '1 0 90%' }}
           >
             <Skeleton.Circle size="5rem" />
             <Skeleton.Paragraph
-              line={2}
+              line={1}
               style={{ width: '100%' }}
             />
           </SkeletonList>
-        ))} */}
-      {!allIsLoading && !onlineIsLoading && (
-        <UserList
-          isLoading={allIsLoading}
-          isEnd={userList?.length === 0}
-          userList={allUserList}
-          onlineUserList={onlineUserList || []}
-          loadMoreUsers={loadMoreUsers}
-        />
-      )}
+        ))}
+      <UserList
+        userList={userListToShow}
+        onlineUserList={onlineUserList || []}
+        loadMoreUsers={loadMoreUsers}
+      />
     </StyledWrapper>
   );
 };

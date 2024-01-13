@@ -5,6 +5,7 @@ const QUERY_KEYS = {
   CHANNEL_LIST: 'channelList',
   POST_BY_ID: 'postById',
   NOTIFICATION_LIST: 'notificationList',
+  SEARCH_USER_LIST: 'searchUserList',
   GET_USER_BY_ID: 'getUserById',
   POST_DETAIL_BY_ID: 'postDetailById',
   USER_BY_AUTHOR_ID: 'userByAuthorId',
