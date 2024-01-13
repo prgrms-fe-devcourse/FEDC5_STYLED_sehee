@@ -37,7 +37,6 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
               height="85%"
               onUpload={setImage}
             />
-
             <Button
               type="button"
               height="3rem"
@@ -47,7 +46,7 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
               onClick={() => mutate()}
               style={{ float: 'right' }}
             >
-              완료
+              제출
             </Button>
           </>
         )}
