@@ -172,7 +172,7 @@ const HeaderTab = () => {
                 setAlarm((prevIsShow) => !prevIsShow);
               }}
             >
-              {notificationLength && notificationLength > 0 && (
+              {notificationLength && notificationLength > 0 ? (
                 <Badge
                   position="rightTop"
                   backgroundColor={colors.alert}
@@ -183,7 +183,7 @@ const HeaderTab = () => {
                 >
                   {notificationLength}
                 </Badge>
-              )}
+              ) : null}
             </ModalButton>
 
             <LinkButton
