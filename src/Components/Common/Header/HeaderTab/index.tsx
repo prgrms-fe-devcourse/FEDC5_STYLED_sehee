@@ -172,7 +172,7 @@ const HeaderTab = () => {
                 setAlarm((prevIsShow) => !prevIsShow);
               }}
             >
-              {notificationLength && (
+              {notificationLength && notificationLength > 0 && (
                 <Badge
                   position="rightTop"
                   backgroundColor={colors.alert}
