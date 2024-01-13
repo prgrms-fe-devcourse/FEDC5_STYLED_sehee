@@ -47,6 +47,7 @@ const UserCard = forwardRef(
       inputValue,
       inputChecked,
       inputOnChange,
+      onClickFollowBtn,
       ...props
     }: UserCardProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -73,9 +74,11 @@ const UserCard = forwardRef(
       <StyledWrapper
         ref={ref}
         $width={width || '100%'}
-        $height={height || '100%'}
+        $height={height || 'auto'}
         $borderRadius={borderRadius || ''}
+        $mode={mode}
         {...props}
+        onClick={handleClick}
       >
         {/* 유저 아바타 */}
         <Avatar
@@ -126,6 +129,7 @@ const UserCard = forwardRef(
               borderRadius="0.5rem"
               backgroundColor={isFollow ? colors.read : colors.follow}
               hoverBackgroundColor={colors.buttonClickHover}
+              onClick={onClickFollowBtn}
             >
               {isFollow ? '팔로잉' : '팔로우'}
             </Button>
