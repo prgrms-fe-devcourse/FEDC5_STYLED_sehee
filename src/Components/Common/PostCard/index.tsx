@@ -1,5 +1,4 @@
 import { useTheme } from 'styled-components';
-import { useMutation } from '@tanstack/react-query';
 import { PostCardProps } from './type';
 import {
   StyledPostCardWrapper,
@@ -14,7 +13,6 @@ import {
 } from './style';
 import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
-import { createLike } from '@/Services/Like';
 import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 
 const PostCard = ({
@@ -41,14 +39,9 @@ const PostCard = ({
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
 
-  const handleClickLike = (postId) => {
-    console.log(postId);
+  const handleClickLike = (id: string) => {
+    return onLikeIconClick && onLikeIconClick(id, !isLike);
   };
-
-  const { data } = useMutation({
-    mutationFn: createLike,
-    // onSuccess:
-  });
 
   return (
     <StyledPostCardWrapper
@@ -59,7 +52,6 @@ const PostCard = ({
         <StyledProfileContainer>
           {/* 아바타 컴포넌트 삽입 필요 */}
           <StyledProfileAvatar
-            // TODO: 인혁님꺼 Constants의 defaultImage 이후 import 필요
             src={authorThumbnail || DEFAULT_USER_IMAGE_SRC}
             alt="프로필 아바타"
             onClick={onUserAvatarClick}

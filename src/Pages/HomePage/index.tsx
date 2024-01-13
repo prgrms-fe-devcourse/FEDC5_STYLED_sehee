@@ -5,6 +5,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useInfiniteQuery,
+  useMutation,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -32,6 +33,7 @@ import UserManager from '@/Components/UserManager';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { checkAuth } from '@/Services/Auth';
 import QUERY_KEYS from '@/Constants/queryKeys';
+import { createLike, deleteLike } from '@/Services/Like';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -93,7 +95,7 @@ const HomePage = () => {
    */
   const {
     hasNextPage,
-    data,
+    data: postList,
     fetchNextPage,
     // fetchPreviousPage,
     // hasPreviousPage,
@@ -116,7 +118,34 @@ const HomePage = () => {
       !!userObj &&
       isChannelListSuccess &&
       currentChannelId !== 'all',
-    // inView,
+  });
+
+  useEffect(() => {
+    if (hasNextPage && inView) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, inView, fetchNextPage]);
+
+  /**
+   * 좋아요 api 호출 useMutation 훅
+   */
+  const { mutate: likeById } = useMutation({
+    mutationFn: (likePostId: string) => createLike(likePostId),
+    onSuccess: () => {},
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+    },
+  });
+
+  /**
+   * 좋아요 취소 api 호출 useMutation 훅
+   */
+  const { mutate: disLikeById } = useMutation({
+    mutationFn: (disLikeId: string) => deleteLike(disLikeId),
+    onSuccess: () => {},
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+    },
   });
 
   /**
@@ -126,6 +155,27 @@ const HomePage = () => {
     navigate('/add-channel');
   };
 
+  /**
+   * 메인 페이지에서 포스트 Card의 좋아요 버튼 클릭 시 api 호출하는 함수
+   * @param id target postId
+   * @param newState 바뀔 좋아요 상태
+   */
+  const handleClickLike = (id: string, newState: boolean) => {
+    if (newState) {
+      likeById(id);
+    } else if (postList) {
+      const targetPost = postList.pages.map((page) => {
+        return page?.find((post) => post._id === id);
+      });
+
+      targetPost[0]?.likes.forEach(({ _id, user }) => {
+        if (user === authUser._id) {
+          disLikeById(_id);
+        }
+      });
+    }
+  };
+
   /*
    * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
    * @param postId 포스트 ID
@@ -133,22 +183,6 @@ const HomePage = () => {
   const handleClickPostImage = (postId: string) => {
     navigate(`/modal-detail/${postId}`);
   };
-
-  useEffect(() => {
-    if (hasNextPage && inView) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, inView, fetchNextPage]);
-
-  /**
-   * 로그인 인증 시 유저 정보 갱신
-   */
-
-  // useEffect(() => {
-  //   if (isSuccess && userObj) {
-  //     setAuthUser(userObj);
-  //   }
-  // }, [isSuccess, setAuthUser, userObj]);
 
   return (
     <>
@@ -233,8 +267,8 @@ const HomePage = () => {
         <StyledMainContentContainer>
           {/* 포스트 카드 리스트 */}
           <StyledPostCardList>
-            {data ? (
-              data.pages.map((cards) => {
+            {postList ? (
+              postList.pages.map((cards) => {
                 return cards?.map((post) => (
                   <PostCard
                     key={post._id}
@@ -246,27 +280,26 @@ const HomePage = () => {
                     isFollower
                     isLike={
                       authUser &&
-                      post.likes.some(({ _id }) => _id === authUser._id)
+                      post.likes.some(({ user }) => user === authUser._id)
                     }
                     onImageClick={() => handleClickPostImage(post._id)}
+                    myLikeId={
+                      post.likes.find(({ user }) => user === authUser._id)
+                        ?._id || ''
+                    }
+                    onLikeIconClick={handleClickLike}
                   />
                 ));
               })
             ) : (
               <StyledNoPost>페이지가 없습니다.</StyledNoPost>
             )}
-            {/* {currentChannelId !== 'all' && data && data.pages.length > 0 && ( */}
             {hasNextPage && (
               <StyledObserver
                 className="observer"
                 ref={refInView}
               />
             )}
-            {/* <StyledObserver
-              className="observer"
-              ref={refInView}
-            /> */}
-            {/* // )} */}
           </StyledPostCardList>
         </StyledMainContentContainer>
         <UserManager />
