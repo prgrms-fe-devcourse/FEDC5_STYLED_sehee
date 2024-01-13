@@ -13,7 +13,7 @@ import { Props } from './type';
 // 9. ${Query} 검색 결과입니다 정도는 띄워도 될 듯
 
 // DONE: 컴포넌트 설계
-// TODO: Props 설정, 타입 지정
+// DONE: Props 설정, 타입 지정
 // TODO: 대략적인 스타일링
 // TODO: 컴포넌트 구현
 // TODO: 해당 컴포넌트로 데이터를 모아 쿼리 통신 구현
@@ -22,18 +22,21 @@ import { Props } from './type';
 const SearchModal = ({ onChangeOpen }: Props) => {
   return (
     <Modal onChangeOpen={onChangeOpen}>
-      <wrapper>
-        <header>
-          <headerTitle>
+      <StyledWrapper>
+        <StyledHeader>
+          <HeaderTitle query:string>
             {/* 검색, 쿼리 요청 시 ${query} 검색 결과 */}
-          </headerTitle>
-          <headerTab>{/* 유저 탭과 포스트 탭, 디폴트는 유저 탭 */}</headerTab>
-        </header>
-        <body>
+          </HeaderTitle>
+          <HeaderTab currentTab>
+            {/* 유저 탭과 포스트 탭, 디폴트는 유저 탭 */}
+          </HeaderTab>
+        </StyledHeader>
+        <StyledBody>
           {/* 검색결과 or 스켈레톤 */}
-          <searchResultList></searchResultList> || <Skeleton></Skeleton>
-        </body>
-      </wrapper>
+          <SearchResultList SearchResultData></SearchResultList>
+          <SearchSkeleton></SearchSkeleton>
+        </StyledBody>
+      </StyledWrapper>
     </Modal>
   );
 };
