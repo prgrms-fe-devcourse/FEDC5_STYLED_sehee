@@ -147,15 +147,9 @@ const HomePage = () => {
   const handleClickLike = (id: string, newState: boolean) => {
     if (newState) {
       likeById(id);
-    } else if (postList) {
-      const targetPost = postList.pages.map((page) => {
-        return page?.find((post) => post._id === id);
-      });
-
-      targetPost[0]?.likes.forEach(({ _id, user }) => {
-        if (user === authUser._id) {
-          disLikeById(_id);
-        }
+    } else if (authUser) {
+      authUser.likes?.forEach(({ post, _id: likeId }) => {
+        if (post === id) disLikeById(likeId);
       });
     }
   };
