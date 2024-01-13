@@ -4,5 +4,5 @@ export interface Props {
 }
 
 export interface NameType {
-  username: string;
+  newName: string;
 }

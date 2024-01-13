@@ -25,10 +25,10 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
 
   const { values, errors, isLoading, handleOnChange, handleOnSubmit } =
     useForm<NameType>({
-      initialState: { username: '' },
+      initialState: { newName: '' },
       callback: (): void =>
-        mutate({ fullName: name, username: values.username }),
-      validate: (username) => validateName(username),
+        mutate({ fullName: name, username: values.newName }),
+      validate: (newName) => validateName(newName),
     });
 
   useEffect(() => {
@@ -52,10 +52,10 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
               ref={inputRef}
               onChange={handleOnChange}
               type="text"
-              name="username"
+              name="newName"
               label="이름 변경"
               placeholder="변경할 이름을 입력해주세요"
-              errorMessage={errors.username}
+              errorMessage={errors.newName}
               required
               wrapperProps={{ style: { padding: '1rem' } }}
             />
