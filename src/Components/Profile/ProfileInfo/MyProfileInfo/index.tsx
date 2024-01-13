@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
-import { NameProps } from '../type';
+import { NameProps } from './type';
 import Icon from '@/Components/Base/Icon';
 
 const MyProfileInfo = ({ name, id }: NameProps) => {
@@ -13,7 +13,7 @@ const MyProfileInfo = ({ name, id }: NameProps) => {
           name="edit"
           isFill={false}
           style={{ paddingLeft: '1rem', cursor: 'pointer' }}
-          onClick={() => console.log('edit user name')}
+          onClick={() => console.log('change name')}
         />
       </StyledName>
       <Link to={`/edit-password/${id}`}>

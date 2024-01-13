@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
-import { NameProps } from '../type';
+import { NameProps } from './type';
 
 const UserProfileInfo = ({ name }: NameProps) => {
   return (
     <StyledButtonContainer>
       <StyledName>{name}</StyledName>
+      {/* 내ㅐ가 팔로우한 사람인지 */}
       <Button
         type="button"
         height="3rem"
@@ -17,7 +18,6 @@ const UserProfileInfo = ({ name }: NameProps) => {
       >
         팔로우
       </Button>
-      {/* 메시지 보내기 버튼 클릭시 어떻게,, 해야할지,,, */}
       <Link to="/directmessage">
         <Button
           type="button"

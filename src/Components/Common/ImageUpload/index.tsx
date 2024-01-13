@@ -1,4 +1,11 @@
-import { ChangeEvent, MouseEvent, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTheme } from 'styled-components';
 import {
   StyledImage,
@@ -13,14 +20,28 @@ import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
 import Input from '@/Components/Base/Input';
 
-const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
+const ImageUpload = ({
+  width,
+  height,
+  fontSize,
+  onUpload,
+  initialValue,
+}: ImageUploadProps) => {
   const uploadInput = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<ImageFileType | null>(null);
+  const [imageFile, setImageFile] = useState<ImageFileType | string | null>(
+    null,
+  );
 
   const { colors } = useTheme();
   const getButtonBgColor = colors.buttonBackground;
   const getButtonTextColor = colors.buttonText;
   const getButtonhoverBgColor = colors.buttonClickHover;
+
+  useEffect(() => {
+    if (initialValue) {
+      setImageFile(initialValue);
+    }
+  }, [initialValue]);
 
   /**
    * 파일 업로드 버튼 클릭 핸들러 함수
@@ -50,6 +71,12 @@ const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
     }
   };
 
+  useEffect(() => {
+    if (imageFile && onUpload) {
+      onUpload(imageFile);
+    }
+  }, [imageFile, onUpload]);
+
   /**
    * 업로드한 이미지가 있는지에 따라 업로드 폼과 이미지를 교체하는 함수
    * useMemo를 사용한 것은 이미지 업로드와 렌더링을 최적화하기 위함
@@ -57,8 +84,8 @@ const ImageUpload = ({ width, height, fontSize }: ImageUploadProps) => {
   const showUploadImage = useMemo(() => {
     return imageFile ? (
       <StyledImage
-        src={imageFile.imageUrl}
-        alt={imageFile.type}
+        src={typeof imageFile === 'string' ? imageFile : imageFile?.imageUrl}
+        alt={typeof imageFile === 'string' ? 'uploaded-image' : imageFile?.type}
         onClick={handleClickUpload}
       />
     ) : null;

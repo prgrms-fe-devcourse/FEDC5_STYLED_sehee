@@ -16,7 +16,8 @@ import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
   const { colors } = useTheme();
-
+  const likePosts = [];
+  /*
   const getLikePostById = async (
     userId: string,
     postId: string,
@@ -61,7 +62,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
     if (!post) {
       setLikePosts([...likePosts, post]);
     }
-  });
+  }); */
 
   return (
     <>
