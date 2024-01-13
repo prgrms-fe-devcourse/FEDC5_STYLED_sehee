@@ -12,11 +12,13 @@ export const StyledWrapper = styled.div`
   align-items: center;
 `;
 export const StyledHeader = styled.header`
+  width: 100%;
   height: auto;
 
   display: flex;
+  align-items: center;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 2rem;
 
   cursor: default;
 `;
