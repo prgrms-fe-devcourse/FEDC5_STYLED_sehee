@@ -23,7 +23,11 @@ const ProfileInfo = ({ userData, isMyProfile }: Props) => {
       )}
       <div>
         {isMyProfile ? (
-          <MyProfileInfo name={userData.fullName} />
+          <MyProfileInfo
+            name={userData.fullName}
+            // eslint-disable-next-line no-underscore-dangle
+            id={userData._id}
+          />
         ) : (
           <UserProfileInfo name={userData.fullName} />
         )}
