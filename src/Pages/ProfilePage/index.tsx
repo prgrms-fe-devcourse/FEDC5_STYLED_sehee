@@ -23,7 +23,8 @@ const ProfilePage = () => {
   useEffect(() => {
     currentUserQuery.refetch();
     profileUserQuery.refetch();
-  }, [userId, currentUserQuery, profileUserQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   const currentUser = currentUserQuery.data;
   const profileUser = profileUserQuery.data;
