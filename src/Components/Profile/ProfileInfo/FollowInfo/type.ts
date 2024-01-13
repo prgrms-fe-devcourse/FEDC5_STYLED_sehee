@@ -1,5 +1,8 @@
+import { UserType } from '@/Types/UserType';
+
 export interface Props {
-  posts: number;
-  followers: number;
-  following: number;
+  user: UserType;
+  // posts: number;
+  // followers: number;
+  // following: number;
 }

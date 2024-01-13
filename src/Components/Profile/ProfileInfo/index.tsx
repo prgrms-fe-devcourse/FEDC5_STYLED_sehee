@@ -28,11 +28,7 @@ const ProfileInfo = ({ userData, isMyProfile }: Props) => {
           <UserProfileInfo name={userData.fullName} />
         )}
 
-        <FollowInfo
-          posts={userData.posts.length}
-          followers={userData.followers.length}
-          following={userData.following.length}
-        />
+        <FollowInfo user={userData} />
       </div>
     </StyledProfileInfoContainer>
   );
