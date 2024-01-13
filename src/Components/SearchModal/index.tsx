@@ -1,5 +1,14 @@
 import Modal from '@/Components/Common/Modal';
 import { Props } from './type';
+import {
+  StyledBody,
+  StyledHeader,
+  StyledHeaderTab,
+  StyledHeaderTitle,
+  StyledWrapper,
+} from './style';
+import SearchResultList from './SearchResultList';
+import SearchSkeleton from './SearchSkeleton';
 
 // * Sudo-logic
 // 1. 폼 입력하고 쿼리 제출
@@ -21,20 +30,27 @@ import { Props } from './type';
 
 const SearchModal = ({ onChangeOpen }: Props) => {
   return (
-    <Modal onChangeOpen={onChangeOpen}>
+    <Modal
+      width={40}
+      onChangeOpen={onChangeOpen}
+    >
       <StyledWrapper>
         <StyledHeader>
-          <HeaderTitle query:string>
+          <StyledHeaderTitle>
+            {/* query:string */}
             {/* 검색, 쿼리 요청 시 ${query} 검색 결과 */}
-          </HeaderTitle>
-          <HeaderTab currentTab>
+            검색
+          </StyledHeaderTitle>
+          <StyledHeaderTab>
+            {/* currentTab */}
             {/* 유저 탭과 포스트 탭, 디폴트는 유저 탭 */}
-          </HeaderTab>
+            tab
+          </StyledHeaderTab>
         </StyledHeader>
         <StyledBody>
           {/* 검색결과 or 스켈레톤 */}
-          <SearchResultList SearchResultData></SearchResultList>
-          <SearchSkeleton></SearchSkeleton>
+          <SearchResultList SearchResultData />
+          <SearchSkeleton />
         </StyledBody>
       </StyledWrapper>
     </Modal>
