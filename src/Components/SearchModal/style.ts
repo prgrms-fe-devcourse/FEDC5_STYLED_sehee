@@ -26,5 +26,13 @@ export const StyledHeaderTitle = styled.h1`
   user-select: none;
   font-size: large;
 `;
-export const StyledHeaderTab = styled.div``;
-export const StyledBody = styled.div``;
+export const StyledHeaderTab = styled.div`
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+`;
+export const StyledBody = styled.div`
+  width: 100%;
+  height: 100%;
+`;

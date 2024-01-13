@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useTheme } from 'styled-components';
 import Modal from '@/Components/Common/Modal';
 import { Props } from './type';
 import {
@@ -7,10 +9,12 @@ import {
   StyledHeaderTitle,
   StyledWrapper,
 } from './style';
-import SearchResultList from './SearchResultList';
-import SearchSkeleton from './SearchSkeleton';
 import SearchBar from './SearchBar';
-import { useEffect, useState } from 'react';
+import Button from '../Base/Button';
+import { UserType } from '@/Types/UserType';
+import { PostType } from '@/Types/PostType';
+import SearchUserList from './SearchUserList';
+import SearchPostList from './SearchPostList';
 
 // * Sudo-logic
 // 1. 폼 입력하고 쿼리 제출
@@ -30,11 +34,28 @@ import { useEffect, useState } from 'react';
 // TODO: 해당 컴포넌트로 데이터를 모아 쿼리 통신 구현
 // TODO: 기타 에러 핸들링
 
+// TODO: SearchPostList, SearchUserList refactor
+
 const SearchModal = ({ onChangeOpen }: Props) => {
+  const theme = useTheme();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [currentTab, setCurrentTab] = useState<'USER' | 'POST'>('USER');
+  const [userResult, setUserResult] = useState<UserType[] | null>(null);
+  const [postResult, setPostResult] = useState<PostType[] | null>(null);
 
   const handleSubmit = (query: string) => {
     setSearchQuery(query);
+
+    // query 담아서 searchAll 요청 mutateSearch
+    // 성공하면 data 한 번 쭉 돌고, 나뉘는 인덱스 찾음
+    // 해당 인덱스 기준으로 잘라서 userReuslt, postResult에 넣음
+  };
+
+  const tabStyle = {
+    fontSize: theme.size.medium,
+    width: '18rem',
+    height: '3rem',
+    borderRadius: '1rem',
   };
 
   return (
@@ -50,15 +71,34 @@ const SearchModal = ({ onChangeOpen }: Props) => {
           <SearchBar onSubmit={handleSubmit} />
 
           <StyledHeaderTab>
-            {/* currentTab */}
-            {/* 유저 탭과 포스트 탭, 디폴트는 유저 탭 */}
-            tab
+            <Button
+              isActive={currentTab === 'USER'}
+              onClick={() => setCurrentTab('USER')}
+              backgroundColor={theme.colors.background}
+              hoverTextColor={theme.colors.buttonBackground}
+              textColor={theme.colors.buttonBackground}
+              style={tabStyle}
+            >
+              유저
+            </Button>
+            <Button
+              isActive={currentTab === 'POST'}
+              onClick={() => setCurrentTab('POST')}
+              backgroundColor={theme.colors.background}
+              hoverTextColor={theme.colors.buttonBackground}
+              textColor={theme.colors.buttonBackground}
+              style={tabStyle}
+            >
+              포스트
+            </Button>
           </StyledHeaderTab>
         </StyledHeader>
         <StyledBody>
-          {/* 검색결과 or 스켈레톤 */}
-          <SearchResultList SearchResultData />
-          <SearchSkeleton />
+          {currentTab === 'USER' ? (
+            <SearchUserList data={userResult} />
+          ) : (
+            <SearchPostList data={postResult} />
+          )}
         </StyledBody>
       </StyledWrapper>
     </Modal>
