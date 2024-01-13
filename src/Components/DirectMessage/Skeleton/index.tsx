@@ -74,6 +74,24 @@ const MessageList = () => {
           />
         </MessageListParagraphWrapper>
       </MessageListWrapper>
+
+      <MessageListWrapper>
+        <MessageListParagraphWrapper $isRight>
+          <Skeleton.Paragraph
+            line={1}
+            style={{ width: '20%', height: '100%' }}
+          />
+          <Skeleton.Paragraph
+            line={1}
+            style={{ width: '60%', height: '100%' }}
+          />
+          <Skeleton.Paragraph
+            line={1}
+            style={{ width: '40%', height: '100%' }}
+          />
+        </MessageListParagraphWrapper>
+        <Skeleton.Circle size="4rem" />
+      </MessageListWrapper>
     </MessageListContainer>
   );
 };
