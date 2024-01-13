@@ -1,4 +1,5 @@
 import { useTheme } from 'styled-components';
+import { useNavigate } from 'react-router';
 import Modal from '@/Components/Common/Modal';
 import {
   PostDotModalProps,
@@ -11,6 +12,7 @@ import useAuthUserStore from '@/Stores/AuthUser';
 import USER_ROLE from '@/Constants/userRole';
 
 const PostDotModal = ({
+  postId,
   isFollow,
   postAuthorId,
   onChangeOpen,
@@ -19,6 +21,7 @@ const PostDotModal = ({
 }: PostDotModalProps) => {
   const { colors } = useTheme();
   const { user: authUser } = useAuthUserStore();
+  const navigate = useNavigate();
 
   /**
    * 포스트 삭제 함수
@@ -29,7 +32,9 @@ const PostDotModal = ({
   /**
    * 포스트 수정 함수
    */
-  const handleEditPost = () => {};
+  const handleEditPost = () => {
+    navigate(`/edit-post/${postId}`);
+  };
 
   /**
    * 팔로우 취소 함수
