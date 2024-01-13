@@ -34,7 +34,7 @@ const Modal = ({
    */
   const handleModalClose = (e: MouseEvent) => {
     e.stopPropagation();
-    if (onChangeOpen && e.currentTarget === modalBgRef.current)
+    if (e.currentTarget === modalBgRef.current && onChangeOpen)
       onChangeOpen(false);
   };
 

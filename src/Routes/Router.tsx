@@ -8,10 +8,9 @@ import {
   SignUpPage,
   DirectMessagePage,
   ProfilePage,
-  AddPostPage,
-  SearchPage,
-  EditPasswordPage,
 } from '@/Pages';
+import AddChannelModal from '@/Pages/HomePage/AddChannelModal';
+import ModalRouter from './ModalRouter';
 
 const RouterManager = () => {
   return (
@@ -21,12 +20,16 @@ const RouterManager = () => {
         element={<HomePage />}
       >
         <Route
-          path="/modal-detail:postId"
-          element={<DetailPage />}
+          path="add-channel"
+          element={<AddChannelModal />}
         />
         <Route
-          path="/edit-password/:userId"
-          element={<EditPasswordPage />}
+          path="*"
+          element={<ModalRouter />}
+        />
+        <Route
+          path="modal-detail/:postId"
+          element={<DetailPage />}
         />
       </Route>
       <Route
@@ -38,25 +41,27 @@ const RouterManager = () => {
         element={<SignUpPage />}
       />
       <Route
-        path="/search"
-        element={<SearchPage />}
-      />
-      <Route
-        path="/add-post"
-        element={<AddPostPage />}
-      />
-      <Route
         path="/profile/:userId"
         element={<ProfilePage />}
-      />
-      <Route
-        path="/edit-password/:userId"
-        element={<EditPasswordPage />}
-      />
+      >
+        <Route
+          path="*"
+          element={<ModalRouter />}
+        />
+        <Route
+          path="modal-detail/:postId"
+          element={<DetailPage />}
+        />
+      </Route>
       <Route
         path="/directmessage"
         element={<DirectMessagePage />}
-      />
+      >
+        <Route
+          path="*"
+          element={<ModalRouter />}
+        />
+      </Route>
       <Route
         path="*"
         element={<NotFoundPage />}

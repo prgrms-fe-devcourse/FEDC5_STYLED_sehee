@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { StyledContainer, StyledDiv } from './style';
 import MessageList from '@/Components/DirectMessage/MessageList';
 import ConversationList from '@/Components/DirectMessage/ConversationList';
@@ -53,6 +53,7 @@ const DirectMessagePage = () => {
           loginUser={user}
         />
       )}
+      <Outlet />
     </StyledContainer>
   );
 };
