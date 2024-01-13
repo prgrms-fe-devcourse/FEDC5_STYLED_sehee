@@ -1,6 +1,16 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
+
+import { UserType } from '@/Types/UserType';
+import { PostType } from '@/Types/PostType';
+import { searchAll } from '@/Services/Search';
 import Modal from '@/Components/Common/Modal';
+import Spinner from '../Base/Spinner';
+import Button from '../Base/Button';
+import SearchBar from './SearchBar';
+import SearchUserList from './SearchUserList';
+import SearchPostList from './SearchPostList';
 import { Props } from './type';
 import {
   StyledBody,
@@ -9,32 +19,9 @@ import {
   StyledHeaderTitle,
   StyledWrapper,
 } from './style';
-import SearchBar from './SearchBar';
-import Button from '../Base/Button';
-import { UserType } from '@/Types/UserType';
-import { PostType } from '@/Types/PostType';
-import SearchUserList from './SearchUserList';
-import SearchPostList from './SearchPostList';
 
-// * Sudo-logic
-// 1. 폼 입력하고 쿼리 제출
-// 2. SeachAll(query) 전송, 배열로 받음
-// 3. 앞엔 사용자, 뒤엔 포스트
-// 4. 언제 끊기는지 인덱스를 찾아야 함, 인덱스 찾았으면 해당 인덱스 기준으로 앞 뒤 잘라서 State에 넣어놔
-// 5. 탭 만들어서 사용자, 포스트 분리해
-// 6. 만약 비어있으면 따로 메시지 띄워
-// 7. 사용자 클릭하면 사용자 상세페이지, 포스트 클릭하면 포스트 상세페이지로 이동
-// 8. 각각 State 초기값은 비어있고, suvmmit할 때마다 갱신
-// 9. ${Query} 검색 결과입니다 정도는 띄워도 될 듯
-
-// DONE: 컴포넌트 설계
-// DONE: Props 설정, 타입 지정
-// DONE: 대략적인 스타일링
-// TODO: 컴포넌트 구현
-// TODO: 해당 컴포넌트로 데이터를 모아 쿼리 통신 구현
-// TODO: 기타 에러 핸들링
-
-// TODO: SearchPostList, SearchUserList refactor
+// TODO: SearchPostList, SearchUserList 컴포넌트 통합
+// TODO: 검색 결과 상세화
 
 const SearchModal = ({ onChangeOpen }: Props) => {
   const theme = useTheme();
@@ -43,12 +30,39 @@ const SearchModal = ({ onChangeOpen }: Props) => {
   const [userResult, setUserResult] = useState<UserType[] | null>(null);
   const [postResult, setPostResult] = useState<PostType[] | null>(null);
 
-  const handleSubmit = (query: string) => {
-    setSearchQuery(query);
+  /**
+   * @brief 사용자가 입력한 검색어를 담아 요청을 보냅니다. 응답 데이터는 유저와 포스트 결과를 담고 있는 배열 형태이며, 이를 순회하며 유저 데이터와 포스트 데이터를 분리합니다. 이후 분리한 데이터를 하위 컴포넌트에게 전달하여 검색 결과를 화면에 표시합니다.
+   */
+  const { mutate: mutateSearch, status: searchStatus } = useMutation({
+    mutationFn: (query: string) => searchAll(query),
+    onSuccess: (res) => {
+      if (res) {
+        const userData: UserType[] = [];
+        const postData: PostType[] = [];
 
-    // query 담아서 searchAll 요청 mutateSearch
-    // 성공하면 data 한 번 쭉 돌고, 나뉘는 인덱스 찾음
-    // 해당 인덱스 기준으로 잘라서 userReuslt, postResult에 넣음
+        res.forEach((item) => {
+          if ('role' in item) {
+            userData.push(item as UserType);
+          } else {
+            postData.push(item as PostType);
+          }
+        });
+
+        if (userData.length > 0) {
+          setUserResult(userData);
+        }
+        if (postData.length > 0) {
+          setPostResult(postData);
+        }
+      }
+    },
+  });
+
+  const handleSubmit = (query: string) => {
+    setPostResult(null);
+    setUserResult(null);
+    setSearchQuery(query);
+    mutateSearch(query);
   };
 
   const tabStyle = {
@@ -59,49 +73,58 @@ const SearchModal = ({ onChangeOpen }: Props) => {
   };
 
   return (
-    <Modal
-      width={40}
-      onChangeOpen={onChangeOpen}
-    >
-      <StyledWrapper>
-        <StyledHeader>
-          <StyledHeaderTitle>
-            {searchQuery ? `"${searchQuery}" 검색 결과` : '검색'}
-          </StyledHeaderTitle>
-          <SearchBar onSubmit={handleSubmit} />
+    <>
+      {searchStatus === 'pending' && (
+        <Spinner
+          isBackground
+          isFixedCenter
+        />
+      )}
+      <Modal
+        width={40}
+        height={80}
+        onChangeOpen={onChangeOpen}
+      >
+        <StyledWrapper>
+          <StyledHeader>
+            <StyledHeaderTitle>
+              {searchQuery ? `"${searchQuery}" 검색 결과` : '검색'}
+            </StyledHeaderTitle>
+            <SearchBar onSubmit={handleSubmit} />
 
-          <StyledHeaderTab>
-            <Button
-              isActive={currentTab === 'USER'}
-              onClick={() => setCurrentTab('USER')}
-              backgroundColor={theme.colors.background}
-              hoverTextColor={theme.colors.buttonBackground}
-              textColor={theme.colors.buttonBackground}
-              style={tabStyle}
-            >
-              유저
-            </Button>
-            <Button
-              isActive={currentTab === 'POST'}
-              onClick={() => setCurrentTab('POST')}
-              backgroundColor={theme.colors.background}
-              hoverTextColor={theme.colors.buttonBackground}
-              textColor={theme.colors.buttonBackground}
-              style={tabStyle}
-            >
-              포스트
-            </Button>
-          </StyledHeaderTab>
-        </StyledHeader>
-        <StyledBody>
-          {currentTab === 'USER' ? (
-            <SearchUserList data={userResult} />
-          ) : (
-            <SearchPostList data={postResult} />
-          )}
-        </StyledBody>
-      </StyledWrapper>
-    </Modal>
+            <StyledHeaderTab>
+              <Button
+                isActive={currentTab === 'USER'}
+                onClick={() => setCurrentTab('USER')}
+                backgroundColor={theme.colors.background}
+                hoverTextColor={theme.colors.buttonBackground}
+                textColor={theme.colors.buttonBackground}
+                style={tabStyle}
+              >
+                유저
+              </Button>
+              <Button
+                isActive={currentTab === 'POST'}
+                onClick={() => setCurrentTab('POST')}
+                backgroundColor={theme.colors.background}
+                hoverTextColor={theme.colors.buttonBackground}
+                textColor={theme.colors.buttonBackground}
+                style={tabStyle}
+              >
+                포스트
+              </Button>
+            </StyledHeaderTab>
+          </StyledHeader>
+          <StyledBody>
+            {currentTab === 'USER' ? (
+              <SearchUserList data={userResult} />
+            ) : (
+              <SearchPostList data={postResult} />
+            )}
+          </StyledBody>
+        </StyledWrapper>
+      </Modal>
+    </>
   );
 };
 

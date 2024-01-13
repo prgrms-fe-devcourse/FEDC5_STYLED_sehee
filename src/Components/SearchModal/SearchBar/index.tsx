@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from 'styled-components';
 
-import Props from './type';
 import Button from '@/Components/Base/Button';
-import { StyledForm, StyledInput } from './style';
 import Icon from '@/Components/Base/Icon';
 import Alert from '@/Components/Common/Alert';
+import Props from './type';
+import { StyledForm, StyledInput } from './style';
 
 const SearchBar = ({ onSubmit }: Props) => {
   const theme = useTheme();
