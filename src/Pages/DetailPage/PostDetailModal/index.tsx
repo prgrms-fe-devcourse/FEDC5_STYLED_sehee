@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import {
+  KeyboardEvent,
   KeyboardEventHandler,
   useCallback,
   useMemo,
@@ -86,6 +87,7 @@ const PostDetailModal = ({
   const [isCommentBtnDisabled, setIsCommentBtnDisabled] = useState(true);
   const [isFollow, setIsFollow] = useState<boolean | null>(null);
   const [isLike, setIsLike] = useState<boolean | null>(null);
+  const [isComposing, setIsComposing] = useState(false);
 
   /**
    * 댓글 입력 창이 비었을 경우 게시 버튼 비활성화하는 함수
@@ -158,9 +160,11 @@ const PostDetailModal = ({
    * Enter 버튼으로 댓글 게시하는 함수
    */
   const handleCommentInputEnter: KeyboardEventHandler<HTMLInputElement> = (
-    e,
+    e: KeyboardEvent<HTMLInputElement>,
   ) => {
+    // 한글 2번 입력 방지
     if (e.code === 'Enter') {
+      if (isComposing) return;
       sendComment();
     }
   };
@@ -414,7 +418,9 @@ const PostDetailModal = ({
                 placeholder="댓글 달기..."
                 onChange={handleChangeCommentInput}
                 className="post-detail-comment-input"
-                onKeyUp={handleCommentInputEnter}
+                onKeyDown={handleCommentInputEnter}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={() => setIsComposing(false)}
               />
               <Button
                 disabled={isCommentBtnDisabled}
