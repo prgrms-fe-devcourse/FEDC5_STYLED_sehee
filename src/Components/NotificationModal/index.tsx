@@ -1,46 +1,81 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import NotificationHeader from './NotificationHeader';
-import { CategoryType, Props } from './type';
+import { CategoryType, PostSendNotificationsType, Props } from './type';
 import CategoryList from './CategoryList';
-import { getNotifications, readNotifications } from '@/Services/Notification';
+import {
+  getNotifications,
+  readNotifications,
+  sendNotifications,
+} from '@/Services/Notification';
 import StyledWrapper from './style';
 import NotificationList from './NotificationList';
 import {
-  addNotificationsData,
+  filterNotificationList,
   filterNotificationsByCategory,
 } from './filterNotification';
 import Skeleton from '../Base/Skeleton';
 import SkeletonList from '../Common/SkeletonList';
 import QUERY_KEYS from '@/Constants/queryKeys';
+import useAuthUserStore from '@/Stores/AuthUser';
 
 const NotificationModal = ({ onClose }: Props) => {
   const categoryList: CategoryType[] = ['전체', '댓글', '팔로우', '좋아요'];
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(
     categoryList[0],
   );
+  const {
+    user: { _id: userId },
+  } = useAuthUserStore();
 
   const { data, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
     queryFn: getNotifications,
-    select: (notifications) => addNotificationsData(notifications || []),
+    select: (notifications) => filterNotificationList(notifications || []),
   });
 
-  const { mutate } = useMutation({
-    mutationFn: readNotifications,
-    onSuccess: onClose,
+  const { mutateAsync: postSendNotifications } = useMutation({
+    mutationFn: ({ messageId, receiverId }: PostSendNotificationsType) =>
+      sendNotifications({
+        notificationType: 'MESSAGE',
+        notificationTypeId: messageId,
+        userId: receiverId,
+        postId: null,
+      }),
   });
+
+  const { mutate: postReadNotifications } = useMutation({
+    mutationFn: readNotifications,
+    onSuccess: () => {
+      if (userId) {
+        Promise.all(
+          data?.messageList.map((message) =>
+            postSendNotifications({
+              messageId: message,
+              receiverId: userId,
+            }),
+          ) || [],
+        );
+      }
+    },
+  });
+
+  console.log(data);
 
   const setCategory = (category: CategoryType) => setSelectedCategory(category);
 
   const notificationList = useMemo(
-    () => filterNotificationsByCategory(data || [], selectedCategory),
+    () =>
+      filterNotificationsByCategory(
+        data?.notificationList || [],
+        selectedCategory,
+      ),
     [data, selectedCategory],
   );
 
   useEffect(() => {
-    return () => mutate();
-  }, [mutate]);
+    return () => postReadNotifications();
+  }, [postReadNotifications]);
 
   return (
     <StyledWrapper>
