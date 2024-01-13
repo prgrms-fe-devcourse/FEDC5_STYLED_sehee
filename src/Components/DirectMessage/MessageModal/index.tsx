@@ -17,6 +17,7 @@ const MessageModal = ({
   setIsModalOpen,
   loginUser,
   isMobileSize = false,
+  setIsClickedUserCard,
 }: MessageModalProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<UserType | null>(null);
@@ -56,6 +57,9 @@ const MessageModal = ({
       return;
     }
     setReceiver(selected);
+    if (isMobileSize && setIsClickedUserCard) {
+      setIsClickedUserCard(true);
+    }
     setIsModalOpen(false);
   };
 

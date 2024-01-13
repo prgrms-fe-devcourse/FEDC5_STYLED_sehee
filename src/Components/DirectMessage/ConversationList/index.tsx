@@ -20,7 +20,7 @@ const ConversationList = ({
   isConversationsLoading,
   conversationsRefetch,
   loginUser,
-  setIsClickedUserCard,
+  setIsClickedUserCard = () => {},
   isMobileSize,
 }: ConversationListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,6 +111,7 @@ const ConversationList = ({
           setIsModalOpen={setIsModalOpen}
           loginUser={loginUser}
           isMobileSize={isMobileSize}
+          setIsClickedUserCard={setIsClickedUserCard}
         />
       )}
     </StyledContainer>

@@ -6,4 +6,5 @@ export interface MessageModalProps {
   setIsModalOpen: (state: boolean) => void;
   loginUser: Partial<UserType>;
   isMobileSize?: boolean;
+  setIsClickedUserCard: (state: boolean) => void;
 }
