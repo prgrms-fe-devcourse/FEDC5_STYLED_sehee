@@ -150,9 +150,17 @@ const PostDetailModal = ({
           postId: postDetailData._id,
         },
         {
-          onSuccess: () => {
-            if (commentInputRef.current) commentInputRef.current.value = '';
-            handleChangeCommentInput();
+          onSuccess: (targetCommentData) => {
+            if (targetCommentData) {
+              if (commentInputRef.current) commentInputRef.current.value = '';
+              handleChangeCommentInput();
+              createNotification({
+                notificationType: 'COMMENT',
+                notificationTypeId: targetCommentData?._id,
+                userId: postAuthorId,
+                postId: null,
+              });
+            }
           },
         },
       );
@@ -222,9 +230,9 @@ const PostDetailModal = ({
             setIsLike(true);
             createNotification({
               notificationType: 'LIKE',
-              notificationTypeId: targetLikeData._id || '',
-              userId: postDetailData.author._id || '',
-              postId: targetLikeData.post || '',
+              notificationTypeId: targetLikeData._id,
+              userId: postDetailData.author._id,
+              postId: targetLikeData.post,
             });
           }
         },

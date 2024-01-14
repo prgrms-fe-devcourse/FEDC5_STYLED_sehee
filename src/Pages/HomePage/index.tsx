@@ -160,9 +160,9 @@ const HomePage = () => {
           if (targetLikeData) {
             createNotification({
               notificationType: 'LIKE',
-              notificationTypeId: targetLikeData._id || '',
-              userId: targetAuthorId || '',
-              postId: targetLikeData.post || '',
+              notificationTypeId: targetLikeData._id,
+              userId: targetAuthorId,
+              postId: targetLikeData.post,
             });
           }
         },
