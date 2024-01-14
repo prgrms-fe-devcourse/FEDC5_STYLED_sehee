@@ -53,8 +53,10 @@ const PostCard = ({
    * 상위 컴포넌트로 바뀔 like 상태와 postId를 넘기는 함수
    * @param id postId
    */
-  const handleClickLike = (id: string) => {
-    return onLikeIconClick && onLikeIconClick(id, !isLike);
+  const handleClickLike = (targetPostId: string, targetAuthorId: string) => {
+    return (
+      onLikeIconClick && onLikeIconClick(targetPostId, targetAuthorId, !isLike)
+    );
   };
 
   return (
@@ -90,7 +92,7 @@ const PostCard = ({
         <Icon
           name={isLike ? 'favorite' : 'favorite_border'}
           style={{ color: `${colors.alert}`, ...HeartIconStyle }}
-          onClick={() => handleClickLike(postId)}
+          onClick={() => handleClickLike(postId, authorId)}
         />
       </StyledPostCardHeader>
       <StyledPostCardTitle>{content}</StyledPostCardTitle>

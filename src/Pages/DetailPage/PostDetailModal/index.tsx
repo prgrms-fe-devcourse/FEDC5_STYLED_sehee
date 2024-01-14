@@ -89,6 +89,13 @@ const PostDetailModal = ({
   const [isLike, setIsLike] = useState<boolean | null>(null);
   const [isComposing, setIsComposing] = useState(false);
 
+  const { commentById } = useCreateComment();
+  const { deleteCommentById } = useDeleteComment();
+  const { followByUserId } = useFollowByUserId();
+  const { unfollowByUserId } = useUnfollowByUserId();
+  const { likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
+
   /**
    * 댓글 입력 창이 비었을 경우 게시 버튼 비활성화하는 함수
    */
@@ -128,8 +135,6 @@ const PostDetailModal = ({
     navigate(`/profile/${userId}`);
   };
 
-  const { commentById } = useCreateComment();
-  const { deleteCommentById } = useDeleteComment();
   /**
    * 댓글 게시하는 함수
    */
@@ -173,8 +178,6 @@ const PostDetailModal = ({
     deleteCommentById(commentId);
   };
 
-  const { followByUserId } = useFollowByUserId();
-  const { unfollowByUserId } = useUnfollowByUserId();
   /**
    * 팔로우 버튼 클릭 동작 함수
    */
@@ -197,8 +200,6 @@ const PostDetailModal = ({
     }
   };
 
-  const { likeById } = useLikeById();
-  const { disLikeById } = useDisLikeById();
   /**
    * 좋아요 버튼 클릭 동작 함수
    */

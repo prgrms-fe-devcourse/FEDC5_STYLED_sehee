@@ -34,6 +34,7 @@ import { checkAuth } from '@/Services/Auth';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
+import { useCreateNotification } from '@/Hooks/Api/Notification';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -44,6 +45,12 @@ const HomePage = () => {
   const [refInView, inView] = useInView();
 
   const [currentChannelId, setCurrentChannelId] = useState('all');
+
+  const { likeData, likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
+  const { followData, followByUserId } = useFollowByUserId();
+  const { unfollowByUserId } = useUnfollowByUserId();
+  const { createNotification } = useCreateNotification();
 
   const handleClickUserName = (userId: string) => {
     navigate(`/profile/${userId}`);
@@ -137,19 +144,32 @@ const HomePage = () => {
     navigate('/add-channel');
   };
 
-  const { likeById } = useLikeById();
-  const { disLikeById } = useDisLikeById();
   /**
    * 메인 페이지에서 포스트 Card의 좋아요 버튼 클릭 시 api 호출하는 함수
    * @param id target postId
    * @param newState 바뀔 좋아요 상태
    */
-  const handleClickLike = (id: string, newState: boolean) => {
+  const handleClickLike = (
+    targetPostId: string,
+    targetAuthorId: string,
+    newState: boolean,
+  ) => {
     if (newState) {
-      likeById(id);
+      likeById(targetPostId, {
+        onSuccess: (targetLikeData) => {
+          if (targetLikeData) {
+            createNotification({
+              notificationType: 'LIKE',
+              notificationTypeId: targetLikeData._id || '',
+              userId: targetAuthorId || '',
+              postId: targetLikeData.post || '',
+            });
+          }
+        },
+      });
     } else if (authUser) {
       authUser.likes?.forEach(({ post, _id: likeId }) => {
-        if (post === id) disLikeById(likeId);
+        if (post === targetPostId) disLikeById(likeId);
       });
     }
   };
@@ -162,9 +182,6 @@ const HomePage = () => {
     navigate(`/modal-detail/${postId}`);
   };
 
-  const { followByUserId } = useFollowByUserId();
-  const { unfollowByUserId } = useUnfollowByUserId();
-
   /**
    * follow api 연동 함수
    */
@@ -173,7 +190,18 @@ const HomePage = () => {
     targetUserId: string,
   ) => {
     if (nextFollowState) {
-      followByUserId(targetUserId);
+      followByUserId(targetUserId, {
+        onSuccess: (targetFollowData) => {
+          if (targetFollowData) {
+            createNotification({
+              notificationType: 'FOLLOW',
+              notificationTypeId: targetFollowData._id,
+              userId: targetUserId,
+              postId: null,
+            });
+          }
+        },
+      });
     } else if (authUser) {
       authUser.following?.forEach(({ user, _id: followId }) => {
         if (user === targetUserId) {
