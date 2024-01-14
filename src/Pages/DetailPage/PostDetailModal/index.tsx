@@ -47,6 +47,7 @@ import useAuthUserStore from '@/Stores/AuthUser';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
+import { useCreateNotification } from '@/Hooks/Api/Notification';
 
 const PostDetailModal = ({
   postLike,
@@ -95,6 +96,7 @@ const PostDetailModal = ({
   const { unfollowByUserId } = useUnfollowByUserId();
   const { likeById } = useLikeById();
   const { disLikeById } = useDisLikeById();
+  const { createNotification } = useCreateNotification();
 
   /**
    * 댓글 입력 창이 비었을 경우 게시 버튼 비활성화하는 함수
@@ -186,8 +188,16 @@ const PostDetailModal = ({
     const targetUserId = postDetailData?.author._id || '';
     if (newFollowState) {
       followByUserId(targetUserId, {
-        onSuccess: () => {
-          setIsFollow(true);
+        onSuccess: (targetFollowData) => {
+          if (targetFollowData) {
+            setIsFollow(true);
+            createNotification({
+              notificationType: 'FOLLOW',
+              notificationTypeId: targetFollowData._id,
+              userId: targetUserId,
+              postId: null,
+            });
+          }
         },
       });
     } else if (myLikeList) {
@@ -207,8 +217,16 @@ const PostDetailModal = ({
     const newLikeState = isLike === null ? !isMyLike : !isLike;
     if (newLikeState && postId) {
       likeById(postId, {
-        onSuccess: () => {
-          setIsLike(true);
+        onSuccess: (targetLikeData) => {
+          if (targetLikeData && postDetailData) {
+            setIsLike(true);
+            createNotification({
+              notificationType: 'LIKE',
+              notificationTypeId: targetLikeData._id || '',
+              userId: postDetailData.author._id || '',
+              postId: targetLikeData.post || '',
+            });
+          }
         },
       });
     } else if (myLikeList) {

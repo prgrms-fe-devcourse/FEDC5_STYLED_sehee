@@ -46,9 +46,9 @@ const HomePage = () => {
 
   const [currentChannelId, setCurrentChannelId] = useState('all');
 
-  const { likeData, likeById } = useLikeById();
+  const { likeById } = useLikeById();
   const { disLikeById } = useDisLikeById();
-  const { followData, followByUserId } = useFollowByUserId();
+  const { followByUserId } = useFollowByUserId();
   const { unfollowByUserId } = useUnfollowByUserId();
   const { createNotification } = useCreateNotification();
 
