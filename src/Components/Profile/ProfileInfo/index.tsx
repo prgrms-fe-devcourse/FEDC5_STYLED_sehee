@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Avatar from '@/Components/Base/Avatar';
 import FollowInfo from './FollowInfo';
-import { StyledAvatar, StyledHover, StyledProfileInfoContainer } from './style';
+import { StyledProfileInfoContainer } from './style';
 import MyProfileInfo from './MyProfileInfo';
 import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
@@ -14,17 +14,12 @@ const ProfileInfo = ({ userData, isMyProfile, isFollowing }: Props) => {
     <>
       <StyledProfileInfoContainer>
         {isMyProfile ? (
-          <div>
-            <StyledHover className="changeImage">
-              프로필 이미지 변경하기
-            </StyledHover>
-            <StyledAvatar
-              src={userData.image}
-              size={140}
-              style={{ cursor: 'pointer' }}
-              onClick={() => setIsChangeImage(true)}
-            />
-          </div>
+          <Avatar
+            src={userData.image}
+            size={140}
+            style={{ cursor: 'pointer' }}
+            onClick={() => setIsChangeImage(true)}
+          />
         ) : (
           <Avatar
             src={userData.image}
