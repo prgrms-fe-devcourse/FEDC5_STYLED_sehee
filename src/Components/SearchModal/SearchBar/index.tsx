@@ -7,7 +7,7 @@ import Alert from '@/Components/Common/Alert';
 import Props from './type';
 import { StyledForm, StyledInput } from './style';
 
-const SearchBar = ({ onSubmit }: Props) => {
+const SearchBar = ({ onSubmit, onError }: Props) => {
   const theme = useTheme();
   const $ref = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState<string>('');
@@ -15,8 +15,9 @@ const SearchBar = ({ onSubmit }: Props) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!inputValue) {
+    if (!inputValue || inputValue.trim().length === 0) {
       setErrorMessage('검색어를 입력해주세요.');
+      onError();
       return;
     }
 

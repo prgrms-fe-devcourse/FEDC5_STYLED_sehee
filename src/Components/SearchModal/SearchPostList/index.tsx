@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { StyledWrapper, StyledContainer, StyledNoContent } from './style';
 import Props from './type';
+import { convertUtcToKstDate } from '@/Utils/UTCtoKST';
 
 const SearchPostList = ({ data }: Props) => {
   const navigator = useNavigate();
@@ -17,7 +18,7 @@ const SearchPostList = ({ data }: Props) => {
             onClick={() => handlePostClick(post._id)}
           >
             <h1>{post.title}</h1>
-            <p> {post.createdAt.slice(0, 10)}</p>
+            <p> {convertUtcToKstDate(post.createdAt)}</p>
           </StyledContainer>
         ))
       ) : (

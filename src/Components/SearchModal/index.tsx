@@ -90,7 +90,10 @@ const SearchModal = ({ onChangeOpen }: Props) => {
             <StyledHeaderTitle>
               {searchQuery ? `"${searchQuery}" 검색 결과` : '검색'}
             </StyledHeaderTitle>
-            <SearchBar onSubmit={handleSubmit} />
+            <SearchBar
+              onSubmit={handleSubmit}
+              onError={() => setSearchQuery('')}
+            />
 
             <StyledHeaderTab>
               <Button
