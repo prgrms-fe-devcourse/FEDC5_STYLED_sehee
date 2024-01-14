@@ -15,6 +15,7 @@ export interface DropDownProps {
   itemTextColor?: string;
   itemTextSize?: string;
   isShow?: boolean;
+  initialValue?: string;
   onSelect?: (selected: string) => void;
 
   buttonProps?: HTMLAttributes<HTMLElement>;

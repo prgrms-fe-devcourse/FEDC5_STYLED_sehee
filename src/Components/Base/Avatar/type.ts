@@ -1,7 +1,7 @@
 import { HTMLAttributes, ImgHTMLAttributes } from 'react';
 
 export interface AvatarProp extends HTMLAttributes<HTMLDivElement> {
-  src: string;
+  src?: string;
   alt?: string;
   size?: number;
   shape?: 'circle' | 'round' | 'square';

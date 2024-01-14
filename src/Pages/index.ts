@@ -5,6 +5,6 @@ export { default as DirectMessagePage } from './DirectMessagePage';
 export { default as LoginPage } from './LoginPage';
 export { default as SignUpPage } from './SignUpPage';
 export { default as ProfilePage } from './ProfilePage';
-export { default as AddPostPage } from './AddPostPage';
+export { default as AddOrEditPostPage } from './AddOrEditPostPage';
 export { default as EditPasswordPage } from './EditPasswordPage';
 export { default as SearchPage } from './SearchPage';

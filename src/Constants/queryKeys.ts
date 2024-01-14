@@ -9,6 +9,7 @@ const QUERY_KEYS = {
   GET_USER_BY_ID: 'getUserById',
   POST_DETAIL_BY_ID: 'postDetailById',
   USER_BY_AUTHOR_ID: 'userByAuthorId',
+  EDITING_POST_ID: 'editingPostId',
 };
 
 export default QUERY_KEYS;

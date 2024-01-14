@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchModal from '../../Components/SearchModal';
+import AddOrEditPostModal from '@/Components/Common/Modal/AddOrEditPostModal';
 import useTabStore from '@/Stores/Tab';
 
-const SearchPage = () => {
+const AddOrEditPostPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const { prev, setTab } = useTabStore();
 
@@ -14,7 +14,9 @@ const SearchPage = () => {
     setTab(prev);
   };
 
-  return isModalOpen ? <SearchModal onChangeOpen={handleCloseModal} /> : null;
+  return isModalOpen ? (
+    <AddOrEditPostModal onChangeOpen={handleCloseModal} />
+  ) : null;
 };
 
-export default SearchPage;
+export default AddOrEditPostPage;

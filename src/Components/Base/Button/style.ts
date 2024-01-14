@@ -36,6 +36,8 @@ const StyledButton = styled.button<StyledButtonProp>`
   &:disabled {
     cursor: not-allowed;
   }
+
+  transition: all 0.5s ease;
 `;
 
 export default StyledButton;

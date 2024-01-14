@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -11,6 +11,8 @@ import AlarmModal from '../../Modal/AlarmModal';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 import useTabStore from '@/Stores/Tab';
+import Button from '@/Components/Base/Button';
+import Icon from '@/Components/Base/Icon';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
