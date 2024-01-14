@@ -1,10 +1,9 @@
 import { UserType } from '@/Types/UserType';
 
 export interface FollowModalProps {
-  //   follows: UserType[];
-  //   setFollows: (state: UserType[]) => void;
   userData: UserType;
   mode: 'follower' | 'following';
   loginUser: Partial<UserType>;
+  loginUserRefetch: () => void;
   onChangeOpen: (state: boolean) => void;
 }

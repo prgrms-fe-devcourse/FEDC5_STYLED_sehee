@@ -25,6 +25,9 @@ export const StyledBody = styled.div`
   height: 75%;
   overflow: scroll;
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const StyledUserContainer = styled.div`

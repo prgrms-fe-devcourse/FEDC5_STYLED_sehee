@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 import Input from '../Base/Input';
 import Modal from '../Common/Modal';
 import UserCard from '../Common/UserCard';
@@ -9,38 +11,92 @@ import { StyledBody, StyledContainer, StyledHeader } from './style';
 import { FollowModalProps } from './type';
 import { UserType } from '@/Types/UserType';
 import { followUser, unfollowUser } from '@/Services/Follow';
-import { getUser, getUsers } from '@/Services/User';
-import { checkAuth } from '@/Services/Auth';
+import { getUser } from '@/Services/User';
 
 /**
- * 헤딩 유저의 팔로잉 또는 팔로우 정보를 가져올 거임
+ * @param userData 해당 유저의 UserType 데이터
+ * @param loginUser 현재 로그인 한 유저의 UserType 데이터
  */
 const FollowModal = ({
-  //   follows,
-  //   setFollows,
   userData,
   mode,
   loginUser,
+  loginUserRefetch,
   onChangeOpen,
 }: FollowModalProps) => {
+  const navigator = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [follows, setFollows] = useState<UserType[]>([]);
+  const [searchFollows, setSearchFollows] = useState<UserType[]>(follows);
+  const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
 
-  if (mode === 'following') {
-    userData.following.map(async ({ user }) => {
-      const data = await getUser(user);
-      if (!data) return;
-      setFollows([...follows, data]);
-    });
-  } else {
-    userData.followers.map(async ({ user }) => {
-      const data = await getUser(user);
-      if (!data) return;
-      setFollows([...follows, data]);
-    });
-  }
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileSize(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const search = (query: string, fetchedFollows: UserType[]) => {
+    // 검색 중인 단어가 없다면 전체 팔로우 목록을 보여준다.
+    if (query.trim().length === 0) {
+      setSearchFollows(fetchedFollows);
+      return;
+    }
+
+    const newFollows = fetchedFollows.filter((user) =>
+      user.fullName.includes(query.trim()),
+    );
+    setSearchFollows(newFollows);
+  };
+
+  const fetchFollowData = useCallback(async () => {
+    const userIds: string[] = [];
+
+    if (mode === 'following') {
+      userData.following.map(({ user }) => userIds.push(user));
+    } else {
+      userData.followers.map(({ follower }) => userIds.push(follower));
+    }
+
+    const fetchedFollows: UserType[] = [];
+
+    await Promise.all(
+      userIds.map(async (userId) => {
+        const data = await getUser(userId);
+        if (data) {
+          fetchedFollows.push(data);
+        }
+      }),
+    );
+
+    // 일관된 순서를 보장하기 위해 유저 생성 날짜 기준으로 정렬
+    fetchedFollows.sort(
+      (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
+    );
+    setFollows(fetchedFollows);
+    setSearchFollows(fetchedFollows);
+
+    // 검색어의 유무에 따른 최종 결과를 보여준다.
+    if (!inputRef || !inputRef.current) {
+      return;
+    }
+    search(inputRef.current.value, fetchedFollows);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+  }, [mode, userData]);
+
+  useEffect(() => {
+    fetchFollowData();
+  }, [userData, mode, fetchFollowData, isLoading]);
 
   //   디바운싱을 이용해 onChange 성능을 개선한다.
   const debouncedSearch = useMemo(
@@ -49,93 +105,86 @@ const FollowModal = ({
         if (!inputRef || !inputRef.current) {
           return;
         }
+
         const query = inputRef.current.value.trim();
-        setSearchQuery(query);
+        search(query, follows);
+
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
       }, 500),
-    [],
+    [follows],
   );
 
   const handleInputChange = () => {
     setIsLoading(true);
     debouncedSearch();
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   };
 
   const handleFollow = async (user: UserType) => {
+    if (!loginUser || !loginUser.following) return;
     // 팔로우 중인지 체크
-    if (!loginUser) return;
-    const following = loginUser.following?.find(
-      (follow) => follow.user === user._id,
+    const followingData = loginUser.following.find(
+      (data) => data.user === user._id,
     );
     // 이미 팔로우 중이면 언팔로우
-    if (following) {
-      console.log('언팔');
-      await unfollowUser(following._id);
-    } else {
-      console.log('팔로우');
-      // 아직 팔로우 안했으면 팔로우
+    if (followingData) {
+      await unfollowUser(followingData._id);
+    }
+    // 아직 팔로우 안했으면 팔로우
+    else {
       await followUser(user._id);
     }
 
-    // 다시 getUser(loginUser._id)해서 받아온 다음에 거기에 있는 follows로 업데이트
-    // if (loginUser?._id) {
-    //   const newUserData = await getUsers(loginUser?._id);
-    //   newUserData.fo
-    // }
+    loginUserRefetch();
+    await fetchFollowData();
+  };
 
-    // const newData = await getUsers();
-    // if (!newData) return;
-    // const filterData = newData.filter(
-    //   (userData) => userData._id !== loginUser._id,
-    // );
-    // // console.log(loginUser);
-    // setFollows(filterData);
-    // const newLoginUser = await checkAuth();
-    // if (!newLoginUser) return;
-    // loginUser = newLoginUser;
+  const handleClickUser = (userId: string) => {
+    navigator(`/profile/${userId}`);
+    onChangeOpen(false);
+  };
+
+  const isFollowing = (user: UserType) => {
+    if (!loginUser || !loginUser.following) return false;
+    return loginUser.following.some((following) => following.user === user._id);
   };
 
   return (
     <Modal
       height={60}
-      width={40}
+      width={isMobileSize ? 80 : 40}
       onChangeOpen={onChangeOpen}
     >
       <StyledContainer>
-        <StyledHeader>{mode === 'follower' ? '팔로워' : '팔로잉'}</StyledHeader>
+        <StyledHeader>
+          {mode === 'following' ? '팔로잉' : '팔로워'}
+        </StyledHeader>
         <Input
           ref={inputRef}
           onChange={handleInputChange}
           placeholder="유저 이름으로 검색하세요."
         />
         <StyledBody>
-          {(isLoading || !userData) && <DirectMessageSkeleton.UserCard />}
-          {(
-            mode === 'following'
-              ? userData.following.length === 0
-              : userData.followers.length === 0
-          ) ? (
-            <div>계정을 찾을 수 없습니다.</div>
+          {isLoading || !userData ? (
+            <DirectMessageSkeleton.UserCard length={6} />
+          ) : searchFollows.length === 0 ? (
+            <div>텅..</div>
           ) : (
-            follows.map((user) => (
-              <div key={user._id}>
-                <UserCard
-                  mode="follow"
-                  coverImageUrl={user.image}
-                  avatarSize={40}
-                  userName={user.fullName}
-                  userNameSize="1.5rem"
-                  userDetail={user.email}
-                  isFollow={
-                    loginUser?.following?.find((following) =>
-                      user.followers.includes(following._id),
-                    ) != null
-                  } // {mode === 'following'} 이거는 그냥 팔로우하는 사람 맞는지 계속 체크..
-                  onFollowClick={() => handleFollow(user)}
-                />
-              </div>
+            searchFollows.map((user) => (
+              <UserCard
+                key={user._id}
+                mode="follow"
+                coverImageUrl={user.image}
+                avatarSize={isMobileSize ? 30 : 40}
+                userName={user.fullName}
+                userNameSize={isMobileSize ? '1.2rem' : '1.5rem'}
+                userDetail={user.email}
+                isFollow={isFollowing(user)}
+                isSelf={user._id === loginUser._id}
+                onClick={() => handleClickUser(user._id)}
+                onClickFollowBtn={() => handleFollow(user)}
+              />
             ))
           )}
         </StyledBody>

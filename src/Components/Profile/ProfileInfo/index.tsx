@@ -5,7 +5,7 @@ import MyProfileInfo from './MyProfileInfo';
 import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
 
-const ProfileInfo = ({ userData, isMyProfile }: Props) => {
+const ProfileInfo = ({ userData, userDataRefetch, isMyProfile }: Props) => {
   return (
     <StyledProfileInfoContainer>
       {isMyProfile ? (
@@ -28,7 +28,10 @@ const ProfileInfo = ({ userData, isMyProfile }: Props) => {
           <UserProfileInfo name={userData.fullName} />
         )}
 
-        <FollowInfo user={userData} />
+        <FollowInfo
+          userData={userData}
+          userDataRefetch={userDataRefetch}
+        />
       </div>
     </StyledProfileInfoContainer>
   );
