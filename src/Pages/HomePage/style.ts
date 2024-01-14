@@ -6,20 +6,21 @@ export const StyledHeaderContainer = styled.div`
 
 export const StyledWrapper = styled.div`
   display: flex;
+  padding: 0rem 3rem;
   height: calc(100vh - 9.4rem);
-  border-top: 0.1rem solid #ddd;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.primaryNormal};
   color: ${({ theme }) => theme.colors.text};
+  gap: 2rem;
 `;
 
 export const StyledLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 20rem;
   height: 100%;
   flex-basis: 20rem;
   flex-shrink: 1;
   align-items: center;
-  border-right: 0.1rem solid #ddd;
   gap: 1rem;
 
   @media ${({ theme }) => theme.device.tablet} {
@@ -28,8 +29,7 @@ export const StyledLeftContainer = styled.div`
 `;
 
 export const StyledCategoryTitleContainer = styled.div`
-  padding: 0 1rem;
-  width: 90%;
+  width: 95%;
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -38,20 +38,20 @@ export const StyledCategoryTitleContainer = styled.div`
 `;
 
 export const StyledCategoryList = styled.div`
-  padding: 0 1rem;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   overflow-y: auto;
+
   .category-button {
     flex-shrink: 0;
   }
 `;
 
 export const StyledCategoryTitle = styled.div`
-  font-size: ${({ theme }) => theme.size.medium};
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.size.large};
+  font-weight: ${({ theme }) => theme.fontWeight.extraBold};
   user-select: none;
 `;
 

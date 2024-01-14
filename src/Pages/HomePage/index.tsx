@@ -192,7 +192,7 @@ const HomePage = () => {
       <StyledWrapper>
         <StyledLeftContainer>
           <StyledCategoryTitleContainer>
-            <StyledCategoryTitle>카테고리</StyledCategoryTitle>
+            <StyledCategoryTitle>Category</StyledCategoryTitle>
             {/* 카테고리 채널 추가 버튼 */}
             {authUser.role === 'SuperAdmin' && (
               <Button
@@ -213,50 +213,27 @@ const HomePage = () => {
           </StyledCategoryTitleContainer>
           {/* 채널 버튼 리스트 */}
           <StyledCategoryList>
-            <Button
-              data-id="all"
-              width="80%"
-              height={size.doubleLarge}
-              borderRadius="1rem"
-              textSize={size.medium}
-              backgroundColor={
-                currentChannelId === 'all'
-                  ? colors.backgroundGrey
-                  : colors.background
-              }
-              hoverBackgroundColor={
-                currentChannelId === 'all'
-                  ? colors.backgroundGrey
-                  : colors.focusHover
-              }
-              textColor={colors.text}
-              onClick={handleClickChannel}
-              className="category-button"
-            >
-              전체
-            </Button>
             {channelList?.map((channel) => {
               return (
                 <Button
                   key={channel._id}
                   data-id={channel._id}
-                  width="80%"
                   height={size.doubleLarge}
                   borderRadius="1rem"
-                  textSize={size.medium}
-                  backgroundColor={
-                    currentChannelId === channel._id
-                      ? colors.backgroundGrey
-                      : colors.background
+                  textSize={size.large}
+                  backgroundColor="none"
+                  hoverTextColor={colors.text}
+                  hoverBackgroundColor="none"
+                  textColor={
+                    channel._id === currentChannelId
+                      ? colors.text
+                      : colors.textNonSelect
                   }
-                  hoverBackgroundColor={
-                    currentChannelId === channel._id
-                      ? colors.backgroundGrey
-                      : colors.focusHover
-                  }
-                  textColor={colors.text}
                   onClick={handleClickChannel}
                   className="category-button"
+                  style={{ justifyContent: 'start' }}
+                  isHoverBold
+                  isBold={channel._id === currentChannelId}
                 >
                   {channels[channel.name] || channel.name}
                 </Button>

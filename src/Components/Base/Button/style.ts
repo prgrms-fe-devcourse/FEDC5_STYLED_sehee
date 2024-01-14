@@ -13,10 +13,12 @@ const StyledButton = styled.button<StyledButtonProp>`
   width: ${(props) => props.$width};
   height: ${(props) => props.$height};
   border-radius: ${(props) => props.$borderRadius};
+  font-weight: ${(props) => (props.$isBold ? '900' : 'normal')};
 
   &:hover {
     background-color: ${(props) => props.$hoverBackgroundColor};
     color: ${(props) => props.$hoverTextColor};
+    font-weight: ${(props) => (props.$isHoverBold ? '900' : 'normal')};
   }
 
   &:disabled {
