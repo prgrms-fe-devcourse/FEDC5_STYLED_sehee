@@ -19,6 +19,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
           textSize="1.4rem"
           width="7rem"
           borderRadius="1rem"
+          backgroundColor={colors.read}
           style={{ marginRight: '1rem', marginTop: '.5rem' }}
         >
           팔로잉
