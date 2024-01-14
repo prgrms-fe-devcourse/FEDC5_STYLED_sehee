@@ -37,6 +37,7 @@ const UserCard = forwardRef(
       isOnline = false,
       isRead = false,
       isFollow = false,
+      isSelf = false,
       userName = '',
       userDetail = null,
       date = '',
@@ -120,7 +121,7 @@ const UserCard = forwardRef(
           )}
         </StyledUserInfoContainer>
         {/* follow 모드 시 팔로우 버튼 */}
-        {mode === 'follow' && (
+        {mode === 'follow' && isSelf === false && (
           <StyledUserFollowContainer>
             <Button
               width="100%"
