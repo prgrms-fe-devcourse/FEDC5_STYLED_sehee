@@ -77,7 +77,7 @@ const PasswordForm = ({ onSuccessCallback }: Props) => {
             height="4rem"
             textSize="1.45rem"
             width="12rem"
-            key="login"
+            key="password"
             borderRadius="1rem"
             style={{ margin: '1rem' }}
           >

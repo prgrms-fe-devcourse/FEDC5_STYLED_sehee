@@ -27,7 +27,7 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
     useForm<NameType>({
       initialState: { newName: '' },
       callback: (): void =>
-        mutate({ fullName: name, username: values.newName }),
+        mutate({ fullName: values.newName, username: name }),
       validate: (newName) => validateName(newName),
     });
 
@@ -60,10 +60,10 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
               wrapperProps={{ style: { padding: '1rem' } }}
             />
             <Button
-              type="button"
               height="3rem"
               textSize="1.4rem"
               width="7rem"
+              key="name"
               borderRadius="1rem"
               style={{ marginTop: '3rem' }}
               disabled={status === 'pending'}
