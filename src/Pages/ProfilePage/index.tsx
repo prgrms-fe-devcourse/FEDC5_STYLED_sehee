@@ -23,7 +23,7 @@ const ProfilePage = () => {
   useEffect(() => {
     currentUserQuery.refetch();
     profileUserQuery.refetch();
-  }, [userId, currentUserQuery, profileUserQuery]);
+  }, [userId]);
 
   const currentUser = currentUserQuery.data;
   const profileUser = profileUserQuery.data;
@@ -44,6 +44,7 @@ const ProfilePage = () => {
       <StyledBackground>
         <ProfileInfo
           userData={profileUser}
+          userDataRefetch={profileUserQuery.refetch}
           isMyProfile={isCurrentUserProfile}
         />
         <ProfilePost
