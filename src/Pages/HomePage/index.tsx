@@ -144,6 +144,8 @@ const HomePage = () => {
     navigate('/add-channel');
   };
 
+  const { likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
   /**
    * 메인 페이지에서 포스트 Card의 좋아요 버튼 클릭 시 api 호출하는 함수
    * @param id target postId
