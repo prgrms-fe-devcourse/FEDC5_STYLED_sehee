@@ -39,7 +39,6 @@ export const signUp = async ({
         password,
       },
     );
-
     return res.data;
   } catch (e) {
     handleError(e);
