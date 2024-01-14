@@ -12,6 +12,7 @@ import { FollowModalProps } from './type';
 import { UserType } from '@/Types/UserType';
 import { followUser, unfollowUser } from '@/Services/Follow';
 import { getUser } from '@/Services/User';
+import { sendNotifications } from '@/Services/Notification';
 
 /**
  * @param userData 해당 유저의 UserType 데이터
@@ -134,7 +135,14 @@ const FollowModal = ({
     }
     // 아직 팔로우 안했으면 팔로우
     else {
-      await followUser(user._id);
+      const data = await followUser(user._id);
+      if (!data) return;
+      await sendNotifications({
+        notificationType: 'FOLLOW',
+        notificationTypeId: data._id,
+        userId: user._id,
+        postId: null,
+      });
     }
 
     loginUserRefetch();
