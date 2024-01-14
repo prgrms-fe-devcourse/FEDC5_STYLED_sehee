@@ -7,7 +7,7 @@ import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
 import UpdateImageModal from '../UpdateImageModal';
 
-const ProfileInfo = ({ userData, isMyProfile }: Props) => {
+const ProfileInfo = ({ userData, isMyProfile, isFollowing }: Props) => {
   const [isChangeImage, setIsChangeImage] = useState(false);
 
   return (
@@ -42,6 +42,7 @@ const ProfileInfo = ({ userData, isMyProfile }: Props) => {
             <UserProfileInfo
               name={userData.fullName}
               user={userData}
+              isFollowing={isFollowing}
             />
           )}
 

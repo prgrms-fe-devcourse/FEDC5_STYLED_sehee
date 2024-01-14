@@ -8,4 +8,5 @@ export interface NameProps {
 export interface Props {
   userData: UserType;
   isMyProfile: boolean;
+  isFollowing: boolean;
 }

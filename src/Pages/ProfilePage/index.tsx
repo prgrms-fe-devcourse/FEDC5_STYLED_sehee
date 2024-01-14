@@ -39,6 +39,14 @@ const ProfilePage = () => {
     : // eslint-disable-next-line no-underscore-dangle
       currentUser._id === profileUser._id;
 
+  const isFollowingUser =
+    !currentUser || !currentUser.following
+      ? false
+      : currentUser.following.some(
+          // eslint-disable-next-line no-underscore-dangle
+          (following) => following.user === profileUser._id,
+        );
+
   return (
     <>
       <StyledHeaderContainer />
@@ -46,6 +54,7 @@ const ProfilePage = () => {
         <ProfileInfo
           userData={profileUser}
           isMyProfile={isCurrentUserProfile}
+          isFollowing={isFollowingUser}
         />
         <ProfilePost
           userData={profileUser}
