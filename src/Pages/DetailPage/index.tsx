@@ -19,14 +19,6 @@ const DetailPage = () => {
   });
 
   /**
-   * 수정된 여부에 따라 시간 다르게 표시
-   */
-  const updateTime =
-    postDetailData?.createdAt === postDetailData?.updatedAt
-      ? postDetailData && calculateDate(postDetailData.updatedAt)
-      : postDetailData && `수정됨 ${calculateDate(postDetailData.updatedAt)}`;
-
-  /**
    * 포스트 author id로 해당 author 정보 얻는 useQuery 훅
    */
   const { data: postAuthor } = useQuery({
@@ -41,7 +33,7 @@ const DetailPage = () => {
       postLike={postDetailData?.likes}
       postFollow={postDetailData?.author.followers}
       postContents={postDetailData?.title || ''}
-      postEditTime={updateTime || ''}
+      postEditTime={calculateDate(postDetailData?.createdAt || '')}
       postImageUrl={postDetailData?.image || ''}
       postAuthor={postDetailData?.author.fullName || ''}
       postAuthorId={postAuthor?._id || ''}

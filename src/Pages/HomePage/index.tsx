@@ -34,6 +34,7 @@ import { checkAuth } from '@/Services/Auth';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
+import { useCreateNotification } from '@/Hooks/Api/Notification';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -44,6 +45,12 @@ const HomePage = () => {
   const [refInView, inView] = useInView();
 
   const [currentChannelId, setCurrentChannelId] = useState('all');
+
+  const { likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
+  const { followByUserId } = useFollowByUserId();
+  const { unfollowByUserId } = useUnfollowByUserId();
+  const { createNotification } = useCreateNotification();
 
   const handleClickUserName = (userId: string) => {
     navigate(`/profile/${userId}`);
@@ -144,18 +151,27 @@ const HomePage = () => {
    * @param id target postId
    * @param newState 바뀔 좋아요 상태
    */
-  const handleClickLike = (id: string, newState: boolean) => {
+  const handleClickLike = (
+    targetPostId: string,
+    targetAuthorId: string,
+    newState: boolean,
+  ) => {
     if (newState) {
-      likeById(id);
-    } else if (postList) {
-      const targetPost = postList.pages.map((page) => {
-        return page?.find((post) => post._id === id);
+      likeById(targetPostId, {
+        onSuccess: (targetLikeData) => {
+          if (targetLikeData) {
+            createNotification({
+              notificationType: 'LIKE',
+              notificationTypeId: targetLikeData._id,
+              userId: targetAuthorId,
+              postId: targetLikeData.post,
+            });
+          }
+        },
       });
-
-      targetPost[0]?.likes.forEach(({ _id, user }) => {
-        if (user === authUser._id) {
-          disLikeById(_id);
-        }
+    } else if (authUser) {
+      authUser.likes?.forEach(({ post, _id: likeId }) => {
+        if (post === targetPostId) disLikeById(likeId);
       });
     }
   };
@@ -168,9 +184,6 @@ const HomePage = () => {
     navigate(`/modal-detail/${postId}`);
   };
 
-  const { followByUserId } = useFollowByUserId();
-  const { unfollowByUserId } = useUnfollowByUserId();
-
   /**
    * follow api 연동 함수
    */
@@ -179,7 +192,18 @@ const HomePage = () => {
     targetUserId: string,
   ) => {
     if (nextFollowState) {
-      followByUserId(targetUserId);
+      followByUserId(targetUserId, {
+        onSuccess: (targetFollowData) => {
+          if (targetFollowData) {
+            createNotification({
+              notificationType: 'FOLLOW',
+              notificationTypeId: targetFollowData._id,
+              userId: targetUserId,
+              postId: null,
+            });
+          }
+        },
+      });
     } else if (authUser) {
       authUser.following?.forEach(({ user, _id: followId }) => {
         if (user === targetUserId) {
@@ -211,7 +235,10 @@ const HomePage = () => {
               >
                 <Icon
                   name="add"
-                  style={{ color: `grey`, fontSize: `${size.large}` }}
+                  style={{
+                    color: `grey`,
+                    fontSize: `${size.large}`,
+                  }}
                 />
               </Button>
             )}
