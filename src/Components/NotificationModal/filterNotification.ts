@@ -50,7 +50,7 @@ export const filterNotificationList = (notifications: NotificationType[]) => {
       result.typeId = comment.post;
     }
     if (follow) {
-      result.text = `${author.fullName}님이 팔로우를 보냈습니다.`;
+      result.text = `${author.fullName}님이 팔로우를 요청했습니다.`;
       result.type = 'follow';
       result.typeId = follow;
     }
