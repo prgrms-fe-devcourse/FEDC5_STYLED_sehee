@@ -52,7 +52,7 @@ export const filterNotificationList = (notifications: NotificationType[]) => {
     if (follow) {
       result.text = `${author.fullName}님이 팔로우를 요청했습니다.`;
       result.type = 'follow';
-      result.typeId = follow;
+      result.typeId = follow.follower;
     }
     if (post) {
       result.text = `${author.fullName}님이 게시글 좋아요를 눌렀습니다.`;
