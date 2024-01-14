@@ -11,10 +11,6 @@ const ModalButton = ({ style, name, color, setModalOpen }: Props) => {
       borderRadius="0"
       hoverBackgroundColor="transparent"
       onClick={setModalOpen}
-      style={{
-        height: '93.5%',
-        borderBottom: `3px solid ${color}`,
-      }}
     >
       <Icon
         isFill={false}

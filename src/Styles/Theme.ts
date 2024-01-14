@@ -109,7 +109,7 @@ export const darkTheme: DefaultTheme = {
     scrollBarThumb: color.primaryDark,
     scrollBarThumbHover: color.gray,
 
-    border: color.primaryDark,
+    border: color.primaryNormal,
 
     ...commonTheme,
     ...color,

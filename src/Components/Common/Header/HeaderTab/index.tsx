@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
-import StyledUserContainer from './style';
+import {
+  StyledUserContainer,
+  StyledButtonContainer,
+  StyledFocusedCircle,
+} from './style';
 import LinkButton from './LinkButton';
 import ModalButton from './ModalButton';
 import AlarmModal from '../../Modal/AlarmModal';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 import useTabStore from '@/Stores/Tab';
-import Button from '@/Components/Base/Button';
-import Icon from '@/Components/Base/Icon';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
@@ -111,66 +113,106 @@ const HeaderTab = () => {
     setTab(option);
   };
 
-  const styledNavIcon = { fontSize: '4.5rem', padding: '1.5rem' };
+  const styledNavIcon = {
+    fontSize: '3.2rem',
+    color: colors.text,
+    fontWeight: '300',
+  };
 
   return (
     <>
       <StyledUserContainer>
-        <LinkButton
-          name="home"
-          color={tab === 'home' ? colors.primary : colors.background}
-          link="/"
-          setLink={() => setTab('home')}
-          style={styledNavIcon}
-        />
+        <StyledButtonContainer>
+          <LinkButton
+            name="home"
+            color={
+              tab === 'home' ? colors.primaryReverse : colors.primaryNormal
+            }
+            link="/"
+            setLink={() => setTab('home')}
+            style={styledNavIcon}
+          />
+          <StyledFocusedCircle $visible={tab === 'home'} />
+        </StyledButtonContainer>
 
-        <LinkButton
-          name="add_circle"
-          color={tab === 'add' ? colors.primary : colors.background}
-          link={`${
-            location.pathname !== '/' ? location.pathname : ''
-          }/add-post`}
-          setLink={() => setTab('add')}
-          style={styledNavIcon}
-        />
+        <StyledButtonContainer>
+          <LinkButton
+            name="add_circle"
+            color={tab === 'add' ? colors.primaryReverse : colors.primaryNormal}
+            link={`${
+              location.pathname !== '/' ? location.pathname : ''
+            }/add-post`}
+            setLink={() => setTab('add')}
+            style={styledNavIcon}
+          />
+          <StyledFocusedCircle $visible={tab === 'add'} />
+        </StyledButtonContainer>
 
-        <LinkButton
-          name="search"
-          color={tab === 'search' ? colors.primary : colors.background}
-          link={`${location.pathname !== '/' ? location.pathname : ''}/search`}
-          setLink={() => setTab('search')}
-          style={styledNavIcon}
-        />
+        <StyledButtonContainer>
+          <LinkButton
+            name="search"
+            color={
+              tab === 'search' ? colors.primaryReverse : colors.primaryNormal
+            }
+            link={`${
+              location.pathname !== '/' ? location.pathname : ''
+            }/search`}
+            setLink={() => setTab('search')}
+            style={styledNavIcon}
+          />
+          <StyledFocusedCircle $visible={tab === 'search'} />
+        </StyledButtonContainer>
+
         {!isAuthUser ? (
           <LoginButton onClick={() => navigate('/login')} />
         ) : (
           <>
-            <ModalButton
-              name="notifications"
-              style={styledNavIcon}
-              color={tab === 'alarm' ? colors.primary : colors.background}
-              setModalOpen={() => {
-                onSetModal('alarm');
-                setAlarm(true);
-              }}
-            />
+            <StyledButtonContainer>
+              <ModalButton
+                name="notifications"
+                style={styledNavIcon}
+                color={
+                  tab === 'alarm' ? colors.primaryReverse : colors.primaryNormal
+                }
+                setModalOpen={() => {
+                  onSetModal('alarm');
+                  setAlarm(true);
+                }}
+              />
+              <StyledFocusedCircle $visible={tab === 'alarm'} />
+            </StyledButtonContainer>
 
-            <LinkButton
-              name="send"
-              color={tab === 'message' ? colors.primary : colors.background}
-              link="/directmessage"
-              setLink={() => setTab('message')}
-              style={styledNavIcon}
-            />
-            <ModalButton
-              name="account_circle"
-              style={styledNavIcon}
-              color={tab === 'account' ? colors.primary : colors.background}
-              setModalOpen={() => {
-                onSetModal('account');
-                setDrop(!drop);
-              }}
-            />
+            <StyledButtonContainer>
+              <LinkButton
+                name="send"
+                color={
+                  tab === 'message'
+                    ? colors.primaryReverse
+                    : colors.primaryNormal
+                }
+                link="/directmessage"
+                setLink={() => setTab('message')}
+                style={styledNavIcon}
+              />
+              <StyledFocusedCircle $visible={tab === 'message'} />
+            </StyledButtonContainer>
+
+            <StyledButtonContainer>
+              <ModalButton
+                name="account_circle"
+                style={styledNavIcon}
+                color={
+                  tab === 'account'
+                    ? colors.primaryReverse
+                    : colors.primaryNormal
+                }
+                setModalOpen={() => {
+                  onSetModal('account');
+                  setDrop(!drop);
+                }}
+              />
+              <StyledFocusedCircle $visible={tab === 'account'} />
+            </StyledButtonContainer>
           </>
         )}
       </StyledUserContainer>

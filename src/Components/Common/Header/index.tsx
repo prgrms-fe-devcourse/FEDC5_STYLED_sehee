@@ -1,6 +1,6 @@
 // import { useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import StyledHeaderContainer from './style';
+import { StyledHeaderContainer, StyledDivider } from './style';
 import HeaderTab from './HeaderTab';
 import HeaderLogo from './HeaderLogo';
 import HeaderProps from './type';
@@ -32,6 +32,7 @@ const Header = ({ activeHeader }: HeaderProps) => {
   return (
     <StyledHeaderContainer>
       <HeaderLogo />
+      <StyledDivider />
       <HeaderTab />
     </StyledHeaderContainer>
   );
