@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Modal from '@/Components/Common/Modal';
 import {
   PostDotModalProps,
@@ -21,7 +21,6 @@ const PostDotModal = ({
 }: PostDotModalProps) => {
   const { colors } = useTheme();
   const { user: authUser } = useAuthUserStore();
-  const { postId } = useParams();
   const navigate = useNavigate();
 
   /**
