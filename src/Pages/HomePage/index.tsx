@@ -205,7 +205,10 @@ const HomePage = () => {
               >
                 <Icon
                   name="add"
-                  style={{ color: `grey`, fontSize: `${size.large}` }}
+                  style={{
+                    color: `grey`,
+                    fontSize: `${size.large}`,
+                  }}
                 />
               </Button>
             )}
