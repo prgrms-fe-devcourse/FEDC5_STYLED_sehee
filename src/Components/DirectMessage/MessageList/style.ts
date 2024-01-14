@@ -1,8 +1,15 @@
 import { styled } from 'styled-components';
 
-export const StyledContainer = styled.div`
+export const StyledContainer = styled.div<{
+  $isClickedUserCard: boolean | undefined;
+}>`
   width: 70%;
   height: calc(100% - 7rem);
+
+  @media ${({ theme }) => theme.device.tablet} {
+    display: ${({ $isClickedUserCard }) => ($isClickedUserCard ? '' : 'none')};
+    width: 100%;
+  }
 `;
 
 export const StyledHeader = styled.div`
@@ -13,6 +20,17 @@ export const StyledHeader = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   gap: 2rem;
   font-size: ${({ theme }) => theme.size.medium};
+
+  .undo-icon {
+    font-size: 3.5rem;
+
+    &:hover {
+      scale: 1.1;
+      background: linear-gradient(to right top, royalblue, pink);
+      color: transparent;
+      -webkit-background-clip: text;
+    }
+  }
 `;
 
 export const StyledBody = styled.div`
@@ -34,4 +52,34 @@ export const AlertContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+export const StyledFooter = styled.div`
+  display: flex;
+  position: fixed;
+  width: 60%;
+  right: 5%;
+  bottom: 5%;
+  gap: 1rem;
+  align-items: center;
+
+  .send-icon {
+    display: flex;
+    font-size: 3.5rem;
+    height: min-content;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover {
+      scale: 1.1;
+      background: linear-gradient(to right top, royalblue, pink);
+      color: transparent;
+      -webkit-background-clip: text;
+    }
+  }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 90%;
+  }
 `;

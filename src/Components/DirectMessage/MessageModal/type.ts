@@ -5,4 +5,6 @@ export interface MessageModalProps {
   setReceiver: (state: UserType) => void;
   setIsModalOpen: (state: boolean) => void;
   loginUser: Partial<UserType>;
+  isMobileSize?: boolean;
+  setIsClickedUserCard: (state: boolean) => void;
 }

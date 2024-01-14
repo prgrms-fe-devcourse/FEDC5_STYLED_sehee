@@ -1,23 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 
 import Avatar from '@/Components/Base/Avatar';
-// import { myId } from '../DUMMY_DATA';
 import {
   StyledMessageWrapper,
   StyledMessageItem,
   StyledTime,
   StyledDate,
 } from './style';
-import { MessageType } from '@/Types/MessageType';
 import { convertUtcToKstDate, convertUtcToKstTime } from '@/Utils/UTCtoKST';
+import { DateProps, MessageProps } from './type';
 
-const Date = ({
-  index,
-  messages,
-}: {
-  index: number;
-  messages: MessageType[];
-}) => {
+const Date = ({ index, messages }: DateProps) => {
   // 채팅 날짜가 바뀔 때마다 위에 날짜를 표기해준다.
   const isNewDay = (prevDate: string, nextDate: string) => {
     return convertUtcToKstDate(prevDate) !== convertUtcToKstDate(nextDate);
@@ -40,7 +33,7 @@ const Date = ({
   );
 };
 
-const Message = ({ message, myId }: { message: MessageType; myId: string }) => {
+const Message = ({ message, myId }: MessageProps) => {
   const isMyMessage = message.sender._id === myId;
 
   return (

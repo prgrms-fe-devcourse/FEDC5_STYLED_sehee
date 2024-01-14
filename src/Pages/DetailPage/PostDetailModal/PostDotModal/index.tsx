@@ -9,6 +9,7 @@ import Button from '@/Components/Base/Button';
 import buttonInfo from './postDotModalConst';
 import useAuthUserStore from '@/Stores/AuthUser';
 import USER_ROLE from '@/Constants/userRole';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PostDotModal = ({
   isFollow,
@@ -19,6 +20,8 @@ const PostDotModal = ({
 }: PostDotModalProps) => {
   const { colors } = useTheme();
   const { user: authUser } = useAuthUserStore();
+  const { postId } = useParams();
+  const navigate = useNavigate();
 
   /**
    * 포스트 삭제 함수
@@ -29,7 +32,9 @@ const PostDotModal = ({
   /**
    * 포스트 수정 함수
    */
-  const handleEditPost = () => {};
+  const handleEditPost = () => {
+    navigate(`/edit-post/${postId}`);
+  };
 
   /**
    * 팔로우 취소 함수

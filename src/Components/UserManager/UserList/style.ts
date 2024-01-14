@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledUserList = styled.ul`
+export const StyledUserList = styled.ul`
   padding: ${({ theme }) => theme.size.small} 0;
   display: flex;
   flex-direction: column;
@@ -21,4 +21,11 @@ const StyledUserList = styled.ul`
   }
 `;
 
-export default StyledUserList;
+export const StyledNonList = styled.h1`
+  height: ${({ theme }) => theme.size.full};
+  font-size: ${({ theme }) => theme.size.large};
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

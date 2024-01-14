@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef, useState } from 'react';
+import React, { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 import type { DropDownProps } from './type';
 import {
@@ -9,6 +9,7 @@ import {
   StyledLabel,
 } from './style';
 import Icon from '@/Components/Base/Icon';
+import channels from '@/Constants/Channels';
 
 /**
  * @param options 출력할 옵션들을 배열([])형태로 담아 전달해주세요. (필수)
@@ -37,6 +38,7 @@ const DropDown = forwardRef(
       itemProps,
       labelProps,
       isShow = true,
+      initialValue,
       ...props
     }: DropDownProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -44,6 +46,10 @@ const DropDown = forwardRef(
     const theme = useTheme();
     const [selectedOption, setSelectedOption] = useState('선택 없음');
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+      if (initialValue) setSelectedOption(channels[initialValue]);
+    }, [initialValue]);
 
     const handleSelect = (option: string) => {
       setSelectedOption(option);
