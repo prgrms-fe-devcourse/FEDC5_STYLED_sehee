@@ -4,9 +4,10 @@ export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
   postId: string;
   imageUrl: string;
   content: string;
+  authorId: string;
   authorName: string;
   authorThumbnail: string;
-  isFollower: boolean;
+  isFollower: boolean | undefined;
   isLike: boolean;
   myLikeId?: string;
   width?: string;
@@ -15,6 +16,6 @@ export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
   onImageClick?: () => void;
   onUserNameClick?: () => void;
   onUserAvatarClick?: () => void;
-  onFollowBtnClick?: () => void;
+  onFollowBtnClick?: (nextFollowState: boolean, userId: string) => void;
   onLikeIconClick?: (postId: string, nextLikeState: boolean) => void;
 }

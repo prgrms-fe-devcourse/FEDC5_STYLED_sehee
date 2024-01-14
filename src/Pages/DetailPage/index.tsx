@@ -6,11 +6,9 @@ import { getPostDetail } from '@/Services/Post';
 import { getUser } from '@/Services/User';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import QUERY_KEYS from '@/Constants/queryKeys';
-import useAuthUserStore from '@/Stores/AuthUser';
 
 const DetailPage = () => {
   const { postId } = useParams();
-  const { user: authUser } = useAuthUserStore();
 
   /**
    * postId로 해당 포스트 정보를 얻는 useQuery 훅
@@ -41,6 +39,7 @@ const DetailPage = () => {
     <PostDetailModal
       postComment={postDetailData?.comments}
       postLike={postDetailData?.likes}
+      postFollow={postDetailData?.author.followers}
       postContents={postDetailData?.title || ''}
       postEditTime={updateTime || ''}
       postImageUrl={postDetailData?.image || ''}
