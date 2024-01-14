@@ -1,17 +1,30 @@
 import { DefaultTheme } from 'styled-components';
 
+const color = {
+  primaryNormal: '#F0EFEC',
+  primaryDark: '#A5A49E',
+  primaryReverse: '#252525',
+
+  red: '#ED4044',
+  green: '#80D38D',
+  blue: '#53A1F5',
+
+  white: '#ffffff',
+  gray: '#D9D9D9',
+  black: '#252525',
+};
+
 const commonTheme = {
-  online: '#05FF00', // 접속 중 색상
-  read: '#0095F6', // 읽음 처리 색상
-  alert: '#FF0000', // 알림 색상
-  border: '#CCCCCC', // 보더 색상
-  backgroundGrey: '#D1CCC7', // 회색 배경 색상
-  lightGray: '#F0F0F0', // 밝은 회색 색상
-  focusHover: '#F2F2F2', // 포커스 및 호버 색상
-  focusHoverText: '#000000',
-  overlay: 'rgba(0, 0, 0, 0.4)', // 오버레이 색상
-  buttonClickHover: '#E0E0E0', // 버튼 클릭 시 호버 색상
-  follow: 'rgba(119, 82, 254, 1)', // 팔로우 색상
+  online: color.green,
+  read: color.blue,
+  alert: color.red,
+  backgroundGrey: color.gray,
+  lightGray: color.gray,
+  focusHover: color.primaryReverse,
+  focusHoverText: color.primaryNormal,
+  overlay: 'rgba(0, 0, 0, 0.4)',
+  buttonClickHover: '#E0E0E0',
+  follow: 'rgba(119, 82, 254, 1)',
 };
 
 const fontWeight = {
@@ -43,12 +56,28 @@ const device = {
 
 export const lightTheme: DefaultTheme = {
   colors: {
-    primary: '#000000', // 메인 색상
-    text: '#000000', // 글자 색상
-    background: '#FFFFFF', // 배경 색상
-    buttonText: '#FFFFFF', // 버튼 텍스트 색상
-    buttonBackground: '#000000', // 버튼 배경 색상
+    primary: color.primaryNormal,
+    background: color.primaryNormal,
+    text: color.primaryReverse,
+    textNonSelect: color.primaryDark,
+
+    buttonText: color.primaryReverse,
+    buttonBackground: color.primaryNormal,
+    buttonBorder: color.primaryReverse,
+
+    buttonHoverText: color.primaryNormal,
+    buttonHoverBackground: color.primaryReverse,
+
+    followBackground: color.primaryNormal,
+    followText: color.primaryReverse,
+    followingBackground: color.primaryReverse,
+    followingText: color.primaryNormal,
+    followBorder: color.primaryNormal,
+
+    border: color.primaryDark,
+
     ...commonTheme,
+    ...color,
   },
   size,
   device,
@@ -57,12 +86,28 @@ export const lightTheme: DefaultTheme = {
 
 export const darkTheme: DefaultTheme = {
   colors: {
-    primary: '#FFFFFF', // 메인 색상
-    text: '#FFFFFF', // 글자 색상
-    background: '#000000', // 배경 색상
-    buttonText: '#000000', // 버튼 텍스트 색상
-    buttonBackground: '#FFFFFF', // 버튼 배경 색상
+    primary: color.primaryReverse,
+    background: color.primaryReverse,
+    text: color.primaryNormal,
+    textNonSelect: color.primaryDark,
+
+    buttonText: color.primaryNormal,
+    buttonBackground: color.primaryReverse,
+    buttonBorder: color.primaryNormal,
+
+    buttonHoverText: color.primaryReverse,
+    buttonHoverBackground: color.primaryNormal,
+
+    followBackground: color.primaryReverse,
+    followText: color.primaryNormal,
+    followingBackground: color.primaryNormal,
+    followingText: color.primaryReverse,
+    followBorder: color.primaryReverse,
+
+    border: color.primaryDark,
+
     ...commonTheme,
+    ...color,
   },
   size,
   device,
