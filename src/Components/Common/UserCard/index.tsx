@@ -74,9 +74,11 @@ const UserCard = forwardRef(
       <StyledWrapper
         ref={ref}
         $width={width || '100%'}
-        $height={height || '100%'}
+        $height={height || 'auto'}
         $borderRadius={borderRadius || ''}
+        $mode={mode}
         {...props}
+        onClick={handleClick}
       >
         {/* 유저 아바타 */}
         <Avatar

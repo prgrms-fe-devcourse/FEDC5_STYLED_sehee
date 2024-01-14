@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import { useCallback, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PostDetailModalProps } from './type';
 import Modal from '@/Components/Common/Modal';
 import {
@@ -34,6 +34,9 @@ import QUERY_KEYS from '@/Constants/queryKeys';
 import { getUser } from '@/Services/User';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
+import { createLike, deleteLike } from '@/Services/Like';
+import { getPostDetail } from '@/Services/Post';
+import useAuthUserStore from '@/Stores/AuthUser';
 
 const PostDetailModal = ({
   postLike,
@@ -47,15 +50,30 @@ const PostDetailModal = ({
 }: PostDetailModalProps) => {
   const navigate = useNavigate();
   const { colors } = useTheme();
+  const { postId } = useParams();
+  const queryClient = useQueryClient();
+  const { user: authUser } = useAuthUserStore();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
+
+  const { data: postDetailData, isSuccess } = useQuery({
+    queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID, postId],
+    queryFn: () => getPostDetail(postId || ''),
+  });
+
+  const isMyLike = postDetailData?.likes.some(
+    ({ user }) => user === authUser._id,
+  );
+
+  const myLikeList = useMemo(() => {
+    return postDetailData?.likes.filter(({ user }) => user === authUser._id);
+  }, [authUser._id, postDetailData?.likes]);
 
   const [isPostDetailModalOpen, setIsPostDetailModalOpen] = useState(true);
   const [isDotModalOpen, setIsDotModalOpen] = useState(false);
   const [isCommentBtnDisabled, setIsCommentBtnDisabled] = useState(true);
-  // TODO: 좋아요 연동 초기값
-  const [isLike, setIsLike] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
+  const [isLike, setIsLike] = useState<boolean | null>(null);
 
   /**
    * 댓글 입력 창이 비었을 경우 게시 버튼 비활성화하는 함수
@@ -86,16 +104,8 @@ const PostDetailModal = ({
    * 팔로우 버튼 클릭 동작 함수
    */
   const handleClickFollowBtn = () => {
-    // TODO: 좋아요 api 추가
+    // TODO: 팔로우 api 추가
     setIsFollow(!isFollow);
-  };
-
-  /**
-   * 좋아요 버튼 클릭 동작 함수
-   */
-  const handleClickLikeBtn = () => {
-    // TODO: 좋아요 api 추가
-    setIsLike(!isLike);
   };
 
   /**
@@ -103,6 +113,7 @@ const PostDetailModal = ({
    */
   const handleClickDMBtn = () => {
     // TODO: DM 페이지 라우팅 연결
+    navigate('/directmessage');
   };
 
   /**
@@ -110,6 +121,48 @@ const PostDetailModal = ({
    */
   const handleClickComment = () => {
     // TODO: 댓글 게시 api 연결
+  };
+
+  const { mutate: likeById } = useMutation({
+    mutationFn: (likePostId: string) => createLike(likePostId),
+    onSuccess: () => {
+      setIsLike(true);
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEYS.POST_BY_ID],
+      });
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID],
+      });
+    },
+  });
+
+  const { mutate: disLikeById } = useMutation({
+    mutationFn: (disLikeId: string) => deleteLike(disLikeId),
+    onSuccess: () => {
+      setIsLike(false);
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEYS.POST_BY_ID],
+      });
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID],
+      });
+    },
+  });
+
+  /**
+   * 좋아요 버튼 클릭 동작 함수
+   */
+  const handleClickLikeBtn = () => {
+    const newLikeState = isLike === null ? !isMyLike : !isLike;
+    if (newLikeState && postId) {
+      likeById(postId);
+    } else if (myLikeList) {
+      myLikeList?.forEach(({ _id: likeId }) => disLikeById(likeId));
+    }
   };
 
   /**
@@ -217,7 +270,7 @@ const PostDetailModal = ({
                 onClick={handleClickLikeBtn}
               >
                 <Icon
-                  isFill={isLike}
+                  isFill={isLike !== null ? isLike : isMyLike}
                   name="favorite"
                   className="post-detail-modal-heart-btn"
                 />
