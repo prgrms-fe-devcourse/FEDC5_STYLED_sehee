@@ -8,6 +8,7 @@ import UpdateNameModal from '../../UpdateNameModal';
 
 const MyProfileInfo = ({ name, id }: NameProps) => {
   const [isUpdateName, setIsUpdateName] = useState(false);
+
   return (
     <>
       <StyledButtonContainer>

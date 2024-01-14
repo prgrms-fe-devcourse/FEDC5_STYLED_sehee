@@ -9,6 +9,7 @@ import UpdateImageModal from '../UpdateImageModal';
 
 const ProfileInfo = ({ userData, isMyProfile }: Props) => {
   const [isChangeImage, setIsChangeImage] = useState(false);
+
   return (
     <>
       <StyledProfileInfoContainer>
@@ -38,7 +39,10 @@ const ProfileInfo = ({ userData, isMyProfile }: Props) => {
               id={userData._id}
             />
           ) : (
-            <UserProfileInfo name={userData.fullName} />
+            <UserProfileInfo
+              name={userData.fullName}
+              user={userData}
+            />
           )}
 
           <FollowInfo
