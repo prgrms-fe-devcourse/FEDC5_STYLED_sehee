@@ -176,7 +176,7 @@ const HeaderTab = () => {
                 <Badge
                   position="rightTop"
                   backgroundColor={colors.alert}
-                  textColor={colors.text}
+                  textColor="white"
                   textSize={size.large}
                   size={size.doubleLarge}
                   style={{ right: size.small, top: size.small }}
