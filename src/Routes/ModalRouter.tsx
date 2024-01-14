@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AddPostPage, EditPasswordPage, SearchPage } from '@/Pages';
+import { EditPasswordPage, SearchPage, AddOrEditPostPage } from '@/Pages';
 
 const ModalRouter = () => {
   return (
@@ -10,7 +10,11 @@ const ModalRouter = () => {
       />
       <Route
         path="add-post"
-        element={<AddPostPage />}
+        element={<AddOrEditPostPage />}
+      />
+      <Route
+        path="edit-post/:postId"
+        element={<AddOrEditPostPage />}
       />
       <Route
         path="edit-password/:userId"
