@@ -10,7 +10,7 @@ export const StyledItem = styled.li<{ $isSeen: boolean }>`
   order: ${({ $isSeen }) => ($isSeen ? 1 : 0)};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonClickHover};
+    background-color: ${({ theme }) => theme.colors.buttonHoverBackground};
     cursor: pointer;
 
     div {

@@ -19,7 +19,7 @@ export const StyledContainer = styled.li<{
     `${theme.size.small} ${theme.size.small} ${theme.size.small} ${theme.size.large}`};
   order: ${({ $isAuth, $isOnline }) => getOrderValue($isAuth, $isOnline)};
   background-color: ${({ $isAuth, theme }) =>
-    $isAuth && theme.colors.buttonClickHover};
+    $isAuth && theme.colors.buttonHoverBackground};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.focusHover};

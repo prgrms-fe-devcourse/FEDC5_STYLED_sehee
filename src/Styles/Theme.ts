@@ -23,7 +23,6 @@ const commonTheme = {
   focusHover: color.primaryReverse,
   focusHoverText: color.primaryNormal,
   overlay: 'rgba(0, 0, 0, 0.4)',
-  buttonClickHover: '#E0E0E0',
   follow: 'rgba(119, 82, 254, 1)',
 };
 

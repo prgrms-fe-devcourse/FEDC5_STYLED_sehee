@@ -128,7 +128,7 @@ const UserCard = forwardRef(
               className="follow-button"
               borderRadius="0.5rem"
               backgroundColor={isFollow ? colors.read : colors.follow}
-              hoverBackgroundColor={colors.buttonClickHover}
+              hoverBackgroundColor={colors.buttonHoverBackground}
               onClick={onClickFollowBtn}
             >
               {isFollow ? '팔로잉' : '팔로우'}

@@ -35,7 +35,7 @@ const ImageUpload = ({
   const { colors } = useTheme();
   const getButtonBgColor = colors.buttonBackground;
   const getButtonTextColor = colors.buttonText;
-  const getButtonhoverBgColor = colors.buttonClickHover;
+  const getButtonhoverBgColor = colors.buttonHoverBackground;
 
   useEffect(() => {
     if (initialValue) {

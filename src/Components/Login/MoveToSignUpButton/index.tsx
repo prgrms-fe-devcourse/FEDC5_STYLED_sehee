@@ -17,7 +17,7 @@ const MoveToSignUpButton = () => {
       textColor={colors.buttonText}
       backgroundColor={colors.buttonBackground}
       borderRadius={size.small}
-      hoverBackgroundColor={colors.buttonClickHover}
+      hoverBackgroundColor={colors.buttonHoverBackground}
       hoverTextColor={colors.text}
       onClick={handleOnClick}
       style={{ padding: size.doubleLarge }}

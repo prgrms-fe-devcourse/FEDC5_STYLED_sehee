@@ -69,7 +69,7 @@ const LoginForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
         backgroundColor={colors.buttonBackground}
         borderRadius={size.small}
         disabled={status === 'pending'}
-        hoverBackgroundColor={colors.buttonClickHover}
+        hoverBackgroundColor={colors.buttonHoverBackground}
         hoverTextColor={colors.text}
         style={{
           padding: size.doubleLarge,
