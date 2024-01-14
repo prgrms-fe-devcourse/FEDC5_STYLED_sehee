@@ -10,6 +10,7 @@ import Button from '@/Components/Base/Button';
 import buttonInfo from './postDotModalConst';
 import useAuthUserStore from '@/Stores/AuthUser';
 import USER_ROLE from '@/Constants/userRole';
+import useDeletePost from '@/Hooks/Api/Post';
 
 const PostDotModal = ({
   postId,
@@ -23,11 +24,18 @@ const PostDotModal = ({
   const { user: authUser } = useAuthUserStore();
   const navigate = useNavigate();
 
+  const { deleteMyPost } = useDeletePost();
+
   /**
    * 포스트 삭제 함수
    */
-  // TODO: 포스트 수정, 삭제, 팔로우 취소 api 연결
-  const handleDeletePost = () => {};
+  const handleDeletePost = () => {
+    deleteMyPost(postId, {
+      onSuccess: () => {
+        navigate('/');
+      },
+    });
+  };
 
   /**
    * 포스트 수정 함수
