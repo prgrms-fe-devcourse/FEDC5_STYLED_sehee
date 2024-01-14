@@ -27,6 +27,7 @@ const FollowModal = ({
   const navigator = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
   const [follows, setFollows] = useState<UserType[]>([]);
   const [searchFollows, setSearchFollows] = useState<UserType[]>(follows);
   const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
@@ -110,14 +111,14 @@ const FollowModal = ({
         search(query, follows);
 
         setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
+          setIsTyping(false);
+        }, 200);
       }, 500),
     [follows],
   );
 
   const handleInputChange = () => {
-    setIsLoading(true);
+    setIsTyping(true);
     debouncedSearch();
   };
 
@@ -166,7 +167,7 @@ const FollowModal = ({
           placeholder="유저 이름으로 검색하세요."
         />
         <StyledBody>
-          {isLoading || !userData ? (
+          {isLoading || isTyping || !userData ? (
             <DirectMessageSkeleton.UserCard length={6} />
           ) : searchFollows.length === 0 ? (
             <div>텅..</div>
