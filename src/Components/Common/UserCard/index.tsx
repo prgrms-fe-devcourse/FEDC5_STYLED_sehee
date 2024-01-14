@@ -87,6 +87,7 @@ const UserCard = forwardRef(
           className="user-avatar"
           size={avatarSize}
           onClick={handleClick}
+          style={{ minWidth: `${avatarSize}px`, minHeight: `${avatarSize}` }}
         >
           {isOnline && (
             <Badge
@@ -131,6 +132,7 @@ const UserCard = forwardRef(
               backgroundColor={isFollow ? colors.read : colors.follow}
               hoverBackgroundColor={colors.buttonClickHover}
               onClick={onClickFollowBtn}
+              style={{ minWidth: '4.5rem' }}
             >
               {isFollow ? '팔로잉' : '팔로우'}
             </Button>
