@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.section`
-  width: 30rem;
+  width: 25rem;
   height: 100%;
   padding: 1rem 0.1rem 0 0;
   background-color: ${({ theme }) => theme.colors.background};

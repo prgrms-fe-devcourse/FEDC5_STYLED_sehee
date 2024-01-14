@@ -25,7 +25,7 @@ const PostCard = ({
   isLike,
   width = '80%',
   fontSize,
-  objectFit = 'fill',
+  objectFit = 'contain',
   onImageClick,
   onUserNameClick,
   onUserAvatarClick,

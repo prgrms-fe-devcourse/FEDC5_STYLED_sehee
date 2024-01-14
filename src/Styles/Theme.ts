@@ -57,8 +57,10 @@ export const lightTheme: DefaultTheme = {
   colors: {
     primary: color.primaryNormal,
     background: color.primaryNormal,
+    backgroundReverse: color.primaryReverse,
     text: color.primaryReverse,
     textNonSelect: color.primaryDark,
+    textReverse: color.primaryNormal,
 
     buttonText: color.primaryReverse,
     buttonBackground: color.primaryNormal,
@@ -90,8 +92,11 @@ export const darkTheme: DefaultTheme = {
   colors: {
     primary: color.primaryReverse,
     background: color.primaryReverse,
+    backgroundReverse: color.primaryNormal,
+
     text: color.primaryNormal,
     textNonSelect: color.primaryDark,
+    textReverse: color.primaryNormal,
 
     buttonText: color.primaryNormal,
     buttonBackground: color.primaryReverse,

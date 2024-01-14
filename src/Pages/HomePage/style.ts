@@ -6,7 +6,8 @@ export const StyledHeaderContainer = styled.div`
 
 export const StyledWrapper = styled.div`
   display: flex;
-  padding: 0rem 3rem;
+  justify-content: space-between;
+  padding: 0rem 5rem;
   height: calc(100vh - 9.4rem);
   background-color: ${({ theme }) => theme.colors.primaryNormal};
   color: ${({ theme }) => theme.colors.text};
@@ -16,10 +17,11 @@ export const StyledWrapper = styled.div`
 export const StyledLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  width: 30rem;
   height: 100%;
   flex-basis: 20rem;
-  flex-shrink: 1;
+  flex-shrink: 0;
+  min-width: 13rem;
   align-items: center;
   gap: 1rem;
 
@@ -59,8 +61,6 @@ export const StyledMainContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
-  width: calc(100% - 50rem);
   height: 100%;
   flex-grow: 1;
 `;
@@ -69,11 +69,12 @@ export const StyledPostCardList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 3rem;
 `;
 
 export const StyledObserver = styled.div`
@@ -84,17 +85,26 @@ export const StyledObserver = styled.div`
 
 export const StyledNoPost = styled.div`
   width: 100%;
-  height: fit-content;
+  height: 80%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  font-size: ${({ theme }) => theme.size.large};
+  font-size: 6rem;
+  color: ${({ theme }) => theme.colors.gray};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  user-select: none;
 `;
 
 export const StyledRightContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 2.5rem;
   height: 100%;
-  border-left: 0.1rem solid #ddd;
+
   flex-basis: 30rem;
   align-items: center;
   gap: 1rem;

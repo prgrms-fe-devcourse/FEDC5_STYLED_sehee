@@ -93,6 +93,7 @@ const HomePage = () => {
    * postOffeset이 10씩 증가하고 중복해서 포스트를 불러오지 않도록 가드 구현
    * @param channelId 채널 ID
    */
+
   const {
     hasNextPage,
     data: postList,
@@ -119,6 +120,10 @@ const HomePage = () => {
       isChannelListSuccess &&
       currentChannelId !== 'all',
   });
+
+  useEffect(() => {
+    console.log(postList);
+  }, [postList]);
 
   useEffect(() => {
     if (hasNextPage && inView) {
@@ -250,6 +255,7 @@ const HomePage = () => {
                   <PostCard
                     key={post._id}
                     postId={post._id}
+                    width="100%"
                     imageUrl={post.image || ''}
                     content={post.title || ''}
                     authorName={post.author.fullName || ''}
@@ -269,7 +275,7 @@ const HomePage = () => {
                 ));
               })
             ) : (
-              <StyledNoPost>페이지가 없습니다.</StyledNoPost>
+              <StyledNoPost>텅..</StyledNoPost>
             )}
             {hasNextPage && (
               <StyledObserver
