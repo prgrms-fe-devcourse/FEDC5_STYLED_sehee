@@ -5,6 +5,27 @@ import '../Assets/Fonts/Fonts.css';
 const GlobalStyle = createGlobalStyle`
   ${reset}
 
+  ::-webkit-scrollbar {
+    width: 1rem;
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.scrollBarThumb};
+    border-radius: 4px;
+    transition: all 1s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.scrollBarThumbHover};
+  }
+
   html {
     box-sizing: border-box;
     font-size: 62.5%;

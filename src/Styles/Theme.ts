@@ -73,6 +73,9 @@ export const lightTheme: DefaultTheme = {
     followingText: color.primaryNormal,
     followBorder: color.primaryNormal,
 
+    scrollBarThumb: color.gray,
+    scrollBarThumbHover: color.primaryDark,
+
     border: color.primaryDark,
 
     ...commonTheme,
@@ -102,6 +105,9 @@ export const darkTheme: DefaultTheme = {
     followingBackground: color.primaryNormal,
     followingText: color.primaryReverse,
     followBorder: color.primaryReverse,
+
+    scrollBarThumb: color.primaryDark,
+    scrollBarThumbHover: color.gray,
 
     border: color.primaryDark,
 
