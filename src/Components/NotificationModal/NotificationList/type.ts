@@ -1,11 +1,6 @@
-import { NotificationType } from '@/Types/NotificationType';
+import { NotificationListType } from '../type';
 
 export interface Props {
-  list: (NotificationType & {
-    text: string;
-    date: string;
-    type: string;
-    typeId: string;
-  })[];
+  list: NotificationListType[];
   onClose: () => void;
 }

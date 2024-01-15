@@ -28,7 +28,7 @@ const NotificationItem = ({
   const handleOnClick = () => {
     if (type === 'comment' || type === 'post') {
       onClose();
-      navigate(`/detail-modal/${typeId}`);
+      navigate(`/modal-detail/${typeId}`);
     }
 
     if (type === 'follow') {

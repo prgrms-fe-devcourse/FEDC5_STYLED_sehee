@@ -25,7 +25,6 @@ export const filterNotificationsByCategory = (
 export const filterNotificationList = (notifications: NotificationType[]) => {
   return notifications.reduce<NotificationListType[]>((acc, notification) => {
     const { createdAt, comment, follow, post, author, message } = notification;
-
     if (!message && !comment && !follow && !post) {
       return acc;
     }
@@ -43,9 +42,11 @@ export const filterNotificationList = (notifications: NotificationType[]) => {
       result.type = 'message';
       result.typeId = message;
     } else if (comment) {
+      const { _id: id } = comment.post;
+
       result.text = `${author.fullName}님이 게시글에 댓글을 추가했습니다: ${comment.comment}`;
       result.type = 'comment';
-      result.typeId = comment.post;
+      result.typeId = id;
     } else if (follow) {
       result.text = `${author.fullName}님이 팔로우를 요청했습니다.`;
       result.type = 'follow';
