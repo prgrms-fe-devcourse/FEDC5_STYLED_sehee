@@ -1,5 +1,7 @@
+import { UserType } from '@/Types/UserType';
+
 export interface Props {
-  id: string;
+  author: UserType;
   src: string | undefined;
   text: string;
   date: string;

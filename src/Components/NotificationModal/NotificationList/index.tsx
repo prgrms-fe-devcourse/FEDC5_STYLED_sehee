@@ -11,7 +11,7 @@ const NotificationList = ({ list, onClose }: Props) => {
         return (
           <NotificationItem
             key={_id}
-            id={_id}
+            author={author}
             src={image}
             text={text}
             date={date}

@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '@/Components/Base/Avatar';
 import { Props } from './type';
 import defaultUSerImage from '@/Constants/defaultUserImage';
+import useMessageReceiver from '@/Stores/useMessageReceiver';
+
 import {
   StyledContainer,
   StyledDate,
@@ -12,6 +14,7 @@ import {
 
 const NotificationItem = ({
   src,
+  author,
   text,
   date,
   type,
@@ -19,6 +22,7 @@ const NotificationItem = ({
   isSeen,
   onClose,
 }: Props) => {
+  const { setReceiver } = useMessageReceiver();
   const navigate = useNavigate();
 
   const handleOnClick = () => {
@@ -34,6 +38,7 @@ const NotificationItem = ({
 
     if (type === 'message') {
       onClose();
+      setReceiver(author);
       navigate('/directmessage');
     }
   };
