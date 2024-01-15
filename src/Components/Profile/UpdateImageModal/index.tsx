@@ -15,7 +15,7 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
 
   const { mutate, status } = useMutation({
     mutationFn: () => updateProfileImage(image?.file),
-    onSuccess: async (response) => {
+    onSuccess: (response) => {
       if (response) {
         handleCloseModal(false);
         queryClient.refetchQueries({ queryKey: ['currentUser'] });
@@ -49,7 +49,7 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
               onClick={() => mutate()}
               style={{ float: 'right' }}
             >
-              제출
+              변경
             </Button>
           </>
         )}
