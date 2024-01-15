@@ -20,6 +20,8 @@ export const StyledContainer = styled.li<{
   order: ${({ $isAuth, $isOnline }) => getOrderValue($isAuth, $isOnline)};
 
   transition: all 0.5s ease;
+  border-bottom: ${({ $isAuth, theme }) =>
+    $isAuth && `1px solid ${theme.colors.backgroundGrey}`};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.gray};
@@ -33,3 +35,5 @@ export const StyledUserName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
+export const StyledMySelfUser = styled.div``;

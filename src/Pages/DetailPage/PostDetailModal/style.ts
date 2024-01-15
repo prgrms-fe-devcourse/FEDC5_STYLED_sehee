@@ -82,10 +82,14 @@ export const StyledCommentHistory = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `;
 
 export const StyledComment = styled.div`
   display: flex;
+  height: fit-content;
+  align-items: flex-start;
+  justify-content: space-between;
 
   .post-detail-user-card {
     > :first-child {
@@ -94,9 +98,41 @@ export const StyledComment = styled.div`
   }
 `;
 
-export const StyledText = styled.div`
-  padding: 0.5rem;
+export const StyledTextContainer = styled.div`
+  display: flex;
+  width: 70%;
+  height: 100%;
+  padding: 0 1rem;
+  margin-top: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
+  justify-content: space-between;
+  text-overflow: ellipsis;
+  white-space: normal;
+
+  &:hover .material-icons {
+    color: ${({ theme }) => theme.colors.alert};
+  }
+
+  .material-icons {
+    font-size: ${({ theme }) => theme.size.medium};
+    color: ${({ theme }) => theme.colors.background};
+  }
+`;
+
+export const StyledText = styled.div`
+  width: 90%;
+  word-wrap: break-word;
+
+  /* display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  &:hover {
+    overflow: visible;
+    display: block;
+  } */
 `;
 
 export const StyledLikeCommentChat = styled.div`

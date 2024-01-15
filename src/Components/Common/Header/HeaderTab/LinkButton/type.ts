@@ -4,6 +4,7 @@ interface Props {
   link: string;
   setLink?: () => void;
   style: object;
+  children?: React.ReactNode;
 }
 
 export default Props;

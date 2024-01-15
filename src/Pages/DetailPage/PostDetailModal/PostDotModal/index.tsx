@@ -1,4 +1,5 @@
 import { useTheme } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Modal from '@/Components/Common/Modal';
 import {
   PostDotModalProps,
@@ -9,9 +10,9 @@ import Button from '@/Components/Base/Button';
 import buttonInfo from './postDotModalConst';
 import useAuthUserStore from '@/Stores/AuthUser';
 import USER_ROLE from '@/Constants/userRole';
-import { useNavigate, useParams } from 'react-router-dom';
 
 const PostDotModal = ({
+  postId,
   isFollow,
   postAuthorId,
   onChangeOpen,
@@ -20,7 +21,6 @@ const PostDotModal = ({
 }: PostDotModalProps) => {
   const { colors } = useTheme();
   const { user: authUser } = useAuthUserStore();
-  const { postId } = useParams();
   const navigate = useNavigate();
 
   /**

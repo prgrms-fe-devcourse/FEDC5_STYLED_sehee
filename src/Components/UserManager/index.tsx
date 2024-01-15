@@ -25,7 +25,7 @@ const UserManager = () => {
     validate: validateSearchUser,
   });
 
-  const { data: searchUserList, isFetching: isFetchingSearch } = useQuery({
+  const { data: searchUserList, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.SEARCH_USER_LIST, values.userName],
     queryFn: () => searchUsers(values.userName),
     enabled: isSubmit && !errors.userName,
@@ -42,7 +42,6 @@ const UserManager = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isFetching: isFetchingUserList,
   } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.USER_LIST],
     queryFn: ({ pageParam }) => getUsers({ offset: pageParam, limit }),
@@ -90,19 +89,19 @@ const UserManager = () => {
         />
       </StyledHeader>
 
-      {isFetchingSearch ||
-        (isFetchingUserList && (
-          <SkeletonList
-            length={10}
-            style={{ flex: '1 0 90%' }}
-          >
-            <Skeleton.Circle size="5rem" />
-            <Skeleton.Paragraph
-              line={1}
-              style={{ width: '100%' }}
-            />
-          </SkeletonList>
-        ))}
+      {isLoading && (
+        <SkeletonList
+          length={10}
+          style={{ flex: '1 0 90%' }}
+        >
+          <Skeleton.Circle size="5rem" />
+          <Skeleton.Paragraph
+            line={1}
+            style={{ width: '100%' }}
+          />
+        </SkeletonList>
+      )}
+
       <UserList
         userList={userListToShow}
         onlineUserList={onlineUserList || []}

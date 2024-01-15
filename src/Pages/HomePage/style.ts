@@ -12,6 +12,10 @@ export const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primaryNormal};
   color: ${({ theme }) => theme.colors.text};
   gap: 2rem;
+  .material-symbols-outlined,
+  .material-icons {
+    user-select: none;
+  }
 `;
 
 export const StyledLeftContainer = styled.div`

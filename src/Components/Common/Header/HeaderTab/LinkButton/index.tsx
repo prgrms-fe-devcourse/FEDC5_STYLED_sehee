@@ -3,7 +3,8 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
 
-const LinkButton = ({ name, link, setLink, style }: Props) => {
+
+const LinkButton = ({ color, name, link, setLink, style, children }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -13,7 +14,11 @@ const LinkButton = ({ name, link, setLink, style }: Props) => {
       hoverTextColor="transparent"
       borderRadius="0"
       onClick={setLink}
+      style={{
+        position: 'relative',
+      }}
     >
+      {children}
       <Link to={link}>
         <Icon
           isFill={false}

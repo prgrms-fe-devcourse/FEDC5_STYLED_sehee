@@ -2,7 +2,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
 
-const ModalButton = ({ style, name, color, setModalOpen }: Props) => {
+const ModalButton = ({ style, name, color, setModalOpen, children }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -11,7 +11,11 @@ const ModalButton = ({ style, name, color, setModalOpen }: Props) => {
       borderRadius="0"
       hoverBackgroundColor="transparent"
       onClick={setModalOpen}
+      style={{
+        position: 'relative',
+      }}
     >
+      {children}
       <Icon
         isFill={false}
         name={name}
