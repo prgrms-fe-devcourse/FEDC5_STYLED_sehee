@@ -54,10 +54,9 @@ const ConversationList = ({
           mode="header"
           coverImageUrl={loginUser.image || ''}
           avatarSize={40}
-          userName={loginUser.fullName}
-          userNameSize="1.5rem"
+          userName={`${loginUser.fullName} (나)`}
+          userNameSize="1.7rem"
           onClick={handleClickMyName}
-          style={{}}
         />
         <Button
           width="3rem"
@@ -95,10 +94,14 @@ const ConversationList = ({
                 coverImageUrl={receiver.image}
                 avatarSize={40}
                 userName={receiver.fullName}
-                userNameSize="1.5rem"
+                userNameSize="1.7rem"
                 userDetail={conversation.message}
                 date={date}
                 onClick={() => handleClickUser(receiver)}
+                style={{
+                  cursor: 'pointer',
+                  paddingLeft: '2rem',
+                }}
               />
             );
           })

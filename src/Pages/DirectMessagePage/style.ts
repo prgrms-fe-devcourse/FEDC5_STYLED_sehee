@@ -6,7 +6,7 @@ export const StyledContainer = styled.div`
   width: 100vw;
   height: calc(100vh - 9.4rem);
   top: 9.4rem;
-  background-color: white;
+
   overflow: hidden;
 
   @media ${({ theme }) => theme.device.tablet} {
@@ -15,11 +15,16 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledDiv = styled.div`
-  width: 70%;
+  width: 75%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
+
+  font-size: ${({ theme }) => theme.size.large};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.primaryDark};
 
   @media ${({ theme }) => theme.device.mobile} {
     display: none;

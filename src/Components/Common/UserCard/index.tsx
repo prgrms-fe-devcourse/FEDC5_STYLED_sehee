@@ -103,7 +103,7 @@ const UserCard = forwardRef(
           <StyledUserName
             fontSize={userNameSize || size.small}
             fontWeight={
-              userNameWeight || (!isRead ? fontWeight.black : fontWeight.medium)
+              userNameWeight || (!isRead ? fontWeight.bold : fontWeight.medium)
             }
             onClick={onClickUser}
           >
@@ -111,7 +111,7 @@ const UserCard = forwardRef(
           </StyledUserName>
           {userDetail && (
             <StyledUserDetail
-              fontSize={userDetailSize || '0.8rem'}
+              fontSize={userDetailSize || '1.3rem'}
               fontWeight={!isRead ? fontWeight.black : fontWeight.regular}
               onClick={handleClick}
             >

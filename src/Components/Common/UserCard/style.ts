@@ -22,6 +22,8 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
   &:hover {
     background-color: ${({ $mode }) =>
       $mode !== 'header' && (({ theme }) => theme.colors.focusHover)};
+    color: ${({ $mode }) =>
+      $mode !== 'header' && (({ theme }) => theme.colors.textReverse)};
   }
 
   cursor: ${({ $mode }) => $mode === 'header' && 'pointer'};

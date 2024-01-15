@@ -185,6 +185,7 @@ const MessageList = ({
               onKeyDown={(e) => handleKeyDown(e)}
               placeholder="메시지 입력..."
               style={{
+                backgroundColor: 'white',
                 padding: '1.5rem 3rem 1.5rem 3rem',
                 borderRadius: '3rem',
               }}
