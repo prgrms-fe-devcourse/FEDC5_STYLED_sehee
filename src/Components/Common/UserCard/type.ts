@@ -11,6 +11,7 @@ export interface UserCardProps extends HTMLAttributes<HTMLDivElement> {
   isOnline?: boolean;
   isRead?: boolean;
   isFollow?: boolean;
+  isButtonShow?: boolean;
   userName?: string;
   userDetail?: string | null;
   date?: string;

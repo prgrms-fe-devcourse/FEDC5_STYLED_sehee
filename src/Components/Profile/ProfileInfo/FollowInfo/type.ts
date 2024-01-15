@@ -1,5 +1,6 @@
+import { UserType } from '@/Types/UserType';
+
 export interface Props {
-  posts: number;
-  followers: number;
-  following: number;
+  userData: UserType;
+  userDataRefetch: () => void;
 }
