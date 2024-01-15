@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '@/Components/Base/Avatar';
 import { Props } from './type';
 import defaultUSerImage from '@/Constants/defaultUserImage';
+import useMessageReceiver from '@/Stores/useMessageReceiver';
+
 import {
   StyledContainer,
   StyledDate,
@@ -10,16 +12,34 @@ import {
   StyledText,
 } from './style';
 
-const NotificationItem = ({ src, text, date, type, typeId, isSeen }: Props) => {
+const NotificationItem = ({
+  src,
+  author,
+  text,
+  date,
+  type,
+  typeId,
+  isSeen,
+  onClose,
+}: Props) => {
+  const { setReceiver } = useMessageReceiver();
   const navigate = useNavigate();
 
   const handleOnClick = () => {
     if (type === 'comment' || type === 'post') {
+      onClose();
       navigate(`/detail-modal/${typeId}`);
     }
 
     if (type === 'follow') {
+      onClose();
       navigate(`/profile/${typeId}`);
+    }
+
+    if (type === 'message') {
+      onClose();
+      setReceiver(author);
+      navigate('/directmessage');
     }
   };
 
