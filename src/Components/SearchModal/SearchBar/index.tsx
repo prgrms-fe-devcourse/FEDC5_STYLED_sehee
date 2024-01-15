@@ -51,6 +51,7 @@ const SearchBar = ({ onSubmit, onError }: Props) => {
           width="30px"
           height="30px"
           backgroundColor={theme.colors.background}
+          hoverBackgroundColor="transparent"
         >
           <Icon
             name="search"

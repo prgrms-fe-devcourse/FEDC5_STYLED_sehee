@@ -12,6 +12,7 @@ export const StyledInput = styled.input`
   border: none;
   border-bottom: 0.2rem ${({ theme }) => theme.colors.border} solid;
   transition: border 0.3s ease;
+  background-color: transparent;
 
   &:focus {
     outline: none;

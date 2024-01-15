@@ -26,8 +26,10 @@ export const StyledHeader = styled.header`
 `;
 
 export const StyledHeaderTitle = styled.h1`
+  font-size: ${({ theme }) => theme.size.extraLarge};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  color: ${({ theme }) => theme.colors.text};
   user-select: none;
-  font-size: large;
 `;
 
 export const StyledHeaderTab = styled.div`

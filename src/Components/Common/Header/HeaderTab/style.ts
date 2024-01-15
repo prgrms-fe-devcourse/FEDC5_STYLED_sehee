@@ -21,7 +21,7 @@ export const StyledButtonContainer = styled.div`
 
   border-radius: 50%;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.gray};
+    background-color: ${({ theme }) => theme.colors.darkGray};
 
     & > :first-child {
       transform: scale(1.1);
@@ -35,7 +35,7 @@ export const StyledFocusedCircle = styled.div<{ $visible: boolean }>`
   top: 3.7rem;
   width: 1rem;
   height: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.primaryReverse};
+  background-color: ${({ theme }) => theme.colors.text};
   border-radius: 3rem;
 
   transition:

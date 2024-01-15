@@ -29,7 +29,11 @@ export const StyledMainHeader = styled.div`
   display: flex;
   /* flex-grow: 1; */
   justify-content: center;
-  font-size: large;
+
   cursor: default;
   user-select: none;
+
+  font-size: ${({ theme }) => theme.size.extraLarge};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  color: ${({ theme }) => theme.colors.text};
 `;

@@ -10,11 +10,11 @@ export const StyledItem = styled.li<{ $isSeen: boolean }>`
   order: ${({ $isSeen }) => ($isSeen ? 1 : 0)};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonHoverBackground};
+    background-color: ${({ theme }) => theme.colors.gray};
     cursor: pointer;
 
     div {
-      color: ${({ theme }) => theme.colors.focusHoverText};
+      color: ${({ theme }) => theme.colors.black};
     }
   }
 `;

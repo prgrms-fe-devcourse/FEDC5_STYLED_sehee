@@ -30,7 +30,7 @@ const StyledButton = styled.button<StyledButtonProp>`
   ${({ $isActive, theme }) => `
     ${
       $isActive
-        ? `background-color: ${theme.colors.focusHover}; color: ${theme.colors.focusHoverText};`
+        ? `background-color: ${theme.colors.text}; color: ${theme.colors.textReverse};`
         : ''
     }
   `}
@@ -39,7 +39,7 @@ const StyledButton = styled.button<StyledButtonProp>`
     cursor: not-allowed;
   }
 
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 `;
 
 export default StyledButton;

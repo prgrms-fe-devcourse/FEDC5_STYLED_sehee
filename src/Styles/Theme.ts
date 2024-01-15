@@ -61,6 +61,7 @@ export const lightTheme: DefaultTheme = {
     text: color.primaryReverse,
     textNonSelect: color.primaryDark,
     textReverse: color.primaryNormal,
+    darkGray: color.gray,
 
     buttonText: color.primaryReverse,
     buttonBackground: color.primaryNormal,
@@ -79,6 +80,7 @@ export const lightTheme: DefaultTheme = {
     scrollBarThumbHover: color.primaryDark,
 
     border: color.primaryDark,
+    modalBorder: color.gray,
 
     ...commonTheme,
     ...color,
@@ -97,6 +99,7 @@ export const darkTheme: DefaultTheme = {
     text: color.primaryNormal,
     textNonSelect: color.primaryDark,
     textReverse: color.primaryReverse,
+    darkGray: color.primaryDark,
 
     buttonText: color.primaryNormal,
     buttonBackground: color.primaryReverse,
@@ -115,6 +118,7 @@ export const darkTheme: DefaultTheme = {
     scrollBarThumbHover: color.gray,
 
     border: color.primaryNormal,
+    modalBorder: color.primaryNormal,
 
     ...commonTheme,
     ...color,

@@ -32,4 +32,5 @@ export const StyledContainer = styled.div`
   gap: 1.2rem;
 
   font-size: ${({ theme }) => theme.size.large};
+  color: ${({ theme }) => theme.colors.black};
 `;
