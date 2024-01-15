@@ -18,16 +18,12 @@ export const StyledContainer = styled.li<{
   padding: ${({ theme }) =>
     `${theme.size.small} ${theme.size.small} ${theme.size.small} ${theme.size.large}`};
   order: ${({ $isAuth, $isOnline }) => getOrderValue($isAuth, $isOnline)};
-  background-color: ${({ $isAuth, theme }) =>
-    $isAuth && theme.colors.buttonHoverBackground};
+
+  transition: all 0.5s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.focusHover};
+    background-color: ${({ theme }) => theme.colors.gray};
     cursor: pointer;
-
-    > span {
-      color: ${({ theme }) => theme.colors.focusHoverText};
-    }
   }
 `;
 

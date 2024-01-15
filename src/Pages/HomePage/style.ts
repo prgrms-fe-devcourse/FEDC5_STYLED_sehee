@@ -74,6 +74,8 @@ export const StyledPostCardList = styled.div`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 0rem 1rem;
+
   padding-bottom: 3rem;
 `;
 
