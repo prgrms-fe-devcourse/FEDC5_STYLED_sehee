@@ -10,11 +10,10 @@ export const StyledWrap = styled.div`
 
 export const StyledContainer = styled.div`
   width: 55rem;
-  height: 60rem;
-  position: relative;
+  height: 70rem;
+  /* position: relative; */
   background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.size.medium};
+
   padding: ${({ theme }) => theme.size.large} 10rem;
   display: flex;
   flex-direction: column;
@@ -36,7 +35,7 @@ export const StyledContainer = styled.div`
     > .history-back-button {
       position: absolute;
       left: 4rem;
-      top: 8rem;
+      top: 4rem;
     }
   }
 `;

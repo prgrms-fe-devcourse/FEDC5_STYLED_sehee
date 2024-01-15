@@ -104,6 +104,7 @@ const SignUpForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
           style={{
             padding: size.doubleLarge,
             marginTop: size.large,
+            border: `0.1rem solid ${colors.text}`,
           }}
         >
           회원가입

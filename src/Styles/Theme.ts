@@ -96,7 +96,7 @@ export const darkTheme: DefaultTheme = {
 
     text: color.primaryNormal,
     textNonSelect: color.primaryDark,
-    textReverse: color.primaryNormal,
+    textReverse: color.primaryReverse,
 
     buttonText: color.primaryNormal,
     buttonBackground: color.primaryReverse,
