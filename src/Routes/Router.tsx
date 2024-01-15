@@ -63,7 +63,7 @@ const RouterManager = () => {
         />
       </Route>
       <Route
-        path="*"
+        path="/*"
         element={<NotFoundPage />}
       />
     </Routes>
