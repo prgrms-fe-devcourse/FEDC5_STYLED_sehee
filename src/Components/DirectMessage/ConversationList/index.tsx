@@ -10,7 +10,6 @@ import { ConversationType } from '@/Types/ConversationType';
 import UserCard from '@/Components/Common/UserCard';
 import DirectMessageSkeleton from '../Skeleton';
 import { UserType } from '@/Types/UserType';
-import { readMessage } from '@/Services/Message';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import Button from '@/Components/Base/Button';
 import { useReadMessage } from '@/Hooks/Api/Message';
@@ -19,7 +18,6 @@ const ConversationList = ({
   setReceiver,
   conversations,
   isConversationsLoading,
-  conversationsRefetch,
   loginUser,
   setIsClickedUserCard = () => {},
   isMobileSize,
@@ -38,8 +36,6 @@ const ConversationList = ({
   const handleClickUser = async (receiver: UserType) => {
     setReceiver(receiver);
     mutateReadMessage(receiver._id);
-    // await readMessage(receiver._id);
-    // conversationsRefetch();
     setIsClickedUserCard(true);
   };
 
