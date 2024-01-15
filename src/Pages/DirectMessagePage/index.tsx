@@ -61,7 +61,7 @@ const DirectMessagePage = () => {
       {!isMobileSize && (
         <>
           {conversationList}
-          {!receiver || !isClickedUserCard ? (
+          {!receiver ? (
             <StyledDiv>친구에게 메시지를 보내보세요!</StyledDiv>
           ) : (
             messageList

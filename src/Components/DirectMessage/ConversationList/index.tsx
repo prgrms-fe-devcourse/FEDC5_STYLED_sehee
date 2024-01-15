@@ -54,6 +54,7 @@ const ConversationList = ({
           userName={loginUser.fullName}
           userNameSize="1.5rem"
           onClick={handleClickMyName}
+          className="conversation-list-header"
         />
         <Button
           width="3rem"

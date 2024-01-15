@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
 const useResize = () => {
-  const [isMobileSize, setIsMobileSize] = useState(false);
+  const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
   const { device } = useTheme();
 
   useEffect(() => {
