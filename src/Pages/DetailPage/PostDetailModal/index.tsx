@@ -47,6 +47,7 @@ import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 import Skeleton from '@/Components/Base/Skeleton';
 import PostDetailSkeleton from './PostDetailSkeleton';
 
@@ -64,6 +65,7 @@ const PostDetailModal = ({
   const { colors, size } = useTheme();
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
+  const { setReceiver } = useMessageReceiver();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
@@ -128,7 +130,14 @@ const PostDetailModal = ({
    * DM 버튼 클릭 동작 함수
    */
   const handleClickDMBtn = () => {
-    navigate('/directmessage');
+    if (postDetailData) {
+      if (postDetailData.author._id !== authUser._id) {
+        setReceiver(postDetailData?.author);
+      } else {
+        setReceiver(null);
+      }
+      navigate('/directmessage');
+    }
   };
 
   /**

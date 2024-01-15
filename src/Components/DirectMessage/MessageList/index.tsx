@@ -110,7 +110,7 @@ const MessageList = ({
     }
   };
 
-  const handleClickMyName = () => {
+  const handleClickReceiver = () => {
     navigator(`/profile/${receiver._id}`);
   };
 
@@ -146,7 +146,7 @@ const MessageList = ({
               avatarSize={40}
               userName={receiver.fullName}
               userNameSize="1.5rem"
-              onClick={handleClickMyName}
+              onClick={handleClickReceiver}
             />
             {isMobileSize && (
               <Button
