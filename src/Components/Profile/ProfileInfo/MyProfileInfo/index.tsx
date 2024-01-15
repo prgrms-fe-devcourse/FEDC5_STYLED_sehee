@@ -11,7 +11,7 @@ const MyProfileInfo = ({ name, id }: NameProps) => {
   const navigate = useNavigate();
 
   const handleClickPassword = () => {
-    navigate(`/edit-password/${id}`);
+    navigate(`/profile/${id}/edit-password/${id}`);
   };
 
   return (

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import ImageCard from '@/Components/Common/ImageCard';
@@ -20,6 +20,7 @@ import Skeleton from '@/Components/Base/Skeleton';
 const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
   const { colors } = useTheme();
+  const { userId } = useParams() || '';
 
   const getLikePostById = async (
     channelId: string,
@@ -150,7 +151,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
                 (post: PostType | null) =>
                   post && (
                     <Link
-                      to={`/modal-detail/${post._id}`}
+                      to={`/profile/${userId}/modal-detail/${post._id}`}
                       key={post._id}
                     >
                       <ImageCard
@@ -169,7 +170,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
             <>
               {posts.map((post: PostType) => (
                 <Link
-                  to={`/modal-detail/${post._id}`}
+                  to={`/profile/${userId}/modal-detail/${post._id}`}
                   key={post._id}
                 >
                   <ImageCard
