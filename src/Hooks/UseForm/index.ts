@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import type { Props } from './type';
 
 const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
@@ -6,11 +12,11 @@ const useForm = <T>({ initialState, callback, validate }: Props<T>) => {
   const [errors, setErrors] = useState<Partial<T>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setValues({ ...values, [name]: value });
-  };
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
+  }, []);
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

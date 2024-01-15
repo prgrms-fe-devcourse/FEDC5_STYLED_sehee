@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
 import StyledUserContainer from './style';
@@ -16,6 +16,8 @@ import { getNotifications } from '@/Services/Notification';
 import useAuthUserStore from '@/Stores/AuthUser';
 import Badge from '@/Components/Base/Badge';
 import filterNotificationLength from './filterNotificationLength';
+import Button from '@/Components/Base/Button';
+import Icon from '@/Components/Base/Icon';
 
 const HeaderTab = () => {
   const navigate = useNavigate();

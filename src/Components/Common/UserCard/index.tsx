@@ -47,6 +47,8 @@ const UserCard = forwardRef(
       inputValue,
       inputChecked,
       inputOnChange,
+      onClickFollowBtn,
+      onClickUser,
       ...props
     }: UserCardProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -73,8 +75,9 @@ const UserCard = forwardRef(
       <StyledWrapper
         ref={ref}
         $width={width || '100%'}
-        $height={height || '100%'}
+        $height={height || 'auto'}
         $borderRadius={borderRadius || ''}
+        $mode={mode}
         {...props}
       >
         {/* 유저 아바타 */}
@@ -82,7 +85,8 @@ const UserCard = forwardRef(
           src={coverImageUrl || ''}
           className="user-avatar"
           size={avatarSize}
-          onClick={handleClick}
+          onClick={onClickUser}
+          style={{ cursor: 'pointer' }}
         >
           {isOnline && (
             <Badge
@@ -101,7 +105,7 @@ const UserCard = forwardRef(
             fontWeight={
               userNameWeight || (!isRead ? fontWeight.black : fontWeight.medium)
             }
-            onClick={handleClick}
+            onClick={onClickUser}
           >
             {userName}
           </StyledUserName>
@@ -126,6 +130,7 @@ const UserCard = forwardRef(
               borderRadius="0.5rem"
               backgroundColor={isFollow ? colors.read : colors.follow}
               hoverBackgroundColor={colors.buttonClickHover}
+              onClick={onClickFollowBtn}
             >
               {isFollow ? '팔로잉' : '팔로우'}
             </Button>
