@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createMessage,
   getConversations,
@@ -9,15 +9,12 @@ import {
 import { MessageType } from '@/Types/MessageType';
 import { PostCreateMessageRequestType } from '@/Types/Request';
 import { ConversationType } from '@/Types/ConversationType';
-import { UserType } from '@/Types/UserType';
-import { searchUsers } from '@/Services/Search';
+import QUERY_KEYS from '@/Constants/queryKeys';
 
 export const useFetchConversations = () => {
   const { data, isLoading, refetch } = useQuery<ConversationType[] | null>({
-    queryKey: ['conversations'],
+    queryKey: [QUERY_KEYS.CONVERSATIONS],
     queryFn: getConversations,
-    enabled: true, // 마운트 시 자동으로 쿼리를 실행한다.
-    staleTime: 0, // 시간이 경과하면 refetch한다.
   });
 
   return {
@@ -29,7 +26,7 @@ export const useFetchConversations = () => {
 
 export const useFetchMessages = (userId: string) => {
   const { data, isLoading, refetch } = useQuery<MessageType[] | null>({
-    queryKey: ['messages'],
+    queryKey: [QUERY_KEYS.MESSAGES],
     queryFn: async () => {
       const messages = await getMessages(userId);
       return messages
@@ -45,26 +42,6 @@ export const useFetchMessages = (userId: string) => {
     messages: data,
     isMessagesLoading: isLoading,
     messagesRefetch: refetch,
-  };
-};
-
-export const useSearchUsers = (query: string, myId: string) => {
-  const { data, isLoading, refetch } = useQuery<UserType[] | null>({
-    queryKey: ['searchUsers', query],
-    queryFn: async () => {
-      if (!query) {
-        return []; // query가 비어있는 경우 빈 배열 반환
-      }
-      const users = await searchUsers(query);
-      return users ? users.filter((user) => user._id !== myId) : [];
-    },
-    // enabled: !!query,
-  });
-
-  return {
-    users: data,
-    isUsersLoading: isLoading,
-    usersRefetch: refetch,
   };
 };
 
@@ -85,15 +62,17 @@ export const useCreateMessage = ({
   };
 };
 
-export const useReadMessage = (userId: string) => {
-  const { data } = useMutation({
-    mutationFn: () => readMessage(userId),
-    onError: () => {
-      console.log('read message error');
+export const useReadMessage = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: (userId: string) => readMessage(userId),
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.CONVERSATIONS] });
     },
   });
 
   return {
-    isSuccess: data,
+    mutateReadMessage: mutate,
   };
 };

@@ -13,6 +13,8 @@ const QUERY_KEYS = {
   FOLLOW_BY_USER_ID: 'followByUserId',
   UNFOLLOW_BY_USER_ID: 'unfollowByUserId',
   EDITING_POST_ID: 'editingPostId',
+  CONVERSATIONS: 'conversations',
+  MESSAGES: 'messages',
 };
 
 export default QUERY_KEYS;

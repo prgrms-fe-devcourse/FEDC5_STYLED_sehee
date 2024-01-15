@@ -8,7 +8,7 @@ import Input from '@/Components/Base/Input';
 import { MessageModalProps } from './type';
 import UserCard from '@/Components/Common/UserCard';
 import DirectMessageSkeleton from '../Skeleton';
-import { useSearchUsers } from '@/Hooks/Api/Message';
+import { useSearchUsers } from '@/Hooks/Api/Search';
 import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
 
 const MessageModal = ({
@@ -46,9 +46,7 @@ const MessageModal = ({
       return;
     }
     setReceiver(selected);
-    if (isMobileSize && setIsClickedUserCard) {
-      setIsClickedUserCard(true);
-    }
+    setIsClickedUserCard(true);
     setIsModalOpen(false);
   };
 
