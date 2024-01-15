@@ -15,6 +15,7 @@ export const StyledPostCardWrapper = styled.div<{
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${(props) => props.fontSize};
+  flex-shrink: 0;
 `;
 
 export const StyledPostCardHeader = styled.div`
