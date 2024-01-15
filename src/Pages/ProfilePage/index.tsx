@@ -2,11 +2,11 @@
 import { Outlet, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { StyledBackground, StyledHeaderContainer } from './style';
-import ProfileInfo from '@/Components/Profile/ProfileInfo';
 import ProfilePost from '@/Components/Profile/ProfilePost';
 /* eslint-disable no-underscore-dangle */
 import useFetchUser from '@/Hooks/Api/User';
 import useCheckAuth from '@/Hooks/Api/Auth';
+import ProfileInfo from '@/Components/Profile/ProfileInfo';
 
 const ProfilePage = () => {
   const { userId } = useParams() || ''; // URL에서 사용자 ID를 가져오기
