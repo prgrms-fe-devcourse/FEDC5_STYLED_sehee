@@ -250,6 +250,7 @@ const HeaderTab = () => {
                 options={options}
                 onSelect={(option) => {
                   onSelectOption(option);
+                  console.log(option);
                 }}
                 style={{ right: '16rem', top: '5rem' }}
               />

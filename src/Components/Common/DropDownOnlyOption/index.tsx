@@ -1,15 +1,12 @@
-import React, { ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 import { useTheme } from 'styled-components';
 import type { DropDownProps } from './type';
 import {
   StyledDropDown,
-  StyledDropDownButton,
   StyledDropDownItem,
   StyledDropDownOption,
   StyledLabel,
 } from './style';
-import Icon from '@/Components/Base/Icon';
-import channels from '@/Constants/Channels';
 
 /**
  * @param options 출력할 옵션들을 배열([])형태로 담아 전달해주세요. (필수)
@@ -44,6 +41,12 @@ const DropDownOnlyOption = forwardRef(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const theme = useTheme();
+
+    const handleSelect = (option: string) => {
+      if (onSelect) {
+        onSelect(option);
+      }
+    };
 
     return (
       <StyledDropDown
