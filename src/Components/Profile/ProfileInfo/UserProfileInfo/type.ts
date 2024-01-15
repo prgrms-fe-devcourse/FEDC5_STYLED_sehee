@@ -2,12 +2,6 @@ import { FollowingType, UserType } from '@/Types/UserType';
 
 export interface NameProps {
   name: string;
-  id: string;
-}
-
-export interface Props {
-  userData: UserType;
-  userDataRefetch: () => void;
-  isMyProfile: boolean;
+  user: UserType;
   isFollowing: null | FollowingType | undefined;
 }
