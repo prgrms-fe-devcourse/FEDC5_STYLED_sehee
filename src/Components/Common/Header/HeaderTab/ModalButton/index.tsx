@@ -7,6 +7,7 @@ const ModalButton = ({ style, name, color, setModalOpen, children }: Props) => {
     <Button
       backgroundColor="transparent"
       width="fit-content"
+      height="3.5rem"
       type="button"
       borderRadius="0"
       hoverBackgroundColor="transparent"

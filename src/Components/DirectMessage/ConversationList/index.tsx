@@ -62,8 +62,7 @@ const ConversationList = ({
           width="3rem"
           height="3rem"
           borderRadius="0"
-          backgroundColor={colors.background}
-          hoverBackgroundColor={colors.background}
+          backgroundColor="transparent"
           onClick={() => setIsModalOpen(true)}
         >
           <Icon

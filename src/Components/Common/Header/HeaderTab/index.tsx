@@ -21,8 +21,7 @@ import { getNotifications } from '@/Services/Notification';
 import useAuthUserStore from '@/Stores/AuthUser';
 import Badge from '@/Components/Base/Badge';
 import filterNotificationLength from './filterNotificationLength';
-import Button from '@/Components/Base/Button';
-import Icon from '@/Components/Base/Icon';
+import DropDownOnlyOption from '../../DropDownOnlyOption';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
@@ -194,24 +193,25 @@ const HeaderTab = () => {
                 color={
                   tab === 'alarm' ? colors.primaryReverse : colors.primaryNormal
                 }
-              setModalOpen={() => {
-                onSetModal('alarm');
-                setAlarm((prevIsShow) => !prevIsShow);
-                }}>
-              {notificationLength && notificationLength > 0 ? (
-                <Badge
-                  position="rightTop"
-                  backgroundColor={colors.alert}
-                  textColor="white"
-                  textSize={size.large}
-                  size={size.doubleLarge}
-                  style={{ right: size.small, top: size.small }}
-                >
-                  {notificationLength}
-                </Badge>
-              ) : null}
+                setModalOpen={() => {
+                  onSetModal('alarm');
+                  setAlarm((prevIsShow) => !prevIsShow);
+                }}
+              >
+                {notificationLength && notificationLength > 0 ? (
+                  <Badge
+                    position="rightTop"
+                    backgroundColor={colors.alert}
+                    textColor="white"
+                    textSize={size.medium}
+                    size={size.large}
+                    style={{ border: `2px solid ${colors.background}` }}
+                  >
+                    {notificationLength}
+                  </Badge>
+                ) : null}
               </ModalButton>
-              
+
               <StyledFocusedCircle $visible={tab === 'alarm'} />
             </StyledButtonContainer>
 
@@ -244,6 +244,15 @@ const HeaderTab = () => {
                   setDrop(!drop);
                 }}
               />
+              <DropDownOnlyOption
+                ref={ref}
+                isShow={drop}
+                options={options}
+                onSelect={(option) => {
+                  onSelectOption(option);
+                }}
+                style={{ right: '16rem', top: '5rem' }}
+              />
               <StyledFocusedCircle $visible={tab === 'account'} />
             </StyledButtonContainer>
           </>
@@ -257,19 +266,6 @@ const HeaderTab = () => {
           }}
         />
       )}
-      <DropDown
-        ref={ref}
-        isShow={drop}
-        style={{
-          position: 'absolute',
-          right: '0',
-          top: '10rem',
-        }}
-        options={options}
-        onSelect={(option) => {
-          onSelectOption(option);
-        }}
-      />
     </>
   );
 };
