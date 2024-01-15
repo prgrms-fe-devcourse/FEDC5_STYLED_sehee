@@ -280,7 +280,11 @@ const PostDetailModal = ({
             {/* author 정보 및 팔로우 버튼 */}
             <UserCard
               width="fit-content"
-              mode="follow"
+              mode={
+                authUser._id !== postDetailData?.author._id
+                  ? 'follow'
+                  : 'normal'
+              }
               badgeSize="0"
               userName={postAuthor}
               coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
