@@ -1,6 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { useTheme } from 'styled-components';
 import UserList from './UserList';
 import { StyledHeader, StyledTitle, StyledWrapper } from './style';
 import { getOnlineUsers, getUsers } from '@/Services/User';

@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from 'styled-components';
 import { StyledContainer, StyledHeader, StyledBody } from './style';
 import { ConversationListProps } from './type';
 import Icon from '@/Components/Base/Icon';
@@ -24,7 +23,6 @@ const ConversationList = ({
 }: ConversationListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigator = useNavigate();
-  const { colors } = useTheme();
   const { mutateReadMessage } = useReadMessage();
 
   const getReceiver = (conversation: ConversationType) => {

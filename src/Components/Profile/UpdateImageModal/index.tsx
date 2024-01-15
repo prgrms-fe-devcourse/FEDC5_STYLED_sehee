@@ -14,25 +14,29 @@ import useCheckAuth from '@/Hooks/Api/Auth';
 import useFetchUser from '@/Hooks/Api/User';
 
 const UpdateImageModal = ({ handleCloseModal }: Props) => {
-  const [image, setImage] = useState<ImageFileType | null | string>();
+  const [image, setImage] = useState<ImageFileType>();
   const { userId } = useParams() || '';
   const { loginUserRefetch } = useCheckAuth();
   const { userDataRefetch } = useFetchUser(userId || '');
   const [isError, setIsError] = useState(false);
 
   const { mutate, status } = useMutation({
-    mutationFn: () => updateProfileImage(image?.file),
-    onSuccess: (response) => {
-      if (response) {
-        handleCloseModal(false);
-        loginUserRefetch();
-        userDataRefetch();
-      }
+    mutationFn: async () => {
+      if (image) await updateProfileImage(image.file);
+    },
+    onSuccess: () => {
+      handleCloseModal(false);
+      loginUserRefetch();
+      userDataRefetch();
     },
     onError: () => {
       setIsError(true);
     },
   });
+
+  const handleUpload = (imageFile: ImageFileType) => {
+    setImage(imageFile);
+  };
 
   return (
     <Modal
@@ -48,7 +52,7 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
             <ImageUpload
               width="100%"
               height="85%"
-              onUpload={setImage}
+              onUpload={handleUpload}
             />
             <Button
               type="button"

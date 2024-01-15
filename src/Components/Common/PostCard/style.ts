@@ -1,4 +1,3 @@
-import Icon from '@/Components/Base/Icon';
 import { styled } from 'styled-components';
 
 export const StyledPostCardWrapper = styled.div<{

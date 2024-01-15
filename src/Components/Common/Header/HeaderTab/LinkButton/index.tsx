@@ -3,8 +3,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
 
-
-const LinkButton = ({ color, name, link, setLink, style, children }: Props) => {
+const LinkButton = ({ name, link, setLink, style, children }: Props) => {
   return (
     <Button
       backgroundColor="transparent"

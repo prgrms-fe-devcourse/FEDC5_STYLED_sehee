@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
 import LoginButton from './LoginButton';
-import DropDown from '@/Components/Common/DropDown';
 import {
   StyledUserContainer,
   StyledButtonContainer,
@@ -250,9 +249,8 @@ const HeaderTab = () => {
                 options={options}
                 onSelect={(option) => {
                   onSelectOption(option);
-                  console.log(option);
                 }}
-                style={{ right: '16rem', top: '5rem' }}
+                // style={{ right: '16rem', top: '5rem' }}
               />
               <StyledFocusedCircle $visible={tab === 'account'} />
             </StyledButtonContainer>

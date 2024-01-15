@@ -1,6 +1,10 @@
 import Modal from '@/Components/Common/Modal';
 
-const AlarmModal = ({ onChangeOpen }) => {
+const AlarmModal = ({
+  onChangeOpen,
+}: {
+  onChangeOpen: (state: boolean) => void;
+}) => {
   return (
     <Modal
       height={20}

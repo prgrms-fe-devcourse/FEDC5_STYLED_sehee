@@ -2,7 +2,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
 
-const ModalButton = ({ style, name, color, setModalOpen, children }: Props) => {
+const ModalButton = ({ style, name, setModalOpen, children }: Props) => {
   return (
     <Button
       backgroundColor="transparent"

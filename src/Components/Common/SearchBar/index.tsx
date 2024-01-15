@@ -1,5 +1,4 @@
 import Icon from '@/Components/Base/Icon';
-import Input from '@/Components/Base/Input';
 import { StyledContainer, StyledInput } from './style';
 import Button from '@/Components/Base/Button';
 import SearchProps from './type';
