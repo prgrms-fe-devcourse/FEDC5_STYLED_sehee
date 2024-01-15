@@ -101,7 +101,7 @@ const UserCard = forwardRef(
         {/* 유저 아이디 및 세부 상태 정보 */}
         <StyledUserInfoContainer>
           <StyledUserName
-            fontSize={userNameSize || size.small}
+            fontSize={userNameSize || size.medium}
             fontWeight={
               userNameWeight || (!isRead ? fontWeight.bold : fontWeight.medium)
             }
@@ -128,8 +128,10 @@ const UserCard = forwardRef(
               height="2rem"
               className="follow-button"
               borderRadius="0.5rem"
+              textSize="1.3rem"
+              textColor="white"
               backgroundColor={isFollow ? colors.read : colors.follow}
-              hoverBackgroundColor={colors.buttonHoverBackground}
+              hoverBackgroundColor={colors.read}
               onClick={onClickFollowBtn}
             >
               {isFollow ? '팔로잉' : '팔로우'}

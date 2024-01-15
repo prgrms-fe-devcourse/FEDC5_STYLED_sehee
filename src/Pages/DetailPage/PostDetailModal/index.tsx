@@ -271,7 +271,7 @@ const PostDetailModal = ({
           {postImageUrl && postImageUrl.length !== 0 ? (
             <StyledImage src={postImageUrl} />
           ) : (
-            <StyledIcon src="src/Assets/Images/STYLED-logo-black.png" />
+            <StyledIcon src="src/Assets/Images/STYLED-logo.png" />
           )}
         </StyledImageCardContainer>
         {/* 오른쪽 포스트 관련 정보 영역 */}
@@ -297,6 +297,7 @@ const PostDetailModal = ({
               height="3rem"
               borderRadius="0.5rem"
               backgroundColor={colors.background}
+              hoverBackgroundColor="transparent"
               onClick={() => setIsDotModalOpen(true)}
             >
               <Icon name="more_horiz" />
@@ -314,6 +315,7 @@ const PostDetailModal = ({
                 onClickUser={() =>
                   handleClickUser(postDetailData?.author._id || '')
                 }
+                style={{ backgroundColor: 'transparent', padding: '0' }}
               />
               <StyledEditTime>{postEditTime}</StyledEditTime>
             </StyledPostMainTopContainer>
@@ -339,6 +341,10 @@ const PostDetailModal = ({
                           }
                           className="post-detail-user-card"
                           onClickUser={() => handleClickUser(author._id)}
+                          style={{
+                            backgroundColor: 'transparent',
+                            padding: '0',
+                          }}
                         />
                         <StyledTextContainer>
                           <StyledText>{comment}</StyledText>
