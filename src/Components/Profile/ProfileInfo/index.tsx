@@ -7,7 +7,12 @@ import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
 import UpdateImageModal from '../UpdateImageModal';
 
-const ProfileInfo = ({ userData, isMyProfile, isFollowing }: Props) => {
+const ProfileInfo = ({
+  userData,
+  userDataRefetch,
+  isMyProfile,
+  isFollowing,
+}: Props) => {
   const [isChangeImage, setIsChangeImage] = useState(false);
 
   return (
@@ -41,9 +46,8 @@ const ProfileInfo = ({ userData, isMyProfile, isFollowing }: Props) => {
             />
           )}
           <FollowInfo
-            posts={userData.posts.length}
-            followers={userData.followers.length}
-            following={userData.following.length}
+            userData={userData}
+            userDataRefetch={userDataRefetch}
           />
         </div>
       </StyledProfileInfoContainer>

@@ -48,6 +48,7 @@ import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 
 const PostDetailModal = ({
   postLike,
@@ -63,6 +64,7 @@ const PostDetailModal = ({
   const { colors, size } = useTheme();
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
+  const { setReceiver } = useMessageReceiver();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
@@ -127,7 +129,14 @@ const PostDetailModal = ({
    * DM 버튼 클릭 동작 함수
    */
   const handleClickDMBtn = () => {
-    navigate('/directmessage');
+    if (postDetailData) {
+      if (postDetailData.author._id !== authUser._id) {
+        setReceiver(postDetailData?.author);
+      } else {
+        setReceiver(null);
+      }
+      navigate('/directmessage');
+    }
   };
 
   /**
@@ -280,7 +289,11 @@ const PostDetailModal = ({
             {/* author 정보 및 팔로우 버튼 */}
             <UserCard
               width="fit-content"
-              mode="follow"
+              mode={
+                authUser._id !== postDetailData?.author._id
+                  ? 'follow'
+                  : 'normal'
+              }
               badgeSize="0"
               userName={postAuthor}
               coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}

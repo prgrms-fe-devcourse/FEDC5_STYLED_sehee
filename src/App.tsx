@@ -6,6 +6,7 @@ import GlobalStyle from '@/Styles/Global';
 import RouteManager from '@/Routes/Router';
 import Header from './Components/Common/Header';
 import { useDarkModeStore } from './Stores';
+import DarkMode from './Components/DarkMode';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +26,7 @@ const App = () => {
           activeHeader={pathname !== '/login' && pathname !== '/signUp'}
         />
         <RouteManager />
+        <DarkMode />
       </QueryClientProvider>
     </ThemeProvider>
   );

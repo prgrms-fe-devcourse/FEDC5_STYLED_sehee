@@ -7,6 +7,7 @@ export interface NameProps {
 
 export interface Props {
   userData: UserType;
+  userDataRefetch: () => void;
   isMyProfile: boolean;
   isFollowing: null | FollowingType | undefined;
 }

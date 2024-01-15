@@ -3,6 +3,7 @@ interface Props {
   color: string;
   name: string;
   setModalOpen?: () => void;
+  children?: React.ReactNode;
 }
 
 export default Props;

@@ -1,12 +1,11 @@
 import { NotificationType } from '@/Types/NotificationType';
-import calculateDays from '@/Utils/calculateDays';
+import calculateDays from '@/Utils/calculateTime';
+import { NotificationListType } from './type';
 
-const filterNotificationsByCategory = (
-  notifications: NotificationType[],
+export const filterNotificationsByCategory = (
+  notifications: NotificationListType[],
   selectedCategory: string,
 ) => {
-  if (!notifications) return [];
-
   return notifications.filter(({ comment, follow, post, message }) => {
     switch (selectedCategory) {
       case '댓글':
@@ -15,57 +14,51 @@ const filterNotificationsByCategory = (
         return !!follow;
       case '좋아요':
         return !!post;
+      case '메세지':
+        return !!message;
       default:
-        return !message; // 전체인 경우 message가 없는 알림만 반환
+        return true;
     }
   });
 };
 
-const addNotificationsData = (notifications: NotificationType[]) => {
-  return notifications.map((notification) => {
-    const { createdAt, comment, follow, post, author } = notification;
+export const filterNotificationList = (notifications: NotificationType[]) => {
+  return notifications.reduce<NotificationListType[]>((acc, notification) => {
+    const { createdAt, comment, follow, post, author, message } = notification;
+    if (!message && !comment && !follow && !post) {
+      return acc;
+    }
 
     const result = {
       ...notification,
       text: '',
-      date: '',
+      date: String(calculateDays(createdAt)),
       type: '',
       typeId: '',
     };
 
-    if (comment) {
+    if (message) {
+      result.text = `${author.fullName}님이 메세지를 보냈습니다.`;
+      result.type = 'message';
+      result.typeId = message;
+    } else if (comment) {
+      const { _id: id } = comment.post;
+
       result.text = `${author.fullName}님이 게시글에 댓글을 추가했습니다: ${comment.comment}`;
       result.type = 'comment';
-      result.typeId = comment.post;
-    }
-    if (follow) {
-      result.text = `${author.fullName}님이 팔로우를 보냈습니다.`;
+      result.typeId = id;
+    } else if (follow) {
+      result.text = `${author.fullName}님이 팔로우를 요청했습니다.`;
       result.type = 'follow';
-      result.typeId = follow;
-    }
-    if (post) {
+      result.typeId = follow.follower;
+    } else if (post) {
       result.text = `${author.fullName}님이 게시글 좋아요를 눌렀습니다.`;
       result.type = 'post';
       result.typeId = post;
     }
 
-    result.date = String(calculateDays(createdAt));
+    acc.push(result);
 
-    return result;
-  });
+    return acc;
+  }, []);
 };
-
-const filterNotification = (
-  notifications: NotificationType[],
-  selectedCategory: string,
-) => {
-  const filterList = filterNotificationsByCategory(
-    notifications,
-    selectedCategory,
-  );
-  const result = addNotificationsData(filterList);
-
-  return result;
-};
-
-export default filterNotification;

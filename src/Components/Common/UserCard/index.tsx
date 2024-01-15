@@ -37,6 +37,7 @@ const UserCard = forwardRef(
       isOnline = false,
       isRead = false,
       isFollow = false,
+      isButtonShow = true,
       userName = '',
       userDetail = null,
       date = '',
@@ -59,7 +60,12 @@ const UserCard = forwardRef(
      * UserCard 내 요소 클릭 시 클릭이벤트 전달용 함수
      * 어떻게 사용 및 확장할지는 추후 결정해야 할듯
      */
+
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+      if (onClickUser) {
+        onClickUser();
+        return;
+      }
       if (onClick && e.target === e.currentTarget) {
         onClick(e);
       }
@@ -74,6 +80,7 @@ const UserCard = forwardRef(
     return (
       <StyledWrapper
         ref={ref}
+        onClick={handleClick}
         $width={width || '100%'}
         $height={height || 'auto'}
         $borderRadius={borderRadius || ''}
@@ -85,8 +92,13 @@ const UserCard = forwardRef(
           src={coverImageUrl || ''}
           className="user-avatar"
           size={avatarSize}
-          onClick={onClickUser}
-          style={{ cursor: 'pointer' }}
+          // @TODO: 이부분 원래 handleClick 사용되던 곳. 수정해야합니다!
+          onClick={handleClick}
+          style={{
+            cursor: 'pointer',
+            minWidth: `${avatarSize}px`,
+            minHeight: `${avatarSize}`,
+          }}
         >
           {isOnline && (
             <Badge
@@ -105,7 +117,8 @@ const UserCard = forwardRef(
             fontWeight={
               userNameWeight || (!isRead ? fontWeight.black : fontWeight.medium)
             }
-            onClick={onClickUser}
+            // @TODO: 이부분 원래 handleClick 사용되던 곳. 수정해야합니다!
+            onClick={handleClick}
           >
             {userName}
           </StyledUserName>
@@ -121,7 +134,7 @@ const UserCard = forwardRef(
           )}
         </StyledUserInfoContainer>
         {/* follow 모드 시 팔로우 버튼 */}
-        {mode === 'follow' && (
+        {mode === 'follow' && isButtonShow === true && (
           <StyledUserFollowContainer>
             <Button
               width="100%"
@@ -131,6 +144,7 @@ const UserCard = forwardRef(
               backgroundColor={isFollow ? colors.read : colors.follow}
               hoverBackgroundColor={colors.buttonClickHover}
               onClick={onClickFollowBtn}
+              style={{ minWidth: '4.5rem' }}
             >
               {isFollow ? '팔로잉' : '팔로우'}
             </Button>

@@ -1,43 +1,37 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet, useParams } from 'react-router-dom';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import { checkAuth } from '@/Services/Auth';
-import { getUser } from '@/Services/User';
-import { UserType } from '@/Types/UserType';
+import { useEffect } from 'react';
 import { StyledBackground, StyledHeaderContainer } from './style';
 import ProfileInfo from '@/Components/Profile/ProfileInfo';
 import ProfilePost from '@/Components/Profile/ProfilePost';
-import Skeleton from '@/Components/Base/Skeleton';
+/* eslint-disable no-underscore-dangle */
+import useFetchUser from '@/Hooks/Api/User';
+import useCheckAuth from '@/Hooks/Api/Auth';
 
 const ProfilePage = () => {
   const { userId } = useParams() || ''; // URL에서 사용자 ID를 가져오기
 
-  const currentUserQuery: UseQueryResult<UserType, unknown> = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: checkAuth,
-  });
-  const profileUserQuery: UseQueryResult<UserType, unknown> = useQuery({
-    queryKey: ['profileUser', userId],
-    queryFn: () => getUser(userId || ''),
-  });
+  const { loginUserData, loginUserRefetch } = useCheckAuth();
+  const { userData: profileUser, userDataRefetch } = useFetchUser(userId || '');
 
-  const currentUser = currentUserQuery.data;
-  const profileUser = profileUserQuery.data;
+  useEffect(() => {
+    loginUserRefetch();
+    userDataRefetch();
+  }, [userId, loginUserRefetch, userDataRefetch]);
 
   if (!profileUser) {
     // 프로필 사용자 정보를 가져오지 못한 경우
     return null;
   }
 
-  const isCurrentUserProfile = !currentUser // 로그인 안한 경우
+  const isMyProfile = !loginUserData // 로그인 안한 경우
     ? false
-    : // eslint-disable-next-line no-underscore-dangle
-      currentUser._id === profileUser._id;
+    : loginUserData._id === profileUser._id;
 
   const isFollowingUser =
-    !currentUser || !currentUser.following
+    !loginUserData || !loginUserData.following
       ? null
-      : currentUser.following.find(
+      : loginUserData.following.find(
           // eslint-disable-next-line no-underscore-dangle
           (following) => following.user === profileUser._id,
         );
@@ -46,26 +40,16 @@ const ProfilePage = () => {
     <>
       <StyledHeaderContainer />
       <StyledBackground>
-        {profileUserQuery.isLoading ? (
-          <Skeleton.Circle />
-        ) : (
-          <ProfileInfo
-            userData={profileUser}
-            isMyProfile={isCurrentUserProfile}
-            isFollowing={isFollowingUser}
-          />
-        )}
-        {profileUserQuery.isLoading ? (
-          <Skeleton.Box
-            width="90%"
-            height="22.5rem"
-          />
-        ) : (
-          <ProfilePost
-            userData={profileUser}
-            isMyProfile={isCurrentUserProfile}
-          />
-        )}
+        <ProfileInfo
+          userData={profileUser}
+          isMyProfile={isMyProfile}
+          userDataRefetch={userDataRefetch}
+          isFollowing={isFollowingUser}
+        />
+        <ProfilePost
+          userData={profileUser}
+          isMyProfile={isMyProfile}
+        />
       </StyledBackground>
       <Outlet />
     </>

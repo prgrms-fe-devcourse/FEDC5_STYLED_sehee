@@ -302,6 +302,7 @@ const HomePage = () => {
                 return cards?.map((post) => (
                   <PostCard
                     key={post._id}
+                    authUser={userObj}
                     postId={post._id}
                     imageUrl={post.image || ''}
                     content={post.title || ''}
