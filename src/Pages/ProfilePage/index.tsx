@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { checkAuth } from '@/Services/Auth';
 import { getUser } from '@/Services/User';
@@ -61,6 +61,7 @@ const ProfilePage = () => {
           isMyProfile={isCurrentUserProfile}
         />
       </StyledBackground>
+      <Outlet />
     </>
   );
 };
