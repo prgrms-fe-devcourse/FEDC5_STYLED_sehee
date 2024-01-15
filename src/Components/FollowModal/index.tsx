@@ -55,7 +55,6 @@ const FollowModal = ({
   });
 
   const fetchFollowData = useCallback(async () => {
-    setIsLoading(true);
     const userIds: string[] = [];
 
     if (mode === 'following') {
