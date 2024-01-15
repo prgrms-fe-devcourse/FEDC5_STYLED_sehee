@@ -1,7 +1,9 @@
 import { HTMLAttributes } from 'react';
+import { UserType } from '@/Types/UserType';
 
 export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
   postId: string;
+  authUser: UserType | null | undefined;
   imageUrl: string;
   content: string;
   authorId: string;
