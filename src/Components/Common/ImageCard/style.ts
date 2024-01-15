@@ -51,6 +51,7 @@ export const StyledHoverInfo = styled.div`
 `;
 
 export const StyledHoverInfoText = styled.div<{ $fontSize: number }>`
+  color: white;
   font-size: ${({ $fontSize }) => $fontSize}rem;
   padding: 0.7rem 1.2rem;
 `;

@@ -24,6 +24,7 @@ export const StyledLabel = styled.span<StyledLabelProp>`
 
 export const StyledDropDownButton = styled.button<StyledDropDownButtonProp>`
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: space-between;
   width: ${({ $width }) => $width};
@@ -41,7 +42,7 @@ export const StyledDropDownOption = styled.div<{ $width: string }>`
   display: block;
   position: absolute;
   width: ${({ $width }) => $width};
-  z-index: 1;
+  z-index: 12;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   background-color: #f9f9f9;
   border-radius: 1rem;

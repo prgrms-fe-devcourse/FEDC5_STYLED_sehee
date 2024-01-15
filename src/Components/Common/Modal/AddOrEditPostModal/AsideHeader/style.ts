@@ -14,7 +14,6 @@ export const StyledHeader = styled.div`
 
   /* TODO: 반응형 추후 보완 */
   @media ${({ theme }) => theme.device.tablet} {
-    flex-direction: column;
     gap: 0.6rem;
 
     > * {

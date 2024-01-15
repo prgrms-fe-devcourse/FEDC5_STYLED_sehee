@@ -41,6 +41,7 @@ const DropDownOnlyOption = forwardRef(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const theme = useTheme();
+    const [selectedOption, setSelectedOption] = useState('선택 없음');
 
     const handleSelect = (option: string) => {
       if (onSelect) {

@@ -84,6 +84,7 @@ const SearchModal = ({ onChangeOpen }: Props) => {
         width={40}
         height={80}
         onChangeOpen={onChangeOpen}
+        style={{ minWidth: '40rem' }}
       >
         <StyledWrapper>
           <StyledHeader>

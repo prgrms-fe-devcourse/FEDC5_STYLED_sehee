@@ -5,6 +5,10 @@ export const StyledWrapper = styled.div`
   height: 100%;
 
   display: flex;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    flex-direction: column;
+  }
 `;
 export const StyledMain = styled.main`
   display: flex;
@@ -13,6 +17,11 @@ export const StyledMain = styled.main`
   height: 100%;
   border-right: 0.1rem solid lightgray;
   overflow-y: auto;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 100%;
+    border: none;
+  }
 `;
 export const StyledAside = styled.aside`
   display: flex;
@@ -21,6 +30,10 @@ export const StyledAside = styled.aside`
   height: 100%;
   background-color: white;
   overflow-y: auto;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 100%;
+  }
 `;
 export const StyledMainHeader = styled.div`
   width: 100%;

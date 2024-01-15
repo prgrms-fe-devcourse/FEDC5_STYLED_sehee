@@ -142,6 +142,7 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
             <ImageUpload
               width="100%"
               height="80%"
+              fontSize={1.5}
               onUpload={setImage}
               initialValue={editingPost?.image}
             />

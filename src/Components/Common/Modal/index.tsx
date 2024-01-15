@@ -24,6 +24,7 @@ const Modal = ({
   borderRadius = 0.5,
   flexDirection = 'row',
   onChangeOpen,
+  ...props
 }: ModalPropsType) => {
   const modalBgRef = useRef(null);
   const theme = useTheme();
@@ -51,6 +52,7 @@ const Modal = ({
         $flexDirection={flexDirection}
         $backgroundColor={theme.colors.background}
         $color={theme.colors.text}
+        {...props}
       >
         {children}
       </StyledModalContainer>
