@@ -9,6 +9,7 @@ import { followUser, unfollowUser } from '@/Services/Follow';
 import { sendNotifications } from '@/Services/Notification';
 import useCheckAuth from '@/Hooks/Api/Auth';
 import useFetchUser from '@/Hooks/Api/User';
+import { useReadMessage } from '@/Hooks/Api/Message';
 
 const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { setReceiver } = useMessageReceiver();
@@ -16,6 +17,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { userId } = useParams() || '';
   const { loginUserRefetch } = useCheckAuth();
   const { userDataRefetch } = useFetchUser(userId || '');
+  const { mutateReadMessage } = useReadMessage();
 
   const handleFollow = async () => {
     // 이미 팔로우 중이면 언팔로우
@@ -35,6 +37,11 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
     }
     loginUserRefetch();
     userDataRefetch();
+  };
+
+  const navigateDirectMessage = () => {
+    setReceiver(user);
+    mutateReadMessage(user._id);
   };
 
   return (
@@ -84,7 +91,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
             marginTop: '.5rem',
             border: `1px solid ${colors.text}`,
           }}
-          onClick={() => setReceiver(user)}
+          onClick={navigateDirectMessage}
         >
           메시지 보내기
         </Button>

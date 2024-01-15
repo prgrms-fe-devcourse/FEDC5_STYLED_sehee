@@ -128,10 +128,6 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    console.log(postList);
-  }, [postList]);
-
-  useEffect(() => {
     if (hasNextPage && inView) {
       fetchNextPage();
     }
