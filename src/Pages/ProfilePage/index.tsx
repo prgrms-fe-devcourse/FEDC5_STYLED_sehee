@@ -41,8 +41,8 @@ const ProfilePage = () => {
 
   const isFollowingUser =
     !currentUser || !currentUser.following
-      ? false
-      : currentUser.following.some(
+      ? null
+      : currentUser.following.find(
           // eslint-disable-next-line no-underscore-dangle
           (following) => following.user === profileUser._id,
         );
