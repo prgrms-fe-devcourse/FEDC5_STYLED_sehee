@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Modal from '@/Components/Common/Modal';
 import {
   PostDotModalProps,
@@ -11,6 +13,7 @@ import buttonInfo from './postDotModalConst';
 import useAuthUserStore from '@/Stores/AuthUser';
 import USER_ROLE from '@/Constants/userRole';
 import useDeletePost from '@/Hooks/Api/Post';
+import Alert from '@/Components/Common/Alert';
 
 const PostDotModal = ({
   postId,
@@ -24,11 +27,10 @@ const PostDotModal = ({
   const { user: authUser } = useAuthUserStore();
   const navigate = useNavigate();
 
+  const [isAlert, setIsAlert] = useState(false);
   const { deleteMyPost } = useDeletePost();
 
-  /**
-   * 포스트 삭제 함수
-   */
+  // 포스트 삭제 api 요청 함수
   const handleDeletePost = () => {
     deleteMyPost(postId, {
       onSuccess: () => {
@@ -37,31 +39,35 @@ const PostDotModal = ({
     });
   };
 
-  /**
-   * 포스트 수정 함수
-   */
+  // 삭제 확인 모달 open 함수
+  const handleOpenAlert = () => {
+    setIsAlert(true);
+  };
+
+  // 삭제 확인 모달 close 함수
+  const handleCloseAlert = () => {
+    setIsAlert(false);
+  };
+
+  // 포스트 수정 함수
   const handleEditPost = () => {
     navigate(`/edit-post/${postId}`);
   };
 
-  /**
-   * 팔로우 취소 함수
-   */
+  // 팔로우 취소 함수
   const handleCancelFollow = () => {
     onCancelFollow(false);
     onCloseDotModal(false);
   };
 
-  /**
-   * PostDotModal 닫는 함수
-   */
+  // PostDotModal 닫는 함수
   const handleCloseDotModal = () => {
     onCloseDotModal(false);
   };
 
   // 핸들러 함수 리스트
   const handlerFuncList = [
-    handleDeletePost,
+    handleOpenAlert,
     handleEditPost,
     handleCancelFollow,
     handleCloseDotModal,
@@ -76,7 +82,6 @@ const PostDotModal = ({
     >
       {buttonInfo.map((title, index) => {
         const isAdmin = authUser.role === USER_ROLE.ADMIN_USER;
-        // eslint-disable-next-line no-underscore-dangle
         const isMyPost = authUser._id === postAuthorId;
         const isAdvancedTitle =
           title === '게시물 삭제' || title === '게시물 수정';
@@ -113,6 +118,18 @@ const PostDotModal = ({
           </Button>
         );
       })}
+      {/* 삭제 확인 모달창 */}
+      {isAlert ? (
+        <Alert
+          mode="confirm"
+          message="정말로 삭제하시겠습니까?"
+          onChangeOpen={setIsAlert}
+          onConfirm={handleDeletePost}
+          onCancle={handleCloseAlert}
+          confirmContent="확인"
+          cancleContent="취소"
+        />
+      ) : null}
     </Modal>
   );
 };
