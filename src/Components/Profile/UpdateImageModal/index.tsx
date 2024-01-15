@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import Button from '@/Components/Base/Button';
 import ImageUpload from '@/Components/Common/ImageUpload';
@@ -11,12 +11,15 @@ import StyledConatiner from './style';
 
 const UpdateImageModal = ({ handleCloseModal }: Props) => {
   const [image, setImage] = useState<ImageFileType | null | string>();
+  const queryClient = useQueryClient();
 
   const { mutate, status } = useMutation({
     mutationFn: () => updateProfileImage(image?.file),
     onSuccess: async (response) => {
       if (response) {
         handleCloseModal(false);
+        queryClient.refetchQueries({ queryKey: ['currentUser'] });
+        queryClient.refetchQueries({ queryKey: ['profileUser'] });
       }
     },
   });

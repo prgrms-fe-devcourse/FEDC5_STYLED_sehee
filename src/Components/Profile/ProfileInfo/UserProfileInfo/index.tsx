@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Link } from 'react-router-dom';
 import { useTheme } from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
 import { NameProps } from './type';
@@ -11,6 +12,7 @@ import { sendNotifications } from '@/Services/Notification';
 const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { setReceiver } = useMessageReceiver();
   const { colors } = useTheme();
+  const queryClient = useQueryClient();
 
   const handleFollow = async () => {
     // 이미 팔로우 중이면 언팔로우
@@ -28,6 +30,8 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
         postId: null,
       });
     }
+    queryClient.refetchQueries({ queryKey: ['currentUser'] });
+    queryClient.refetchQueries({ queryKey: ['profileUser'] });
   };
 
   return (

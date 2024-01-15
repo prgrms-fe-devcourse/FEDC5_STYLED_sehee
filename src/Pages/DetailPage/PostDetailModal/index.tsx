@@ -111,7 +111,7 @@ const PostDetailModal = ({
    * @param state isOpen 모달 open 여부 상태
    */
   const handleCloseModal = (state: boolean) => {
-    navigate('/');
+    navigate(-1);
     setIsPostDetailModalOpen(state);
   };
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet, useParams } from 'react-router-dom';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { checkAuth } from '@/Services/Auth';
@@ -16,18 +16,12 @@ const ProfilePage = () => {
     queryFn: checkAuth,
   });
   const profileUserQuery: UseQueryResult<UserType, unknown> = useQuery({
-    queryKey: ['user', userId],
+    queryKey: ['profileUser', userId],
     queryFn: () => getUser(userId || ''),
   });
 
   const currentUser = currentUserQuery.data;
   const profileUser = profileUserQuery.data;
-
-  useEffect(() => {
-    currentUserQuery.refetch();
-    profileUserQuery.refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, currentUser]);
 
   if (!profileUser) {
     // 프로필 사용자 정보를 가져오지 못한 경우

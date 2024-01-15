@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import Button from '@/Components/Base/Button';
 import Modal from '@/Components/Common/Modal';
@@ -13,12 +13,15 @@ import { StyledContainer, StyledForm } from './style';
 
 const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
   const { mutate, status } = useMutation({
     mutationFn: (nameData: PutUpdateUserRequestType) => updateMyName(nameData),
     onSuccess: async (response) => {
       if (response) {
         handleCloseModal(false);
+        queryClient.refetchQueries({ queryKey: ['currentUser'] });
+        queryClient.refetchQueries({ queryKey: ['profileUser'] });
       }
     },
   });
