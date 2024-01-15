@@ -18,8 +18,9 @@ export const StyledContainer = styled.li<{
   padding: ${({ theme }) =>
     `${theme.size.small} ${theme.size.small} ${theme.size.small} ${theme.size.large}`};
   order: ${({ $isAuth, $isOnline }) => getOrderValue($isAuth, $isOnline)};
-  background-color: ${({ $isAuth, theme }) =>
-    $isAuth && theme.colors.buttonClickHover};
+
+  border-bottom: ${({ $isAuth, theme }) =>
+    $isAuth && `1px solid ${theme.colors.backgroundGrey}`};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.focusHover};
@@ -37,3 +38,5 @@ export const StyledUserName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
+export const StyledMySelfUser = styled.div``;
