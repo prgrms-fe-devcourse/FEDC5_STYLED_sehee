@@ -40,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     line-height: 1.5;
     color: ${({ theme }) => theme.colors.text};
-    background-color: ${({ theme }) => theme.colors.primaryNormal};
+    background-color: ${({ theme }) => theme.colors.background};
 
     font-family: "Pretendard-Regular", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   }

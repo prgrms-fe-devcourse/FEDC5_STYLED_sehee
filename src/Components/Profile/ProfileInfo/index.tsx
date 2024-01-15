@@ -12,7 +12,7 @@ const ProfileInfo = ({ userData, isMyProfile }: Props) => {
         <Avatar
           src={userData.image}
           size={140}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', flexShrink: '0' }}
           onClick={() => console.log('change image')}
         />
       ) : (

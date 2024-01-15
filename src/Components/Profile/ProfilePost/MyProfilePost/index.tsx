@@ -72,14 +72,14 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
           height="1rem"
           type="button"
           hoverBackgroundColor="transparent"
-          hoverTextColor={colors.primary}
-          textColor={colors.primary}
+          hoverTextColor={colors.text}
+          textColor={colors.text}
           borderRadius="0"
           style={{
             margin: '0',
             height: '100%',
             borderTop: `2px solid ${
-              isLike ? colors.background : colors.primary
+              isLike ? colors.background : colors.border
             }`,
           }}
           onClick={() => setIsLike(false)}
@@ -96,13 +96,13 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
           width="fit-content"
           type="button"
           hoverBackgroundColor="transparent"
-          hoverTextColor={colors.primary}
-          textColor={colors.primary}
+          hoverTextColor={colors.text}
+          textColor={colors.text}
           borderRadius="0"
           style={{
             height: '100%',
             borderTop: `2px solid ${
-              isLike ? colors.primary : colors.background
+              isLike ? colors.border : colors.background
             }`,
           }}
           onClick={() => setIsLike(true)}

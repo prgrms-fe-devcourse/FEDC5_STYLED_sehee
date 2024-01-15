@@ -1,9 +1,12 @@
+import { useTheme } from 'styled-components';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
 import { NameProps } from '../type';
 import Icon from '@/Components/Base/Icon';
 
 const MyProfileInfo = ({ name }: NameProps) => {
+  const { colors } = useTheme();
+
   return (
     <StyledButtonContainer>
       <StyledName>
@@ -21,7 +24,11 @@ const MyProfileInfo = ({ name }: NameProps) => {
         textSize="1.4rem"
         width="10rem"
         borderRadius="1rem"
-        style={{ marginRight: '1rem', marginTop: '.5rem' }}
+        style={{
+          marginRight: '1rem',
+          marginTop: '.5rem',
+          border: `1px solid ${colors.text}`,
+        }}
       >
         비밀번호 변경
       </Button>
