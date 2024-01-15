@@ -10,7 +10,7 @@ export const StyledContainer = styled.form`
 export const StyledInput = styled.input`
   background: transparent;
   border: none;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.primayDark};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.text};
   transition: border-bottom 0.3s ease;
   padding: 1rem 0rem;
   width: 15rem;

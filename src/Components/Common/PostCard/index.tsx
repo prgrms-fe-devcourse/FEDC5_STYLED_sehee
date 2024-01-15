@@ -84,6 +84,7 @@ const PostCard = ({
             textColor={followBtnTextColor}
             backgroundColor={followBtnBgColor}
             hoverBackgroundColor={followBtnHoverBgColor}
+            hoverTextColor={followBtnTextColor}
             onClick={() => handleFollowClick(authorId)}
           >
             {isFollower ? '팔로잉' : '팔로우'}

@@ -9,7 +9,6 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   padding: 0rem 5rem;
   height: calc(100vh - 9.4rem);
-  background-color: ${({ theme }) => theme.colors.primaryNormal};
   color: ${({ theme }) => theme.colors.text};
   gap: 2rem;
   .material-symbols-outlined,

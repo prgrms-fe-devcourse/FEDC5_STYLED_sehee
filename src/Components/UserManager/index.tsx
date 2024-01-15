@@ -14,7 +14,6 @@ import { searchUsers } from '@/Services/Search';
 import { UserType } from '@/Types/UserType';
 
 const UserManager = () => {
-  const { size } = useTheme();
   const [isSubmit, setIsSubmit] = useState(false);
   const limit = 10;
   const refetchTime = 2000;

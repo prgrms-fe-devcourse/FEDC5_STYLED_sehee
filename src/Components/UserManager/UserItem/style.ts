@@ -14,14 +14,15 @@ export const StyledContainer = styled.li<{
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.size.small};
-  background-color: ${({ theme }) => theme.colors.background};
   padding: ${({ theme }) =>
     `${theme.size.small} ${theme.size.small} ${theme.size.small} ${theme.size.large}`};
   order: ${({ $isAuth, $isOnline }) => getOrderValue($isAuth, $isOnline)};
 
   transition: all 0.5s ease;
   border-bottom: ${({ $isAuth, theme }) =>
-    $isAuth && `1px solid ${theme.colors.backgroundGrey}`};
+    $isAuth && `1px solid ${theme.colors.text}`};
+  padding: ${({ $isAuth }) => $isAuth && '2rem 0rem 2rem 2rem'};
+  margin-bottom: ${({ $isAuth }) => $isAuth && '2rem'};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.gray};

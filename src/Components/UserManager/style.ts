@@ -4,7 +4,7 @@ export const StyledWrapper = styled.section`
   width: 25rem;
   height: 100%;
   padding: 1rem 0.1rem 0 0;
-  background-color: ${({ theme }) => theme.colors.background};
+  /* background-color: ${({ theme }) => theme.colors.background}; */
   display: flex;
   flex-direction: column;
   flex-shrink: 0;

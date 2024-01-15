@@ -5,7 +5,7 @@ export const StyledHeaderContainer = styled.div`
   height: 9.4rem;
   padding: 2rem 5rem;
   gap: 2rem;
-  background-color: ${({ theme }) => theme.colors.primaryNormal};
+  background-color: ${({ theme }) => theme.colors.background};
 
   display: flex;
   position: fixed;
