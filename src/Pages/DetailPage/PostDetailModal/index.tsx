@@ -184,7 +184,6 @@ const PostDetailModal = ({
     }
   };
 
-
   const handleClickDeleteComment = (commentId: string) => {
     deleteCommentById(commentId);
   };
@@ -219,8 +218,6 @@ const PostDetailModal = ({
     }
   };
 
-  const { likeById } = useLikeById();
-  const { disLikeById } = useDisLikeById();
   /**
    * 좋아요 버튼 클릭 동작 함수
    */
