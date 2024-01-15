@@ -34,7 +34,7 @@ const HeaderTab = () => {
     queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
     queryFn: getNotifications,
     refetchInterval: refetchTime,
-    enabled: !!userId,
+    enabled: !!userId && document.visibilityState === 'visible',
     select: (notifications) => filterNotificationLength(notifications || []),
   });
 
