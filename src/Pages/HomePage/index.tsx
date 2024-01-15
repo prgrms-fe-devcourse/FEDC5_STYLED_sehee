@@ -5,7 +5,6 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useInfiniteQuery,
-  useMutation,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -33,7 +32,9 @@ import UserManager from '@/Components/UserManager';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { checkAuth } from '@/Services/Auth';
 import QUERY_KEYS from '@/Constants/queryKeys';
-import { createLike, deleteLike } from '@/Services/Like';
+import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
+import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
+import { useCreateNotification } from '@/Hooks/Api/Notification';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -44,6 +45,16 @@ const HomePage = () => {
   const [refInView, inView] = useInView();
 
   const [currentChannelId, setCurrentChannelId] = useState('all');
+
+  const { likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
+  const { followByUserId } = useFollowByUserId();
+  const { unfollowByUserId } = useUnfollowByUserId();
+  const { createNotification } = useCreateNotification();
+
+  const handleClickUserName = (userId: string) => {
+    navigate(`/profile/${userId}`);
+  };
 
   /**
    *
@@ -127,51 +138,40 @@ const HomePage = () => {
   }, [hasNextPage, inView, fetchNextPage]);
 
   /**
-   * 좋아요 api 호출 useMutation 훅
-   */
-  const { mutate: likeById } = useMutation({
-    mutationFn: (likePostId: string) => createLike(likePostId),
-    onSuccess: () => {},
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
-    },
-  });
-
-  /**
-   * 좋아요 취소 api 호출 useMutation 훅
-   */
-  const { mutate: disLikeById } = useMutation({
-    mutationFn: (disLikeId: string) => deleteLike(disLikeId),
-    onSuccess: () => {},
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
-    },
-  });
-
-  /**
    * 채널 생성 모달 여는 함수
    */
   const handleOpenCreateChannel = () => {
     navigate('/add-channel');
   };
 
+  const { likeById } = useLikeById();
+  const { disLikeById } = useDisLikeById();
   /**
    * 메인 페이지에서 포스트 Card의 좋아요 버튼 클릭 시 api 호출하는 함수
    * @param id target postId
    * @param newState 바뀔 좋아요 상태
    */
-  const handleClickLike = (id: string, newState: boolean) => {
+  const handleClickLike = (
+    targetPostId: string,
+    targetAuthorId: string,
+    newState: boolean,
+  ) => {
     if (newState) {
-      likeById(id);
-    } else if (postList) {
-      const targetPost = postList.pages.map((page) => {
-        return page?.find((post) => post._id === id);
+      likeById(targetPostId, {
+        onSuccess: (targetLikeData) => {
+          if (targetLikeData) {
+            createNotification({
+              notificationType: 'LIKE',
+              notificationTypeId: targetLikeData._id,
+              userId: targetAuthorId,
+              postId: targetLikeData.post,
+            });
+          }
+        },
       });
-
-      targetPost[0]?.likes.forEach(({ _id, user }) => {
-        if (user === authUser._id) {
-          disLikeById(_id);
-        }
+    } else if (authUser) {
+      authUser.likes?.forEach(({ post, _id: likeId }) => {
+        if (post === targetPostId) disLikeById(likeId);
       });
     }
   };
@@ -182,6 +182,35 @@ const HomePage = () => {
    */
   const handleClickPostImage = (postId: string) => {
     navigate(`/modal-detail/${postId}`);
+  };
+
+  /**
+   * follow api 연동 함수
+   */
+  const handleFollowClick = (
+    nextFollowState: boolean,
+    targetUserId: string,
+  ) => {
+    if (nextFollowState) {
+      followByUserId(targetUserId, {
+        onSuccess: (targetFollowData) => {
+          if (targetFollowData) {
+            createNotification({
+              notificationType: 'FOLLOW',
+              notificationTypeId: targetFollowData._id,
+              userId: targetUserId,
+              postId: null,
+            });
+          }
+        },
+      });
+    } else if (authUser) {
+      authUser.following?.forEach(({ user, _id: followId }) => {
+        if (user === targetUserId) {
+          unfollowByUserId(followId);
+        }
+      });
+    }
   };
 
   return (
@@ -206,7 +235,10 @@ const HomePage = () => {
               >
                 <Icon
                   name="add"
-                  style={{ color: `grey`, fontSize: `${size.large}` }}
+                  style={{
+                    color: `grey`,
+                    fontSize: `${size.large}`,
+                  }}
                 />
               </Button>
             )}
@@ -276,8 +308,12 @@ const HomePage = () => {
                     imageUrl={post.image || ''}
                     content={post.title || ''}
                     authorName={post.author.fullName || ''}
-                    authorThumbnail=""
-                    isFollower
+                    authorId={post.author._id}
+                    authorThumbnail={post.author.image || ''}
+                    isFollower={post.author.followers.some(
+                      (follower) =>
+                        authUser.following?.some(({ _id }) => _id === follower),
+                    )}
                     isLike={
                       authUser &&
                       post.likes.some(({ user }) => user === authUser._id)
@@ -287,7 +323,9 @@ const HomePage = () => {
                       post.likes.find(({ user }) => user === authUser._id)
                         ?._id || ''
                     }
+                    onUserNameClick={() => handleClickUserName(post.author._id)}
                     onLikeIconClick={handleClickLike}
+                    onFollowBtnClick={handleFollowClick}
                   />
                 ));
               })

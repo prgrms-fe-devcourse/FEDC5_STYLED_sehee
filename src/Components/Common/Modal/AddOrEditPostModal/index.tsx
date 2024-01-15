@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -66,7 +67,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
       if (editingPost.image) {
         setImage(editingPost.image);
       }
-      console.log(editingPost);
     }
   }, [editingPost]);
 

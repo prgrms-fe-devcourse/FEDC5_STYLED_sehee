@@ -6,11 +6,9 @@ import { getPostDetail } from '@/Services/Post';
 import { getUser } from '@/Services/User';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import QUERY_KEYS from '@/Constants/queryKeys';
-import useAuthUserStore from '@/Stores/AuthUser';
 
 const DetailPage = () => {
   const { postId } = useParams();
-  const { user: authUser } = useAuthUserStore();
 
   /**
    * postId로 해당 포스트 정보를 얻는 useQuery 훅
@@ -19,14 +17,6 @@ const DetailPage = () => {
     queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID, postId],
     queryFn: () => getPostDetail(postId || ''),
   });
-
-  /**
-   * 수정된 여부에 따라 시간 다르게 표시
-   */
-  const updateTime =
-    postDetailData?.createdAt === postDetailData?.updatedAt
-      ? postDetailData && calculateDate(postDetailData.updatedAt)
-      : postDetailData && `수정됨 ${calculateDate(postDetailData.updatedAt)}`;
 
   /**
    * 포스트 author id로 해당 author 정보 얻는 useQuery 훅
@@ -41,8 +31,9 @@ const DetailPage = () => {
     <PostDetailModal
       postComment={postDetailData?.comments}
       postLike={postDetailData?.likes}
+      postFollow={postDetailData?.author.followers}
       postContents={postDetailData?.title || ''}
-      postEditTime={updateTime || ''}
+      postEditTime={calculateDate(postDetailData?.createdAt || '')}
       postImageUrl={postDetailData?.image || ''}
       postAuthor={postDetailData?.author.fullName || ''}
       postAuthorId={postAuthor?._id || ''}

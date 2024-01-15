@@ -21,6 +21,7 @@ const PostCard = ({
   content,
   authorName,
   authorThumbnail,
+  authorId,
   isFollower,
   isLike,
   width = '80%',
@@ -33,14 +34,29 @@ const PostCard = ({
   onLikeIconClick,
 }: PostCardProps) => {
   const { colors } = useTheme();
+
   const followBtnBgColor = isFollower ? colors.read : colors.follow;
   const followBtnHoverBgColor = isFollower
     ? 'rgba(0, 149, 246, 0.7)'
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
 
-  const handleClickLike = (id: string) => {
-    return onLikeIconClick && onLikeIconClick(id, !isLike);
+  /**
+   * 상위 컴포넌트로 바뀔 follow 상태와 userId를 넘기는 함수
+   * @param id userId
+   */
+  const handleFollowClick = (id: string) => {
+    return onFollowBtnClick && onFollowBtnClick(!isFollower, id);
+  };
+
+  /**
+   * 상위 컴포넌트로 바뀔 like 상태와 postId를 넘기는 함수
+   * @param id postId
+   */
+  const handleClickLike = (targetPostId: string, targetAuthorId: string) => {
+    return (
+      onLikeIconClick && onLikeIconClick(targetPostId, targetAuthorId, !isLike)
+    );
   };
 
   return (
@@ -68,7 +84,7 @@ const PostCard = ({
             textColor={followBtnTextColor}
             backgroundColor={followBtnBgColor}
             hoverBackgroundColor={followBtnHoverBgColor}
-            onClick={onFollowBtnClick}
+            onClick={() => handleFollowClick(authorId)}
           >
             {isFollower ? '팔로잉' : '팔로우'}
           </Button>
@@ -76,7 +92,7 @@ const PostCard = ({
         <Icon
           name={isLike ? 'favorite' : 'favorite_border'}
           style={{ color: `${colors.alert}`, ...HeartIconStyle }}
-          onClick={() => handleClickLike(postId)}
+          onClick={() => handleClickLike(postId, authorId)}
         />
       </StyledPostCardHeader>
       <StyledPostCardTitle>{content}</StyledPostCardTitle>
