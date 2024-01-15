@@ -21,6 +21,8 @@ const Button = forwardRef(
       hoverBackgroundColor,
       hoverTextColor,
       isActive,
+      isHoverBold,
+      isBold,
       ...props
     }: ButtonProp,
     ref: ForwardedRef<HTMLButtonElement>,
@@ -38,6 +40,8 @@ const Button = forwardRef(
         $hoverBackgroundColor={hoverBackgroundColor || theme.colors.focusHover}
         $hoverTextColor={hoverTextColor || theme.colors.focusHoverText}
         $isActive={isActive}
+        $isHoverBold={isHoverBold || false}
+        $isBold={isBold || false}
         ref={ref}
         {...props}
       >

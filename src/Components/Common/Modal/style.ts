@@ -11,6 +11,7 @@ export const StyledModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 10;
+  overflow: hidden;
 `;
 
 export const StyledModalBackground = styled.div`
@@ -26,7 +27,7 @@ export const StyledModalContainer = styled.div<StyledModalContainerType>`
   display: flex;
   z-index: 10;
   background: ${(props) => props.$backgroundColor};
-  border: 1px solid white;
+  border: 1px solid ${({ theme }) => theme.colors.modalBorder};
   color: ${(props) => props.$color};
   overflow: hidden;
   border-radius: ${(props) => props.$borderRadius}rem;

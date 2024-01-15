@@ -14,6 +14,7 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
   align-items: center;
   gap: ${({ theme }) => theme.size.small};
   background-color: ${({ theme }) => theme.colors.background};
+  color: black;
 
   .user-avatar {
     position: relative;
@@ -21,7 +22,9 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
 
   &:hover {
     background-color: ${({ $mode }) =>
-      $mode !== 'header' && (({ theme }) => theme.colors.focusHover)};
+      $mode === 'chat' && (({ theme }) => theme.colors.text)};
+    color: ${({ $mode }) =>
+      $mode === 'chat' && (({ theme }) => theme.colors.textReverse)};
   }
 
   cursor: ${({ $mode }) => $mode === 'header' && 'pointer'};

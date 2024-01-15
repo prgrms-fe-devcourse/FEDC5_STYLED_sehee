@@ -4,9 +4,10 @@ import StyledLogoImage from './style';
 import Props from './type';
 import STYLED_LOGO_BLACK from '@/Assets/Images/STYLED-logo-black.png';
 import STYLED_LOGO_WHITE from '@/Assets/Images/STYLED-logo-white.png';
+import STYLED_LOGO from '@/Assets/Images/STYLED-logo.png';
 import { useDarkModeStore } from '@/Stores';
 
-const Logo = ({ width = '15rem', height = '10rem', ...props }: Props) => {
+const Logo = ({ width = '25rem', height = '10rem', ...props }: Props) => {
   const { isDarkMode } = useDarkModeStore();
   const navigate = useNavigate();
 
@@ -24,12 +25,9 @@ const Logo = ({ width = '15rem', height = '10rem', ...props }: Props) => {
       {...props}
     >
       <StyledLogoImage
-        src={isDarkMode ? STYLED_LOGO_WHITE : STYLED_LOGO_BLACK}
-        alt={
-          isDarkMode
-            ? 'STYLED 프로젝트 다크 모드 로고'
-            : 'STYLED 프로젝트 라이트 모드 로고'
-        }
+        draggable={false}
+        src={STYLED_LOGO}
+        alt="STYLED 로고"
       />
     </Button>
   );

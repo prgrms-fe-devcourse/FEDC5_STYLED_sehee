@@ -1,14 +1,20 @@
 import styled from 'styled-components';
 
-const StyledHeaderContainer = styled.div`
-  height: 9.4rem;
+export const StyledHeaderContainer = styled.div`
   width: 100%;
+  height: 9.4rem;
+  padding: 2rem 5rem;
+  gap: 2rem;
   background-color: ${({ theme }) => theme.colors.background};
-  display: grid;
-  grid-template-columns: 1fr 4.3fr;
+
+  display: flex;
   position: fixed;
   z-index: 9;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.backgroundGrey};
 `;
 
-export default StyledHeaderContainer;
+export const StyledDivider = styled.div`
+  width: 100%;
+  height: 2.7rem;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
+  flex-shrink: 2;
+`;

@@ -27,7 +27,7 @@ const HistoryBackButton = ({ ...props }: Props) => {
       <Icon
         name="undo"
         isFill={false}
-        style={{ fontSize: '5rem', color: colors.primary }}
+        style={{ fontSize: '5rem', color: colors.backgroundReverse }}
       />
     </Button>
   );

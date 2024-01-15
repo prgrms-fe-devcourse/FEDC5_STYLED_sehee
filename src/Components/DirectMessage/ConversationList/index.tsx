@@ -51,8 +51,8 @@ const ConversationList = ({
           mode="header"
           coverImageUrl={loginUser.image || ''}
           avatarSize={40}
-          userName={loginUser.fullName}
-          userNameSize="1.5rem"
+          userName={`${loginUser.fullName} (나)`}
+          userNameSize="1.7rem"
           onClick={handleClickMyName}
           className="conversation-list-header"
         />
@@ -60,8 +60,7 @@ const ConversationList = ({
           width="3rem"
           height="3rem"
           borderRadius="0"
-          backgroundColor={colors.background}
-          hoverBackgroundColor={colors.background}
+          backgroundColor="transparent"
           onClick={() => setIsModalOpen(true)}
         >
           <Icon
@@ -92,10 +91,14 @@ const ConversationList = ({
                 coverImageUrl={receiver.image}
                 avatarSize={40}
                 userName={receiver.fullName}
-                userNameSize="1.5rem"
+                userNameSize="1.7rem"
                 userDetail={conversation.message}
                 date={date}
                 onClick={() => handleClickUser(receiver)}
+                style={{
+                  cursor: 'pointer',
+                  paddingLeft: '2rem',
+                }}
               />
             );
           })

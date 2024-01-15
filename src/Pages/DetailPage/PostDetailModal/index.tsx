@@ -316,6 +316,7 @@ const PostDetailModal = ({
                 height="3rem"
                 borderRadius="0.5rem"
                 backgroundColor={colors.background}
+                hoverBackgroundColor="transparent"
                 onClick={() => setIsDotModalOpen(true)}
               >
                 <Icon name="more_horiz" />
@@ -337,6 +338,7 @@ const PostDetailModal = ({
                   onClickUser={() =>
                     handleClickUser(postDetailData?.author._id || '')
                   }
+                  style={{ backgroundColor: 'transparent', padding: '0' }}
                 />
                 <StyledEditTime>{postEditTime}</StyledEditTime>
               </StyledPostMainTopContainer>
@@ -364,6 +366,10 @@ const PostDetailModal = ({
                             }
                             className="post-detail-user-card"
                             onClickUser={() => handleClickUser(author._id)}
+                            style={{
+                              backgroundColor: 'transparent',
+                              padding: '0',
+                            }}
                           />
                           <StyledTextContainer>
                             <StyledText>{comment}</StyledText>

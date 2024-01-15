@@ -8,13 +8,14 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => theme.size.medium};
+  padding: ${({ theme }) => theme.size.large};
 `;
 
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.size.extraLarge};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   color: ${({ theme }) => theme.colors.text};
+  user-select: none;
 `;
 
 const NotificationHeader = ({ onClose }: Props) => {
@@ -34,7 +35,7 @@ const NotificationHeader = ({ onClose }: Props) => {
         <Icon
           name="cancel"
           isFill={!!isDarkMode}
-          style={{ color: colors.primary, fontSize: size.doubleLarge }}
+          style={{ color: colors.text, fontSize: size.doubleLarge }}
         />
       </Button>
     </StyledHeader>

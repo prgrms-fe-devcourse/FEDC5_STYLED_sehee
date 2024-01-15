@@ -65,15 +65,15 @@ const LoginForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
       <LoginButton
         width={size.full}
         textSize={size.large}
-        textColor={colors.buttonText}
+        textColor={colors.text}
         backgroundColor={colors.buttonBackground}
         borderRadius={size.small}
         disabled={status === 'pending'}
-        hoverBackgroundColor={colors.buttonClickHover}
-        hoverTextColor={colors.text}
+        hoverBackgroundColor={colors.buttonHoverBackground}
+        hoverTextColor={colors.textReverse}
         style={{
           padding: size.doubleLarge,
-          marginTop: size.large,
+          border: `0.1rem solid ${colors.text}`,
         }}
       >
         로그인

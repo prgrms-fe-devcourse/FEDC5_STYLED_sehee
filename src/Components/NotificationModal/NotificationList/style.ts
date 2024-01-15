@@ -5,6 +5,7 @@ export const StyledNotificationList = styled.ul`
   overscroll-behavior: contain;
   overflow: auto;
   flex-grow: 1;
+  padding: 1rem;
 
   &::-webkit-scrollbar {
     width: ${({ theme }) => theme.size.small};

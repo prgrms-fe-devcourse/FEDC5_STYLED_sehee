@@ -5,7 +5,9 @@ export const StyledMessageItem = styled.div`
   display: inline-block;
   width: max-content;
   height: min-content;
-  background-color: ${({ theme }) => theme.colors.focusHover};
+  background-color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: ${({ theme }) => theme.size.medium};
   padding: 1rem 1.5rem 1rem 1.5rem;
   border-radius: 2rem;
   word-break: break-all;

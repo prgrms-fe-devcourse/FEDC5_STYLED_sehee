@@ -18,7 +18,11 @@ export const StyledContainer = styled.div`
   gap: 0.6rem;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.lightGray};
+    background-color: ${({ theme }) => theme.colors.darkGray};
+
+    p {
+      color: ${({ theme }) => theme.colors.text};
+    }
   }
 
   &:last-child {
@@ -35,7 +39,7 @@ export const StyledContainer = styled.div`
 
   p {
     font-size: ${({ theme }) => theme.size.medium};
-    color: ${({ theme }) => theme.colors.backgroundGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 `;
 

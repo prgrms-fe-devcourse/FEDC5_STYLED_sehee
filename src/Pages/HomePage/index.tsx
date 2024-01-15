@@ -105,6 +105,7 @@ const HomePage = () => {
    * postOffeset이 10씩 증가하고 중복해서 포스트를 불러오지 않도록 가드 구현
    * @param channelId 채널 ID
    */
+
   const {
     hasNextPage,
     data: postList,
@@ -125,6 +126,10 @@ const HomePage = () => {
     enabled:
       !isCheckAuthLoading && isChannelListSuccess && currentChannelId !== '',
   });
+
+  useEffect(() => {
+    console.log(postList);
+  }, [postList]);
 
   useEffect(() => {
     if (hasNextPage && inView) {
@@ -214,7 +219,7 @@ const HomePage = () => {
       <StyledWrapper>
         <StyledLeftContainer>
           <StyledCategoryTitleContainer>
-            <StyledCategoryTitle>카테고리</StyledCategoryTitle>
+            <StyledCategoryTitle>Category</StyledCategoryTitle>
             {/* 카테고리 채널 추가 버튼 */}
             {authUser.role === 'SuperAdmin' && (
               <Button
@@ -243,23 +248,22 @@ const HomePage = () => {
                 <Button
                   key={channel._id}
                   data-id={channel._id}
-                  width="80%"
                   height={size.doubleLarge}
                   borderRadius="1rem"
-                  textSize={size.medium}
-                  backgroundColor={
-                    currentChannelId === channel._id
-                      ? colors.backgroundGrey
-                      : colors.background
+                  textSize={size.large}
+                  backgroundColor="none"
+                  hoverTextColor={colors.text}
+                  hoverBackgroundColor="none"
+                  textColor={
+                    channel._id === currentChannelId
+                      ? colors.text
+                      : colors.textNonSelect
                   }
-                  hoverBackgroundColor={
-                    currentChannelId === channel._id
-                      ? colors.backgroundGrey
-                      : colors.focusHover
-                  }
-                  textColor={colors.text}
                   onClick={handleClickChannel}
                   className="category-button"
+                  style={{ justifyContent: 'start' }}
+                  isHoverBold
+                  isBold={channel._id === currentChannelId}
                 >
                   {channels[channel.name] || channel.name}
                 </Button>
@@ -280,6 +284,7 @@ const HomePage = () => {
                       key={post._id}
                       authUser={userObj}
                       postId={post._id}
+                      width="100%"
                       imageUrl={post.image || ''}
                       content={post.title || ''}
                       authorName={post.author.fullName || ''}

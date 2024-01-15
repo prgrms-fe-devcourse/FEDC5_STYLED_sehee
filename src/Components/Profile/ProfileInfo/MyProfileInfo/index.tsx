@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useTheme } from 'styled-components';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
 import { NameProps } from './type';
@@ -13,6 +14,8 @@ const MyProfileInfo = ({ name, id }: NameProps) => {
   const handleClickPassword = () => {
     navigate(`/profile/${id}/edit-password/${id}`);
   };
+
+  const { colors } = useTheme();
 
   return (
     <>
@@ -32,7 +35,11 @@ const MyProfileInfo = ({ name, id }: NameProps) => {
           textSize="1.4rem"
           width="10rem"
           borderRadius="1rem"
-          style={{ marginRight: '1rem', marginTop: '.5rem' }}
+          style={{
+            marginRight: '1rem',
+            marginTop: '.5rem',
+            border: `1px solid ${colors.text}`,
+          }}
           onClick={handleClickPassword}
         >
           비밀번호 변경

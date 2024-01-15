@@ -22,7 +22,7 @@ const ProfileInfo = ({
           <Avatar
             src={userData.image}
             size={140}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', flexShrink: '0' }}
             onClick={() => setIsChangeImage(true)}
           />
         ) : (

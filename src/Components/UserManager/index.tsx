@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useTheme } from 'styled-components';
 import UserList from './UserList';
-import StyledWrapper from './style';
+import { StyledHeader, StyledTitle, StyledWrapper } from './style';
 import { getOnlineUsers, getUsers } from '@/Services/User';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import SkeletonList from '../Common/SkeletonList';
@@ -14,7 +14,6 @@ import { searchUsers } from '@/Services/Search';
 import { UserType } from '@/Types/UserType';
 
 const UserManager = () => {
-  const { size } = useTheme();
   const [isSubmit, setIsSubmit] = useState(false);
   const limit = 10;
   const refetchTime = 2000;
@@ -76,17 +75,19 @@ const UserManager = () => {
 
   return (
     <StyledWrapper>
-      <SearchBar
-        style={{ width: '100%' }}
-        onChangehandler={handleSearchChange}
-        onSubmithandler={handleOnSubmit}
-        inputProps={{
-          name: 'userName',
-          type: 'text',
-          placeholder: '사용자 이름 입력',
-          style: { padding: size.small, fontSize: size.medium },
-        }}
-      />
+      <StyledHeader>
+        <StyledTitle>User</StyledTitle>
+        <SearchBar
+          onChangehandler={handleSearchChange}
+          onSubmithandler={handleOnSubmit}
+          inputProps={{
+            name: 'userName',
+            type: 'text',
+            placeholder: '유저 검색',
+          }}
+        />
+      </StyledHeader>
+
       {isLoading && (
         <SkeletonList
           length={10}
@@ -99,6 +100,7 @@ const UserManager = () => {
           />
         </SkeletonList>
       )}
+
       <UserList
         userList={userListToShow}
         onlineUserList={onlineUserList || []}

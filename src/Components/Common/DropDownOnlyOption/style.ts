@@ -5,9 +5,8 @@ import {
   StyledLabelProp,
 } from './type';
 
-export const StyledDropDown = styled.div<{ $isShow: boolean }>`
-  position: relative;
-  display: ${(props) => (props.$isShow ? 'inline-block' : 'none')};
+export const StyledDropDown = styled.div`
+  position: absolute;
 `;
 
 export const StyledLabel = styled.span<StyledLabelProp>`
@@ -24,7 +23,6 @@ export const StyledLabel = styled.span<StyledLabelProp>`
 
 export const StyledDropDownButton = styled.button<StyledDropDownButtonProp>`
   display: flex;
-  position: relative;
   align-items: center;
   justify-content: space-between;
   width: ${({ $width }) => $width};
@@ -42,7 +40,7 @@ export const StyledDropDownOption = styled.div<{ $width: string }>`
   display: block;
   position: absolute;
   width: ${({ $width }) => $width};
-  z-index: 12;
+  z-index: 1;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   background-color: #f9f9f9;
   border-radius: 1rem;

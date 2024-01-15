@@ -84,6 +84,7 @@ const SearchModal = ({ onChangeOpen }: Props) => {
         width={40}
         height={80}
         onChangeOpen={onChangeOpen}
+        style={{ minWidth: '40rem' }}
       >
         <StyledWrapper>
           <StyledHeader>
@@ -99,9 +100,8 @@ const SearchModal = ({ onChangeOpen }: Props) => {
               <Button
                 isActive={currentTab === 'USER'}
                 onClick={() => setCurrentTab('USER')}
-                backgroundColor={theme.colors.background}
-                hoverTextColor={theme.colors.buttonBackground}
-                textColor={theme.colors.buttonBackground}
+                hoverBackgroundColor={theme.colors.text}
+                hoverTextColor={theme.colors.textReverse}
                 style={tabStyle}
               >
                 유저
@@ -109,9 +109,8 @@ const SearchModal = ({ onChangeOpen }: Props) => {
               <Button
                 isActive={currentTab === 'POST'}
                 onClick={() => setCurrentTab('POST')}
-                backgroundColor={theme.colors.background}
-                hoverTextColor={theme.colors.buttonBackground}
-                textColor={theme.colors.buttonBackground}
+                hoverBackgroundColor={theme.colors.text}
+                hoverTextColor={theme.colors.textReverse}
                 style={tabStyle}
               >
                 포스트

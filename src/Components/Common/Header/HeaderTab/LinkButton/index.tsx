@@ -3,6 +3,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
 
+
 const LinkButton = ({ color, name, link, setLink, style, children }: Props) => {
   return (
     <Button
@@ -14,8 +15,6 @@ const LinkButton = ({ color, name, link, setLink, style, children }: Props) => {
       borderRadius="0"
       onClick={setLink}
       style={{
-        height: '93.5%',
-        borderBottom: `3px solid ${color}`,
         position: 'relative',
       }}
     >

@@ -1,23 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import LoginButton from './LoginButton';
 import DropDown from '@/Components/Common/DropDown';
-import StyledUserContainer from './style';
+import {
+  StyledUserContainer,
+  StyledButtonContainer,
+  StyledFocusedCircle,
+} from './style';
 import LinkButton from './LinkButton';
 import ModalButton from './ModalButton';
 import useClickAway from '@/Hooks/UseClickAway';
 import { checkAuth, logout } from '@/Services/Auth';
 import useTabStore from '@/Stores/Tab';
+
 import NotificationModal from '@/Components/NotificationModal';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import { getNotifications } from '@/Services/Notification';
 import useAuthUserStore from '@/Stores/AuthUser';
 import Badge from '@/Components/Base/Badge';
 import filterNotificationLength from './filterNotificationLength';
-import Button from '@/Components/Base/Button';
-import Icon from '@/Components/Base/Icon';
+import DropDownOnlyOption from '../../DropDownOnlyOption';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
@@ -129,81 +133,129 @@ const HeaderTab = () => {
   };
 
   const styledNavIcon = {
-    fontSize: '4.5rem',
-    padding: '1.5rem',
+    fontSize: '3.2rem',
+    color: colors.text,
+    fontWeight: '300',
   };
 
   return (
     <>
       <StyledUserContainer>
-        <LinkButton
-          name="home"
-          color={tab === 'home' ? colors.primary : colors.background}
-          link="/"
-          setLink={() => setTab('home')}
-          style={styledNavIcon}
-        />
+        <StyledButtonContainer>
+          <LinkButton
+            name="home"
+            color={
+              tab === 'home' ? colors.primaryReverse : colors.primaryNormal
+            }
+            link="/"
+            setLink={() => setTab('home')}
+            style={styledNavIcon}
+          />
+          <StyledFocusedCircle $visible={tab === 'home'} />
+        </StyledButtonContainer>
 
-        <LinkButton
-          name="add_circle"
-          color={tab === 'add' ? colors.primary : colors.background}
-          link={`${
-            location.pathname !== '/' ? location.pathname : ''
-          }/add-post`}
-          setLink={() => setTab('add')}
-          style={styledNavIcon}
-        />
+        <StyledButtonContainer>
+          <LinkButton
+            name="add_circle"
+            color={tab === 'add' ? colors.primaryReverse : colors.primaryNormal}
+            link={`${
+              location.pathname !== '/' ? location.pathname : ''
+            }/add-post`}
+            setLink={() => setTab('add')}
+            style={styledNavIcon}
+          />
+          <StyledFocusedCircle $visible={tab === 'add'} />
+        </StyledButtonContainer>
 
-        <LinkButton
-          name="search"
-          color={tab === 'search' ? colors.primary : colors.background}
-          link={`${location.pathname !== '/' ? location.pathname : ''}/search`}
-          setLink={() => setTab('search')}
-          style={styledNavIcon}
-        />
+        <StyledButtonContainer>
+          <LinkButton
+            name="search"
+            color={
+              tab === 'search' ? colors.primaryReverse : colors.primaryNormal
+            }
+            link={`${
+              location.pathname !== '/' ? location.pathname : ''
+            }/search`}
+            setLink={() => setTab('search')}
+            style={styledNavIcon}
+          />
+          <StyledFocusedCircle $visible={tab === 'search'} />
+        </StyledButtonContainer>
+
         {!isAuthUser ? (
           <LoginButton onClick={() => navigate('/login')} />
         ) : (
           <>
-            <ModalButton
-              name="notifications"
-              style={styledNavIcon}
-              color={tab === 'alarm' ? colors.primary : colors.background}
-              setModalOpen={() => {
-                onSetModal('alarm');
-                setAlarm((prevIsShow) => !prevIsShow);
-              }}
-            >
-              {notificationLength && notificationLength > 0 ? (
-                <Badge
-                  position="rightTop"
-                  backgroundColor={colors.alert}
-                  textColor="white"
-                  textSize={size.large}
-                  size={size.doubleLarge}
-                  style={{ right: size.small, top: size.small }}
-                >
-                  {notificationLength}
-                </Badge>
-              ) : null}
-            </ModalButton>
+            <StyledButtonContainer>
+              <ModalButton
+                name="notifications"
+                style={styledNavIcon}
+                color={
+                  tab === 'alarm' ? colors.primaryReverse : colors.primaryNormal
+                }
+                setModalOpen={() => {
+                  onSetModal('alarm');
+                  setAlarm((prevIsShow) => !prevIsShow);
+                }}
+              >
+                {notificationLength && notificationLength > 0 ? (
+                  <Badge
+                    position="rightTop"
+                    backgroundColor={colors.alert}
+                    textColor="white"
+                    textSize={size.medium}
+                    size={size.large}
+                    style={{ border: `2px solid ${colors.background}` }}
+                  >
+                    {notificationLength}
+                  </Badge>
+                ) : null}
+              </ModalButton>
 
-            <LinkButton
-              name="send"
-              color={tab === 'message' ? colors.primary : colors.background}
-              link="/directmessage"
-              setLink={() => setTab('message')}
-              style={styledNavIcon}
-            />
-            <ModalButton
-              name="account_circle"
-              style={{ ...styledNavIcon }}
-              color={tab === 'account' ? colors.primary : colors.background}
-              setModalOpen={() => {
-                onSetModal('account');
-                setDrop(!drop);
-              }}
-            />
+              <StyledFocusedCircle $visible={tab === 'alarm'} />
+            </StyledButtonContainer>
+
+            <StyledButtonContainer>
+              <LinkButton
+                name="send"
+                color={
+                  tab === 'message'
+                    ? colors.primaryReverse
+                    : colors.primaryNormal
+                }
+                link="/directmessage"
+                setLink={() => setTab('message')}
+                style={styledNavIcon}
+              />
+              <StyledFocusedCircle $visible={tab === 'message'} />
+            </StyledButtonContainer>
+
+            <StyledButtonContainer>
+              <ModalButton
+                name="account_circle"
+                style={styledNavIcon}
+                color={
+                  tab === 'account'
+                    ? colors.primaryReverse
+                    : colors.primaryNormal
+                }
+                setModalOpen={() => {
+                  onSetModal('account');
+                  setDrop(!drop);
+                }}
+              />
+              <DropDownOnlyOption
+                ref={ref}
+                isShow={drop}
+                options={options}
+                onSelect={(option) => {
+                  onSelectOption(option);
+                  console.log(option);
+                }}
+                style={{ right: '16rem', top: '5rem' }}
+              />
+              <StyledFocusedCircle $visible={tab === 'account'} />
+            </StyledButtonContainer>
           </>
         )}
       </StyledUserContainer>
@@ -215,19 +267,6 @@ const HeaderTab = () => {
           }}
         />
       )}
-      <DropDown
-        ref={ref}
-        isShow={drop}
-        style={{
-          position: 'absolute',
-          right: '0',
-          top: '10rem',
-        }}
-        options={options}
-        onSelect={(option) => {
-          onSelectOption(option);
-        }}
-      />
     </>
   );
 };

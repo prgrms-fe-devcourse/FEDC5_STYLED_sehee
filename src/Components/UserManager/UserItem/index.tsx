@@ -39,6 +39,7 @@ const UserItem = forwardRef(
           {isOnline && (
             <Badge
               position="rightBottom"
+              size="1.2rem"
               backgroundColor={colors.online}
               style={{ border: `1px solid ${colors.background}` }}
             />

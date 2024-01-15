@@ -14,7 +14,6 @@ export const StyledHeader = styled.div`
 
   /* TODO: 반응형 추후 보완 */
   @media ${({ theme }) => theme.device.tablet} {
-    flex-direction: column;
     gap: 0.6rem;
 
     > * {
@@ -32,4 +31,5 @@ export const StyledContainer = styled.div`
   gap: 1.2rem;
 
   font-size: ${({ theme }) => theme.size.large};
+  color: ${({ theme }) => theme.colors.black};
 `;

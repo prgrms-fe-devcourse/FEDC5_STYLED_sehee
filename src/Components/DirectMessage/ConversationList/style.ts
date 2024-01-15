@@ -1,8 +1,10 @@
 import { styled } from 'styled-components';
 
 export const StyledContainer = styled.div`
-  width: 30%;
+  width: 25%;
+  min-width: 25rem;
   border-right: 1px solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.background};
 
   @media ${({ theme }) => theme.device.tablet} {
     width: 100%;
@@ -13,8 +15,9 @@ export const StyledContainer = styled.div`
 export const StyledHeader = styled.div`
   display: flex;
   height: 7rem;
-  padding-right: 1rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 2rem;
+
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
   justify-content: space-around;
   align-items: center;
   font-size: ${({ theme }) => theme.size.medium};

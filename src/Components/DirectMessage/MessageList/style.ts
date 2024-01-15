@@ -3,8 +3,9 @@ import { styled } from 'styled-components';
 export const StyledContainer = styled.div<{
   $isClickedUserCard: boolean | undefined;
 }>`
-  width: 70%;
-  height: calc(100% - 7rem);
+  width: 75%;
+  height: 100%;
+  background-color: ${({ theme }) => theme.colors.background};
 
   @media ${({ theme }) => theme.device.tablet} {
     display: ${({ $isClickedUserCard }) => ($isClickedUserCard ? '' : 'none')};
@@ -15,9 +16,9 @@ export const StyledContainer = styled.div<{
 export const StyledHeader = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 2rem;
+  padding: 2rem;
   height: 7rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
   gap: 2rem;
   font-size: ${({ theme }) => theme.size.medium};
 
@@ -37,9 +38,11 @@ export const StyledBody = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
+  padding-bottom: 7rem;
   gap: 2rem;
   overflow-y: scroll;
   height: calc(95% - 7rem);
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const MessageItemContainer = styled.div`
@@ -62,6 +65,7 @@ export const StyledFooter = styled.div`
   bottom: 5%;
   gap: 1rem;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.background};
 
   .send-icon {
     display: flex;

@@ -13,10 +13,12 @@ const StyledButton = styled.button<StyledButtonProp>`
   width: ${(props) => props.$width};
   height: ${(props) => props.$height};
   border-radius: ${(props) => props.$borderRadius};
+  font-weight: ${(props) => (props.$isBold ? '900' : 'normal')};
 
   &:hover {
     background-color: ${(props) => props.$hoverBackgroundColor};
     color: ${(props) => props.$hoverTextColor};
+    font-weight: ${(props) => (props.$isHoverBold ? '900' : 'normal')};
   }
 
   &:disabled {
@@ -28,7 +30,7 @@ const StyledButton = styled.button<StyledButtonProp>`
   ${({ $isActive, theme }) => `
     ${
       $isActive
-        ? `background-color: ${theme.colors.focusHover}; color: ${theme.colors.focusHoverText};`
+        ? `background-color: ${theme.colors.text}; color: ${theme.colors.textReverse};`
         : ''
     }
   `}
@@ -37,7 +39,7 @@ const StyledButton = styled.button<StyledButtonProp>`
     cursor: not-allowed;
   }
 
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 `;
 
 export default StyledButton;

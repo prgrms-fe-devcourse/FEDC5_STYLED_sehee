@@ -28,7 +28,7 @@ const PostCard = ({
   isLike,
   width = '80%',
   fontSize,
-  objectFit = 'fill',
+  objectFit = 'contain',
   onImageClick,
   onUserNameClick,
   onUserAvatarClick,
@@ -87,6 +87,7 @@ const PostCard = ({
               textColor={followBtnTextColor}
               backgroundColor={followBtnBgColor}
               hoverBackgroundColor={followBtnHoverBgColor}
+              hoverTextColor={followBtnTextColor}
               onClick={() => handleFollowClick(authorId)}
             >
               {isFollower ? '팔로잉' : '팔로우'}

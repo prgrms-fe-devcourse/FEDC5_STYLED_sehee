@@ -61,7 +61,11 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
           width="7rem"
           borderRadius="1rem"
           backgroundColor={colors.follow}
-          style={{ marginRight: '1rem', marginTop: '.5rem' }}
+          style={{
+            marginRight: '1rem',
+            marginTop: '.5rem',
+            border: `1px solid ${colors.text}`,
+          }}
           onClick={handleFollow}
         >
           팔로우
@@ -75,7 +79,11 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
           textSize="1.4rem"
           width="10rem"
           borderRadius="1rem"
-          style={{ marginRight: '1rem', marginTop: '.5rem' }}
+          style={{
+            marginRight: '1rem',
+            marginTop: '.5rem',
+            border: `1px solid ${colors.text}`,
+          }}
           onClick={() => setReceiver(user)}
         >
           메시지 보내기

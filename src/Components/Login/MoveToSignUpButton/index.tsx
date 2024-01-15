@@ -7,20 +7,23 @@ const MoveToSignUpButton = () => {
   const navigate = useNavigate();
 
   const handleOnClick = () => {
-    navigate('/signUp');
+    navigate('/signup');
   };
 
   return (
     <Button
       width={size.full}
       textSize={size.large}
-      textColor={colors.buttonText}
+      textColor={colors.text}
       backgroundColor={colors.buttonBackground}
       borderRadius={size.small}
-      hoverBackgroundColor={colors.buttonClickHover}
-      hoverTextColor={colors.text}
+      hoverBackgroundColor={colors.buttonHoverBackground}
+      hoverTextColor={colors.textReverse}
       onClick={handleOnClick}
-      style={{ padding: size.doubleLarge }}
+      style={{
+        padding: size.doubleLarge,
+        border: `0.1rem solid ${colors.text}`,
+      }}
     >
       회원가입
     </Button>

@@ -15,15 +15,22 @@ export const StyledContainer = styled.div`
 export const StyledLabel = styled.label`
   display: block;
   user-select: none;
+  padding: ${({ theme }) => `${theme.size.extraSmall} ${theme.size.small}`};
 `;
 
 export const StyledInput = styled.input<{ $invalid?: boolean }>`
   width: 100%;
   padding: ${({ theme }) => `${theme.size.extraSmall} ${theme.size.small}`};
-  border: 1px solid
-    ${({ $invalid, theme }) =>
-      $invalid ? theme.colors.alert : theme.colors.border};
-  border-radius: ${({ theme }) => theme.size.small};
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.primaryDark};
+  transition: border-bottom 0.3s ease;
+  color: ${({ theme }) => theme.colors.backgroundReverse};
+
+  &:focus {
+    outline: none;
+    border-bottom: 3px solid ${({ theme }) => theme.colors.backgroundReverse};
+  }
 `;
 
 export const StyledErrorMessage = styled.p`
