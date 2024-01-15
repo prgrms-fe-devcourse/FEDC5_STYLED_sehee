@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '@/Components/Base/Avatar';
 import { Props } from './type';
 import defaultUSerImage from '@/Constants/defaultUserImage';
-import useMessageReceiver from '@/Stores/useMessageReceiver';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 
 import {
   StyledContainer,
