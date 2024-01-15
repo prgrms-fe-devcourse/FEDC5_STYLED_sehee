@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import Modal from '@/Components/Common/Modal';
 import Spinner from '@/Components/Base/Spinner';
@@ -11,10 +12,14 @@ import { NameType, Props } from './type';
 import validateName from './validateName';
 import { StyledContainer, StyledForm } from './style';
 import Alert from '@/Components/Common/Alert';
+import useCheckAuth from '@/Hooks/Api/Auth';
+import useFetchUser from '@/Hooks/Api/User';
 
 const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
+  const { userId } = useParams() || '';
+  const { loginUserRefetch } = useCheckAuth();
+  const { userDataRefetch } = useFetchUser(userId || '');
   const [isValid, setIsValid] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -23,8 +28,8 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
     onSuccess: (response) => {
       if (response) {
         handleCloseModal(false);
-        queryClient.refetchQueries({ queryKey: ['currentUser'] });
-        queryClient.refetchQueries({ queryKey: ['profileUser'] });
+        loginUserRefetch();
+        userDataRefetch();
       }
     },
     onError: () => {

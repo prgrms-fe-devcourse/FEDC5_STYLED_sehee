@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
 import ImageUpload from '@/Components/Common/ImageUpload';
 import Modal from '@/Components/Common/Modal';
@@ -9,10 +10,14 @@ import { ImageFileType } from '@/Components/Common/ImageUpload/type';
 import Spinner from '@/Components/Base/Spinner';
 import StyledConatiner from './style';
 import Alert from '@/Components/Common/Alert';
+import useCheckAuth from '@/Hooks/Api/Auth';
+import useFetchUser from '@/Hooks/Api/User';
 
 const UpdateImageModal = ({ handleCloseModal }: Props) => {
   const [image, setImage] = useState<ImageFileType | null | string>();
-  const queryClient = useQueryClient();
+  const { userId } = useParams() || '';
+  const { loginUserRefetch } = useCheckAuth();
+  const { userDataRefetch } = useFetchUser(userId || '');
   const [isError, setIsError] = useState(false);
 
   const { mutate, status } = useMutation({
@@ -20,8 +25,8 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
     onSuccess: (response) => {
       if (response) {
         handleCloseModal(false);
-        queryClient.refetchQueries({ queryKey: ['currentUser'] });
-        queryClient.refetchQueries({ queryKey: ['profileUser'] });
+        loginUserRefetch();
+        userDataRefetch();
       }
     },
     onError: () => {
