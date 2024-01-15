@@ -2,7 +2,7 @@ import { StyledNonList, StyledNotificationList } from './style';
 import { Props } from './type';
 import NotificationItem from '../NotificationItem/index';
 
-const NotificationList = ({ list }: Props) => {
+const NotificationList = ({ list, onClose }: Props) => {
   return (
     <StyledNotificationList>
       {list.map(({ author, date, text, type, typeId, _id, seen }) => {
@@ -11,13 +11,14 @@ const NotificationList = ({ list }: Props) => {
         return (
           <NotificationItem
             key={_id}
-            id={_id}
+            author={author}
             src={image}
             text={text}
             date={date}
             type={type}
             typeId={typeId}
             isSeen={seen}
+            onClose={onClose}
           />
         );
       })}

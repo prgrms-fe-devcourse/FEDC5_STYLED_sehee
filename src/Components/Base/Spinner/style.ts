@@ -12,7 +12,7 @@ export const StyledBackground = styled.div<StyledBackgroundProp>`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.2);
-  z-index: 8;
+  z-index: 11;
 
   ${({ $isBackground }) => $isBackground && 'display:block'}
 `;
@@ -22,7 +22,7 @@ export const StyledSpinner = styled.div<StyledSpinnerProp>`
   position: relative;
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
-  z-index: 9;
+  z-index: 12;
 
   ${({ $isFixedCenter }) =>
     $isFixedCenter &&

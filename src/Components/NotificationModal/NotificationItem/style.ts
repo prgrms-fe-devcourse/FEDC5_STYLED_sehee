@@ -10,7 +10,7 @@ export const StyledItem = styled.li<{ $isSeen: boolean }>`
   order: ${({ $isSeen }) => ($isSeen ? 1 : 0)};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonClickHover};
+    background-color: ${({ theme }) => theme.colors.focusHover};
     cursor: pointer;
 
     div {
@@ -27,9 +27,10 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledText = styled.p`
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 export const StyledDate = styled.span``;

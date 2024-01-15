@@ -10,6 +10,11 @@ export const StyledWrapper = styled.div`
   border-top: 0.1rem solid #ddd;
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
+
+  .material-symbols-outlined,
+  .material-icons {
+    user-select: none;
+  }
 `;
 
 export const StyledLeftContainer = styled.div`

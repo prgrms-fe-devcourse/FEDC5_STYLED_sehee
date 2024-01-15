@@ -36,6 +36,8 @@ export const getButtonStyle = {
 export const StyledImage = styled.img`
   object-fit: contain;
   cursor: pointer;
+  width: 80%;
+  height: 80%;
 `;
 
 export const IconStyle = {

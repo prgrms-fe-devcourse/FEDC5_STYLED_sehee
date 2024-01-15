@@ -3,7 +3,7 @@ import { DefaultTheme } from 'styled-components';
 const commonTheme = {
   online: '#05FF00', // 접속 중 색상
   read: '#0095F6', // 읽음 처리 색상
-  alert: '#FF0000', // 알림 색상
+  alert: '#ED4044', // 알림 색상
   border: '#CCCCCC', // 보더 색상
   backgroundGrey: '#D1CCC7', // 회색 배경 색상
   lightGray: '#F0F0F0', // 밝은 회색 색상

@@ -2,7 +2,7 @@ import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import Props from './type';
 
-const ModalButton = ({ style, name, color, setModalOpen }: Props) => {
+const ModalButton = ({ style, name, color, setModalOpen, children }: Props) => {
   return (
     <Button
       backgroundColor="transparent"
@@ -14,8 +14,10 @@ const ModalButton = ({ style, name, color, setModalOpen }: Props) => {
       style={{
         height: '93.5%',
         borderBottom: `3px solid ${color}`,
+        position: 'relative',
       }}
     >
+      {children}
       <Icon
         isFill={false}
         name={name}

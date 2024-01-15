@@ -1,15 +1,29 @@
 import styled from 'styled-components';
 
-export const StyledContainer = styled.li<{ $isOnline: boolean }>`
+const getOrderValue = ($isAuth: boolean, $isOnline: boolean) => {
+  if ($isAuth) return -1;
+  return $isOnline ? 0 : 1;
+};
+
+export const StyledContainer = styled.li<{
+  $isOnline: boolean;
+  $isAuth: boolean;
+}>`
+  font-size: ${({ theme }) => theme.size.medium};
+  color: ${({ theme }) => theme.colors.text};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.size.small};
   background-color: ${({ theme }) => theme.colors.background};
-  order: ${({ $isOnline }) => ($isOnline ? 0 : 1)};
-  padding: ${({ theme }) => theme.size.small};
+  padding: ${({ theme }) =>
+    `${theme.size.small} ${theme.size.small} ${theme.size.small} ${theme.size.large}`};
+  order: ${({ $isAuth, $isOnline }) => getOrderValue($isAuth, $isOnline)};
+
+  border-bottom: ${({ $isAuth, theme }) =>
+    $isAuth && `1px solid ${theme.colors.backgroundGrey}`};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.buttonClickHover};
+    background-color: ${({ theme }) => theme.colors.focusHover};
     cursor: pointer;
 
     > span {
@@ -19,13 +33,10 @@ export const StyledContainer = styled.li<{ $isOnline: boolean }>`
 `;
 
 export const StyledUserName = styled.span`
-  font-size: ${({ theme }) => theme.size.medium};
-  height: 100%;
   flex-grow: 1;
-  display: flex;
-  align-items: center;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  color: ${({ theme }) => theme.colors.text};
 `;
+
+export const StyledMySelfUser = styled.div``;
