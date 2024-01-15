@@ -13,6 +13,7 @@ import { UserType } from '@/Types/UserType';
 import { readMessage } from '@/Services/Message';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import Button from '@/Components/Base/Button';
+import { useReadMessage } from '@/Hooks/Api/Message';
 
 const ConversationList = ({
   setReceiver,
@@ -26,6 +27,7 @@ const ConversationList = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigator = useNavigate();
   const { colors } = useTheme();
+  const { mutateReadMessage } = useReadMessage();
 
   const getReceiver = (conversation: ConversationType) => {
     return conversation.receiver._id === loginUser._id
@@ -35,8 +37,9 @@ const ConversationList = ({
 
   const handleClickUser = async (receiver: UserType) => {
     setReceiver(receiver);
-    await readMessage(receiver._id);
-    conversationsRefetch();
+    mutateReadMessage(receiver._id);
+    // await readMessage(receiver._id);
+    // conversationsRefetch();
     setIsClickedUserCard(true);
   };
 
