@@ -50,6 +50,7 @@ import { useCreateNotification } from '@/Hooks/Api/Notification';
 import useMessageReceiver from '@/Stores/MessageReceiver';
 import Skeleton from '@/Components/Base/Skeleton';
 import PostDetailSkeleton from './PostDetailSkeleton';
+import { useReadMessage } from '@/Hooks/Api/Message';
 
 const PostDetailModal = ({
   postLike,
@@ -66,6 +67,7 @@ const PostDetailModal = ({
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
   const { setReceiver } = useMessageReceiver();
+  const { mutateReadMessage } = useReadMessage();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
@@ -132,7 +134,8 @@ const PostDetailModal = ({
   const handleClickDMBtn = () => {
     if (postDetailData) {
       if (postDetailData.author._id !== authUser._id) {
-        setReceiver(postDetailData?.author);
+        setReceiver(postDetailData.author);
+        mutateReadMessage(postDetailData.author._id);
       } else {
         setReceiver(null);
       }

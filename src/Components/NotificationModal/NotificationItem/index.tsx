@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@/Components/Base/Avatar';
 import { Props } from './type';
@@ -11,6 +12,7 @@ import {
   StyledItem,
   StyledText,
 } from './style';
+import { useReadMessage } from '@/Hooks/Api/Message';
 
 const NotificationItem = ({
   src,
@@ -23,6 +25,7 @@ const NotificationItem = ({
   onClose,
 }: Props) => {
   const { setReceiver } = useMessageReceiver();
+  const { mutateReadMessage } = useReadMessage();
   const navigate = useNavigate();
 
   const handleOnClick = () => {
@@ -39,6 +42,7 @@ const NotificationItem = ({
     if (type === 'message') {
       onClose();
       setReceiver(author);
+      mutateReadMessage(author._id);
       navigate('/directmessage');
     }
   };
