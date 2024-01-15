@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
 import { PostProps } from './type';
@@ -8,6 +8,8 @@ import StyledHr from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 
 const UserProfilePost = ({ posts }: PostProps) => {
+  const { userId } = useParams() || '';
+
   return (
     <>
       <StyledHr />
@@ -15,7 +17,7 @@ const UserProfilePost = ({ posts }: PostProps) => {
         <StyledGridPost>
           {posts.map((post: PostType) => (
             <Link
-              to={`/modal-detail/${post._id}`}
+              to={`/profile/${userId}/modal-detail/${post._id}`}
               key={post._id}
             >
               <ImageCard

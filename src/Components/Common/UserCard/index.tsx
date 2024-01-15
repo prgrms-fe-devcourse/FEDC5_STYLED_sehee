@@ -62,7 +62,7 @@ const UserCard = forwardRef(
      */
 
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-      if (onClickUser) {
+      if (onClickUser && e.target === e.currentTarget) {
         onClickUser();
         return;
       }

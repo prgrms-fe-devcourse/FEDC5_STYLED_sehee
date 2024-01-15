@@ -35,6 +35,7 @@ import QUERY_KEYS from '@/Constants/queryKeys';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
+import PostCardSkeletion from '@/Components/Common/PostCard/PostCardSkeleton';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -44,7 +45,7 @@ const HomePage = () => {
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const [refInView, inView] = useInView();
 
-  const [currentChannelId, setCurrentChannelId] = useState('all');
+  const [currentChannelId, setCurrentChannelId] = useState('');
 
   const { likeById } = useLikeById();
   const { disLikeById } = useDisLikeById();
@@ -96,7 +97,7 @@ const HomePage = () => {
   } = useQuery({
     queryKey: [QUERY_KEYS.CHANNEL_LIST],
     queryFn: getChannels,
-    enabled: !isCheckAuthLoading && !!userObj,
+    enabled: !isCheckAuthLoading,
   });
 
   /**
@@ -108,11 +109,8 @@ const HomePage = () => {
     hasNextPage,
     data: postList,
     fetchNextPage,
-    // fetchPreviousPage,
-    // hasPreviousPage,
-    // isFetchingNextPage,
-    // isFetchingPreviousPage,
-    // isSuccess,
+    isFetchingNextPage,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.POST_BY_ID, currentChannelId],
     queryFn: ({ pageParam }) =>
@@ -125,10 +123,7 @@ const HomePage = () => {
       return lastPage?.length !== 0 ? allPages.length * 10 : undefined;
     },
     enabled:
-      !isCheckAuthLoading &&
-      !!userObj &&
-      isChannelListSuccess &&
-      currentChannelId !== 'all',
+      !isCheckAuthLoading && isChannelListSuccess && currentChannelId !== '',
   });
 
   useEffect(() => {
@@ -243,28 +238,6 @@ const HomePage = () => {
           </StyledCategoryTitleContainer>
           {/* 채널 버튼 리스트 */}
           <StyledCategoryList>
-            <Button
-              data-id="all"
-              width="80%"
-              height={size.doubleLarge}
-              borderRadius="1rem"
-              textSize={size.medium}
-              backgroundColor={
-                currentChannelId === 'all'
-                  ? colors.backgroundGrey
-                  : colors.background
-              }
-              hoverBackgroundColor={
-                currentChannelId === 'all'
-                  ? colors.backgroundGrey
-                  : colors.focusHover
-              }
-              textColor={colors.text}
-              onClick={handleClickChannel}
-              className="category-button"
-            >
-              전체
-            </Button>
             {channelList?.map((channel) => {
               return (
                 <Button
@@ -297,40 +270,57 @@ const HomePage = () => {
         <StyledMainContentContainer>
           {/* 포스트 카드 리스트 */}
           <StyledPostCardList>
-            {postList ? (
-              postList.pages.map((cards) => {
-                return cards?.map((post) => (
-                  <PostCard
-                    key={post._id}
-                    authUser={userObj}
-                    postId={post._id}
-                    imageUrl={post.image || ''}
-                    content={post.title || ''}
-                    authorName={post.author.fullName || ''}
-                    authorId={post.author._id}
-                    authorThumbnail={post.author.image || ''}
-                    isFollower={post.author.followers.some(
-                      (follower) =>
-                        authUser.following?.some(({ _id }) => _id === follower),
-                    )}
-                    isLike={
-                      authUser &&
-                      post.likes.some(({ user }) => user === authUser._id)
-                    }
-                    onImageClick={() => handleClickPostImage(post._id)}
-                    myLikeId={
-                      post.likes.find(({ user }) => user === authUser._id)
-                        ?._id || ''
-                    }
-                    onUserNameClick={() => handleClickUserName(post.author._id)}
-                    onLikeIconClick={handleClickLike}
-                    onFollowBtnClick={handleFollowClick}
-                  />
-                ));
-              })
-            ) : (
-              <StyledNoPost>페이지가 없습니다.</StyledNoPost>
+            {currentChannelId === '' && (
+              <StyledNoPost>카테고리를 선택해주세요!</StyledNoPost>
             )}
+            {postList
+              ? postList.pages.map((cards) => {
+                  return cards?.map((post) => (
+                    <PostCard
+                      key={post._id}
+                      authUser={userObj}
+                      postId={post._id}
+                      imageUrl={post.image || ''}
+                      content={post.title || ''}
+                      authorName={post.author.fullName || ''}
+                      authorId={post.author._id}
+                      authorThumbnail={post.author.image || ''}
+                      isFollower={post.author.followers.some(
+                        (follower) =>
+                          authUser.following?.some(
+                            ({ _id }) => _id === follower,
+                          ),
+                      )}
+                      isLike={
+                        authUser &&
+                        post.likes.some(({ user }) => user === authUser._id)
+                      }
+                      onImageClick={() => handleClickPostImage(post._id)}
+                      myLikeId={
+                        post.likes.find(({ user }) => user === authUser._id)
+                          ?._id || ''
+                      }
+                      onUserNameClick={() =>
+                        handleClickUserName(post.author._id)
+                      }
+                      onLikeIconClick={handleClickLike}
+                      onFollowBtnClick={handleFollowClick}
+                    />
+                  ));
+                })
+              : null}
+            {(isLoading || isFetchingNextPage) &&
+              Array.from(Array(3), (_, index) => (
+                <PostCardSkeletion.PostCard key={index} />
+              ))}
+            {postList?.pages[0] &&
+              postList.pages[0].length === 0 &&
+              currentChannelId !== '' &&
+              !isLoading &&
+              !isFetchingNextPage && (
+                <StyledNoPost>페이지가 없습니다.</StyledNoPost>
+              )}
+
             {hasNextPage && (
               <StyledObserver
                 className="observer"
