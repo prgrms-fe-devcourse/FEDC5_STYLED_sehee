@@ -7,6 +7,7 @@ import { UserType } from '@/Types/UserType';
 import { StyledBackground, StyledHeaderContainer } from './style';
 import ProfileInfo from '@/Components/Profile/ProfileInfo';
 import ProfilePost from '@/Components/Profile/ProfilePost';
+import Skeleton from '@/Components/Base/Skeleton';
 
 const ProfilePage = () => {
   const { userId } = useParams() || ''; // URL에서 사용자 ID를 가져오기
@@ -45,15 +46,26 @@ const ProfilePage = () => {
     <>
       <StyledHeaderContainer />
       <StyledBackground>
-        <ProfileInfo
-          userData={profileUser}
-          isMyProfile={isCurrentUserProfile}
-          isFollowing={isFollowingUser}
-        />
-        <ProfilePost
-          userData={profileUser}
-          isMyProfile={isCurrentUserProfile}
-        />
+        {profileUserQuery.isLoading ? (
+          <Skeleton.Circle />
+        ) : (
+          <ProfileInfo
+            userData={profileUser}
+            isMyProfile={isCurrentUserProfile}
+            isFollowing={isFollowingUser}
+          />
+        )}
+        {profileUserQuery.isLoading ? (
+          <Skeleton.Box
+            width="90%"
+            height="22.5rem"
+          />
+        ) : (
+          <ProfilePost
+            userData={profileUser}
+            isMyProfile={isCurrentUserProfile}
+          />
+        )}
       </StyledBackground>
       <Outlet />
     </>

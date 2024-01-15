@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
-import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 import { Link, Outlet } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
 import { PostLikeProps } from './type';
@@ -15,7 +15,7 @@ import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHeadContainer from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import { getChannels } from '@/Services/Channel';
-import Spinner from '@/Components/Base/Spinner';
+import Skeleton from '@/Components/Base/Skeleton';
 
 const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
@@ -80,11 +80,6 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
 
   const likePosts = setLikePosts.data || [];
 
-  useEffect(() => {
-    setLikePosts.refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [likes]);
-
   return (
     <>
       <StyledHeadContainer>
@@ -127,7 +122,10 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
               isLike ? colors.primary : colors.background
             }`,
           }}
-          onClick={() => setIsLike(true)}
+          onClick={() => {
+            setIsLike(true);
+            setLikePosts.refetch();
+          }}
         >
           <Icon
             name="favorite"
@@ -142,7 +140,12 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
           {isLike ? (
             // eslint-disable-next-line react/jsx-no-useless-fragment
             <>
-              {setLikePosts.isLoading && <Spinner isFixedCenter />}
+              {setLikePosts.isLoading && (
+                <Skeleton.Box
+                  width="90%"
+                  height="22.5rem"
+                />
+              )}
               {likePosts.map(
                 (post: PostType | null) =>
                   post && (

@@ -40,7 +40,6 @@ const ProfileInfo = ({ userData, isMyProfile, isFollowing }: Props) => {
               isFollowing={isFollowing}
             />
           )}
-
           <FollowInfo
             posts={userData.posts.length}
             followers={userData.followers.length}
