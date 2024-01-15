@@ -10,11 +10,13 @@ import { useForm } from '@/Hooks';
 import { NameType, Props } from './type';
 import validateName from './validateName';
 import { StyledContainer, StyledForm } from './style';
+import Alert from '@/Components/Common/Alert';
 
 const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
   const [isValid, setIsValid] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const { mutate, status } = useMutation({
     mutationFn: (nameData: PutUpdateUserRequestType) => updateMyName(nameData),
@@ -24,6 +26,9 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
         queryClient.refetchQueries({ queryKey: ['currentUser'] });
         queryClient.refetchQueries({ queryKey: ['profileUser'] });
       }
+    },
+    onError: () => {
+      setIsError(true);
     },
   });
 
@@ -85,6 +90,14 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
               변경
             </Button>
           </StyledForm>
+        )}
+        {isError && (
+          <Alert
+            message="사용자 이름 변경에 실패했습니다"
+            onChangeOpen={() => {
+              handleCloseModal(false);
+            }}
+          />
         )}
       </StyledContainer>
     </Modal>

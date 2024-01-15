@@ -8,10 +8,12 @@ import { Props } from './type';
 import { ImageFileType } from '@/Components/Common/ImageUpload/type';
 import Spinner from '@/Components/Base/Spinner';
 import StyledConatiner from './style';
+import Alert from '@/Components/Common/Alert';
 
 const UpdateImageModal = ({ handleCloseModal }: Props) => {
   const [image, setImage] = useState<ImageFileType | null | string>();
   const queryClient = useQueryClient();
+  const [isError, setIsError] = useState(false);
 
   const { mutate, status } = useMutation({
     mutationFn: () => updateProfileImage(image?.file),
@@ -21,6 +23,9 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
         queryClient.refetchQueries({ queryKey: ['currentUser'] });
         queryClient.refetchQueries({ queryKey: ['profileUser'] });
       }
+    },
+    onError: () => {
+      setIsError(true);
     },
   });
 
@@ -52,6 +57,14 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
               변경
             </Button>
           </>
+        )}
+        {isError && (
+          <Alert
+            message="프로필 사진 변경에 실패했습니다"
+            onChangeOpen={() => {
+              handleCloseModal(false);
+            }}
+          />
         )}
       </StyledConatiner>
     </Modal>
