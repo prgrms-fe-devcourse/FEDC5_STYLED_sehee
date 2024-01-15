@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
 import { StyledBackground, StyledHeaderContainer } from './style';
 import ProfilePost from '@/Components/Profile/ProfilePost';
 /* eslint-disable no-underscore-dangle */
@@ -11,13 +10,8 @@ import ProfileInfo from '@/Components/Profile/ProfileInfo';
 const ProfilePage = () => {
   const { userId } = useParams() || ''; // URL에서 사용자 ID를 가져오기
 
-  const { loginUserData, loginUserRefetch } = useCheckAuth();
+  const { loginUserData } = useCheckAuth();
   const { userData: profileUser, userDataRefetch } = useFetchUser(userId || '');
-
-  useEffect(() => {
-    loginUserRefetch();
-    userDataRefetch();
-  }, [userId, loginUserRefetch, userDataRefetch]);
 
   if (!profileUser) {
     // 프로필 사용자 정보를 가져오지 못한 경우
