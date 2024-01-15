@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { debounce } from 'lodash';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../Base/Input';
 import Modal from '../Common/Modal';
@@ -13,6 +12,8 @@ import { UserType } from '@/Types/UserType';
 import { followUser, unfollowUser } from '@/Services/Follow';
 import { getUser } from '@/Services/User';
 import { sendNotifications } from '@/Services/Notification';
+import useResize from '@/Hooks/useResize';
+import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
 
 /**
  * @param userData 해당 유저의 UserType 데이터
@@ -31,19 +32,7 @@ const FollowModal = ({
   const [isTyping, setIsTyping] = useState(false);
   const [follows, setFollows] = useState<UserType[]>([]);
   const [searchFollows, setSearchFollows] = useState<UserType[]>(follows);
-  const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileSize(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const { isMobileSize } = useResize();
 
   const search = (query: string, fetchedFollows: UserType[]) => {
     // 검색 중인 단어가 없다면 전체 팔로우 목록을 보여준다.
@@ -58,7 +47,15 @@ const FollowModal = ({
     setSearchFollows(newFollows);
   };
 
+  const debouncedSearch = useDebouncedSearch({
+    inputRef,
+    follows,
+    callback: search,
+    setIsTyping,
+  });
+
   const fetchFollowData = useCallback(async () => {
+    setIsLoading(true);
     const userIds: string[] = [];
 
     if (mode === 'following') {
@@ -78,10 +75,8 @@ const FollowModal = ({
       }),
     );
 
-    // 일관된 순서를 보장하기 위해 유저 생성 날짜 기준으로 정렬
-    fetchedFollows.sort(
-      (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
-    );
+    // 일관된 순서를 보장하기 위해 이름 순으로 정렬
+    fetchedFollows.sort((a, b) => a.fullName.localeCompare(b.fullName));
     setFollows(fetchedFollows);
     setSearchFollows(fetchedFollows);
 
@@ -98,29 +93,33 @@ const FollowModal = ({
 
   useEffect(() => {
     fetchFollowData();
-  }, [userData, mode, fetchFollowData, isLoading]);
+  }, [userData, mode, fetchFollowData]);
 
   //   디바운싱을 이용해 onChange 성능을 개선한다.
-  const debouncedSearch = useMemo(
-    () =>
-      debounce(async () => {
-        if (!inputRef || !inputRef.current) {
-          return;
-        }
+  // const debouncedSearch = useMemo(
+  //   () =>
+  //     debounce(() => {
+  //       if (!inputRef || !inputRef.current) {
+  //         return;
+  //       }
 
-        const query = inputRef.current.value.trim();
-        search(query, follows);
+  //       const query = inputRef.current.value.trim();
+  //       search(query, follows);
 
-        setTimeout(() => {
-          setIsTyping(false);
-        }, 200);
-      }, 500),
-    [follows],
-  );
+  //       setTimeout(() => {
+  //         setIsTyping(false);
+  //       }, 200);
+  //     }, 500),
+  //   [follows],
+  // );
 
   const handleInputChange = () => {
     setIsTyping(true);
     debouncedSearch();
+
+    // setTimeout(() => {
+    //   setIsTyping(false);
+    // }, 200);
   };
 
   const handleFollow = async (user: UserType) => {
@@ -159,6 +158,12 @@ const FollowModal = ({
     return loginUser.following.some((following) => following.user === user._id);
   };
 
+  const isSelf = (userId: string) => {
+    // 로그인 안 한 경우에도 보이지 않도록 만든다.
+    if (Object.keys(loginUser).length === 0) return true;
+    return userId === loginUser._id;
+  };
+
   return (
     <Modal
       height={60}
@@ -190,7 +195,7 @@ const FollowModal = ({
                 userNameSize={isMobileSize ? '1.2rem' : '1.5rem'}
                 userDetail={user.email}
                 isFollow={isFollowing(user)}
-                isSelf={user._id === loginUser._id}
+                isSelf={isSelf(user._id)}
                 onClick={() => handleClickUser(user._id)}
                 onClickFollowBtn={() => handleFollow(user)}
               />

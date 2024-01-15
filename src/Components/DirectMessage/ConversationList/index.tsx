@@ -37,10 +37,7 @@ const ConversationList = ({
     setReceiver(receiver);
     await readMessage(receiver._id);
     conversationsRefetch();
-
-    if (isMobileSize && setIsClickedUserCard) {
-      setIsClickedUserCard(true);
-    }
+    setIsClickedUserCard(true);
   };
 
   const handleClickMyName = () => {

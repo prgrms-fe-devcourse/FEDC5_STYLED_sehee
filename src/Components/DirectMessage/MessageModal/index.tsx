@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useMemo, useRef, useState } from 'react';
-import { debounce } from 'lodash';
+import { useRef, useState } from 'react';
 import Modal from '@/Components/Common/Modal';
 import { StyledBody, StyledContainer, StyledHeader } from './style';
 import Button from '@/Components/Base/Button';
@@ -10,6 +9,7 @@ import { MessageModalProps } from './type';
 import UserCard from '@/Components/Common/UserCard';
 import DirectMessageSkeleton from '../Skeleton';
 import { useSearchUsers } from '@/Hooks/Api/Message';
+import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
 
 const MessageModal = ({
   setReceiver,
@@ -29,21 +29,11 @@ const MessageModal = ({
   const [isTyping, setIsTyping] = useState(false);
 
   // 디바운싱을 이용해 onChange 성능을 개선한다.
-  const debouncedSearch = useMemo(
-    () =>
-      debounce(async () => {
-        if (!inputRef || !inputRef.current) {
-          return;
-        }
-        const query = inputRef.current.value.trim();
-        setSearchQuery(query);
-
-        setTimeout(() => {
-          setIsTyping(false);
-        }, 300);
-      }, 500),
-    [],
-  );
+  const debouncedSearch = useDebouncedSearch({
+    inputRef,
+    callback: setSearchQuery,
+    setIsTyping,
+  });
 
   const handleInputChange = async () => {
     setSelected(null);

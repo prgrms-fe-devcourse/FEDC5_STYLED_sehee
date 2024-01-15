@@ -10,14 +10,14 @@ const ProfileInfo = ({ userData, userDataRefetch, isMyProfile }: Props) => {
     <StyledProfileInfoContainer>
       {isMyProfile ? (
         <Avatar
-          src={userData.image}
+          src={userData.image || ''}
           size={140}
           style={{ cursor: 'pointer' }}
           onClick={() => console.log('change image')}
         />
       ) : (
         <Avatar
-          src={userData.image}
+          src={userData.image || ''}
           size={140}
         />
       )}

@@ -1,34 +1,27 @@
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { StyledFollow, StyledPost, StyledFollowContainer } from './style';
 import FollowModal from '@/Components/FollowModal';
 import useAuthUserStore from '@/Stores/AuthUser';
-import { checkAuth } from '@/Services/Auth';
 import { Props } from './type';
+import useCheckAuth from '@/Hooks/Api/Auth';
 
 const FollowInfo = ({ userData, userDataRefetch }: Props) => {
   const [mode, setMode] = useState<'follower' | 'following'>('follower');
   const [isFollowModalOpen, setIsFollowModalOpen] = useState(false);
-  const { setAuthUser, user } = useAuthUserStore();
+  const { user, setAuthUser } = useAuthUserStore();
 
-  const {
-    data,
-    isSuccess,
-    refetch: loginUserRefetch,
-  } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: checkAuth,
-  });
+  const { loginUserData, isCheckAuthSuccess, loginUserRefetch } =
+    useCheckAuth();
 
   useEffect(() => {
-    if (!isSuccess) return;
-    if (isSuccess && !data) {
+    if (!isCheckAuthSuccess) return;
+    if (isCheckAuthSuccess && !loginUserData) {
       return;
     }
-    if (isSuccess && data) {
-      setAuthUser(data);
+    if (isCheckAuthSuccess && loginUserData) {
+      setAuthUser(loginUserData);
     }
-  }, [isSuccess, data, setAuthUser]);
+  }, [isCheckAuthSuccess, loginUserData, setAuthUser]);
 
   const handleClick = (type: 'follower' | 'following') => {
     setMode(type);
@@ -37,6 +30,7 @@ const FollowInfo = ({ userData, userDataRefetch }: Props) => {
 
   useEffect(() => {
     loginUserRefetch();
+    // userRefetch();
     userDataRefetch();
   }, [isFollowModalOpen, loginUserRefetch, userDataRefetch]);
 
