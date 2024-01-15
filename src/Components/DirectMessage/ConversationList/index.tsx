@@ -37,10 +37,7 @@ const ConversationList = ({
     setReceiver(receiver);
     await readMessage(receiver._id);
     conversationsRefetch();
-
-    if (isMobileSize && setIsClickedUserCard) {
-      setIsClickedUserCard(true);
-    }
+    setIsClickedUserCard(true);
   };
 
   const handleClickMyName = () => {
@@ -57,6 +54,7 @@ const ConversationList = ({
           userName={`${loginUser.fullName} (나)`}
           userNameSize="1.7rem"
           onClick={handleClickMyName}
+          className="conversation-list-header"
         />
         <Button
           width="3rem"

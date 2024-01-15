@@ -1,49 +1,47 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
-import { useState } from 'react';
 import { useTheme } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
 import { PostLikeProps } from './type';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
-import { getPostByUser } from '@/Services/Post';
+import { getPostByChannel } from '@/Services/Post';
 import { GetChannelPostRequestType } from '@/Types/Request';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHeadContainer from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
+import { getChannels } from '@/Services/Channel';
+import Skeleton from '@/Components/Base/Skeleton';
 
 const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
   const { colors } = useTheme();
+  const { userId } = useParams() || '';
 
   const getLikePostById = async (
-    userId: string,
+    channelId: string,
     postId: string,
     { offset = 0, limit = 100 }: GetChannelPostRequestType = {},
   ): Promise<PostType | null> => {
     try {
-      // 특정 사용자의 포스트 목록 가져오기
-      const userPosts = await getPostByUser(userId, { offset, limit });
+      // 특정 채널의 포스트 목록 가져오기
+      const channelPosts = await getPostByChannel(channelId, {
+        offset,
+        limit,
+      });
 
-      if (!userPosts) {
+      if (!channelPosts) {
         return null;
       }
 
-      // 특정 아이디의 포스트 찾기
-      const postIdPost = userPosts.find((post) => post._id === postId);
+      const postIdPost = channelPosts.find((post) => post._id === postId);
 
       if (!postIdPost) {
-        if (limit >= userPosts.length) {
-          return null;
-        }
-
-        // 포스트 더 많이 살펴보기
-        const morePost = await getLikePostById(userId, postId, {
-          offset: offset + limit,
-          limit,
-        });
-        return morePost;
+        return null;
       }
 
       return postIdPost;
@@ -53,15 +51,35 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
     }
   };
 
-  // 좋아요한 포스트
-  const [likePosts, setLikePosts] = useState([]);
+  const fetchLikePosts = async () => {
+    const channelLists = await getChannels();
 
-  likes.forEach((like) => {
-    const post = getLikePostById(like.user, like.post);
-    if (!post) {
-      setLikePosts([...likePosts, post]);
+    if (!channelLists) {
+      return [];
     }
+
+    const likePostList = await Promise.all(
+      likes.map(async (like) => {
+        const channelPosts = await Promise.all(
+          channelLists.map(async (channel) => {
+            return getLikePostById(channel._id, like.post);
+          }),
+        );
+
+        return channelPosts.filter((post) => post !== null); // 필터링하여 null인 항목 제거
+      }),
+    );
+
+    // 결과 배열 펼치기
+    return likePostList.flat();
+  };
+
+  const setLikePosts = useQuery({
+    queryKey: ['likePosts'],
+    queryFn: fetchLikePosts,
   });
+
+  const likePosts = setLikePosts.data || [];
 
   return (
     <>
@@ -105,7 +123,10 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
               isLike ? colors.border : colors.background
             }`,
           }}
-          onClick={() => setIsLike(true)}
+          onClick={() => {
+            setIsLike(true);
+            setLikePosts.refetch();
+          }}
         >
           <Icon
             name="favorite"
@@ -118,28 +139,38 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
       <StyledProfilePostContainer>
         <StyledGridPost>
           {isLike ? (
+            // eslint-disable-next-line react/jsx-no-useless-fragment
             <>
-              {likePosts.map((post: PostType) => (
-                <Link
-                  to={`/modal-detail/${post._id}`}
-                  key={post._id}
-                >
-                  <ImageCard
-                    key={post._id}
-                    src={post.image || logoBlack}
-                    comment={post.comments.length}
-                    width="90%"
-                    height="22.5rem"
-                    heart={post.likes.length}
-                  />
-                </Link>
-              ))}
+              {setLikePosts.isLoading && (
+                <Skeleton.Box
+                  width="90%"
+                  height="22.5rem"
+                />
+              )}
+              {likePosts.map(
+                (post: PostType | null) =>
+                  post && (
+                    <Link
+                      to={`/profile/${userId}/modal-detail/${post._id}`}
+                      key={post._id}
+                    >
+                      <ImageCard
+                        key={post._id}
+                        src={post.image || logoBlack}
+                        comment={post.comments.length}
+                        width="90%"
+                        height="22.5rem"
+                        heart={post.likes.length}
+                      />
+                    </Link>
+                  ),
+              )}
             </>
           ) : (
             <>
               {posts.map((post: PostType) => (
                 <Link
-                  to={`/modal-detail/${post._id}`}
+                  to={`/profile/${userId}/modal-detail/${post._id}`}
                   key={post._id}
                 >
                   <ImageCard
@@ -154,6 +185,7 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
               ))}
             </>
           )}
+          <Outlet />
         </StyledGridPost>
       </StyledProfilePostContainer>
     </>

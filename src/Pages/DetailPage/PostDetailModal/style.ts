@@ -192,7 +192,7 @@ export const StyledButtonContainer = styled.div`
   }
 `;
 
-export const StledLikeContainer = styled.div`
+export const StyledLikeContainer = styled.div`
   display: flex;
   align-items: center;
   font-size: ${({ theme }) => theme.size.medium};

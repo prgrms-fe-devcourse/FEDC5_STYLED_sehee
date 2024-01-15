@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
 import { PostCardProps } from './type';
 import {
@@ -17,6 +18,7 @@ import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 
 const PostCard = ({
   postId,
+  authUser,
   imageUrl,
   content,
   authorName,
@@ -75,20 +77,22 @@ const PostCard = ({
           <StyledProfileName onClick={onUserNameClick}>
             {authorName}
           </StyledProfileName>
-          <Button
-            className="follow-btn"
-            width="5rem"
-            height="2rem"
-            borderRadius="0.5rem"
-            textSize="1rem"
-            textColor={followBtnTextColor}
-            backgroundColor={followBtnBgColor}
-            hoverBackgroundColor={followBtnHoverBgColor}
-            hoverTextColor={followBtnTextColor}
-            onClick={() => handleFollowClick(authorId)}
-          >
-            {isFollower ? '팔로잉' : '팔로우'}
-          </Button>
+          {authUser?._id !== authorId ? (
+            <Button
+              className="follow-btn"
+              width="5rem"
+              height="2rem"
+              borderRadius="0.5rem"
+              textSize="1rem"
+              textColor={followBtnTextColor}
+              backgroundColor={followBtnBgColor}
+              hoverBackgroundColor={followBtnHoverBgColor}
+              hoverTextColor={followBtnTextColor}
+              onClick={() => handleFollowClick(authorId)}
+            >
+              {isFollower ? '팔로잉' : '팔로우'}
+            </Button>
+          ) : null}
         </StyledProfileContainer>
         <Icon
           name={isLike ? 'favorite' : 'favorite_border'}

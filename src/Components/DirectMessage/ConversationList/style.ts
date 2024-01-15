@@ -28,6 +28,15 @@ export const StyledHeader = styled.div`
     color: transparent;
     -webkit-background-clip: text;
   }
+
+  .conversation-list-header {
+    flex-grow: 0;
+    & > :nth-child(2) {
+      h1 {
+        display: inline;
+      }
+    }
+  }
 `;
 
 export const StyledBody = styled.div`

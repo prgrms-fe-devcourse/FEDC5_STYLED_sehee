@@ -18,6 +18,7 @@ export const StyledPostCardWrapper = styled.div<{
   font-size: ${(props) => props.fontSize};
   padding: 2rem;
   gap: 2rem;
+  flex-shrink: 0;
 `;
 
 export const StyledPostCardHeader = styled.div`

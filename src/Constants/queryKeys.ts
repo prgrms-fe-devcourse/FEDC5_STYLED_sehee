@@ -1,4 +1,5 @@
 const QUERY_KEYS = {
+  USER: 'user',
   USER_LIST: 'userList',
   ONLINE_USER_LIST: 'onlineUserList',
   CHECK_AUTH: 'checkAuth',

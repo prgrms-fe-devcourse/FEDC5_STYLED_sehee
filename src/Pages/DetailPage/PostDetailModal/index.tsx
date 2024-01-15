@@ -15,7 +15,6 @@ import Modal from '@/Components/Common/Modal';
 import {
   StyledImageCardContainer,
   StyledImage,
-  StyledIcon,
   StyledPostContentContainer,
   StyledAuthorInfo,
   StyledPostMainInfo,
@@ -28,7 +27,7 @@ import {
   StyledTextContainer,
   StyledLikeText,
   StyledButtonContainer,
-  StledLikeContainer,
+  StyledLikeContainer,
   StyledCommentContainer,
   postCommentBtnStyle,
   StyledText,
@@ -48,6 +47,9 @@ import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
+import useMessageReceiver from '@/Stores/MessageReceiver';
+import Skeleton from '@/Components/Base/Skeleton';
+import PostDetailSkeleton from './PostDetailSkeleton';
 
 const PostDetailModal = ({
   postLike,
@@ -63,10 +65,11 @@ const PostDetailModal = ({
   const { colors, size } = useTheme();
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
+  const { setReceiver } = useMessageReceiver();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: postDetailData } = useQuery({
+  const { data: postDetailData, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.POST_DETAIL_BY_ID, postId],
     queryFn: () => getPostDetail(postId || ''),
   });
@@ -111,7 +114,7 @@ const PostDetailModal = ({
    * @param state isOpen 모달 open 여부 상태
    */
   const handleCloseModal = (state: boolean) => {
-    navigate('/');
+    navigate(-1);
     setIsPostDetailModalOpen(state);
   };
 
@@ -127,7 +130,14 @@ const PostDetailModal = ({
    * DM 버튼 클릭 동작 함수
    */
   const handleClickDMBtn = () => {
-    navigate('/directmessage');
+    if (postDetailData) {
+      if (postDetailData.author._id !== authUser._id) {
+        setReceiver(postDetailData?.author);
+      } else {
+        setReceiver(null);
+      }
+      navigate('/directmessage');
+    }
   };
 
   /**
@@ -268,181 +278,207 @@ const PostDetailModal = ({
       >
         {/* 왼쪽 사진 이미지 영역 */}
         <StyledImageCardContainer>
-          {postImageUrl && postImageUrl.length !== 0 ? (
+          {!isLoading && postImageUrl && postImageUrl.length !== 0 ? (
             <StyledImage src={postImageUrl} />
           ) : (
-            <StyledIcon src="src/Assets/Images/STYLED-logo.png" />
+            <Skeleton.Box
+              width="100%"
+              height="100%"
+              {...{ style: { borderRadius: '0 0 0.5rem 0.5rem' } }}
+            />
           )}
         </StyledImageCardContainer>
         {/* 오른쪽 포스트 관련 정보 영역 */}
         <StyledPostContentContainer>
-          <StyledAuthorInfo>
-            {/* author 정보 및 팔로우 버튼 */}
-            <UserCard
-              width="fit-content"
-              mode="follow"
-              badgeSize="0"
-              userName={postAuthor}
-              coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
-              isFollow={isFollow !== null ? isFollow : isMyFollow}
-              className="post-detail-user-card"
-              onClickFollowBtn={handleClickFollowBtn}
-              onClickUser={() =>
-                handleClickUser(postDetailData?.author._id || '')
-              }
-            />
-            {/* 점 세개 추가 모달 버튼 */}
-            <Button
-              width="3rem"
-              height="3rem"
-              borderRadius="0.5rem"
-              backgroundColor={colors.background}
-              hoverBackgroundColor="transparent"
-              onClick={() => setIsDotModalOpen(true)}
-            >
-              <Icon name="more_horiz" />
-            </Button>
-          </StyledAuthorInfo>
-          <StyledPostMainInfo>
-            {/* 포스트 author 및 상세 내용, 게시 시간 정보 */}
-            <StyledPostMainTopContainer>
+          {!isLoading ? (
+            <StyledAuthorInfo>
+              {/* author 정보 및 팔로우 버튼 */}
               <UserCard
                 width="fit-content"
+                mode={
+                  authUser._id !== postDetailData?.author._id
+                    ? 'follow'
+                    : 'normal'
+                }
                 badgeSize="0"
                 userName={postAuthor}
                 coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
+                isFollow={isFollow !== null ? isFollow : isMyFollow}
                 className="post-detail-user-card"
+                onClickFollowBtn={handleClickFollowBtn}
                 onClickUser={() =>
                   handleClickUser(postDetailData?.author._id || '')
                 }
-                style={{ backgroundColor: 'transparent', padding: '0' }}
               />
-              <StyledEditTime>{postEditTime}</StyledEditTime>
-            </StyledPostMainTopContainer>
-            <StyledPostContent>{postContents}</StyledPostContent>
-            {/* 포스트 댓글 영역 */}
-            <StyledCommentHistory>
-              {postComment?.length !== 0 && '댓글'}
-              {postComment &&
-                postComment.map(
-                  ({ author, _id, comment, createdAt, updatedAt }) => {
-                    return (
-                      <StyledComment key={_id}>
-                        <UserCard
-                          width="fit-content"
-                          badgeSize="0"
-                          userName={author.fullName}
-                          // TODO: 댓글 단 사람에 대한 프로필 이미지 불러오는 useQuery 필요
-                          coverImageUrl={author.image || DEFAULT_USER_IMAGE_SRC}
-                          userDetail={
-                            createdAt === updatedAt
-                              ? calculateDate(createdAt)
-                              : calculateDate(updatedAt)
-                          }
-                          className="post-detail-user-card"
-                          onClickUser={() => handleClickUser(author._id)}
-                          style={{
-                            backgroundColor: 'transparent',
-                            padding: '0',
-                          }}
-                        />
-                        <StyledTextContainer>
-                          <StyledText>{comment}</StyledText>
-                          {author._id === authUser._id && (
-                            <Button
-                              width={size.medium}
-                              height={size.medium}
-                              backgroundColor={colors.background}
-                              hoverBackgroundColor={colors.background}
-                              style={{ padding: '0' }}
-                              onClick={() => handleClickDeleteComment(_id)}
-                            >
-                              <Icon
-                                name="close"
-                                style={{ fontSize: '1.5rem' }}
-                              />
-                            </Button>
-                          )}
-                        </StyledTextContainer>
-                      </StyledComment>
-                    );
-                  },
-                )}
-            </StyledCommentHistory>
-          </StyledPostMainInfo>
+              {/* 점 세개 추가 모달 버튼 */}
+              <Button
+                width="3rem"
+                height="3rem"
+                borderRadius="0.5rem"
+                backgroundColor={colors.background}
+                hoverBackgroundColor="transparent"
+                onClick={() => setIsDotModalOpen(true)}
+              >
+                <Icon name="more_horiz" />
+              </Button>
+            </StyledAuthorInfo>
+          ) : (
+            <PostDetailSkeleton.AuthorInfo />
+          )}
+          {!isLoading ? (
+            <StyledPostMainInfo>
+              {/* 포스트 author 및 상세 내용, 게시 시간 정보 */}
+              <StyledPostMainTopContainer>
+                <UserCard
+                  width="fit-content"
+                  badgeSize="0"
+                  userName={postAuthor}
+                  coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
+                  className="post-detail-user-card"
+                  onClickUser={() =>
+                    handleClickUser(postDetailData?.author._id || '')
+                  }
+                  style={{ backgroundColor: 'transparent', padding: '0' }}
+                />
+                <StyledEditTime>{postEditTime}</StyledEditTime>
+              </StyledPostMainTopContainer>
+              <StyledPostContent>{postContents}</StyledPostContent>
+              {/* 포스트 댓글 영역 */}
+              <StyledCommentHistory>
+                {postComment?.length !== 0 && '댓글'}
+                {postComment &&
+                  postComment.map(
+                    ({ author, _id, comment, createdAt, updatedAt }) => {
+                      return (
+                        <StyledComment key={_id}>
+                          <UserCard
+                            width="fit-content"
+                            badgeSize="0"
+                            userName={author.fullName}
+                            // TODO: 댓글 단 사람에 대한 프로필 이미지 불러오는 useQuery 필요
+                            coverImageUrl={
+                              author.image || DEFAULT_USER_IMAGE_SRC
+                            }
+                            userDetail={
+                              createdAt === updatedAt
+                                ? calculateDate(createdAt)
+                                : calculateDate(updatedAt)
+                            }
+                            className="post-detail-user-card"
+                            onClickUser={() => handleClickUser(author._id)}
+                            style={{
+                              backgroundColor: 'transparent',
+                              padding: '0',
+                            }}
+                          />
+                          <StyledTextContainer>
+                            <StyledText>{comment}</StyledText>
+                            {author._id === authUser._id && (
+                              <Button
+                                width={size.medium}
+                                height={size.medium}
+                                backgroundColor={colors.background}
+                                hoverBackgroundColor={colors.background}
+                                style={{ padding: '0' }}
+                                onClick={() => handleClickDeleteComment(_id)}
+                              >
+                                <Icon
+                                  name="close"
+                                  style={{ fontSize: '1.5rem' }}
+                                />
+                              </Button>
+                            )}
+                          </StyledTextContainer>
+                        </StyledComment>
+                      );
+                    },
+                  )}
+              </StyledCommentHistory>
+            </StyledPostMainInfo>
+          ) : (
+            <PostDetailSkeleton.PostMainInfo />
+          )}
+
           {/* 좋아요, 댓글, DM 버튼 영역 */}
           <StyledLikeCommentChat>
-            <StyledButtonContainer>
-              <Button
-                width="2rem"
-                height="2rem"
-                borderRadius="0"
-                backgroundColor={colors.background}
-                hoverBackgroundColor={colors.background}
-                onClick={handleClickLikeBtn}
-              >
-                <Icon
-                  isFill={isLike !== null ? isLike : isMyLike}
-                  name="favorite"
-                  className="post-detail-modal-heart-btn"
-                />
-              </Button>
-              <Button
-                width="2rem"
-                height="2rem"
-                borderRadius="0"
-                backgroundColor={colors.background}
-                hoverBackgroundColor={colors.background}
-                onClick={() => commentInputRef.current?.focus()}
-              >
-                <Icon
-                  isFill={false}
-                  name="maps_ugc"
-                  className="post-detail-modal-btn"
-                />
-              </Button>
-              <Button
-                width="2rem"
-                height="2rem"
-                borderRadius="0"
-                backgroundColor={colors.background}
-                hoverBackgroundColor={colors.background}
-                onClick={handleClickDMBtn}
-              >
-                <Icon
-                  isFill={false}
-                  name="question_answer"
-                  className="post-detail-modal-btn"
-                />
-              </Button>
-            </StyledButtonContainer>
-            {/* 포스트 좋아요 정보 */}
-            <StledLikeContainer>
-              {postLike && postLike.length !== 0 ? (
-                <>
-                  <UserCard
-                    width="fit-content"
-                    badgeSize="0"
-                    userName={firstLikeUser?.fullName || 'STYLED 관리자'}
-                    coverImageUrl={
-                      firstLikeUser?.image || DEFAULT_USER_IMAGE_SRC
-                    }
-                    className="post-detail-user-card"
-                    onClickUser={() =>
-                      handleClickUser(firstLikeUser?._id || '')
-                    }
-                  />
-                  <StyledLikeText>님</StyledLikeText>
-                  {postLike.length > 1 && (
-                    <StyledLikeText className="like-extra-text">
-                      {`외 ${postLike.length - 1}명`}
-                    </StyledLikeText>
-                  )}
+            {!isLoading ? (
+              <>
+                <StyledButtonContainer>
+                  <Button
+                    width="2rem"
+                    height="2rem"
+                    borderRadius="0"
+                    backgroundColor={colors.background}
+                    hoverBackgroundColor={colors.background}
+                    onClick={handleClickLikeBtn}
+                  >
+                    <Icon
+                      isFill={isLike !== null ? isLike : isMyLike}
+                      name="favorite"
+                      className="post-detail-modal-heart-btn"
+                    />
+                  </Button>
+                  <Button
+                    width="2rem"
+                    height="2rem"
+                    borderRadius="0"
+                    backgroundColor={colors.background}
+                    hoverBackgroundColor={colors.background}
+                    onClick={() => commentInputRef.current?.focus()}
+                  >
+                    <Icon
+                      isFill={false}
+                      name="maps_ugc"
+                      className="post-detail-modal-btn"
+                    />
+                  </Button>
+                  <Button
+                    width="2rem"
+                    height="2rem"
+                    borderRadius="0"
+                    backgroundColor={colors.background}
+                    hoverBackgroundColor={colors.background}
+                    onClick={handleClickDMBtn}
+                  >
+                    <Icon
+                      isFill={false}
+                      name="question_answer"
+                      className="post-detail-modal-btn"
+                    />
+                  </Button>
+                </StyledButtonContainer>
+                {/* 포스트 좋아요 정보 */}
+                <StyledLikeContainer>
+                  {postLike && postLike.length !== 0 ? (
+                    <>
+                      <UserCard
+                        width="fit-content"
+                        badgeSize="0"
+                        userName={firstLikeUser?.fullName || 'STYLED 관리자'}
+                        coverImageUrl={
+                          firstLikeUser?.image || DEFAULT_USER_IMAGE_SRC
+                        }
+                        className="post-detail-user-card"
+                        onClickUser={() =>
+                          handleClickUser(firstLikeUser?._id || '')
+                        }
+                      />
+                      <StyledLikeText>님</StyledLikeText>
+                      {postLike.length > 1 && (
+                        <StyledLikeText className="like-extra-text">
+                          {`외 ${postLike.length - 1}명`}
+                        </StyledLikeText>
+                      )}
 
-                  <StyledLikeText>이 좋아합니다.</StyledLikeText>
-                </>
-              ) : null}
-            </StledLikeContainer>
+                      <StyledLikeText>이 좋아합니다.</StyledLikeText>
+                    </>
+                  ) : null}
+                </StyledLikeContainer>
+              </>
+            ) : (
+              <PostDetailSkeleton.LikeCommentChat />
+            )}
+
             {/* 댓글 게시 영역 */}
             <StyledCommentContainer>
               {/* TODO: Input 컴포넌트를 textarea 태그로 바꿀 수 있는 옵션이 있어야 할듯 */}

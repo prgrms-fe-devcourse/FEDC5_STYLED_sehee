@@ -1,40 +1,60 @@
+import { useState } from 'react';
 import Avatar from '@/Components/Base/Avatar';
 import FollowInfo from './FollowInfo';
 import { StyledProfileInfoContainer } from './style';
 import MyProfileInfo from './MyProfileInfo';
 import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
+import UpdateImageModal from '../UpdateImageModal';
 
-const ProfileInfo = ({ userData, isMyProfile }: Props) => {
+const ProfileInfo = ({
+  userData,
+  userDataRefetch,
+  isMyProfile,
+  isFollowing,
+}: Props) => {
+  const [isChangeImage, setIsChangeImage] = useState(false);
+
   return (
-    <StyledProfileInfoContainer>
-      {isMyProfile ? (
-        <Avatar
-          src={userData.image}
-          size={140}
-          style={{ cursor: 'pointer', flexShrink: '0' }}
-          onClick={() => console.log('change image')}
-        />
-      ) : (
-        <Avatar
-          src={userData.image}
-          size={140}
-        />
-      )}
-      <div>
+    <>
+      <StyledProfileInfoContainer>
         {isMyProfile ? (
-          <MyProfileInfo name={userData.fullName} />
+          <Avatar
+            src={userData.image}
+            size={140}
+            style={{ cursor: 'pointer', flexShrink: '0' }}
+            onClick={() => setIsChangeImage(true)}
+          />
         ) : (
-          <UserProfileInfo name={userData.fullName} />
+          <Avatar
+            src={userData.image}
+            size={140}
+          />
         )}
-
-        <FollowInfo
-          posts={userData.posts.length}
-          followers={userData.followers.length}
-          following={userData.following.length}
-        />
-      </div>
-    </StyledProfileInfoContainer>
+        <div>
+          {isMyProfile ? (
+            <MyProfileInfo
+              name={userData.fullName}
+              // eslint-disable-next-line no-underscore-dangle
+              id={userData._id}
+            />
+          ) : (
+            <UserProfileInfo
+              name={userData.fullName}
+              user={userData}
+              isFollowing={isFollowing}
+            />
+          )}
+          <FollowInfo
+            userData={userData}
+            userDataRefetch={userDataRefetch}
+          />
+        </div>
+      </StyledProfileInfoContainer>
+      {isChangeImage && (
+        <UpdateImageModal handleCloseModal={() => setIsChangeImage(false)} />
+      )}
+    </>
   );
 };
 
