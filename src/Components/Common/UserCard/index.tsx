@@ -60,6 +60,7 @@ const UserCard = forwardRef(
      * 어떻게 사용 및 확장할지는 추후 결정해야 할듯
      */
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
       if (onClick && e.target === e.currentTarget) {
         onClick(e);
       }
