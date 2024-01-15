@@ -94,31 +94,9 @@ const FollowModal = ({
     fetchFollowData();
   }, [userData, mode, fetchFollowData]);
 
-  //   디바운싱을 이용해 onChange 성능을 개선한다.
-  // const debouncedSearch = useMemo(
-  //   () =>
-  //     debounce(() => {
-  //       if (!inputRef || !inputRef.current) {
-  //         return;
-  //       }
-
-  //       const query = inputRef.current.value.trim();
-  //       search(query, follows);
-
-  //       setTimeout(() => {
-  //         setIsTyping(false);
-  //       }, 200);
-  //     }, 500),
-  //   [follows],
-  // );
-
   const handleInputChange = () => {
     setIsTyping(true);
     debouncedSearch();
-
-    // setTimeout(() => {
-    //   setIsTyping(false);
-    // }, 200);
   };
 
   const handleFollow = async (user: UserType) => {
@@ -157,10 +135,10 @@ const FollowModal = ({
     return loginUser.following.some((following) => following.user === user._id);
   };
 
-  const isSelf = (userId: string) => {
+  const isButtonShow = (userId: string) => {
     // 로그인 안 한 경우에도 보이지 않도록 만든다.
-    if (Object.keys(loginUser).length === 0) return true;
-    return userId === loginUser._id;
+    if (Object.keys(loginUser).length === 0) return false;
+    return userId !== loginUser._id;
   };
 
   return (
@@ -194,7 +172,7 @@ const FollowModal = ({
                 userNameSize={isMobileSize ? '1.2rem' : '1.5rem'}
                 userDetail={user.email}
                 isFollow={isFollowing(user)}
-                isSelf={isSelf(user._id)}
+                isButtonShow={isButtonShow(user._id)}
                 onClick={() => handleClickUser(user._id)}
                 onClickFollowBtn={() => handleFollow(user)}
               />
