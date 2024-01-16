@@ -75,7 +75,7 @@ const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
     );
 
     // 결과 배열 펼치기
-    return likePostList.flat();
+    return likePostList.reverse().flat();
   };
 
   const setLikePosts = useQuery({
