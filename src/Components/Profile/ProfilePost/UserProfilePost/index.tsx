@@ -7,11 +7,12 @@ import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHr from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import Skeleton from '@/Components/Base/Skeleton';
+import useResize from '@/Hooks/useResize';
 
 const UserProfilePost = ({ posts, isLoading }: PostProps) => {
   const { userId } = useParams() || '';
   const navigate = useNavigate();
-  console.log(isLoading);
+  const { isMobileSize } = useResize();
 
   return (
     <>
@@ -31,7 +32,7 @@ const UserProfilePost = ({ posts, isLoading }: PostProps) => {
                 src={post.image || logoBlack}
                 comment={post.comments.length}
                 width="90%"
-                height="22.5rem"
+                height={isMobileSize ? '15rem' : '22.5rem'}
                 heart={post.likes.length}
                 onDetail={() =>
                   navigate(`/profile/${userId}/modal-detail/${post._id}`)

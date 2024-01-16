@@ -1,9 +1,13 @@
 import styled from 'styled-components';
 
 export const StyledProfilePostContainer = styled.div`
-  padding: 3rem 0 15rem 0;
+  padding: 2rem 0 15rem 0;
   justify-content: center;
   display: flex;
+
+  @media ${({ theme }) => theme.device.mobile} {
+    padding: 0 0 10rem 0;
+  }
 `;
 
 export const StyledGridPost = styled.div`
@@ -11,4 +15,9 @@ export const StyledGridPost = styled.div`
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   width: 65%;
+
+  @media ${({ theme }) => theme.device.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
 `;

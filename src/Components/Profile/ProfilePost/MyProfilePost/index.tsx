@@ -17,12 +17,14 @@ import StyledHeadContainer from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import { getChannels } from '@/Services/Channel';
 import Skeleton from '@/Components/Base/Skeleton';
+import useResize from '@/Hooks/useResize';
 
 const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
   const { colors } = useTheme();
   const { userId } = useParams() || '';
   const navigate = useNavigate();
+  const { isMobileSize } = useResize();
 
   const getLikePostById = async (
     channelId: string,
@@ -156,7 +158,7 @@ const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
                         src={post.image || logoBlack}
                         comment={post.comments.length}
                         width="90%"
-                        height="22.5rem"
+                        height={isMobileSize ? '20rem' : '22.5rem'}
                         heart={post.likes.length}
                         onDetail={() =>
                           navigate(
@@ -182,7 +184,7 @@ const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
                     src={post.image || logoBlack}
                     comment={post.comments.length}
                     width="90%"
-                    height="22.5rem"
+                    height={isMobileSize ? '20rem' : '22.5rem'}
                     heart={post.likes.length}
                     onDetail={() =>
                       navigate(`/profile/${userId}/modal-detail/${post._id}`)

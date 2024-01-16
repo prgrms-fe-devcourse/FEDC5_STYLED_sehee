@@ -7,6 +7,7 @@ import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
 import UpdateImageModal from '../UpdateImageModal';
 import Skeleton from '@/Components/Base/Skeleton';
+import useResize from '@/Hooks/useResize';
 
 const ProfileInfo = ({
   userData,
@@ -16,7 +17,7 @@ const ProfileInfo = ({
   isLoading,
 }: Props) => {
   const [isChangeImage, setIsChangeImage] = useState(false);
-
+  const { isMobileSize } = useResize();
   return (
     <>
       <StyledProfileInfoContainer>
@@ -24,7 +25,7 @@ const ProfileInfo = ({
         {!isLoading && isMyProfile ? (
           <Avatar
             src={userData.image}
-            size={140}
+            size={isMobileSize ? 110 : 140}
             style={{ cursor: 'pointer', flexShrink: '0' }}
             onClick={() => setIsChangeImage(true)}
           />
@@ -32,7 +33,7 @@ const ProfileInfo = ({
           !isLoading && (
             <Avatar
               src={userData.image}
-              size={140}
+              size={isMobileSize ? 110 : 140}
             />
           )
         )}
