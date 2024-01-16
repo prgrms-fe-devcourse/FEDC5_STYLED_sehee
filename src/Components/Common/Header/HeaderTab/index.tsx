@@ -84,6 +84,8 @@ const HeaderTab = () => {
     queryFn: checkAuth,
   });
 
+  const { setAuthUser } = useAuthUserStore();
+
   // useMutation으로 로그아웃 처리
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -93,6 +95,7 @@ const HeaderTab = () => {
       sessionStorage.removeItem('AUTH_TOKEN');
       navigate('/');
       setTab('home');
+      setAuthUser({});
     },
   });
 
