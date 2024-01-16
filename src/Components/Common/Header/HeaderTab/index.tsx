@@ -182,7 +182,7 @@ const HeaderTab = () => {
         </StyledButtonContainer>
 
         {!isAuthUser ? (
-          <LoginButton onClick={() => navigate('/login')} />
+          <LoginButton />
         ) : (
           <>
             <StyledButtonContainer>
