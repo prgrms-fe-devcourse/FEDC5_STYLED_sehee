@@ -16,7 +16,7 @@ jobs:
         run: sh ./build.sh
       - name: Pushes to another repository
         id: push_directory
-        uses: cpina/github-action-push-to-another-repository@dev
+        uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.PERSONAL_AUTH_TOKEN }} // 변경
         with:
