@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@/Components/Base/Avatar';
 import { Props } from './type';
 import defaultUSerImage from '@/Constants/defaultUserImage';
@@ -27,11 +27,12 @@ const NotificationItem = ({
   const { setReceiver } = useMessageReceiver();
   const { mutateReadMessage } = useReadMessage();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const handleOnClick = () => {
     if (type === 'comment' || type === 'post') {
       onClose();
-      navigate(`/modal-detail/${typeId}`);
+      navigate(`${pathname !== '/' ? pathname : ''}/modal-detail/${typeId}`);
     }
 
     if (type === 'follow') {
