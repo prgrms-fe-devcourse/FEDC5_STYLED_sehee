@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from 'styled-components';
 import Modal from '@/Components/Common/Modal';
 import { StyledBody, StyledContainer, StyledHeader } from './style';
@@ -12,6 +12,7 @@ import DirectMessageSkeleton from '../Skeleton';
 import { useSearchUsers } from '@/Hooks/Api/Search';
 import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
 import useMessageReceiver from '@/Stores/MessageReceiver';
+import useIsTyping from '@/Hooks/useIsTyping';
 
 const MessageModal = ({
   setIsModalOpen,
@@ -19,9 +20,8 @@ const MessageModal = ({
   isMobileSize = false,
 }: MessageModalProps) => {
   const { colors } = useTheme();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const { inputRef, isTyping } = useIsTyping();
 
-  const [isTyping, setIsTyping] = useState(false);
   const [selected, setSelected] = useState<UserType | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -36,16 +36,14 @@ const MessageModal = ({
   const debouncedSearch = useDebouncedSearch({
     inputRef,
     callback: setSearchQuery,
-    setIsTyping,
   });
 
-  const handleInputChange = async () => {
+  const handleInputChange = () => {
     setSelected(null);
-    setIsTyping(true);
     debouncedSearch();
   };
 
-  const handleClickButton = async () => {
+  const handleClickButton = () => {
     if (!selected) {
       return;
     }
