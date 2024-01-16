@@ -27,10 +27,11 @@ const NotificationModal = ({ onClose }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(
     categoryList[0],
   );
+  const [isMounted, setIsMounted] = useState(false);
   const {
     user: { _id: authId },
   } = useAuthUserStore();
-  const ref = useClickAway(onClose);
+  const ref = useClickAway(() => setIsMounted(true));
 
   const { data: notificationList, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
@@ -56,13 +57,27 @@ const NotificationModal = ({ onClose }: Props) => {
       : filteredList;
   }, [notificationList, selectedCategory]);
 
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (isMounted) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 700);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isMounted, onClose]);
+
   useEffect(() => {
     return () => postReadNotifications();
   }, [postReadNotifications]);
 
   return (
-    <StyledWrapper ref={ref}>
-      <NotificationHeader onClose={onClose} />
+    <StyledWrapper
+      ref={ref}
+      $isMounted={isMounted}
+    >
+      <NotificationHeader onClose={() => setIsMounted(true)} />
       <CategoryList
         list={categoryList}
         selectedCategory={selectedCategory}
@@ -84,7 +99,7 @@ const NotificationModal = ({ onClose }: Props) => {
       {!isLoading && (
         <NotificationList
           list={list}
-          onClose={onClose}
+          onClose={() => setIsMounted(true)}
         />
       )}
     </StyledWrapper>
