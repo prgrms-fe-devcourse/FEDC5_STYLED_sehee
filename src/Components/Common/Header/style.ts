@@ -10,6 +10,10 @@ export const StyledHeaderContainer = styled.div`
   display: flex;
   position: fixed;
   z-index: 9;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    padding: 2rem 2rem;
+  }
 `;
 
 export const StyledDivider = styled.div`

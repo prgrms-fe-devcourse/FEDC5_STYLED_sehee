@@ -68,3 +68,16 @@ export const float = keyframes`
     transform: translateY(0rem);
   }
 `;
+
+export const floatSmall = keyframes`
+  0% {
+    transform: translateY(0rem);
+  }
+  50% {
+    transform: translateY(-0.6rem);
+  }
+
+  100% {
+    transform: translateY(0rem);
+  }
+`;

@@ -4,9 +4,13 @@ import { StyledHeaderContainer, StyledDivider } from './style';
 import HeaderTab from './HeaderTab';
 import HeaderLogo from './HeaderLogo';
 import HeaderProps from './type';
+import useResize from '@/Hooks/useResize';
+import Hamburger from './Hamburger';
 // import useTabStore from '@/Stores/Tab';
 
 const Header = ({ activeHeader }: HeaderProps) => {
+  const { isMobileSize } = useResize();
+
   // 뒤로가기 핸들러..
   /** 
   const { prev, setTab } = useTabStore();
@@ -33,7 +37,8 @@ const Header = ({ activeHeader }: HeaderProps) => {
     <StyledHeaderContainer>
       <HeaderLogo />
       <StyledDivider />
-      <HeaderTab />
+
+      {isMobileSize ? <Hamburger /> : <HeaderTab />}
     </StyledHeaderContainer>
   );
 };
