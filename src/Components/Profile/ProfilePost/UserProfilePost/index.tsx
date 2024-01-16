@@ -6,33 +6,39 @@ import { PostProps } from './type';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHr from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
+import Skeleton from '@/Components/Base/Skeleton';
 
-const UserProfilePost = ({ posts }: PostProps) => {
+const UserProfilePost = ({ posts, isLoading }: PostProps) => {
   const { userId } = useParams() || '';
   const navigate = useNavigate();
-
-  const handleOpen = (url: string) => {
-    navigate(url);
-  };
+  console.log(isLoading);
 
   return (
     <>
       <StyledHr />
       <StyledProfilePostContainer>
         <StyledGridPost>
-          {posts.map((post: PostType) => (
-            <ImageCard
-              key={post._id}
-              src={post.image || logoBlack}
-              comment={post.comments.length}
+          {isLoading ? (
+            <Skeleton.Box
               width="90%"
               height="22.5rem"
-              heart={post.likes.length}
-              onDetail={() =>
-                handleOpen(`/profile/${userId}/modal-detail/${post._id}`)
-              }
             />
-          ))}
+          ) : (
+            !isLoading &&
+            posts.map((post: PostType) => (
+              <ImageCard
+                key={post._id}
+                src={post.image || logoBlack}
+                comment={post.comments.length}
+                width="90%"
+                height="22.5rem"
+                heart={post.likes.length}
+                onDetail={() =>
+                  navigate(`/profile/${userId}/modal-detail/${post._id}`)
+                }
+              />
+            ))
+          )}
         </StyledGridPost>
       </StyledProfilePostContainer>
     </>

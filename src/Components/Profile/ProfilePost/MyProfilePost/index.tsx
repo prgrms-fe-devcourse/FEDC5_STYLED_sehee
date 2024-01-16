@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
@@ -17,15 +18,11 @@ import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import { getChannels } from '@/Services/Channel';
 import Skeleton from '@/Components/Base/Skeleton';
 
-const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
+const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
   const { colors } = useTheme();
   const { userId } = useParams() || '';
   const navigate = useNavigate();
-
-  const handleOpen = (url: string) => {
-    navigate(url);
-  };
 
   const getLikePostById = async (
     channelId: string,
@@ -144,48 +141,55 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
       <StyledProfilePostContainer>
         <StyledGridPost>
           {isLike ? (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
             <>
-              {setLikePosts.isLoading && (
+              {setLikePosts.isLoading ? (
                 <Skeleton.Box
                   width="90%"
                   height="22.5rem"
                 />
-              )}
-              {likePosts.map(
-                (post: PostType | null) =>
-                  post && (
-                    <ImageCard
-                      key={post._id}
-                      src={post.image || logoBlack}
-                      comment={post.comments.length}
-                      width="90%"
-                      height="22.5rem"
-                      heart={post.likes.length}
-                      onDetail={() =>
-                        handleOpen(
-                          `/profile/${userId}/modal-detail/${post._id}`,
-                        )
-                      }
-                    />
-                  ),
+              ) : (
+                likePosts.map(
+                  (post: PostType | null) =>
+                    post && (
+                      <ImageCard
+                        key={post._id}
+                        src={post.image || logoBlack}
+                        comment={post.comments.length}
+                        width="90%"
+                        height="22.5rem"
+                        heart={post.likes.length}
+                        onDetail={() =>
+                          navigate(
+                            `/profile/${userId}/modal-detail/${post._id}`,
+                          )
+                        }
+                      />
+                    ),
+                )
               )}
             </>
           ) : (
             <>
-              {posts.map((post: PostType) => (
-                <ImageCard
-                  key={post._id}
-                  src={post.image || logoBlack}
-                  comment={post.comments.length}
+              {isLoading ? (
+                <Skeleton.Box
                   width="90%"
                   height="22.5rem"
-                  heart={post.likes.length}
-                  onDetail={() =>
-                    handleOpen(`/profile/${userId}/modal-detail/${post._id}`)
-                  }
                 />
-              ))}
+              ) : (
+                posts.map((post: PostType) => (
+                  <ImageCard
+                    key={post._id}
+                    src={post.image || logoBlack}
+                    comment={post.comments.length}
+                    width="90%"
+                    height="22.5rem"
+                    heart={post.likes.length}
+                    onDetail={() =>
+                      navigate(`/profile/${userId}/modal-detail/${post._id}`)
+                    }
+                  />
+                ))
+              )}
             </>
           )}
         </StyledGridPost>

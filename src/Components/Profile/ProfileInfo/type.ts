@@ -10,4 +10,5 @@ export interface Props {
   userDataRefetch: () => void;
   isMyProfile: boolean;
   isFollowing: null | FollowingType | undefined;
+  isLoading: boolean;
 }

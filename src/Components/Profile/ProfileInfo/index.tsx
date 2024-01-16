@@ -6,19 +6,22 @@ import MyProfileInfo from './MyProfileInfo';
 import UserProfileInfo from './UserProfileInfo';
 import { Props } from './type';
 import UpdateImageModal from '../UpdateImageModal';
+import Skeleton from '@/Components/Base/Skeleton';
 
 const ProfileInfo = ({
   userData,
   userDataRefetch,
   isMyProfile,
   isFollowing,
+  isLoading,
 }: Props) => {
   const [isChangeImage, setIsChangeImage] = useState(false);
 
   return (
     <>
       <StyledProfileInfoContainer>
-        {isMyProfile ? (
+        {isLoading && <Skeleton.Circle size="14rem" />}
+        {!isLoading && isMyProfile ? (
           <Avatar
             src={userData.image}
             size={140}
@@ -26,24 +29,35 @@ const ProfileInfo = ({
             onClick={() => setIsChangeImage(true)}
           />
         ) : (
-          <Avatar
-            src={userData.image}
-            size={140}
-          />
+          !isLoading && (
+            <Avatar
+              src={userData.image}
+              size={140}
+            />
+          )
         )}
         <div>
-          {isMyProfile ? (
+          {isLoading && (
+            <Skeleton.Paragraph
+              line={1}
+              height="3.5rem"
+              style={{ marginTop: '4rem', marginLeft: '1rem' }}
+            />
+          )}
+          {!isLoading && isMyProfile ? (
             <MyProfileInfo
               name={userData.fullName}
               // eslint-disable-next-line no-underscore-dangle
               id={userData._id}
             />
           ) : (
-            <UserProfileInfo
-              name={userData.fullName}
-              user={userData}
-              isFollowing={isFollowing}
-            />
+            !isLoading && (
+              <UserProfileInfo
+                name={userData.fullName}
+                user={userData}
+                isFollowing={isFollowing}
+              />
+            )
           )}
           <FollowInfo
             userData={userData}
