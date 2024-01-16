@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { flip } from '@/Styles/Animation';
 
 const Wrapper = styled.div<{ $isDarkMode: boolean; $isAnimation: number }>`
-  position: absolute;
+  position: fixed;
   left: 4rem;
   bottom: 4rem;
   background-color: ${({ theme }) => theme.colors.primary};
