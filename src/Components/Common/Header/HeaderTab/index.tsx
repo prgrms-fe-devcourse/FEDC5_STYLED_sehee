@@ -250,7 +250,7 @@ const HeaderTab = () => {
                 onSelect={(option) => {
                   onSelectOption(option);
                 }}
-                // style={{ right: '16rem', top: '5rem' }}
+                inset="5rem 0rem 0rem -11rem"
               />
               <StyledFocusedCircle $visible={tab === 'account'} />
             </StyledButtonContainer>

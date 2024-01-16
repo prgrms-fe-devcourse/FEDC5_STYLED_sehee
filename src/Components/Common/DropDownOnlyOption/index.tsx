@@ -36,6 +36,7 @@ const DropDownOnlyOption = forwardRef(
       labelProps,
       isShow = true,
       initialValue,
+      inset,
       ...props
     }: DropDownProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -51,6 +52,7 @@ const DropDownOnlyOption = forwardRef(
     return (
       <StyledDropDown
         ref={ref}
+        $inset={inset}
         {...props}
       >
         {label && (
