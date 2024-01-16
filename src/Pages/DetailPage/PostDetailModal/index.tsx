@@ -54,6 +54,10 @@ import useMessageReceiver from '@/Stores/MessageReceiver';
 import Skeleton from '@/Components/Base/Skeleton';
 import PostDetailSkeleton from './PostDetailSkeleton';
 import { useReadMessage } from '@/Hooks/Api/Message';
+import Alert from '@/Components/Common/Alert';
+import NON_AUTH_USER from '@/Constants/nonAuthUser';
+import useResize from '@/Hooks/useResize';
+import { NotificationTypeList } from '@/Types/Request';
 
 const PostDetailModal = ({
   postLike,
@@ -113,6 +117,10 @@ const PostDetailModal = ({
   const [isLike, setIsLike] = useState<boolean | null>(null);
   const [isComposing, setIsComposing] = useState(false);
 
+  const { isMobileSize } = useResize();
+  const [errorMode, setErrorMode] = useState<NotificationTypeList>();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
   const { commentById } = useCreateComment();
   const { deleteCommentById } = useDeleteComment();
   const { followByUserId } = useFollowByUserId();
@@ -150,6 +158,11 @@ const PostDetailModal = ({
    * DM 버튼 클릭 동작 함수
    */
   const handleClickDMBtn = () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('MESSAGE');
+      setIsAlertOpen(true);
+      return;
+    }
     if (postDetailData) {
       if (postDetailData.author._id !== authUser._id) {
         setReceiver(postDetailData.author);
@@ -172,6 +185,11 @@ const PostDetailModal = ({
    * 댓글 게시하는 함수
    */
   const sendComment = () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('COMMENT');
+      setIsAlertOpen(true);
+      return;
+    }
     const commentText = commentInputRef.current?.value;
 
     if (commentText && postDetailData)
@@ -219,10 +237,24 @@ const PostDetailModal = ({
     deleteCommentById(commentId);
   };
 
+  const handleClickCommentIcon = () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('COMMENT');
+      setIsAlertOpen(true);
+      return;
+    }
+    commentInputRef.current?.focus();
+  };
+
   /**
    * 팔로우 버튼 클릭 동작 함수
    */
   const handleClickFollowBtn = () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('FOLLOW');
+      setIsAlertOpen(true);
+      return;
+    }
     const newFollowState = isFollow === null ? !isMyFollow : !isFollow;
     const targetUserId = postDetailData?.author._id || '';
     if (newFollowState) {
@@ -253,6 +285,11 @@ const PostDetailModal = ({
    * 좋아요 버튼 클릭 동작 함수
    */
   const handleClickLikeBtn = () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('LIKE');
+      setIsAlertOpen(true);
+      return;
+    }
     const newLikeState = isLike === null ? !isMyLike : !isLike;
     if (newLikeState && postId) {
       likeById(postId, {
@@ -490,7 +527,7 @@ const PostDetailModal = ({
                     borderRadius="0"
                     backgroundColor={colors.background}
                     hoverBackgroundColor={colors.background}
-                    onClick={() => commentInputRef.current?.focus()}
+                    onClick={handleClickCommentIcon}
                   >
                     <Icon
                       isFill={false}
@@ -548,6 +585,7 @@ const PostDetailModal = ({
             {/* 댓글 게시 영역 */}
             <StyledCommentContainer>
               <Input
+                disabled={!!authUser}
                 ref={commentInputRef}
                 placeholder="댓글 달기..."
                 onChange={handleChangeCommentInput}
@@ -593,6 +631,23 @@ const PostDetailModal = ({
           onCancelFollow={() => {
             handleClickFollowBtn();
           }}
+        />
+      )}
+      {isAlertOpen && (
+        <Alert
+          width={isMobileSize ? 40 : undefined}
+          mode="confirm"
+          message={
+            <>
+              {errorMode === 'FOLLOW' && <div>{NON_AUTH_USER.FOLLOW}</div>}
+              {errorMode === 'MESSAGE' && <div>{NON_AUTH_USER.MESSAGE}</div>}
+              {errorMode === 'LIKE' && <div>{NON_AUTH_USER.LIKE}</div>}
+              {errorMode === 'COMMENT' && <div>{NON_AUTH_USER.COMMENT}</div>}
+              <div>{NON_AUTH_USER.LOGIN}</div>
+            </>
+          }
+          onConfirm={() => navigate('/login')}
+          onCancle={() => setIsAlertOpen(false)}
         />
       )}
     </>

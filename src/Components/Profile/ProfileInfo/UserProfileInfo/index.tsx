@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
+import { useState } from 'react';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
 import { NameProps } from './type';
@@ -10,6 +11,11 @@ import { sendNotifications } from '@/Services/Notification';
 import useCheckAuth from '@/Hooks/Api/Auth';
 import useFetchUser from '@/Hooks/Api/User';
 import { useReadMessage } from '@/Hooks/Api/Message';
+import useAuthUserStore from '@/Stores/AuthUser';
+import useResize from '@/Hooks/useResize';
+import { NotificationTypeList } from '@/Types/Request';
+import Alert from '@/Components/Common/Alert';
+import NON_AUTH_USER from '@/Constants/nonAuthUser';
 
 const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { setReceiver } = useMessageReceiver();
@@ -19,7 +25,18 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { userDataRefetch } = useFetchUser(userId || '');
   const { mutateReadMessage } = useReadMessage();
 
+  const { user: authUser } = useAuthUserStore();
+  const { isMobileSize } = useResize();
+  const [errorMode, setErrorMode] = useState<NotificationTypeList>();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const navigate = useNavigate();
+
   const handleFollow = async () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('FOLLOW');
+      setIsAlertOpen(true);
+      return;
+    }
     // 이미 팔로우 중이면 언팔로우
     if (isFollowing) {
       await unfollowUser(isFollowing._id);
@@ -39,9 +56,15 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
     userDataRefetch();
   };
 
-  const navigateDirectMessage = () => {
+  const handleDirectMessage = () => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('MESSAGE');
+      setIsAlertOpen(true);
+      return;
+    }
     setReceiver(user);
     mutateReadMessage(user._id);
+    navigate('/directmessage');
   };
 
   return (
@@ -79,23 +102,36 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
         </Button>
       )}
 
-      <Link to="/directmessage">
-        <Button
-          type="button"
-          height="3rem"
-          textSize="1.4rem"
-          width="10rem"
-          borderRadius="1rem"
-          style={{
-            marginRight: '1rem',
-            marginTop: '.5rem',
-            border: `1px solid ${colors.text}`,
-          }}
-          onClick={navigateDirectMessage}
-        >
-          메시지 보내기
-        </Button>
-      </Link>
+      <Button
+        type="button"
+        height="3rem"
+        textSize="1.4rem"
+        width="10rem"
+        borderRadius="1rem"
+        style={{
+          marginRight: '1rem',
+          marginTop: '.5rem',
+          border: `1px solid ${colors.text}`,
+        }}
+        onClick={handleDirectMessage}
+      >
+        메시지 보내기
+      </Button>
+      {isAlertOpen && (
+        <Alert
+          width={isMobileSize ? 40 : undefined}
+          mode="confirm"
+          message={
+            <>
+              {errorMode === 'FOLLOW' && <div>{NON_AUTH_USER.FOLLOW}</div>}
+              {errorMode === 'MESSAGE' && <div>{NON_AUTH_USER.MESSAGE}</div>}
+              <div>{NON_AUTH_USER.LOGIN}</div>
+            </>
+          }
+          onConfirm={() => navigate('/login')}
+          onCancle={() => setIsAlertOpen(false)}
+        />
+      )}
     </StyledButtonContainer>
   );
 };
