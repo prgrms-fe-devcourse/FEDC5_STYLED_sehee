@@ -12,9 +12,14 @@ export const StyledProfilePostContainer = styled.div`
 
 export const StyledGridPost = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   width: 65%;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
 
   @media ${({ theme }) => theme.device.mobile} {
     grid-template-columns: repeat(2, 1fr);
