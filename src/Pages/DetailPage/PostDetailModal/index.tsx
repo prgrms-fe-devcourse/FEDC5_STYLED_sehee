@@ -294,10 +294,14 @@ const PostDetailModal = ({
     <>
       <Modal
         width={deviceWidth < 768 ? 80 : 70}
-        height={deviceWidth < 768 ? 90 : 70}
+        height={70}
         onChangeOpen={handleCloseModal}
         flexDirection={deviceWidth < 768 ? 'column' : 'row'}
-        style={deviceWidth < 768 ? { overflowY: 'scroll' } : {}}
+        style={
+          deviceWidth < 768
+            ? { overflowY: 'scroll', height: 'auto', maxHeight: '90%' }
+            : {}
+        }
       >
         {deviceWidth < 768 &&
           (!isLoading ? (

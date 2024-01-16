@@ -161,6 +161,12 @@ export const StyledTextContainer = styled.div`
     font-size: ${({ theme }) => theme.size.medium};
     color: ${({ theme }) => theme.colors.background};
   }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    .material-icons {
+      color: ${({ theme }) => theme.colors.alert};
+    }
+  }
 `;
 
 export const StyledDeleteCommentContainer = styled.div`
