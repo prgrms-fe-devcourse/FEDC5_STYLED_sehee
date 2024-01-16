@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import ImageCard from '@/Components/Common/ImageCard';
@@ -188,7 +188,6 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
               ))}
             </>
           )}
-          <Outlet />
         </StyledGridPost>
       </StyledProfilePostContainer>
     </>
