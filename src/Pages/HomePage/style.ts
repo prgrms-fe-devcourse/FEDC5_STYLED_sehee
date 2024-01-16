@@ -6,6 +6,7 @@ export const StyledHeaderContainer = styled.div`
 
 export const StyledWrapper = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
   padding: 0rem 5rem;
   height: calc(100vh - 9.4rem);
@@ -14,6 +15,14 @@ export const StyledWrapper = styled.div`
   .material-symbols-outlined,
   .material-icons {
     user-select: none;
+  }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    gap: 0;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    padding: 0;
   }
 `;
 
@@ -27,9 +36,15 @@ export const StyledLeftContainer = styled.div`
   min-width: 13rem;
   align-items: center;
   gap: 1rem;
+  padding-left: 1rem;
+  transition: all 1s ease-in-out;
+  background-color: ${({ theme }) => theme.colors.background};
 
   @media ${({ theme }) => theme.device.tablet} {
-    display: none;
+    position: fixed;
+    width: 0;
+    opacity: 0;
+    transform: translateX(-150%);
   }
 `;
 
@@ -62,10 +77,12 @@ export const StyledCategoryTitle = styled.div`
 
 export const StyledMainContentContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   height: 100%;
   flex-grow: 1;
+  overflow: hidden;
 `;
 
 export const StyledPostCardList = styled.div`

@@ -8,10 +8,14 @@ export const StyledWrapper = styled.section`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: all 1s ease-in-out;
   /* gap: 1rem; */
 
   @media ${({ theme }) => theme.device.laptop} {
-    display: none;
+    display: fixed;
+    transform: translateX(150%);
+    opacity: 0;
+    width: 0;
   }
 `;
 

@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
+// import { debounce } from 'lodash';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -41,6 +42,21 @@ const HomePage = () => {
   const { colors, size } = useTheme();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  // 반응형 햄버거 버튼 클릭 이벤트와 연결할 디바이스 크기 조절 함수
+  // const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
+
+  // const handleResize = debounce(() => {
+  //   setDeviceWidth(window.innerWidth);
+  // });
+
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleResize);
+  //   return () => {
+  //     // cleanup
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, [handleResize]);
 
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const [refInView, inView] = useInView();
