@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 // _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useInfiniteQuery,
@@ -37,6 +37,7 @@ import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
 import PostCardSkeletion from '@/Components/Common/PostCard/PostCardSkeleton';
+import { useChannelStore } from '@/Stores';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -59,9 +60,10 @@ const HomePage = () => {
   // }, [handleResize]);
 
   const { user: authUser, setAuthUser } = useAuthUserStore();
+  const { currentChannelId, setCurrentChannelId } = useChannelStore();
   const [refInView, inView] = useInView();
 
-  const [currentChannelId, setCurrentChannelId] = useState('');
+  // const [currentChannelId, setCurrentChannelId] = useState('');
 
   const { likeById } = useLikeById();
   const { disLikeById } = useDisLikeById();

@@ -12,6 +12,7 @@ export const StyledWrapper = styled.div`
   height: calc(100vh - 9.4rem);
   color: ${({ theme }) => theme.colors.text};
   gap: 2rem;
+  overflow-x: hidden;
   .material-symbols-outlined,
   .material-icons {
     user-select: none;
