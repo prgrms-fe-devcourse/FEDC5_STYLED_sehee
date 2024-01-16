@@ -10,6 +10,7 @@ import useClickAway from '@/Hooks/UseClickAway';
 import ModalButton from '../HeaderTab/ModalButton';
 import { checkAuth, logout } from '@/Services/Auth';
 import NotificationModal from '@/Components/NotificationModal';
+import { useDarkModeStore } from '@/Stores';
 
 const Hamburger = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const Hamburger = () => {
   const { tab, prev, setTab, setPrev } = useTabStore();
   const [alarm, setAlarm] = useState(false);
 
+  const { isDarkMode, toggleDarkMode } = useDarkModeStore();
   const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
   const { data } = useQuery({
     queryKey: ['auth'],
@@ -66,8 +68,9 @@ const Hamburger = () => {
         '마이페이지',
         '비밀번호 변경',
         '로그아웃',
+        isDarkMode ? '🌞 라이트모드' : '🌝 다크모드',
       ]
-    : ['홈', '포스트 작성', '검색', '로그인'];
+    : ['홈', '포스트 작성', '검색', '로그인', '다크모드'];
 
   const onSelectOption = (option: string) => {
     setIsDrop(!isDrop);
@@ -100,7 +103,6 @@ const Hamburger = () => {
         navigate(`/profile/${data?._id}`);
         setPrev('account');
         break;
-
       case '비밀번호 변경':
         navigate(
           `${
@@ -111,6 +113,12 @@ const Hamburger = () => {
         break;
       case '로그아웃':
         mutateLogout();
+        break;
+      case '🌞 라이트모드':
+        toggleDarkMode();
+        break;
+      case '🌝 다크모드':
+        toggleDarkMode();
         break;
       default:
         break;
