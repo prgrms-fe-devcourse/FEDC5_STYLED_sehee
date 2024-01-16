@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useRef, useState } from 'react';
+import { useTheme } from 'styled-components';
 import Modal from '@/Components/Common/Modal';
 import { StyledBody, StyledContainer, StyledHeader } from './style';
 import Button from '@/Components/Base/Button';
@@ -10,23 +11,26 @@ import UserCard from '@/Components/Common/UserCard';
 import DirectMessageSkeleton from '../Skeleton';
 import { useSearchUsers } from '@/Hooks/Api/Search';
 import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 
 const MessageModal = ({
-  setReceiver,
-  onChangeOpen,
   setIsModalOpen,
   loginUser,
   isMobileSize = false,
-  setIsClickedUserCard,
 }: MessageModalProps) => {
+  const { colors } = useTheme();
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const [isTyping, setIsTyping] = useState(false);
   const [selected, setSelected] = useState<UserType | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
   const { users, isUsersLoading } = useSearchUsers(
     searchQuery,
     loginUser?._id || '',
   );
-  const [isTyping, setIsTyping] = useState(false);
+
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
 
   // 디바운싱을 이용해 onChange 성능을 개선한다.
   const debouncedSearch = useDebouncedSearch({
@@ -52,7 +56,7 @@ const MessageModal = ({
 
   return (
     <Modal
-      onChangeOpen={onChangeOpen}
+      onChangeOpen={setIsModalOpen}
       height={60}
       width={isMobileSize ? 70 : 40}
     >
@@ -72,9 +76,9 @@ const MessageModal = ({
           ) : (
             users?.map((user) => (
               <UserCard
-                height="auto"
                 key={user._id}
                 mode="radio"
+                height="auto"
                 coverImageUrl={user.image}
                 avatarSize={40}
                 userName={user.fullName}
@@ -91,7 +95,11 @@ const MessageModal = ({
         <Button
           height="3rem"
           width="60%"
-          style={{ marginTop: '1rem' }}
+          style={{
+            marginRight: '1rem',
+            marginTop: '.5rem',
+            border: `1px solid ${colors.text}`,
+          }}
           onClick={() => handleClickButton()}
           isActive={!selected}
           disabled={!selected}

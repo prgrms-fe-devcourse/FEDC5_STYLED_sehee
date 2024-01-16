@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StyledContainer, StyledHeader, StyledBody } from './style';
 import { ConversationListProps } from './type';
@@ -11,19 +11,22 @@ import DirectMessageSkeleton from '../Skeleton';
 import { UserType } from '@/Types/UserType';
 import { calculateDate } from '@/Utils/UTCtoKST';
 import Button from '@/Components/Base/Button';
-import { useReadMessage } from '@/Hooks/Api/Message';
+import { useFetchConversations, useReadMessage } from '@/Hooks/Api/Message';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 
 const ConversationList = ({
-  setReceiver,
-  conversations,
-  isConversationsLoading,
   loginUser,
-  setIsClickedUserCard = () => {},
   isMobileSize,
 }: ConversationListProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigator = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { conversations, isConversationsLoading } = useFetchConversations();
   const { mutateReadMessage } = useReadMessage();
+
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
 
   const getReceiver = (conversation: ConversationType) => {
     return conversation.receiver._id === loginUser._id
@@ -31,9 +34,15 @@ const ConversationList = ({
       : conversation.receiver;
   };
 
-  const handleClickUser = async (receiver: UserType) => {
-    setReceiver(receiver);
-    mutateReadMessage(receiver._id);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, [conversations]);
+
+  const handleClickUser = (newReceiver: UserType) => {
+    setReceiver(newReceiver);
+    mutateReadMessage(newReceiver._id);
     setIsClickedUserCard(true);
   };
 
@@ -44,54 +53,61 @@ const ConversationList = ({
   return (
     <StyledContainer>
       <StyledHeader>
-        <UserCard
-          mode="header"
-          coverImageUrl={loginUser.image || ''}
-          avatarSize={40}
-          userName={`${loginUser.fullName} (나)`}
-          userNameSize="1.7rem"
-          onClick={handleClickMyName}
-          className="conversation-list-header"
-        />
-        <Button
-          width="3rem"
-          height="3rem"
-          borderRadius="0"
-          backgroundColor="transparent"
-          onClick={() => setIsModalOpen(true)}
-        >
-          <Icon
-            name="edit_square"
-            isFill={false}
-            className="create-message-icon"
-          />
-        </Button>
+        {isConversationsLoading ? (
+          <DirectMessageSkeleton.Header />
+        ) : (
+          <>
+            <UserCard
+              mode="header"
+              coverImageUrl={loginUser.image || ''}
+              avatarSize={40}
+              userName={`${loginUser.fullName} (나)`}
+              userNameSize="1.7rem"
+              onClick={handleClickMyName}
+              className="conversation-list-header"
+            />
+            <Button
+              width="3rem"
+              height="3rem"
+              borderRadius="0"
+              backgroundColor="transparent"
+              hoverBackgroundColor="transparent"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <Icon
+                name="edit_square"
+                isFill={false}
+                className="create-message-icon"
+              />
+            </Button>
+          </>
+        )}
       </StyledHeader>
 
       <StyledBody>
-        {isConversationsLoading ? (
+        {isLoading || isConversationsLoading || !conversations ? (
           <DirectMessageSkeleton.UserCard length={10} />
         ) : (
-          conversations?.map((conversation) => {
-            const receiver = getReceiver(conversation);
+          conversations.map((conversation) => {
+            const user = getReceiver(conversation);
             const date = calculateDate(conversation.createdAt);
 
             return (
               <UserCard
-                key={receiver._id}
+                key={user._id}
                 mode="chat"
                 isRead={
                   conversation.sender._id === loginUser._id
                     ? true
                     : conversation.seen
                 }
-                coverImageUrl={receiver.image}
+                coverImageUrl={user.image}
                 avatarSize={40}
-                userName={receiver.fullName}
+                userName={user.fullName}
                 userNameSize="1.7rem"
                 userDetail={conversation.message}
                 date={date}
-                onClick={() => handleClickUser(receiver)}
+                onClick={() => handleClickUser(user)}
                 style={{
                   cursor: 'pointer',
                   paddingLeft: '2rem',
@@ -103,12 +119,9 @@ const ConversationList = ({
       </StyledBody>
       {isModalOpen && (
         <MessageModal
-          setReceiver={setReceiver}
-          onChangeOpen={setIsModalOpen}
           setIsModalOpen={setIsModalOpen}
           loginUser={loginUser}
           isMobileSize={isMobileSize}
-          setIsClickedUserCard={setIsClickedUserCard}
         />
       )}
     </StyledContainer>
