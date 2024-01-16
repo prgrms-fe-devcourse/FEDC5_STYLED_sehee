@@ -125,7 +125,7 @@ const Hamburger = () => {
     }
   };
 
-  const ref = useClickAway((e) => {
+  const ref = useClickAway(() => {
     setIsDrop(false);
     setTab(prev);
   });
