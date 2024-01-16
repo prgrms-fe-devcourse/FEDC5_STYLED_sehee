@@ -14,29 +14,33 @@ import { AlertPropsType } from './type';
  * @param mode alert, confirm 2가지 모드를 제공합니다.
  */
 const Alert = ({
-  width = 20,
+  width = 25,
   height = 15,
   message,
   fontSize = 1,
   confirmContent = 'OK',
   cancleContent = 'CANCEL',
   mode = 'alert',
-  onChangeOpen,
   onConfirm,
   onCancle,
+  onChangeOpen,
 }: AlertPropsType) => {
   const handleConfirm = () => {
     if (onConfirm) {
       onConfirm();
     }
-    onChangeOpen(false);
+    if (onChangeOpen) {
+      onChangeOpen(false);
+    }
   };
 
   const handleCancle = () => {
     if (onCancle) {
       onCancle();
     }
-    onChangeOpen(false);
+    if (onChangeOpen) {
+      onChangeOpen(false);
+    }
   };
 
   return (
