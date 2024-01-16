@@ -8,9 +8,13 @@ const StyledCategoryItem = styled.li<{ $isActive: boolean }>`
   border-radius: ${({ theme }) => theme.size.large};
   border: 1px solid transparent;
   padding: ${({ theme }) => theme.size.small};
+  flex-shrink: 0;
 
   &:hover {
     scale: 1.1;
+  }
+
+  @media ${({ theme }) => theme.device.laptop} {
   }
 `;
 
