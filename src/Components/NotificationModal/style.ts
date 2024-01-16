@@ -21,6 +21,7 @@ const StyledWrapper = styled.article<{ $isMounted: boolean }>`
     height: 100vh;
     right: 0;
     border: none;
+    border-radius: 0;
   }
 `;
 
