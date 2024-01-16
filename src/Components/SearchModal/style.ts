@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../Base/Button';
 
 export const StyledWrapper = styled.div`
   width: 100%;
@@ -7,9 +8,16 @@ export const StyledWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
+  position: relative;
 
   justify-content: start;
   align-items: center;
+`;
+
+export const StyledButton = styled(Button)`
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
 `;
 
 export const StyledHeader = styled.header`
@@ -23,6 +31,10 @@ export const StyledHeader = styled.header`
   margin-bottom: 2rem;
 
   cursor: default;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    padding: 2rem;
+  }
 `;
 
 export const StyledHeaderTitle = styled.h1`

@@ -17,6 +17,7 @@ export interface DropDownProps {
   isShow?: boolean;
   initialValue?: string;
   onSelect?: (selected: string) => void;
+  inset?: string;
 
   buttonProps?: HTMLAttributes<HTMLElement>;
   optionProps?: HTMLAttributes<HTMLElement>;

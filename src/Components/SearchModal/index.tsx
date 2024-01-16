@@ -14,11 +14,14 @@ import SearchPostList from './SearchPostList';
 import { Props } from './type';
 import {
   StyledBody,
+  StyledButton,
   StyledHeader,
   StyledHeaderTab,
   StyledHeaderTitle,
   StyledWrapper,
 } from './style';
+import useResize from '@/Hooks/useResize';
+import Icon from '../Base/Icon';
 
 // TODO: SearchPostList, SearchUserList 컴포넌트 통합
 // TODO: 검색 결과 상세화
@@ -29,6 +32,8 @@ const SearchModal = ({ onChangeOpen }: Props) => {
   const [currentTab, setCurrentTab] = useState<'USER' | 'POST'>('USER');
   const [userResult, setUserResult] = useState<UserType[] | null>(null);
   const [postResult, setPostResult] = useState<PostType[] | null>(null);
+
+  const { isMobileSize } = useResize();
 
   /**
    * @brief 사용자가 입력한 검색어를 담아 요청을 보냅니다. 응답 데이터는 유저와 포스트 결과를 담고 있는 배열 형태이며, 이를 순회하며 유저 데이터와 포스트 데이터를 분리합니다. 이후 분리한 데이터를 하위 컴포넌트에게 전달하여 검색 결과를 화면에 표시합니다.
@@ -81,12 +86,24 @@ const SearchModal = ({ onChangeOpen }: Props) => {
         />
       )}
       <Modal
-        width={40}
-        height={80}
+        width={isMobileSize ? 100 : 50}
+        height={isMobileSize ? 100 : 80}
         onChangeOpen={onChangeOpen}
-        style={{ minWidth: '40rem' }}
+        style={{
+          minWidth: '40rem',
+        }}
       >
         <StyledWrapper>
+          {isMobileSize && (
+            <StyledButton
+              width="3rem"
+              height="3rem"
+              onClick={() => onChangeOpen(false)}
+              hoverBackgroundColor="tranparent"
+            >
+              <Icon name="close" />
+            </StyledButton>
+          )}
           <StyledHeader>
             <StyledHeaderTitle>
               {searchQuery ? `"${searchQuery}" 검색 결과` : '검색'}

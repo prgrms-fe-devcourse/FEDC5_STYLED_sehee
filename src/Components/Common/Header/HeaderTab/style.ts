@@ -28,11 +28,6 @@ export const StyledButtonContainer = styled.div`
       transition: transform 0.3s ease-in-out;
     }
   }
-
-  > :nth-child(2) {
-    right: 16rem;
-    top: 5rem;
-  }
 `;
 
 export const StyledFocusedCircle = styled.div<{ $visible: boolean }>`

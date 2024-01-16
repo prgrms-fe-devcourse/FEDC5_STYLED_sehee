@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { floatSmall } from '@/Styles/Animation';
 
 export const StyledLogo = styled.img`
   width: 20rem;
@@ -8,6 +9,13 @@ export const StyledLogo = styled.img`
 
   &:hover {
     transform: scale(1.1);
+  }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    &:hover {
+      transform: none;
+    }
+    animation: ${floatSmall} 3s ease-in-out infinite;
   }
 `;
 

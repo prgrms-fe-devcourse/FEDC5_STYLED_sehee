@@ -5,8 +5,9 @@ import {
   StyledLabelProp,
 } from './type';
 
-export const StyledDropDown = styled.div`
+export const StyledDropDown = styled.div<{ $inset?: string }>`
   position: absolute;
+  inset: ${({ $inset }) => $inset};
 `;
 
 export const StyledLabel = styled.span<StyledLabelProp>`
