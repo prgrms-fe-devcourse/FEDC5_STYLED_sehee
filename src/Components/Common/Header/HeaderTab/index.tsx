@@ -182,7 +182,7 @@ const HeaderTab = () => {
         </StyledButtonContainer>
 
         {!isAuthUser ? (
-          <LoginButton onClick={() => navigate('/login')} />
+          <LoginButton />
         ) : (
           <>
             <StyledButtonContainer>
@@ -194,7 +194,7 @@ const HeaderTab = () => {
                 }
                 setModalOpen={() => {
                   onSetModal('alarm');
-                  setAlarm((prevIsShow) => !prevIsShow);
+                  setAlarm(true);
                 }}
               >
                 {notificationLength && notificationLength > 0 ? (
@@ -260,8 +260,8 @@ const HeaderTab = () => {
       {alarm && (
         <NotificationModal
           onClose={() => {
-            setAlarm(false);
             setTab(prev);
+            setAlarm(false);
           }}
         />
       )}

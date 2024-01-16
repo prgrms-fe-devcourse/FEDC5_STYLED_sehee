@@ -1,4 +1,3 @@
-import { useTheme } from 'styled-components';
 import Skeleton from '@/Components/Base/Skeleton';
 import {
   StyledPostCardWrapper,
@@ -8,26 +7,21 @@ import {
 } from './style';
 
 const PostCard = () => {
-  const { size } = useTheme();
-
   return (
     <StyledPostCardWrapper>
       <StyledPostCardHeader>
         <StyledProfileContainer>
-          <Skeleton.Circle size={size.extraLarge} />
+          <Skeleton.Circle size="4rem" />
           <Skeleton.Paragraph
             line={1}
-            {...{ style: { width: '30%', display: 'flex' } }}
+            height="2rem"
+            {...{ style: { width: '30%', margin: '0 2%' } }}
           />
         </StyledProfileContainer>
       </StyledPostCardHeader>
       <Skeleton.Paragraph
-        line={1}
-        {...{ style: { margin: '0 2%' } }}
-      />
-      <Skeleton.Paragraph
-        line={1}
-        {...{ style: { margin: '0 2%', width: '40%' } }}
+        line={3}
+        height="2rem"
       />
       <StyledPostCardBody>
         <Skeleton.Box

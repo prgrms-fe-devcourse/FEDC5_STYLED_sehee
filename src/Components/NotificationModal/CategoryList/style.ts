@@ -3,7 +3,13 @@ import styled from 'styled-components';
 const StyledCategoryList = styled.ul`
   display: flex;
   justify-content: space-around;
-  padding: 0rem 2rem;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  flex-wrap: wrap;
+
+  @media ${({ theme }) => theme.device.laptop} {
+    gap: 2rem;
+  }
 `;
 
 export default StyledCategoryList;
