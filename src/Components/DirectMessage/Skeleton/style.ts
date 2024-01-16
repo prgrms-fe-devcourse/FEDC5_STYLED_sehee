@@ -36,3 +36,10 @@ export const UserCardWrapper = styled.div`
   align-items: center;
   gap: 1rem;
 `;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+`;

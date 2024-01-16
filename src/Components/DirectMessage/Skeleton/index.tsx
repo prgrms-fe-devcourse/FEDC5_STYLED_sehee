@@ -1,5 +1,6 @@
 import Skeleton from '@/Components/Base/Skeleton';
 import {
+  HeaderContainer,
   MessageListContainer,
   MessageListParagraphWrapper,
   MessageListWrapper,
@@ -118,9 +119,22 @@ const UserCard = ({ length = 5 }: UserCardProps) => {
   );
 };
 
+const Header = () => {
+  return (
+    <HeaderContainer>
+      <Skeleton.Circle size="4rem" />
+      <Skeleton.Paragraph
+        line={1}
+        style={{ width: '70%', height: '100%' }}
+      />
+    </HeaderContainer>
+  );
+};
+
 const DirectMessageSkeleton = {
   MessageList,
   UserCard,
+  Header,
 };
 
 export default DirectMessageSkeleton;
