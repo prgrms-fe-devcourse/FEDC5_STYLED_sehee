@@ -194,7 +194,7 @@ const HeaderTab = () => {
                 }
                 setModalOpen={() => {
                   onSetModal('alarm');
-                  setAlarm((prevIsShow) => !prevIsShow);
+                  setAlarm((prevAlarm) => !prevAlarm);
                 }}
               >
                 {notificationLength && notificationLength > 0 ? (
@@ -260,8 +260,8 @@ const HeaderTab = () => {
       {alarm && (
         <NotificationModal
           onClose={() => {
-            setAlarm(false);
             setTab(prev);
+            setAlarm(false);
           }}
         />
       )}

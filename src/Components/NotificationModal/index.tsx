@@ -14,6 +14,7 @@ import Skeleton from '../Base/Skeleton';
 import SkeletonList from '../Common/SkeletonList';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import useAuthUserStore from '@/Stores/AuthUser';
+import useClickAway from '@/Hooks/UseClickAway';
 
 const NotificationModal = ({ onClose }: Props) => {
   const categoryList: CategoryType[] = [
@@ -29,6 +30,7 @@ const NotificationModal = ({ onClose }: Props) => {
   const {
     user: { _id: authId },
   } = useAuthUserStore();
+  const ref = useClickAway(onClose);
 
   const { data: notificationList, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
@@ -59,7 +61,7 @@ const NotificationModal = ({ onClose }: Props) => {
   }, [postReadNotifications]);
 
   return (
-    <StyledWrapper>
+    <StyledWrapper ref={ref}>
       <NotificationHeader onClose={onClose} />
       <CategoryList
         list={categoryList}

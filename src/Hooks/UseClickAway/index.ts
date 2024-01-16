@@ -21,6 +21,14 @@ const useClickAway = (handler: (e: Event) => void) => {
       if (element.contains(e.target as Node)) {
         return;
       }
+
+      if (
+        e.target instanceof HTMLElement &&
+        e.target.classList.contains('sc-ksdxTZ')
+      ) {
+        return;
+      }
+
       savedHandler.current(e);
     };
 
