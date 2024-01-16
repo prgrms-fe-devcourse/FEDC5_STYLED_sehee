@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef } from 'react';
+import { MouseEvent, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 import { ModalPropsType } from './type';
@@ -7,7 +7,6 @@ import {
   StyledModalBackground,
   StyledModalContainer,
 } from './style';
-import { allowScroll, preventScroll } from '@/Utils/modalScroll';
 
 /**
  *
@@ -39,13 +38,6 @@ const Modal = ({
     if (e.currentTarget === modalBgRef.current && onChangeOpen)
       onChangeOpen(false);
   };
-
-  useEffect(() => {
-    const prevScrollY = preventScroll();
-    return () => {
-      allowScroll(prevScrollY);
-    };
-  }, []);
 
   return createPortal(
     <StyledModalWrapper>

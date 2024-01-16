@@ -3,6 +3,7 @@ import {
   KeyboardEvent,
   KeyboardEventHandler,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -51,6 +52,7 @@ import useMessageReceiver from '@/Stores/MessageReceiver';
 import Skeleton from '@/Components/Base/Skeleton';
 import PostDetailSkeleton from './PostDetailSkeleton';
 import { useReadMessage } from '@/Hooks/Api/Message';
+import { allowScroll, preventScroll } from '@/Utils/modalScroll';
 
 const PostDetailModal = ({
   postLike,
@@ -271,6 +273,13 @@ const PostDetailModal = ({
     queryFn: () => getUser(firstLikeUserId || ''),
     enabled: !!firstLikeUserId,
   });
+
+  useEffect(() => {
+    const prevScrollY = preventScroll();
+    return () => {
+      allowScroll(prevScrollY);
+    };
+  }, []);
 
   return isPostDetailModalOpen ? (
     <>
