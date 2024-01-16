@@ -52,6 +52,10 @@ const GlobalStyle = createGlobalStyle`
 
   }
 
+  #root {
+    overflow-y: hidden;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
