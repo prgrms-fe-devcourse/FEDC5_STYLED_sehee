@@ -12,7 +12,6 @@ const StyledWrapper = styled.article<{ $isMounted: boolean }>`
   position: absolute;
   right: 5rem;
   top: 9.5rem;
-  z-index: 10;
   animation: ${({ $isMounted }) => (!$isMounted ? slideIn : slideOut)} 0.8s
     ease-in-out;
 

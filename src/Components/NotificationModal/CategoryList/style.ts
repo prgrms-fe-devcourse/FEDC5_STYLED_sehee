@@ -8,7 +8,7 @@ const StyledCategoryList = styled.ul`
   flex-wrap: wrap;
 
   @media ${({ theme }) => theme.device.laptop} {
-    gap: 2rem;
+    padding: 0;
   }
 `;
 
