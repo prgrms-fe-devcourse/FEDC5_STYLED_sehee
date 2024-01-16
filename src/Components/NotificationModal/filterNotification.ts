@@ -22,10 +22,19 @@ export const filterNotificationsByCategory = (
   });
 };
 
-export const filterNotificationList = (notifications: NotificationType[]) => {
+export const filterNotificationList = (
+  notifications: NotificationType[],
+  authUserId: string | null,
+) => {
   return notifications.reduce<NotificationListType[]>((acc, notification) => {
     const { createdAt, comment, follow, post, author, message } = notification;
+    const { _id: senderId, fullName } = author;
+
     if (!message && !comment && !follow && !post) {
+      return acc;
+    }
+
+    if (senderId === authUserId) {
       return acc;
     }
 
@@ -38,17 +47,17 @@ export const filterNotificationList = (notifications: NotificationType[]) => {
     };
 
     if (message) {
-      result.text = `${author.fullName}님이 메세지를 보냈습니다.`;
+      result.text = `${fullName}님이 메세지를 보냈습니다.`;
       result.type = 'message';
       result.typeId = message;
     } else if (comment) {
       const { _id: id } = comment.post;
 
-      result.text = `${author.fullName}님이 게시글에 댓글을 추가했습니다: ${comment.comment}`;
+      result.text = `${fullName}님이 게시글에 댓글을 추가했습니다: ${comment.comment}`;
       result.type = 'comment';
       result.typeId = id;
     } else if (follow) {
-      result.text = `${author.fullName}님이 팔로우를 요청했습니다.`;
+      result.text = `${fullName}님이 팔로우를 요청했습니다.`;
       result.type = 'follow';
       result.typeId = follow.follower;
     } else if (post) {

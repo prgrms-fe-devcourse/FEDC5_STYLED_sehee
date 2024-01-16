@@ -13,6 +13,7 @@ import {
 import Skeleton from '../Base/Skeleton';
 import SkeletonList from '../Common/SkeletonList';
 import QUERY_KEYS from '@/Constants/queryKeys';
+import useAuthUserStore from '@/Stores/AuthUser';
 
 const NotificationModal = ({ onClose }: Props) => {
   const categoryList: CategoryType[] = [
@@ -25,11 +26,15 @@ const NotificationModal = ({ onClose }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(
     categoryList[0],
   );
+  const {
+    user: { _id: authId },
+  } = useAuthUserStore();
 
   const { data: notificationList, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
     queryFn: getNotifications,
-    select: (notifications) => filterNotificationList(notifications || []),
+    select: (notifications) =>
+      filterNotificationList(notifications || [], authId || null),
   });
 
   const { mutate: postReadNotifications } = useMutation({
