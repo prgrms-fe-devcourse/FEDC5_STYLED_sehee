@@ -14,10 +14,10 @@ export const useGetNotifications = () => {
   };
 };
 
-export const useCreateNotification = () => {
+export const useCreateNotification = (onError?: () => void) => {
   const queryClient = useQueryClient();
 
-  const { mutate: createNotification } = useMutation({
+  const { mutate: createNotification, data } = useMutation({
     mutationFn: ({
       notificationType,
       notificationTypeId,
@@ -30,10 +30,11 @@ export const useCreateNotification = () => {
         userId,
         postId,
       }),
+    onError,
     onSettled: () => {
       queryClient.refetchQueries({ queryKey: [QUERY_KEYS.NOTIFICATION_LIST] });
     },
   });
 
-  return { createNotification };
+  return { createNotification, createdNotification: data };
 };

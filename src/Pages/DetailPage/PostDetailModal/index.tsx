@@ -69,7 +69,7 @@ const PostDetailModal = ({
   const { colors, size } = useTheme();
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
-  const { setReceiver } = useMessageReceiver();
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
   const { mutateReadMessage } = useReadMessage();
 
   // 디바이스 크기 조절 감지 함수
@@ -153,6 +153,7 @@ const PostDetailModal = ({
     if (postDetailData) {
       if (postDetailData.author._id !== authUser._id) {
         setReceiver(postDetailData.author);
+        setIsClickedUserCard(true);
         mutateReadMessage(postDetailData.author._id);
       } else {
         setReceiver(null);
