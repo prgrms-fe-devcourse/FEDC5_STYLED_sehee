@@ -30,6 +30,7 @@ import validatePostFieldProps from './validatePostField';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
 import useResize from '@/Hooks/useResize';
+import useTabStore from '@/Stores/Tab';
 
 // * 하위 컴포넌트로부터 갱신된 데이터를 통합적으로 관리
 
@@ -49,7 +50,9 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const [image, setImage] = useState<ImageFileType | string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { postId } = useParams();
+
   const { isMobileSize } = useResize();
+  const { prev, setTab } = useTabStore();
 
   /**
    * 컴포넌트의 역할이 '게시글 수정'일 때의 로직 ▼
@@ -181,8 +184,14 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
           <div>{NON_AUTH_USER.LOGIN}</div>
         </>
       }
-      onConfirm={() => navigate('/login')}
-      onCancle={() => navigate(-1)}
+      onConfirm={() => {
+        navigate('/login');
+        setTab(prev);
+      }}
+      onCancle={() => {
+        navigate(-1);
+        setTab(prev);
+      }}
     />
   );
 };
