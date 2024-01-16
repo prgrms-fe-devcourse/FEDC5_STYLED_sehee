@@ -3,7 +3,7 @@ import { flip } from '@/Styles/Animation';
 
 const Wrapper = styled.div<{ $isDarkMode: boolean; $isAnimation: number }>`
   position: absolute;
-  right: 4rem;
+  left: 4rem;
   bottom: 4rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.buttonText};
