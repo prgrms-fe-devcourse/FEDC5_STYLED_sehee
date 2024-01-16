@@ -66,7 +66,7 @@ const PostDetailModal = ({
   const { colors, size } = useTheme();
   const { postId } = useParams();
   const { user: authUser } = useAuthUserStore();
-  const { setReceiver } = useMessageReceiver();
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
   const { mutateReadMessage } = useReadMessage();
 
   const commentInputRef = useRef<HTMLInputElement>(null);
@@ -135,6 +135,7 @@ const PostDetailModal = ({
     if (postDetailData) {
       if (postDetailData.author._id !== authUser._id) {
         setReceiver(postDetailData.author);
+        setIsClickedUserCard(true);
         mutateReadMessage(postDetailData.author._id);
       } else {
         setReceiver(null);

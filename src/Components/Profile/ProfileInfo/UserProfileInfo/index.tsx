@@ -12,7 +12,7 @@ import useFetchUser from '@/Hooks/Api/User';
 import { useReadMessage } from '@/Hooks/Api/Message';
 
 const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
-  const { setReceiver } = useMessageReceiver();
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
   const { colors } = useTheme();
   const { userId } = useParams() || '';
   const { loginUserRefetch } = useCheckAuth();
@@ -40,6 +40,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   };
 
   const navigateDirectMessage = () => {
+    setIsClickedUserCard(true);
     setReceiver(user);
     mutateReadMessage(user._id);
   };
