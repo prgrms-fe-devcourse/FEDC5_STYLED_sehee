@@ -26,6 +26,10 @@ const Wrapper = styled.div<{ $isDarkMode: boolean; $isAnimation: number }>`
   &:hover {
     transform: scale(1.2);
   }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    display: none;
+  }
 `;
 
 export default Wrapper;
