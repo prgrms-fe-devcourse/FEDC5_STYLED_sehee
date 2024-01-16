@@ -53,7 +53,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   });
 
   useEffect(() => {
-    console.log(image);
     if (editingPost) {
       setTitle(editingPost.title);
       setCategory(editingPost.channel.name);
@@ -71,7 +70,13 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const { mutate: mutatePost, status: postStatus } = useMutation({
     mutationFn: (postFormData: PostCreatePostRequestType) =>
       createPost(postFormData),
-    onSuccess: (res) => res && navigate('/'),
+    onSuccess: (res) => {
+      if (res) {
+        navigate('/');
+        queryClient.removeQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+        queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+      }
+    },
   });
 
   const { mutate: mutateUpdatePost, status: updatePostStatus } = useMutation({
@@ -101,6 +106,8 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
               : null,
           channelId: res._id,
         });
+
+        return;
       }
 
       // 새로운 포스트 작성일 경우
