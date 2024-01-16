@@ -28,7 +28,9 @@ const ImageUpload = ({
   initialValue,
 }: ImageUploadProps) => {
   const uploadInput = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<ImageFileType | null>(null);
+  const [imageFile, setImageFile] = useState<ImageFileType | string | null>(
+    null,
+  );
 
   const { colors } = useTheme();
   const getButtonBgColor = colors.buttonBackground;
@@ -36,7 +38,7 @@ const ImageUpload = ({
   const getButtonhoverBgColor = colors.buttonHoverBackground;
 
   useEffect(() => {
-    if (initialValue && typeof initialValue !== 'string') {
+    if (initialValue) {
       setImageFile(initialValue);
     }
   }, [initialValue]);
@@ -70,7 +72,7 @@ const ImageUpload = ({
   };
 
   useEffect(() => {
-    if (imageFile && onUpload) {
+    if (imageFile && onUpload && typeof imageFile !== 'string') {
       onUpload(imageFile);
     }
   }, [imageFile, onUpload]);
