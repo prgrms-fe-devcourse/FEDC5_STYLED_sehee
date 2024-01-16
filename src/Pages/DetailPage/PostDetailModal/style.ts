@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
 export const StyledImageCardContainer = styled.div`
-  width: 40%;
+  width: 50%;
   border-radius: 0 0 0.5rem 0.5rem;
-  background-color: ${({ theme }) => theme.colors.lightGray};
+  background-color: ${({ theme }) => theme.colors.background};
+  border-right: ${({ theme }) => theme.colors.modalBorder} 1px solid;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 100%;
+  }
 `;
 
 export const StyledImage = styled.img`
@@ -16,8 +21,19 @@ export const StyledIcon = styled.img``;
 
 export const StyledPostContentContainer = styled.div`
   display: flex;
+  width: 50%;
   flex-direction: column;
-  width: 60%;
+
+  div {
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  h1 {
+    transition: color 0.3s ease;
+    &:hover {
+      color: ${({ theme }) => theme.colors.textNonSelect};
+    }
+  }
 
   .post-detail-user-card {
     h1 {
@@ -29,6 +45,10 @@ export const StyledPostContentContainer = styled.div`
       background-color: ${({ theme }) => theme.colors.background};
     }
   }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 100%;
+  }
 `;
 
 export const StyledAuthorInfo = styled.div`
@@ -37,6 +57,9 @@ export const StyledAuthorInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
+  div {
+    color: ${({ theme }) => theme.colors.text};
+  }
 
   .post-detail-user-card {
     & > :nth-child(2) {
@@ -44,6 +67,11 @@ export const StyledAuthorInfo = styled.div`
       flex-grow: 0;
       padding-right: 1rem;
     }
+  }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 100%;
+    border-bottom: 0;
   }
 `;
 
@@ -53,10 +81,10 @@ export const StyledPostMainInfo = styled.div`
   gap: 2rem;
   height: 50%;
   padding: 2rem;
-
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   overflow-y: auto;
+  overflow-x: hidden;
   flex-grow: 1;
 `;
 
@@ -81,7 +109,7 @@ export const StyledEditTime = styled.div`
 export const StyledPostContent = styled.div`
   font-size: ${({ theme }) => theme.size.medium};
   padding-bottom: 2rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.modalBorder};
   color: ${({ theme }) => theme.colors.black};
 `;
 
@@ -97,6 +125,7 @@ export const StyledCommentHistory = styled.div`
 export const StyledComment = styled.div`
   display: flex;
   height: fit-content;
+
   align-items: flex-start;
   justify-content: space-between;
 
@@ -104,14 +133,21 @@ export const StyledComment = styled.div`
     > :first-child {
       flex-shrink: 0;
     }
+
+    > :last-child {
+      div {
+        color: ${({ theme }) => theme.colors.textNonSelect};
+        font-weight: ${({ theme }) => theme.size.regular};
+      }
+    }
   }
 `;
 
 export const StyledTextContainer = styled.div`
   display: flex;
-  width: 70%;
+  width: 65%;
   height: 100%;
-  margin-top: 1rem;
+  margin-left: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   justify-content: space-between;
   text-overflow: ellipsis;
@@ -125,6 +161,17 @@ export const StyledTextContainer = styled.div`
     font-size: ${({ theme }) => theme.size.medium};
     color: ${({ theme }) => theme.colors.background};
   }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    .material-icons {
+      color: ${({ theme }) => theme.colors.alert};
+    }
+  }
+`;
+
+export const StyledDeleteCommentContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const StyledText = styled.div`
@@ -161,9 +208,10 @@ export const StyledLikeCommentChat = styled.div`
     padding-left: 0.5rem;
     font-weight: ${({ theme }) => theme.fontWeight.semiBold};
     cursor: pointer;
+    transition: color 0.3s ease;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.text};
+      color: ${({ theme }) => theme.colors.textNonSelect};
     }
   }
 `;
