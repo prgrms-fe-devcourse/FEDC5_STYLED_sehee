@@ -3,6 +3,7 @@ import {
   KeyboardEvent,
   KeyboardEventHandler,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -10,6 +11,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
+import { debounce } from 'lodash';
 import { PostDetailModalProps } from './type';
 import Modal from '@/Components/Common/Modal';
 import {
@@ -31,6 +33,7 @@ import {
   StyledCommentContainer,
   postCommentBtnStyle,
   StyledText,
+  StyledDeleteCommentContainer,
 } from './style';
 import UserCard from '@/Components/Common/UserCard';
 import Button from '@/Components/Base/Button';
@@ -68,6 +71,21 @@ const PostDetailModal = ({
   const { user: authUser } = useAuthUserStore();
   const { setReceiver } = useMessageReceiver();
   const { mutateReadMessage } = useReadMessage();
+
+  // 디바이스 크기 조절 감지 함수
+  const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
+
+  const handleResize = debounce(() => {
+    setDeviceWidth(window.innerWidth);
+  });
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      // cleanup
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [handleResize]);
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
@@ -275,25 +293,14 @@ const PostDetailModal = ({
   return isPostDetailModalOpen ? (
     <>
       <Modal
-        width={70}
-        height={70}
+        width={deviceWidth < 768 ? 80 : 70}
+        height={deviceWidth < 768 ? 90 : 70}
         onChangeOpen={handleCloseModal}
+        flexDirection={deviceWidth < 768 ? 'column' : 'row'}
+        style={deviceWidth < 768 ? { overflowY: 'scroll' } : {}}
       >
-        {/* 왼쪽 사진 이미지 영역 */}
-        <StyledImageCardContainer>
-          {!isLoading && postImageUrl && postImageUrl.length !== 0 ? (
-            <StyledImage src={postImageUrl} />
-          ) : (
-            <Skeleton.Box
-              width="100%"
-              height="100%"
-              {...{ style: { borderRadius: '0 0 0.5rem 0.5rem' } }}
-            />
-          )}
-        </StyledImageCardContainer>
-        {/* 오른쪽 포스트 관련 정보 영역 */}
-        <StyledPostContentContainer>
-          {!isLoading ? (
+        {deviceWidth < 768 &&
+          (!isLoading ? (
             <StyledAuthorInfo>
               {/* author 정보 및 팔로우 버튼 */}
               <UserCard
@@ -327,7 +334,57 @@ const PostDetailModal = ({
             </StyledAuthorInfo>
           ) : (
             <PostDetailSkeleton.AuthorInfo />
+          ))}
+        {/* 왼쪽 사진 이미지 영역 */}
+        <StyledImageCardContainer>
+          {!isLoading && postImageUrl && postImageUrl.length !== 0 ? (
+            <StyledImage src={postImageUrl} />
+          ) : (
+            <Skeleton.Box
+              width="100%"
+              height="100%"
+              {...{ style: { borderRadius: '0 0 0.5rem 0.5rem' } }}
+            />
           )}
+        </StyledImageCardContainer>
+        {/* 오른쪽 포스트 관련 정보 영역 */}
+        <StyledPostContentContainer>
+          {deviceWidth >= 768 &&
+            (!isLoading ? (
+              <StyledAuthorInfo>
+                {/* author 정보 및 팔로우 버튼 */}
+                <UserCard
+                  width="fit-content"
+                  mode={
+                    authUser._id !== postDetailData?.author._id
+                      ? 'follow'
+                      : 'normal'
+                  }
+                  badgeSize="0"
+                  userName={postAuthor}
+                  coverImageUrl={authorAvatar || DEFAULT_USER_IMAGE_SRC}
+                  isFollow={isFollow !== null ? isFollow : isMyFollow}
+                  className="post-detail-user-card"
+                  onClickFollowBtn={handleClickFollowBtn}
+                  onClickUser={() =>
+                    handleClickUser(postDetailData?.author._id || '')
+                  }
+                />
+                {/* 점 세개 추가 모달 버튼 */}
+                <Button
+                  width="3rem"
+                  height="3rem"
+                  borderRadius="0.5rem"
+                  backgroundColor={colors.background}
+                  hoverBackgroundColor="transparent"
+                  onClick={() => setIsDotModalOpen(true)}
+                >
+                  <Icon name="more_horiz" />
+                </Button>
+              </StyledAuthorInfo>
+            ) : (
+              <PostDetailSkeleton.AuthorInfo />
+            ))}
           {!isLoading ? (
             <StyledPostMainInfo>
               {/* 포스트 author 및 상세 내용, 게시 시간 정보 */}
@@ -348,7 +405,6 @@ const PostDetailModal = ({
               <StyledPostContent>{postContents}</StyledPostContent>
               {/* 포스트 댓글 영역 */}
               <StyledCommentHistory>
-                {postComment?.length !== 0 && '댓글'}
                 {postComment &&
                   postComment.map(
                     ({ author, _id, comment, createdAt, updatedAt }) => {
@@ -358,7 +414,6 @@ const PostDetailModal = ({
                             width="fit-content"
                             badgeSize="0"
                             userName={author.fullName}
-                            // TODO: 댓글 단 사람에 대한 프로필 이미지 불러오는 useQuery 필요
                             coverImageUrl={
                               author.image || DEFAULT_USER_IMAGE_SRC
                             }
@@ -372,24 +427,28 @@ const PostDetailModal = ({
                             style={{
                               backgroundColor: 'transparent',
                               padding: '0',
+                              minWidth: '10rem',
                             }}
+                            isRead
                           />
                           <StyledTextContainer>
                             <StyledText>{comment}</StyledText>
                             {author._id === authUser._id && (
-                              <Button
-                                width={size.medium}
-                                height={size.medium}
-                                backgroundColor={colors.background}
-                                hoverBackgroundColor={colors.background}
-                                style={{ padding: '0' }}
-                                onClick={() => handleClickDeleteComment(_id)}
-                              >
-                                <Icon
-                                  name="close"
-                                  style={{ fontSize: '1.5rem' }}
-                                />
-                              </Button>
+                              <StyledDeleteCommentContainer>
+                                <Button
+                                  width={size.medium}
+                                  height={size.medium}
+                                  backgroundColor={colors.background}
+                                  hoverBackgroundColor={colors.background}
+                                  style={{ padding: '0' }}
+                                  onClick={() => handleClickDeleteComment(_id)}
+                                >
+                                  <Icon
+                                    name="close"
+                                    style={{ fontSize: '1.5rem' }}
+                                  />
+                                </Button>
+                              </StyledDeleteCommentContainer>
                             )}
                           </StyledTextContainer>
                         </StyledComment>
@@ -484,7 +543,6 @@ const PostDetailModal = ({
 
             {/* 댓글 게시 영역 */}
             <StyledCommentContainer>
-              {/* TODO: Input 컴포넌트를 textarea 태그로 바꿀 수 있는 옵션이 있어야 할듯 */}
               <Input
                 ref={commentInputRef}
                 placeholder="댓글 달기..."
@@ -499,6 +557,18 @@ const PostDetailModal = ({
                 width="fit-content"
                 height="2.5rem"
                 borderRadius="0.5rem"
+                backgroundColor={colors.buttonBackground}
+                textColor={colors.text}
+                hoverBackgroundColor={
+                  isCommentBtnDisabled
+                    ? colors.buttonBackground
+                    : colors.buttonHoverBackground
+                }
+                hoverTextColor={
+                  isCommentBtnDisabled
+                    ? colors.textNonSelect
+                    : colors.textReverse
+                }
                 style={postCommentBtnStyle}
                 onClick={handleClickComment}
               >

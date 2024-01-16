@@ -39,11 +39,13 @@ export const StyledLeftContainer = styled.div`
   gap: 1rem;
   padding-left: 1rem;
   transition: all 1s ease-in-out;
-  background-color: ${({ theme }) => theme.colors.background};
+  /* background-color: ${({ theme }) => theme.colors.background}; */
 
   @media ${({ theme }) => theme.device.tablet} {
-    position: fixed;
+    /* position: fixed; */
+    flex-basis: 0;
     width: 0;
+    min-width: 0;
     opacity: 0;
     transform: translateX(-150%);
   }
