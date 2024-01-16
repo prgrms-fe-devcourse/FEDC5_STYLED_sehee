@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import NotificationHeader from './NotificationHeader';
 import { CategoryType, Props } from './type';
 import CategoryList from './CategoryList';
@@ -17,6 +17,7 @@ import useAuthUserStore from '@/Stores/AuthUser';
 import useClickAway from '@/Hooks/UseClickAway';
 
 const NotificationModal = ({ onClose }: Props) => {
+  const queryClient = useQueryClient();
   const categoryList: CategoryType[] = [
     '전체',
     '메세지',
@@ -42,6 +43,11 @@ const NotificationModal = ({ onClose }: Props) => {
 
   const { mutate: postReadNotifications } = useMutation({
     mutationFn: readNotifications,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.NOTIFICATION_LIST],
+      });
+    },
   });
 
   const setCategory = (category: CategoryType) => setSelectedCategory(category);
