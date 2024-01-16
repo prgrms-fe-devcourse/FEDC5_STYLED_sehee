@@ -4,12 +4,13 @@ export const StyledWrapper = styled.section`
   width: 25rem;
   height: 100%;
   padding: 1rem 0.1rem 0 0;
-  /* background-color: ${({ theme }) => theme.colors.background}; */
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  transition: all 1s ease-in-out;
-  /* gap: 1rem; */
+  transition:
+    transform 1s ease-in-out,
+    opacity 1s ease-in-out,
+    width 1s ease-in-out;
 
   @media ${({ theme }) => theme.device.laptop} {
     display: fixed;

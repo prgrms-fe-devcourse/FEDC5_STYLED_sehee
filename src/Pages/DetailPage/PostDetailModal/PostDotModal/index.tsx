@@ -109,7 +109,7 @@ const PostDotModal = ({
                   : colors.textReverse
               }
               backgroundColor={colors.background}
-              hoverBackgroundColor={colors.backgroundReverse}
+              hoverBackgroundColor={colors.textNonSelect}
               onClick={handlerFuncList[index]}
               className="dot-modal-btn"
             >

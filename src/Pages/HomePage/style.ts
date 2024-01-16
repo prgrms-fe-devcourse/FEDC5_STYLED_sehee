@@ -38,8 +38,11 @@ export const StyledLeftContainer = styled.div`
   align-items: center;
   gap: 1rem;
   padding-left: 1rem;
-  transition: all 1s ease-in-out;
-  /* background-color: ${({ theme }) => theme.colors.background}; */
+  transition:
+    transform 1s ease-in-out,
+    opacity 1s ease-in-out,
+    width 1s ease-in-out;
+  background-color: transparent;
 
   @media ${({ theme }) => theme.device.tablet} {
     /* position: fixed; */
