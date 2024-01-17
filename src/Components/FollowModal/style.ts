@@ -23,7 +23,7 @@ export const StyledHeader = styled.div`
 export const StyledBody = styled.div`
   width: 75%;
   height: 75%;
-  overflow: scroll;
+  overflow: auto;
   margin-top: 1rem;
   display: flex;
   flex-direction: column;

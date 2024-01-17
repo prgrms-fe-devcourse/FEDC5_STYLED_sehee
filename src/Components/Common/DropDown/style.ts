@@ -33,7 +33,7 @@ export const StyledDropDownButton = styled.button<StyledDropDownButtonProp>`
   color: ${({ $textColor }) => $textColor};
   padding: 1rem 1.2rem;
   font-size: ${({ $textSize }) => $textSize};
-  border: 2px solid black;
+  /* border: 2px solid black; */
   border-radius: 1rem;
   gap: 1.2rem;
 `;
