@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../Base/Input';
 import Modal from '../Common/Modal';
@@ -14,6 +14,7 @@ import { getUser } from '@/Services/User';
 import { sendNotifications } from '@/Services/Notification';
 import useResize from '@/Hooks/useResize';
 import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
+import useIsTyping from '@/Hooks/useIsTyping';
 
 /**
  * @param userData 해당 유저의 UserType 데이터
@@ -27,12 +28,13 @@ const FollowModal = ({
   onChangeOpen,
 }: FollowModalProps) => {
   const navigator = useNavigate();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
   const [follows, setFollows] = useState<UserType[]>([]);
   const [searchFollows, setSearchFollows] = useState<UserType[]>(follows);
+
   const { isMobileSize } = useResize();
+  const { inputRef, isTyping } = useIsTyping();
 
   const search = (query: string, fetchedFollows: UserType[]) => {
     // 검색 중인 단어가 없다면 전체 팔로우 목록을 보여준다.
@@ -51,7 +53,6 @@ const FollowModal = ({
     inputRef,
     follows,
     callback: search,
-    setIsTyping,
   });
 
   const fetchFollowData = useCallback(async () => {
@@ -85,17 +86,14 @@ const FollowModal = ({
     }
     search(inputRef.current.value, fetchedFollows);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-  }, [mode, userData]);
+    setIsLoading(false);
+  }, [mode, userData, inputRef]);
 
   useEffect(() => {
     fetchFollowData();
   }, [userData, mode, fetchFollowData]);
 
   const handleInputChange = () => {
-    setIsTyping(true);
     debouncedSearch();
   };
 
@@ -144,7 +142,7 @@ const FollowModal = ({
   return (
     <Modal
       height={60}
-      width={isMobileSize ? 80 : 40}
+      width={isMobileSize ? 80 : 50}
       onChangeOpen={onChangeOpen}
     >
       <StyledContainer>

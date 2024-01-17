@@ -21,6 +21,7 @@ import useAuthUserStore from '@/Stores/AuthUser';
 import Badge from '@/Components/Base/Badge';
 import filterNotificationLength from './filterNotificationLength';
 import DropDownOnlyOption from '../../DropDownOnlyOption';
+import useMessageReceiver from '@/Stores/MessageReceiver';
 
 const HeaderTab = () => {
   const navigate = useNavigate();
@@ -86,6 +87,8 @@ const HeaderTab = () => {
 
   const { setAuthUser } = useAuthUserStore();
 
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
+
   // useMutation으로 로그아웃 처리
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -96,6 +99,8 @@ const HeaderTab = () => {
       navigate('/');
       setTab('home');
       setAuthUser({});
+      setReceiver(null);
+      setIsClickedUserCard(false);
     },
   });
 
