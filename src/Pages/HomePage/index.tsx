@@ -191,8 +191,10 @@ const HomePage = () => {
         },
       });
     } else if (authUser) {
-      authUser.likes?.forEach(({ post, _id: likeId }) => {
-        if (post === targetPostId) disLikeById(likeId);
+      authUser.following?.forEach(({ user, _id: followId }) => {
+        if (user === targetUserId) {
+          unfollowByUserId(followId);
+        }
       });
     }
   };
