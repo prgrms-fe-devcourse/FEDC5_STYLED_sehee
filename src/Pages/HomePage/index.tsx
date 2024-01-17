@@ -15,6 +15,7 @@ import {
   StyledCategoryList,
   StyledCategoryTitle,
   StyledCategoryTitleContainer,
+  StyledDropDown,
   StyledHeaderContainer,
   StyledLeftContainer,
   StyledMainContentContainer,
@@ -38,26 +39,15 @@ import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
 import PostCardSkeletion from '@/Components/Common/PostCard/PostCardSkeleton';
 import { useChannelStore } from '@/Stores';
+import useResize from '@/Hooks/useResize';
+import DropDown from '@/Components/Common/DropDown';
+import { ChannelType } from '@/Types/ChannelType';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  // 반응형 햄버거 버튼 클릭 이벤트와 연결할 디바이스 크기 조절 함수
-  // const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-
-  // const handleResize = debounce(() => {
-  //   setDeviceWidth(window.innerWidth);
-  // });
-
-  // useEffect(() => {
-  //   window.addEventListener('resize', handleResize);
-  //   return () => {
-  //     // cleanup
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, [handleResize]);
+  const { isMobileSize } = useResize();
 
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const { currentChannelId, setCurrentChannelId } = useChannelStore();
@@ -117,6 +107,16 @@ const HomePage = () => {
     queryFn: getChannels,
     enabled: !isCheckAuthLoading,
   });
+
+  // 채널명 배열
+  const channelNameList = channelList
+    ?.map((channel) => {
+      if (Object.keys(channels).includes(channel.name)) {
+        return channels[channel.name];
+      }
+      return channel.name;
+    })
+    .filter((channelName) => channelName);
 
   /**
    * 채널이 변경되면 해당 채널에 대한 포스트를 10개씩 불러오는 함수
@@ -229,7 +229,24 @@ const HomePage = () => {
     <>
       {/* Header 컴포넌트 있다고 가정 */}
       <StyledHeaderContainer />
-
+      {/* 모바일 카테고리 드롭다운 */}
+      {isMobileSize && (
+        <StyledDropDown>
+          <DropDown
+            options={channelNameList || []}
+            onSelect={(optionName) =>
+              setCurrentChannelId(
+                channelList?.filter(
+                  (channel: ChannelType) =>
+                    channel.name === optionName ||
+                    channels[channel.name] === optionName,
+                )[0]?._id || '',
+              )
+            }
+            optionProps={{ className: 'category-options' }}
+          />
+        </StyledDropDown>
+      )}
       <StyledWrapper>
         <StyledLeftContainer>
           <StyledCategoryTitleContainer>
@@ -339,7 +356,6 @@ const HomePage = () => {
               !isFetchingNextPage && (
                 <StyledNoPost>페이지가 없습니다.</StyledNoPost>
               )}
-
             {hasNextPage && (
               <StyledObserver
                 className="observer"
