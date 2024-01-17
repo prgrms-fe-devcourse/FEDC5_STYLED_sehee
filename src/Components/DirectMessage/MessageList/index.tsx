@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useTheme } from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   AlertContainer,
   MessageItemContainer,
@@ -13,39 +15,42 @@ import {
 import Input from '@/Components/Base/Input';
 import MessageItem from '../MessageItem';
 import { MessageListProps } from './type';
-import { useFetchMessages } from '@/Hooks/Api/Message';
-import { createMessage } from '@/Services/Message';
+import { useFetchMessages, useReadMessage } from '@/Hooks/Api/Message';
 import DirectMessageSkeleton from '../Skeleton';
-import { sendNotifications } from '@/Services/Notification';
 import Alert from '@/Components/Common/Alert';
 import UserCard from '@/Components/Common/UserCard';
 import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
+import QUERY_KEYS from '@/Constants/queryKeys';
+import useMessageReceiver from '@/Stores/MessageReceiver';
+import { createMessage } from '@/Services/Message';
+import { sendNotifications } from '@/Services/Notification';
 
 const MessageList = ({
-  isClickedUserCard,
-  setIsClickedUserCard,
   isMobileSize = false,
   receiver,
-  conversationsRefetch,
   loginUser,
 }: MessageListProps) => {
-  const { messages, isMessagesLoading, messagesRefetch } = useFetchMessages(
-    receiver._id,
-  );
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const navigator = useNavigate();
+  const { colors } = useTheme();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, [receiver]);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const queryClient = useQueryClient();
+  const {
+    isFetchedAfterMount: isMessagesFetchedAfterMount,
+    data: messages,
+    isFetching: isMessagesFetching,
+    isLoading: isMessagesLoading,
+    refetch: messagesRefetch,
+  } = useFetchMessages(receiver._id);
+  const { mutateReadMessage } = useReadMessage();
+
+  const { isClickedUserCard, setIsClickedUserCard } = useMessageReceiver();
 
   // 선택한 채팅방이 달라질 때마다 messages를 다시 가지고 온다.
   useEffect(() => {
@@ -54,12 +59,21 @@ const MessageList = ({
     }
   }, [receiver, messagesRefetch]);
 
-  // 메세지를 보낼 때마다 채팅창을 맨 아래로 스크롤을 고정 시킨다.
   useEffect(() => {
+    // 메세지를 보낼 때마다 채팅창을 맨 아래로 스크롤을 고정 시킨다.
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
+    // 처음 불러올 때는 조금 여유를 두고 로딩을 추가해준다.
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, [messages, isLoading]);
+
+  // messages가 새로 올 때 마다 읽음 처리 해준다.
+  useEffect(() => {
+    mutateReadMessage(receiver._id);
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!inputRef || !inputRef.current) {
@@ -73,6 +87,7 @@ const MessageList = ({
     const content = inputRef.current.value.trim();
     inputRef.current.value = '';
 
+    // 상대방에게 메세지를 보낸다.
     const message = await createMessage({
       message: content,
       receiver: receiver._id,
@@ -97,8 +112,9 @@ const MessageList = ({
     }
 
     // 사이드바의 마지막 메시지와 현재 messages를 갱신
-    conversationsRefetch();
-    messagesRefetch();
+    queryClient.refetchQueries({
+      queryKey: [QUERY_KEYS.CONVERSATIONS, QUERY_KEYS.MESSAGES],
+    });
   };
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -115,13 +131,16 @@ const MessageList = ({
   };
 
   const handleClickBack = () => {
-    if (setIsClickedUserCard) {
-      setIsClickedUserCard(false);
-    }
+    setIsClickedUserCard(false);
   };
+
   return (
     <StyledContainer $isClickedUserCard={isClickedUserCard}>
-      {isLoading || isMessagesLoading || !messages || isAlertOpen ? (
+      {isLoading ||
+      (!isMessagesFetchedAfterMount && isMessagesFetching) ||
+      isMessagesLoading ||
+      !messages ||
+      isAlertOpen ? (
         <>
           <DirectMessageSkeleton.MessageList />
           {isAlertOpen && (
@@ -129,8 +148,8 @@ const MessageList = ({
               width={40}
               message={
                 <AlertContainer>
-                  <div>잠시 네트워크에 문제가 생겼습니다.</div>
-                  <div>다시 시도해주세요.</div>
+                  <div>메세지 전송 중 네트워크에 문제가 생겼습니다.</div>
+                  <div>새로고침 후 다시 시도해주세요.</div>
                 </AlertContainer>
               }
               onChangeOpen={setIsAlertOpen}
@@ -188,6 +207,7 @@ const MessageList = ({
                 backgroundColor: 'white',
                 padding: '1.5rem 3rem 1.5rem 3rem',
                 borderRadius: '3rem',
+                color: colors.black,
               }}
             />
             <Button

@@ -65,7 +65,6 @@ export const StyledFooter = styled.div`
   bottom: 5%;
   gap: 1rem;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.background};
 
   .send-icon {
     display: flex;

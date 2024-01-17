@@ -38,6 +38,6 @@ export interface StyledUserNameProps {
 }
 
 export interface StyledUserDetailProps {
-  fontSize: string;
-  fontWeight: string;
+  fontSize?: string;
+  fontWeight?: string;
 }

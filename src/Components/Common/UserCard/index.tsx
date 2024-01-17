@@ -8,6 +8,7 @@ import {
   StyledUserDetail,
   StyledUserReadContainer,
   StyledUserFollowContainer,
+  StyledUserDetailText,
 } from './style';
 import { UserCardProps } from './type';
 import Badge from '@/Components/Base/Badge';
@@ -92,7 +93,6 @@ const UserCard = forwardRef(
           src={coverImageUrl || ''}
           className="user-avatar"
           size={avatarSize}
-          // @TODO: 이부분 원래 handleClick 사용되던 곳. 수정해야합니다!
           onClick={handleClick}
           style={{
             cursor: 'pointer',
@@ -117,19 +117,24 @@ const UserCard = forwardRef(
             fontWeight={
               userNameWeight || (!isRead ? fontWeight.bold : fontWeight.medium)
             }
-            // @TODO: 이부분 원래 handleClick 사용되던 곳. 수정해야합니다!
             onClick={handleClick}
           >
             {userName}
           </StyledUserName>
           {userDetail && (
-            <StyledUserDetail
-              fontSize={userDetailSize || '1.3rem'}
-              fontWeight={!isRead ? fontWeight.black : fontWeight.regular}
-              onClick={handleClick}
-            >
-              {userDetail}
-              {mode === 'chat' && <div>{date}</div>}
+            <StyledUserDetail>
+              <StyledUserDetailText
+                fontSize={userDetailSize || '1.3rem'}
+                fontWeight={!isRead ? fontWeight.black : fontWeight.regular}
+                onClick={handleClick}
+              >
+                {userDetail}
+              </StyledUserDetailText>
+              {mode === 'chat' && (
+                <StyledUserDetailText onClick={handleClick}>
+                  {date}
+                </StyledUserDetailText>
+              )}
             </StyledUserDetail>
           )}
         </StyledUserInfoContainer>

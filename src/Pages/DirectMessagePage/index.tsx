@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-underscore-dangle */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StyledContainer, StyledDiv } from './style';
 import MessageList from '@/Components/DirectMessage/MessageList';
 import ConversationList from '@/Components/DirectMessage/ConversationList';
-import { useFetchConversations } from '@/Hooks/Api/Message';
 import useAuthUserStore from '@/Stores/AuthUser';
 import useMessageReceiver from '@/Stores/MessageReceiver';
 import useResize from '@/Hooks/useResize';
@@ -13,13 +12,10 @@ import useCheckAuth from '@/Hooks/Api/Auth';
 
 const DirectMessagePage = () => {
   const navigator = useNavigate();
-  const [isClickedUserCard, setIsClickedUserCard] = useState(false);
-  const { conversations, isConversationsLoading, conversationsRefetch } =
-    useFetchConversations();
-  const { setAuthUser, user } = useAuthUserStore();
-  const { receiver, setReceiver } = useMessageReceiver();
   const { isMobileSize } = useResize();
   const { loginUserData, isCheckAuthSuccess } = useCheckAuth();
+  const { setAuthUser, user } = useAuthUserStore();
+  const { receiver, isClickedUserCard } = useMessageReceiver();
 
   useEffect(() => {
     if (!isCheckAuthSuccess) return;
@@ -35,11 +31,6 @@ const DirectMessagePage = () => {
   const conversationList = (
     <ConversationList
       isMobileSize={isMobileSize}
-      setIsClickedUserCard={setIsClickedUserCard}
-      setReceiver={setReceiver}
-      conversations={conversations}
-      isConversationsLoading={isConversationsLoading}
-      conversationsRefetch={conversationsRefetch}
       loginUser={user}
     />
   );
@@ -47,10 +38,7 @@ const DirectMessagePage = () => {
   const messageList = receiver && (
     <MessageList
       isMobileSize={isMobileSize}
-      isClickedUserCard={isClickedUserCard}
-      setIsClickedUserCard={setIsClickedUserCard}
       receiver={receiver}
-      conversationsRefetch={conversationsRefetch}
       loginUser={user}
     />
   );

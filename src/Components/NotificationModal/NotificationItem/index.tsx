@@ -24,7 +24,7 @@ const NotificationItem = ({
   isSeen,
   onClose,
 }: Props) => {
-  const { setReceiver } = useMessageReceiver();
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
   const { mutateReadMessage } = useReadMessage();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -43,6 +43,7 @@ const NotificationItem = ({
     if (type === 'message') {
       onClose();
       setReceiver(author);
+      setIsClickedUserCard(true);
       mutateReadMessage(author._id);
       navigate('/directmessage');
     }

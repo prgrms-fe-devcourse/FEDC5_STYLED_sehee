@@ -38,12 +38,15 @@ export const StyledUserInfoContainer = styled.div`
 export const StyledUserName = styled.h1<StyledUserNameProps>`
   font-size: ${({ fontSize }) => fontSize};
   font-weight: ${({ fontWeight }) => fontWeight};
+  color: ${({ theme }) => theme.colors.text};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-export const StyledUserDetail = styled.div<StyledUserDetailProps>`
+export const StyledUserDetail = styled.div``;
+
+export const StyledUserDetailText = styled.div<StyledUserDetailProps>`
   font-size: ${({ fontSize }) => fontSize};
   font-weight: ${({ fontWeight }) => fontWeight};
   color: #9f9f9f;
