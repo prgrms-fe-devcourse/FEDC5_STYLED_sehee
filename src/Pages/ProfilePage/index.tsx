@@ -10,8 +10,12 @@ import ProfileInfo from '@/Components/Profile/ProfileInfo';
 const ProfilePage = () => {
   const { userId } = useParams() || ''; // URL에서 사용자 ID를 가져오기
 
-  const { loginUserData } = useCheckAuth();
-  const { userData: profileUser, userDataRefetch } = useFetchUser(userId || '');
+  const { loginUserData, isCheckAuthLoading } = useCheckAuth();
+  const {
+    userData: profileUser,
+    isFetchUserLoading,
+    userDataRefetch,
+  } = useFetchUser(userId || '');
 
   if (!profileUser) {
     // 프로필 사용자 정보를 가져오지 못한 경우
@@ -39,10 +43,12 @@ const ProfilePage = () => {
           isMyProfile={isMyProfile}
           userDataRefetch={userDataRefetch}
           isFollowing={isFollowingUser}
+          isLoading={isCheckAuthLoading || isFetchUserLoading}
         />
         <ProfilePost
           userData={profileUser}
           isMyProfile={isMyProfile}
+          isLoading={isCheckAuthLoading || isFetchUserLoading}
         />
       </StyledBackground>
       <Outlet />

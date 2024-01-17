@@ -5,12 +5,14 @@ import useTabStore from '@/Stores/Tab';
 import PasswordForm from '../../../Components/EditPassword/PasswordForm';
 import Alert from '@/Components/Common/Alert';
 import { StyledPasswordContainer } from '../../../Components/EditPassword/PasswordForm/style';
+import useResize from '@/Hooks/useResize';
 
 const PasswordModal = () => {
   const [isPasswordModalOpen, setPasswordModalOpen] = useState(true);
   const navigate = useNavigate();
   const { prev, setTab } = useTabStore();
   const [isSuccess, setIsSuccess] = useState(false);
+  const { isMobileSize } = useResize();
 
   const handleCloseModal = (state: boolean) => {
     navigate(-1);
@@ -26,7 +28,7 @@ const PasswordModal = () => {
     <>
       <Modal
         height={45}
-        width={38}
+        width={isMobileSize ? 70 : 38}
         onChangeOpen={handleCloseModal}
       >
         <StyledPasswordContainer>
