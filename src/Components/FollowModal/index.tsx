@@ -2,6 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
 import Input from '../Base/Input';
 import Modal from '../Common/Modal';
 import UserCard from '../Common/UserCard';
@@ -123,6 +124,8 @@ const FollowModal = ({
     await fetchFollowData();
   };
 
+  const debouncedHandleFollow = debounce(handleFollow, 300);
+
   const handleClickUser = (userId: string) => {
     navigator(`/profile/${userId}`);
     onChangeOpen(false);
@@ -172,7 +175,7 @@ const FollowModal = ({
                 isFollow={isFollowing(user)}
                 isButtonShow={isButtonShow(user._id)}
                 onClick={() => handleClickUser(user._id)}
-                onClickFollowBtn={() => handleFollow(user)}
+                onClickFollowBtn={() => debouncedHandleFollow(user)}
               />
             ))
           )}
