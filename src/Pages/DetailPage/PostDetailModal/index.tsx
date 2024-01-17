@@ -257,6 +257,7 @@ const PostDetailModal = ({
     const newFollowState = isFollow === null ? !isMyFollow : !isFollow;
     const targetUserId = postDetailData?.author._id || '';
     if (newFollowState) {
+      if (authUser.following?.some(({ _id }) => targetUserId === _id)) return;
       followByUserId(targetUserId, {
         onSuccess: (targetFollowData) => {
           if (targetFollowData) {
@@ -270,7 +271,7 @@ const PostDetailModal = ({
           }
         },
       });
-    } else if (myLikeList) {
+    } else if (authUser) {
       authUser.following?.forEach(({ user, _id: followId }) => {
         if (user === targetUserId) {
           unfollowByUserId(followId);
@@ -291,6 +292,7 @@ const PostDetailModal = ({
     }
     const newLikeState = isLike === null ? !isMyLike : !isLike;
     if (newLikeState && postId) {
+      if (authUser.likes?.some(({ post }) => post === postId)) return;
       likeById(postId, {
         onSuccess: (targetLikeData) => {
           if (targetLikeData && postDetailData) {
