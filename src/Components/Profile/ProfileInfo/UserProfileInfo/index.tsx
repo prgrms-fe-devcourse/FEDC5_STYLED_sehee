@@ -2,6 +2,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useState } from 'react';
+import { debounce } from 'lodash';
 import Button from '@/Components/Base/Button';
 import { StyledButtonContainer, StyledName } from '../style';
 import { NameProps } from './type';
@@ -54,6 +55,8 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
     userDataRefetch();
   };
 
+  const debouncedHandleFollow = debounce(handleFollow, 300);
+
   const handleDirectMessage = () => {
     if (Object.keys(authUser).length === 0) {
       setErrorMode('MESSAGE');
@@ -78,7 +81,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
           borderRadius="1rem"
           backgroundColor={colors.read}
           style={{ marginRight: '1rem', marginTop: '.5rem' }}
-          onClick={handleFollow}
+          onClick={debouncedHandleFollow}
         >
           팔로잉
         </Button>
@@ -95,7 +98,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
             marginTop: '.5rem',
             border: `1px solid ${colors.text}`,
           }}
-          onClick={handleFollow}
+          onClick={debouncedHandleFollow}
         >
           팔로우
         </Button>
