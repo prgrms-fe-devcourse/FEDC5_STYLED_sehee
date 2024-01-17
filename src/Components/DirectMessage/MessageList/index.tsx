@@ -42,11 +42,11 @@ const MessageList = ({
 
   const queryClient = useQueryClient();
   const {
-    isMessagesFetchedAfterMount,
-    messages,
-    isMessagesFetching,
-    isMessagesLoading,
-    messagesRefetch,
+    isFetchedAfterMount: isMessagesFetchedAfterMount,
+    data: messages,
+    isFetching: isMessagesFetching,
+    isLoading: isMessagesLoading,
+    refetch: messagesRefetch,
   } = useFetchMessages(receiver._id);
   const { mutateReadMessage } = useReadMessage();
 

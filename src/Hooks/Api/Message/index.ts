@@ -29,28 +29,19 @@ export const useFetchConversations = () => {
 };
 
 export const useFetchMessages = (userId: string) => {
-  const { data, isFetching, isFetchedAfterMount, isLoading, refetch } =
-    useQuery<MessageType[] | null>({
-      queryKey: [QUERY_KEYS.MESSAGES],
-      queryFn: async () => {
-        const messages = await getMessages(userId);
-        return messages
-          ? messages.sort(
-              (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
-            )
-          : [];
-      },
-      refetchInterval: 2000,
-      enabled: !!userId,
-    });
-
-  return {
-    isMessagesFetchedAfterMount: isFetchedAfterMount,
-    messages: data,
-    isMessagesFetching: isFetching,
-    isMessagesLoading: isLoading,
-    messagesRefetch: refetch,
-  };
+  return useQuery<MessageType[] | null>({
+    queryKey: [QUERY_KEYS.MESSAGES],
+    queryFn: async () => {
+      const messages = await getMessages(userId);
+      return messages
+        ? messages.sort(
+            (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
+          )
+        : [];
+    },
+    refetchInterval: 2000,
+    enabled: !!userId,
+  });
 };
 
 export const useCreateMessage = (onError?: () => void) => {
