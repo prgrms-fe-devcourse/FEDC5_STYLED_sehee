@@ -31,6 +31,10 @@ export const StyledInput = styled.input<{ $invalid?: boolean }>`
     outline: none;
     border-bottom: 3px solid ${({ theme }) => theme.colors.backgroundReverse};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export const StyledErrorMessage = styled.p`

@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 // _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useInfiniteQuery,
@@ -15,6 +15,7 @@ import {
   StyledCategoryList,
   StyledCategoryTitle,
   StyledCategoryTitleContainer,
+  StyledDropDown,
   StyledHeaderContainer,
   StyledLeftContainer,
   StyledMainContentContainer,
@@ -38,26 +39,18 @@ import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
 import PostCardSkeletion from '@/Components/Common/PostCard/PostCardSkeleton';
 import { useChannelStore } from '@/Stores';
+import useResize from '@/Hooks/useResize';
+import DropDown from '@/Components/Common/DropDown';
+import { ChannelType } from '@/Types/ChannelType';
+import { NotificationTypeList } from '@/Types/Request';
+import Alert from '@/Components/Common/Alert';
+import NON_AUTH_USER from '@/Constants/nonAuthUser';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  // 반응형 햄버거 버튼 클릭 이벤트와 연결할 디바이스 크기 조절 함수
-  // const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-
-  // const handleResize = debounce(() => {
-  //   setDeviceWidth(window.innerWidth);
-  // });
-
-  // useEffect(() => {
-  //   window.addEventListener('resize', handleResize);
-  //   return () => {
-  //     // cleanup
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, [handleResize]);
+  const { isMobileSize } = useResize();
 
   const { user: authUser, setAuthUser } = useAuthUserStore();
   const { currentChannelId, setCurrentChannelId } = useChannelStore();
@@ -70,6 +63,9 @@ const HomePage = () => {
   const { followByUserId } = useFollowByUserId();
   const { unfollowByUserId } = useUnfollowByUserId();
   const { createNotification } = useCreateNotification();
+
+  const [errorMode, setErrorMode] = useState<NotificationTypeList>();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const handleClickUserName = (userId: string) => {
     navigate(`/profile/${userId}`);
@@ -117,6 +113,16 @@ const HomePage = () => {
     queryFn: getChannels,
     enabled: !isCheckAuthLoading,
   });
+
+  // 채널명 배열
+  const channelNameList = channelList
+    ?.map((channel) => {
+      if (Object.keys(channels).includes(channel.name)) {
+        return channels[channel.name];
+      }
+      return channel.name;
+    })
+    .filter((channelName) => channelName);
 
   /**
    * 채널이 변경되면 해당 채널에 대한 포스트를 10개씩 불러오는 함수
@@ -168,6 +174,11 @@ const HomePage = () => {
     targetAuthorId: string,
     newState: boolean,
   ) => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('LIKE');
+      setIsAlertOpen(true);
+      return;
+    }
     if (newState) {
       likeById(targetPostId, {
         onSuccess: (targetLikeData) => {
@@ -203,6 +214,11 @@ const HomePage = () => {
     nextFollowState: boolean,
     targetUserId: string,
   ) => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('FOLLOW');
+      setIsAlertOpen(true);
+      return;
+    }
     if (nextFollowState) {
       followByUserId(targetUserId, {
         onSuccess: (targetFollowData) => {
@@ -229,7 +245,24 @@ const HomePage = () => {
     <>
       {/* Header 컴포넌트 있다고 가정 */}
       <StyledHeaderContainer />
-
+      {/* 모바일 카테고리 드롭다운 */}
+      {isMobileSize && (
+        <StyledDropDown>
+          <DropDown
+            options={channelNameList || []}
+            onSelect={(optionName) =>
+              setCurrentChannelId(
+                channelList?.filter(
+                  (channel: ChannelType) =>
+                    channel.name === optionName ||
+                    channels[channel.name] === optionName,
+                )[0]?._id || '',
+              )
+            }
+            optionProps={{ className: 'category-options' }}
+          />
+        </StyledDropDown>
+      )}
       <StyledWrapper>
         <StyledLeftContainer>
           <StyledCategoryTitleContainer>
@@ -339,7 +372,6 @@ const HomePage = () => {
               !isFetchingNextPage && (
                 <StyledNoPost>페이지가 없습니다.</StyledNoPost>
               )}
-
             {hasNextPage && (
               <StyledObserver
                 className="observer"
@@ -350,6 +382,20 @@ const HomePage = () => {
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
+      {isAlertOpen && (
+        <Alert
+          mode="confirm"
+          message={
+            <>
+              {errorMode === 'FOLLOW' && <div>{NON_AUTH_USER.FOLLOW}</div>}
+              {errorMode === 'LIKE' && <div>{NON_AUTH_USER.LIKE}</div>}
+              <div>{NON_AUTH_USER.LOGIN}</div>
+            </>
+          }
+          onConfirm={() => navigate('/login')}
+          onCancle={() => setIsAlertOpen(false)}
+        />
+      )}
       <Outlet />
     </>
   );

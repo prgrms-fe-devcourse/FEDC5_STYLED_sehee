@@ -12,6 +12,7 @@ import StyledConatiner from './style';
 import Alert from '@/Components/Common/Alert';
 import useCheckAuth from '@/Hooks/Api/Auth';
 import useFetchUser from '@/Hooks/Api/User';
+import useResize from '@/Hooks/useResize';
 
 const UpdateImageModal = ({ handleCloseModal }: Props) => {
   const [image, setImage] = useState<ImageFileType>();
@@ -19,6 +20,7 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
   const { loginUserRefetch } = useCheckAuth();
   const { userDataRefetch } = useFetchUser(userId || '');
   const [isError, setIsError] = useState(false);
+  const { isMobileSize } = useResize();
 
   const { mutate, status } = useMutation({
     mutationFn: async () => {
@@ -41,7 +43,7 @@ const UpdateImageModal = ({ handleCloseModal }: Props) => {
   return (
     <Modal
       height={50}
-      width={45}
+      width={isMobileSize ? 70 : 45}
       onChangeOpen={handleCloseModal}
     >
       <StyledConatiner>

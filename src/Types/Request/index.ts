@@ -51,8 +51,9 @@ export interface PostCommentRequestType {
   postId: string;
 }
 
+export type NotificationTypeList = 'COMMENT' | 'FOLLOW' | 'LIKE' | 'MESSAGE';
 export interface PostNotificationRequestType {
-  notificationType: 'COMMENT' | 'FOLLOW' | 'LIKE' | 'MESSAGE';
+  notificationType: NotificationTypeList;
   notificationTypeId: string;
   userId: string;
   postId: string | null;

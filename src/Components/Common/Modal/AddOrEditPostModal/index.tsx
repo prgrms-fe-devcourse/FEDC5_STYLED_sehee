@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '../../Alert';
@@ -28,25 +28,21 @@ import {
 import { Props } from './type';
 import validatePostFieldProps from './validatePostField';
 import QUERY_KEYS from '@/Constants/queryKeys';
-
-// * 하위 컴포넌트로부터 갱신된 데이터를 통합적으로 관리
-
-// DONE: 컴포넌트 설계
-// DONE: Props 설정, 타입 지정
-// DONE: 대략적인 스타일링
-// DONE: 컴포넌트 구현
-// DONE: 해당 컴포넌트로 데이터를 모아 쿼리 통신 구현
-// DONE: 기타 에러 핸들링
-// DONE: 게시글 수정 모달로 확장 (post 있는 상태면 해당 값으로 초기화, 아니면 빈 값으로)
+import NON_AUTH_USER from '@/Constants/nonAuthUser';
+import useTabStore from '@/Stores/Tab';
 
 const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const isAuthUser = !!sessionStorage.getItem('AUTH_TOKEN');
   const [category, setCategory] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [image, setImage] = useState<ImageFileType | string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { postId } = useParams();
+
+  const { prev, setTab } = useTabStore();
 
   /**
    * 컴포넌트의 역할이 '게시글 수정'일 때의 로직 ▼
@@ -78,14 +74,23 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const { mutate: mutatePost, status: postStatus } = useMutation({
     mutationFn: (postFormData: PostCreatePostRequestType) =>
       createPost(postFormData),
-    onSuccess: (res) => res && navigate('/'),
+    onSuccess: (res) => {
+      if (res) {
+        navigate('/');
+        queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+      }
+    },
   });
 
   const { mutate: mutateUpdatePost, status: updatePostStatus } = useMutation({
     mutationFn: (postFormData: PutUpdatePostRequestType) =>
       updatePost(postFormData),
-    onSuccess: (res) => res && navigate('/'),
-    // TODO: 게시물 목록 fetch해야할 듯
+    onSuccess: (res) => {
+      if (res) {
+        navigate('/');
+        queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
+      }
+    },
   });
 
   const { mutate: mutateChannel, status: channelStatus } = useMutation({
@@ -103,6 +108,8 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
               : null,
           channelId: res._id,
         });
+
+        return;
       }
 
       // 새로운 포스트 작성일 경우
@@ -170,8 +177,21 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
     </>
   ) : (
     <Alert
-      message="로그인 후 이용해주세요"
-      onChangeOpen={onChangeOpen}
+      mode="confirm"
+      message={
+        <>
+          <div>{NON_AUTH_USER.ADD_POST}</div>
+          <div>{NON_AUTH_USER.LOGIN}</div>
+        </>
+      }
+      onConfirm={() => {
+        navigate('/login');
+        setTab(prev);
+      }}
+      onCancle={() => {
+        navigate(-1);
+        setTab(prev);
+      }}
     />
   );
 };

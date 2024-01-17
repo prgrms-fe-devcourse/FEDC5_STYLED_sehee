@@ -14,6 +14,7 @@ import { StyledContainer, StyledForm } from './style';
 import Alert from '@/Components/Common/Alert';
 import useCheckAuth from '@/Hooks/Api/Auth';
 import useFetchUser from '@/Hooks/Api/User';
+import useResize from '@/Hooks/useResize';
 
 const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,6 +23,7 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
   const { userDataRefetch } = useFetchUser(userId || '');
   const [isValid, setIsValid] = useState(true);
   const [isError, setIsError] = useState(false);
+  const { isMobileSize } = useResize();
 
   const { mutate, status } = useMutation({
     mutationFn: (nameData: PutUpdateUserRequestType) => updateMyName(nameData),
@@ -64,7 +66,7 @@ const UpdateNameModal = ({ handleCloseModal, name }: Props) => {
   return (
     <Modal
       height={20}
-      width={35}
+      width={isMobileSize ? 75 : 35}
       onChangeOpen={handleCloseModal}
     >
       <StyledContainer>

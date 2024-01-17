@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import ImageCard from '@/Components/Common/ImageCard';
@@ -16,11 +17,14 @@ import StyledHeadContainer from './style';
 import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import { getChannels } from '@/Services/Channel';
 import Skeleton from '@/Components/Base/Skeleton';
+import useResize from '@/Hooks/useResize';
 
-const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
+const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);
   const { colors } = useTheme();
   const { userId } = useParams() || '';
+  const navigate = useNavigate();
+  const { isMobileSize } = useResize();
 
   const getLikePostById = async (
     channelId: string,
@@ -66,12 +70,12 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
           }),
         );
 
-        return channelPosts.filter((post) => post !== null); // 필터링하여 null인 항목 제거
+        return channelPosts.filter((post) => post !== null);
       }),
     );
 
     // 결과 배열 펼치기
-    return likePostList.flat();
+    return likePostList.reverse().flat();
   };
 
   const setLikePosts = useQuery({
@@ -139,53 +143,57 @@ const MyProfilePost = ({ posts, likes }: PostLikeProps) => {
       <StyledProfilePostContainer>
         <StyledGridPost>
           {isLike ? (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
             <>
-              {setLikePosts.isLoading && (
+              {setLikePosts.isLoading ? (
                 <Skeleton.Box
                   width="90%"
                   height="22.5rem"
                 />
-              )}
-              {likePosts.map(
-                (post: PostType | null) =>
-                  post && (
-                    <Link
-                      to={`/profile/${userId}/modal-detail/${post._id}`}
-                      key={post._id}
-                    >
+              ) : (
+                likePosts.map(
+                  (post: PostType | null) =>
+                    post && (
                       <ImageCard
                         key={post._id}
                         src={post.image || logoBlack}
                         comment={post.comments.length}
                         width="90%"
-                        height="22.5rem"
+                        height={isMobileSize ? '20rem' : '22.5rem'}
                         heart={post.likes.length}
+                        onDetail={() =>
+                          navigate(
+                            `/profile/${userId}/modal-detail/${post._id}`,
+                          )
+                        }
                       />
-                    </Link>
-                  ),
+                    ),
+                )
               )}
             </>
           ) : (
             <>
-              {posts.map((post: PostType) => (
-                <Link
-                  to={`/profile/${userId}/modal-detail/${post._id}`}
-                  key={post._id}
-                >
+              {isLoading ? (
+                <Skeleton.Box
+                  width="90%"
+                  height="22.5rem"
+                />
+              ) : (
+                posts.map((post: PostType) => (
                   <ImageCard
                     key={post._id}
                     src={post.image || logoBlack}
                     comment={post.comments.length}
                     width="90%"
-                    height="22.5rem"
+                    height={isMobileSize ? '20rem' : '22.5rem'}
                     heart={post.likes.length}
+                    onDetail={() =>
+                      navigate(`/profile/${userId}/modal-detail/${post._id}`)
+                    }
                   />
-                </Link>
-              ))}
+                ))
+              )}
             </>
           )}
-          <Outlet />
         </StyledGridPost>
       </StyledProfilePostContainer>
     </>
