@@ -56,8 +56,6 @@ const HomePage = () => {
   const { currentChannelId, setCurrentChannelId } = useChannelStore();
   const [refInView, inView] = useInView();
 
-  // const [currentChannelId, setCurrentChannelId] = useState('');
-
   const { likeById } = useLikeById();
   const { disLikeById } = useDisLikeById();
   const { followByUserId } = useFollowByUserId();
@@ -233,8 +231,8 @@ const HomePage = () => {
         },
       });
     } else if (authUser) {
-      authUser.following?.forEach(({ user, _id: followId }) => {
-        if (user === targetUserId) {
+      authUser.following?.forEach(({ follower, _id: followId }) => {
+        if (follower === authUser._id) {
           unfollowByUserId(followId);
         }
       });
