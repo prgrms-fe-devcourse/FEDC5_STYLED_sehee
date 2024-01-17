@@ -8,7 +8,7 @@ export interface AlertPropsType extends HTMLAttributes<HTMLDivElement> {
   confirmContent?: string;
   cancleContent?: string;
   mode?: 'alert' | 'confirm';
-  onChangeOpen: (openState: boolean) => void;
+  onChangeOpen?: (openState: boolean) => void;
   onConfirm?: () => void;
   onCancle?: () => void;
 }

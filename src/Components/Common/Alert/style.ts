@@ -19,4 +19,8 @@ export const StyledButtonWrapper = styled.div`
 
 export const StyledMessage = styled.div<{ $fontSize: number }>`
   font-size: ${(props) => props.$fontSize}rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5rem;
 `;

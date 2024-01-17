@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 // _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useInfiniteQuery,
@@ -42,6 +42,9 @@ import { useChannelStore } from '@/Stores';
 import useResize from '@/Hooks/useResize';
 import DropDown from '@/Components/Common/DropDown';
 import { ChannelType } from '@/Types/ChannelType';
+import { NotificationTypeList } from '@/Types/Request';
+import Alert from '@/Components/Common/Alert';
+import NON_AUTH_USER from '@/Constants/nonAuthUser';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -60,6 +63,9 @@ const HomePage = () => {
   const { followByUserId } = useFollowByUserId();
   const { unfollowByUserId } = useUnfollowByUserId();
   const { createNotification } = useCreateNotification();
+
+  const [errorMode, setErrorMode] = useState<NotificationTypeList>();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const handleClickUserName = (userId: string) => {
     navigate(`/profile/${userId}`);
@@ -168,6 +174,11 @@ const HomePage = () => {
     targetAuthorId: string,
     newState: boolean,
   ) => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('LIKE');
+      setIsAlertOpen(true);
+      return;
+    }
     if (newState) {
       likeById(targetPostId, {
         onSuccess: (targetLikeData) => {
@@ -203,6 +214,11 @@ const HomePage = () => {
     nextFollowState: boolean,
     targetUserId: string,
   ) => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('FOLLOW');
+      setIsAlertOpen(true);
+      return;
+    }
     if (nextFollowState) {
       followByUserId(targetUserId, {
         onSuccess: (targetFollowData) => {
@@ -366,6 +382,20 @@ const HomePage = () => {
         </StyledMainContentContainer>
         <UserManager />
       </StyledWrapper>
+      {isAlertOpen && (
+        <Alert
+          mode="confirm"
+          message={
+            <>
+              {errorMode === 'FOLLOW' && <div>{NON_AUTH_USER.FOLLOW}</div>}
+              {errorMode === 'LIKE' && <div>{NON_AUTH_USER.LIKE}</div>}
+              <div>{NON_AUTH_USER.LOGIN}</div>
+            </>
+          }
+          onConfirm={() => navigate('/login')}
+          onCancle={() => setIsAlertOpen(false)}
+        />
+      )}
       <Outlet />
     </>
   );
