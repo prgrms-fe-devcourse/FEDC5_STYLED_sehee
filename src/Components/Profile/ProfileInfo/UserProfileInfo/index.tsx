@@ -12,7 +12,6 @@ import useCheckAuth from '@/Hooks/Api/Auth';
 import useFetchUser from '@/Hooks/Api/User';
 import { useReadMessage } from '@/Hooks/Api/Message';
 import useAuthUserStore from '@/Stores/AuthUser';
-import useResize from '@/Hooks/useResize';
 import { NotificationTypeList } from '@/Types/Request';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
@@ -26,7 +25,6 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { mutateReadMessage } = useReadMessage();
 
   const { user: authUser } = useAuthUserStore();
-  const { isMobileSize } = useResize();
   const [errorMode, setErrorMode] = useState<NotificationTypeList>();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const navigate = useNavigate();
@@ -119,7 +117,6 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
       </Button>
       {isAlertOpen && (
         <Alert
-          width={isMobileSize ? 40 : undefined}
           mode="confirm"
           message={
             <>

@@ -56,7 +56,6 @@ import PostDetailSkeleton from './PostDetailSkeleton';
 import { useReadMessage } from '@/Hooks/Api/Message';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
-import useResize from '@/Hooks/useResize';
 import { NotificationTypeList } from '@/Types/Request';
 
 const PostDetailModal = ({
@@ -117,7 +116,6 @@ const PostDetailModal = ({
   const [isLike, setIsLike] = useState<boolean | null>(null);
   const [isComposing, setIsComposing] = useState(false);
 
-  const { isMobileSize } = useResize();
   const [errorMode, setErrorMode] = useState<NotificationTypeList>();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
@@ -635,7 +633,6 @@ const PostDetailModal = ({
       )}
       {isAlertOpen && (
         <Alert
-          width={isMobileSize ? 40 : undefined}
           mode="confirm"
           message={
             <>

@@ -29,7 +29,6 @@ import { Props } from './type';
 import validatePostFieldProps from './validatePostField';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
-import useResize from '@/Hooks/useResize';
 import useTabStore from '@/Stores/Tab';
 
 const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
@@ -43,7 +42,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { postId } = useParams();
 
-  const { isMobileSize } = useResize();
   const { prev, setTab } = useTabStore();
 
   /**
@@ -181,7 +179,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
     </>
   ) : (
     <Alert
-      width={isMobileSize ? 40 : undefined}
       mode="confirm"
       message={
         <>

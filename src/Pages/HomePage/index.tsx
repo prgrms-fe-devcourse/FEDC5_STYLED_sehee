@@ -38,7 +38,6 @@ import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
 import PostCardSkeletion from '@/Components/Common/PostCard/PostCardSkeleton';
 import { useChannelStore } from '@/Stores';
-import useResize from '@/Hooks/useResize';
 import { NotificationTypeList } from '@/Types/Request';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
@@ -75,7 +74,6 @@ const HomePage = () => {
   const { unfollowByUserId } = useUnfollowByUserId();
   const { createNotification } = useCreateNotification();
 
-  const { isMobileSize } = useResize();
   const [errorMode, setErrorMode] = useState<NotificationTypeList>();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
@@ -370,7 +368,6 @@ const HomePage = () => {
       </StyledWrapper>
       {isAlertOpen && (
         <Alert
-          width={isMobileSize ? 40 : undefined}
           mode="confirm"
           message={
             <>

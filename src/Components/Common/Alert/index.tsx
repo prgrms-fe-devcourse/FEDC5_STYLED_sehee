@@ -6,6 +6,7 @@ import {
   StyledMessage,
 } from './style';
 import { AlertPropsType } from './type';
+import useResize from '@/Hooks/useResize';
 
 /**
  * @param message Alert에 띄우고 싶은 메시지를 입력하세요.
@@ -14,10 +15,10 @@ import { AlertPropsType } from './type';
  * @param mode alert, confirm 2가지 모드를 제공합니다.
  */
 const Alert = ({
-  width = 25,
-  height = 15,
+  width = 30,
+  height = 20,
   message,
-  fontSize = 1,
+  fontSize = 1.3,
   confirmContent = 'OK',
   cancleContent = 'CANCEL',
   mode = 'alert',
@@ -25,6 +26,7 @@ const Alert = ({
   onCancle,
   onChangeOpen,
 }: AlertPropsType) => {
+  const { isMobileSize } = useResize();
   const handleConfirm = () => {
     if (onConfirm) {
       onConfirm();
@@ -45,8 +47,8 @@ const Alert = ({
 
   return (
     <Modal
-      width={width}
-      height={height}
+      width={isMobileSize && width <= 40 ? width * 1.5 : width}
+      height={isMobileSize && height <= 30 ? height * 1.2 : height}
       onChangeOpen={onChangeOpen}
     >
       <StyledAlertWrapper>
@@ -55,6 +57,7 @@ const Alert = ({
           <Button
             height="30"
             onClick={handleConfirm}
+            textSize={`${fontSize}rem`}
           >
             {confirmContent}
           </Button>
@@ -62,6 +65,7 @@ const Alert = ({
             <Button
               height="30"
               onClick={handleCancle}
+              textSize={`${fontSize}rem`}
             >
               {cancleContent}
             </Button>
