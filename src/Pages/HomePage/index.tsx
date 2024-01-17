@@ -178,6 +178,7 @@ const HomePage = () => {
       return;
     }
     if (newState) {
+      if (authUser.likes?.some(({ post }) => post === targetPostId)) return;
       likeById(targetPostId, {
         onSuccess: (targetLikeData) => {
           if (targetLikeData) {
@@ -191,10 +192,8 @@ const HomePage = () => {
         },
       });
     } else if (authUser) {
-      authUser.following?.forEach(({ user, _id: followId }) => {
-        if (user === targetUserId) {
-          unfollowByUserId(followId);
-        }
+      authUser.likes?.forEach(({ post, _id: likeId }) => {
+        if (post === targetPostId) disLikeById(likeId);
       });
     }
   };
@@ -220,6 +219,7 @@ const HomePage = () => {
       return;
     }
     if (nextFollowState) {
+      if (authUser.following?.some(({ _id }) => targetUserId === _id)) return;
       followByUserId(targetUserId, {
         onSuccess: (targetFollowData) => {
           if (targetFollowData) {
@@ -233,8 +233,8 @@ const HomePage = () => {
         },
       });
     } else if (authUser) {
-      authUser.following?.forEach(({ follower, _id: followId }) => {
-        if (follower === authUser._id) {
+      authUser.following?.forEach(({ user, _id: followId }) => {
+        if (user === targetUserId) {
           unfollowByUserId(followId);
         }
       });
