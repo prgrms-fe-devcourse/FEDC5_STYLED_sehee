@@ -21,6 +21,7 @@ const SearchBar = ({
       />
       <Button
         backgroundColor="transparent"
+        hoverBackgroundColor="transparent"
         width="fit-content"
         type="submit"
       >

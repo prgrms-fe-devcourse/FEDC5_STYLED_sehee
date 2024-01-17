@@ -9,6 +9,8 @@ import { StyledContainer, StyledHeader, StyledWrapper } from './style';
 import channels from '@/Constants/Channels';
 import { checkAuth } from '@/Services/Auth';
 import { Props } from './type';
+import QUERY_KEYS from '@/Constants/queryKeys';
+import { getChannels } from '@/Services/Channel';
 
 /**
  * @brief 채널 선택 드롭다운, 포스트 작성 제출 버튼, 유저 프로필 정보를 담고 있는 AisdeHeader 컴포넌트입니다.
@@ -21,17 +23,24 @@ const AsideHeader = ({ onSelectChannel, onSubmit, initialValue }: Props) => {
     queryFn: checkAuth,
   });
 
-  const reversedChannel = Object.entries(channels).reduce(
-    (acc: Record<string, string>, [key, value]) => {
-      acc[value] = key;
-      return acc;
-    },
-    {},
-  );
+  const { data: channelList } = useQuery({
+    queryKey: [QUERY_KEYS.CHANNEL_LIST],
+    queryFn: getChannels,
+  });
+
+  // 채널명 배열
+  const channelNameList = channelList
+    ?.map((channel) => {
+      if (Object.keys(channels).includes(channel.name)) {
+        return channels[channel.name];
+      }
+      return channel.name;
+    })
+    .filter((channelName) => channelName);
 
   const handleSelect = async (option: string) => {
     if (onSelectChannel) {
-      onSelectChannel(reversedChannel[option]);
+      onSelectChannel(option);
     }
   };
 
@@ -39,7 +48,7 @@ const AsideHeader = ({ onSelectChannel, onSubmit, initialValue }: Props) => {
     <StyledWrapper>
       <StyledHeader>
         <DropDown // 카테고리 드롭다운
-          options={Object.values(channels)}
+          options={channelNameList || []}
           onSelect={handleSelect}
           initialValue={initialValue}
         />

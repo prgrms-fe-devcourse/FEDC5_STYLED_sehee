@@ -149,7 +149,7 @@ const UserCard = forwardRef(
               textSize="1.3rem"
               textColor="white"
               backgroundColor={isFollow ? colors.read : colors.follow}
-              hoverBackgroundColor={colors.read}
+              hoverBackgroundColor={isFollow ? colors.read : colors.follow}
               onClick={onClickFollowBtn}
               style={{ minWidth: '4.5rem' }}
             >
