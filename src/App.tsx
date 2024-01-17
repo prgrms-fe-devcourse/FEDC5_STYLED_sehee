@@ -23,7 +23,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <Header
-          activeHeader={pathname !== '/login' && pathname !== '/signUp'}
+          activeHeader={pathname !== '/login' && pathname !== '/signup'}
         />
         <RouteManager />
         <DarkMode />
