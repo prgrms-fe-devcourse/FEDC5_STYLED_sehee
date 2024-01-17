@@ -14,6 +14,7 @@ export const StyledInput = styled.input`
   transition: border-bottom 0.3s ease;
   padding: 1rem 0rem;
   width: 15rem;
+  color: ${({ theme }) => theme.colors.text};
 
   &:focus {
     outline: none;

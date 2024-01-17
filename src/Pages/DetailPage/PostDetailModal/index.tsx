@@ -584,7 +584,7 @@ const PostDetailModal = ({
             {/* 댓글 게시 영역 */}
             <StyledCommentContainer>
               <Input
-                disabled={!!authUser}
+                disabled={Object.keys(authUser).length === 0}
                 ref={commentInputRef}
                 placeholder="댓글 달기..."
                 onChange={handleChangeCommentInput}

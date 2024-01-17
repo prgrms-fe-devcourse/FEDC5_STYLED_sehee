@@ -37,8 +37,10 @@ const Button = forwardRef(
         $width={width || '120px'}
         $height={height || '10px'}
         $borderRadius={borderRadius || '15px'}
-        $hoverBackgroundColor={hoverBackgroundColor || theme.colors.focusHover}
-        $hoverTextColor={hoverTextColor || theme.colors.focusHoverText}
+        $hoverBackgroundColor={
+          hoverBackgroundColor || theme.colors.buttonHoverBackground
+        }
+        $hoverTextColor={hoverTextColor || theme.colors.buttonHoverText}
         $isActive={isActive}
         $isHoverBold={isHoverBold || false}
         $isBold={isBold || false}
