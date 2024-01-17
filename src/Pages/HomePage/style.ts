@@ -4,6 +4,19 @@ export const StyledHeaderContainer = styled.div`
   height: 9.4rem;
 `;
 
+export const StyledDropDown = styled.div`
+  padding-left: 2rem;
+  padding-bottom: 1rem;
+  .category-options {
+    height: 70vh;
+    overflow-y: auto;
+  }
+
+  .material-icons {
+    font-size: 2rem;
+  }
+`;
+
 export const StyledWrapper = styled.div`
   display: flex;
   width: 100%;

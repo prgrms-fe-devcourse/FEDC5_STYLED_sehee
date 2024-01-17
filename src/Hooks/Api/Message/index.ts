@@ -12,20 +12,24 @@ import { ConversationType } from '@/Types/ConversationType';
 import QUERY_KEYS from '@/Constants/queryKeys';
 
 export const useFetchConversations = () => {
-  const { data, isLoading, refetch } = useQuery<ConversationType[] | null>({
+  const { data, isFetching, isLoading, refetch } = useQuery<
+    ConversationType[] | null
+  >({
     queryKey: [QUERY_KEYS.CONVERSATIONS],
     queryFn: getConversations,
+    refetchInterval: 2000,
   });
 
   return {
     conversations: data,
     isConversationsLoading: isLoading,
+    isConversationsFetching: isFetching,
     conversationsRefetch: refetch,
   };
 };
 
 export const useFetchMessages = (userId: string) => {
-  const { data, isLoading, refetch } = useQuery<MessageType[] | null>({
+  return useQuery<MessageType[] | null>({
     queryKey: [QUERY_KEYS.MESSAGES],
     queryFn: async () => {
       const messages = await getMessages(userId);
@@ -35,37 +39,31 @@ export const useFetchMessages = (userId: string) => {
           )
         : [];
     },
+    refetchInterval: 2000,
     enabled: !!userId,
   });
-
-  return {
-    messages: data,
-    isMessagesLoading: isLoading,
-    messagesRefetch: refetch,
-  };
 };
 
-/* 이 밑으로 아직 사용 안하는 중 */
-
-export const useCreateMessage = ({
-  message,
-  receiver,
-}: PostCreateMessageRequestType) => {
-  const { data, isError, isSuccess } = useMutation({
-    mutationFn: () => createMessage({ message, receiver }),
+export const useCreateMessage = (onError?: () => void) => {
+  const { data, mutate, isError, isSuccess, mutateAsync } = useMutation({
+    mutationFn: ({ message, receiver }: PostCreateMessageRequestType) =>
+      createMessage({ message, receiver }),
+    onError,
   });
 
   return {
-    message: data,
+    createdMessage: data,
+    mutateCreateMessage: mutate,
     isCreateMessageError: isError,
     isCreateMessageSuccess: isSuccess,
+    mutateAsync,
   };
 };
 
 export const useReadMessage = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate, isError } = useMutation({
     mutationFn: (userId: string) => readMessage(userId),
     onSettled: () => {
       queryClient.refetchQueries({ queryKey: [QUERY_KEYS.CONVERSATIONS] });
@@ -74,5 +72,6 @@ export const useReadMessage = () => {
 
   return {
     mutateReadMessage: mutate,
+    isReadMessageError: isError,
   };
 };

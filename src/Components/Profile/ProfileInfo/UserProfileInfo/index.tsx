@@ -17,7 +17,7 @@ import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
 
 const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
-  const { setReceiver } = useMessageReceiver();
+  const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
   const { colors } = useTheme();
   const { userId } = useParams() || '';
   const { loginUserRefetch } = useCheckAuth();
@@ -60,6 +60,7 @@ const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
       setIsAlertOpen(true);
       return;
     }
+    setIsClickedUserCard(true);
     setReceiver(user);
     mutateReadMessage(user._id);
     navigate('/directmessage');

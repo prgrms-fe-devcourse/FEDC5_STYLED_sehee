@@ -24,8 +24,18 @@ export const getChannels = async () => {
  */
 export const getChannel = async (channelName: string) => {
   try {
+    const Encoding = (keyword: string) => {
+      const isKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글인지 식별해주기 위한 정규표현식
+
+      if (keyword.match(isKorean)) {
+        const encodeKeyword = encodeURI(keyword); // 한글 인코딩
+        return encodeKeyword;
+      }
+      return keyword;
+    };
+
     const res = await axiosCommonInstance.get<ChannelType>(
-      DOMAIN.CHANNEL(channelName),
+      DOMAIN.CHANNEL(Encoding(channelName)),
     );
 
     return res.data;

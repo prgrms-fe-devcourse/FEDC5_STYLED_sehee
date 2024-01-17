@@ -6,6 +6,6 @@ export const StyledHeaderContainer = styled.div`
 
 export const StyledBackground = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
-  height: 100%;
+  height: calc(100vh-9.4rem);
   text-align: center;
 `;

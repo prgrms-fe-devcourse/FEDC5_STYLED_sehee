@@ -77,7 +77,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
     onSuccess: (res) => {
       if (res) {
         navigate('/');
-        queryClient.removeQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
         queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
       }
     },
@@ -89,7 +88,6 @@ const AddOrEditPostModal = ({ onChangeOpen }: Props) => {
     onSuccess: (res) => {
       if (res) {
         navigate('/');
-        queryClient.removeQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
         queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
       }
     },

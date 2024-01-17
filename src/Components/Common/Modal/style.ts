@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { StyledModalContainerType } from './type';
 
 export const StyledModalWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

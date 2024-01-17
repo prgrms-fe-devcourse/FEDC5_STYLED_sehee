@@ -1,3 +1,4 @@
+import { useTheme } from 'styled-components';
 import Button from '@/Components/Base/Button';
 import Modal from '../Modal';
 import {
@@ -27,6 +28,8 @@ const Alert = ({
   onChangeOpen,
 }: AlertPropsType) => {
   const { isMobileSize } = useResize();
+  const { colors } = useTheme();
+
   const handleConfirm = () => {
     if (onConfirm) {
       onConfirm();
@@ -58,6 +61,11 @@ const Alert = ({
             height="30"
             onClick={handleConfirm}
             textSize={`${fontSize}rem`}
+            style={{
+              marginRight: '1rem',
+              marginTop: '.5rem',
+              border: `1px solid ${colors.text}`,
+            }}
           >
             {confirmContent}
           </Button>
@@ -66,6 +74,11 @@ const Alert = ({
               height="30"
               onClick={handleCancle}
               textSize={`${fontSize}rem`}
+              style={{
+                marginRight: '1rem',
+                marginTop: '.5rem',
+                border: `1px solid ${colors.text}`,
+              }}
             >
               {cancleContent}
             </Button>

@@ -22,4 +22,5 @@ export const StyledMessage = styled.div<{ $fontSize: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 1.5rem;
 `;
