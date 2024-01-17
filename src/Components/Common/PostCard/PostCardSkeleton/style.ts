@@ -3,16 +3,28 @@ import { styled } from 'styled-components';
 export const StyledPostCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  flex-shrink: 0;
+  width: 100%;
+  height: 45rem;
   min-width: 15rem;
   border: 1px solid ${({ theme }) => theme.colors.backgroundGrey};
-  border-radius: 0.5rem;
-  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+  border-radius: 2.5rem;
   aspect-ratio: 1;
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ theme }) => theme.size.small};
+  background-color: ${({ theme }) => theme.colors.backgroundReverse};
+  color: ${({ theme }) => theme.colors.textReverse};
+  padding: 2rem;
+  gap: 2rem;
+  flex-shrink: 0;
+
+  > :nth-child(2) {
+    width: 90%;
+    margin: 0 2%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    > :last-child {
+      width: 50%;
+    }
+  }
 `;
 
 export const StyledPostCardHeader = styled.div`

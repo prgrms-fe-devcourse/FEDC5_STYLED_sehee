@@ -2,8 +2,8 @@ import styled, { css } from 'styled-components';
 import { flip } from '@/Styles/Animation';
 
 const Wrapper = styled.div<{ $isDarkMode: boolean; $isAnimation: number }>`
-  position: absolute;
-  right: 4rem;
+  position: fixed;
+  left: 4rem;
   bottom: 4rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.buttonText};
@@ -25,6 +25,10 @@ const Wrapper = styled.div<{ $isDarkMode: boolean; $isAnimation: number }>`
 
   &:hover {
     transform: scale(1.2);
+  }
+
+  @media ${({ theme }) => theme.device.tablet} {
+    display: none;
   }
 `;
 

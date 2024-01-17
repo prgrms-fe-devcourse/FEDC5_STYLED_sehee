@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 // _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useInfiniteQuery,
@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
+// import { debounce } from 'lodash';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -36,16 +37,33 @@ import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
 import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
 import { useCreateNotification } from '@/Hooks/Api/Notification';
 import PostCardSkeletion from '@/Components/Common/PostCard/PostCardSkeleton';
+import { useChannelStore } from '@/Stores';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // 반응형 햄버거 버튼 클릭 이벤트와 연결할 디바이스 크기 조절 함수
+  // const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
+
+  // const handleResize = debounce(() => {
+  //   setDeviceWidth(window.innerWidth);
+  // });
+
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleResize);
+  //   return () => {
+  //     // cleanup
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, [handleResize]);
+
   const { user: authUser, setAuthUser } = useAuthUserStore();
+  const { currentChannelId, setCurrentChannelId } = useChannelStore();
   const [refInView, inView] = useInView();
 
-  const [currentChannelId, setCurrentChannelId] = useState('');
+  // const [currentChannelId, setCurrentChannelId] = useState('');
 
   const { likeById } = useLikeById();
   const { disLikeById } = useDisLikeById();

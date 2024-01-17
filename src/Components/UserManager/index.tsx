@@ -23,13 +23,13 @@ const UserManager = () => {
     validate: validateSearchUser,
   });
 
-  const { data: searchUserList, isLoading } = useQuery({
+  const { data: searchUserList, isLoading: searchIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.SEARCH_USER_LIST, values.userName],
     queryFn: () => searchUsers(values.userName),
     enabled: isSubmit && !errors.userName,
   });
 
-  const { data: onlineUserList } = useQuery({
+  const { data: onlineUserList, isLoading: allUserIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.ONLINE_USER_LIST],
     queryFn: getOnlineUsers,
     refetchInterval: refetchTime,
@@ -72,22 +72,25 @@ const UserManager = () => {
       : userList?.filter((user): user is UserType => user !== undefined) || [];
   }, [searchUserList, isSubmit, userList]);
 
-  return (
-    <StyledWrapper>
-      <StyledHeader>
-        <StyledTitle>User</StyledTitle>
-        <SearchBar
-          onChangehandler={handleSearchChange}
-          onSubmithandler={handleOnSubmit}
-          inputProps={{
-            name: 'userName',
-            type: 'text',
-            placeholder: '유저 검색',
-          }}
-        />
-      </StyledHeader>
+  const renderHeader = () => (
+    <StyledHeader>
+      <StyledTitle>User</StyledTitle>
+      <SearchBar
+        onChangehandler={handleSearchChange}
+        onSubmithandler={handleOnSubmit}
+        inputProps={{
+          name: 'userName',
+          type: 'text',
+          placeholder: '유저 검색',
+        }}
+      />
+    </StyledHeader>
+  );
 
-      {isLoading && (
+  if (searchIsLoading || allUserIsLoading) {
+    return (
+      <StyledWrapper>
+        {renderHeader()}
         <SkeletonList
           length={10}
           style={{ flex: '1 0 90%' }}
@@ -98,8 +101,13 @@ const UserManager = () => {
             style={{ width: '100%' }}
           />
         </SkeletonList>
-      )}
+      </StyledWrapper>
+    );
+  }
 
+  return (
+    <StyledWrapper>
+      {renderHeader()}
       <UserList
         userList={userListToShow}
         onlineUserList={onlineUserList || []}
