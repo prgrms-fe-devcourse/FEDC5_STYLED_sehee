@@ -1,0 +1,45 @@
+export const DOMAIN = {
+  HOME: '/',
+  CREATE_CHANNEL: '/channels/create',
+  LOGIN: '/login',
+  LOGOUT: '/logout',
+  SIGNUP: '/signup',
+  AUTH_USER: '/auth-user',
+  USERS: '/users/get-users',
+  USER: (userId: string) => `/users/${userId}`,
+  ONLINE_USERS: '/users/online-users',
+  UPLOAD_PHOTO: '/users/upload-photo',
+  UPDATE_USER: '/settings/update-user',
+  UPDATE_PASSWORD: '/settings/update-password',
+  CHANNELS: '/channels',
+  CHANNEL: (channelName: string) => `/channels/${channelName}`,
+  POSTS: {
+    BY_CHANNEL_ID: (channelId: string) => `/posts/channel/${channelId}`,
+    BY_USER_ID: (userId: string) => `/posts/author/${userId}`,
+  },
+  CREATE_POST: '/posts/create',
+  GET_POST_DETAIL: (postId: string) => `/posts/${postId}`,
+  UPDATE_POST: '/posts/update',
+  DELETE_POST: '/posts/delete',
+  CREATE_LIKE: '/likes/create',
+  DELETE_LIKE: '/likes/delete',
+  CREATE_COMMENT: '/comments/create',
+  DELETE_COMMENT: '/comments/delete',
+  NOTIFICATIONS: '/notifications',
+  READ_NOTIFICATION: '/notifications/seen',
+  CREATE_NOTIFICATION: '/notifications/create',
+  FOLLOW: '/follow/create',
+  UNFOLLOW: '/follow/delete',
+  CONVERSATIONS: '/messages/conversations',
+  MESSAGES: '/messages',
+  SEND_MESSAGE: '/messages/create',
+  READ_MESSAGES: '/messages/update-seen',
+  SEARCH_USER: (query: string) => `/search/users/${query}`,
+  SEARCH_ALL: (query: string) => `/search/all/${query}`,
+};
+
+export const NETWORK = {
+  TIMEOUT: 10000,
+};
+
+export const AUTH_TOKEN_KEY = 'AUTH_TOKEN';
