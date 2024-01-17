@@ -70,7 +70,7 @@ const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
           }),
         );
 
-        return channelPosts.filter((post) => post !== null); // 필터링하여 null인 항목 제거
+        return channelPosts.filter((post) => post !== null);
       }),
     );
 
