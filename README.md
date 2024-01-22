@@ -1,6 +1,6 @@
 # Team STYLED
 
-![styledd](https://github.com/prgrms-fe-devcourse/FEDC5_STYLED_sehee/assets/87266785/bb921f95-e8d4-49e0-919f-4cb9e6901a30)
+![STYLED 시연 영상](https://github.com/prgrms-fe-devcourse/FEDC5_STYLED_sehee/assets/87266785/aff09406-1721-474a-9525-80d9f09d2943)
 
 ## ✨ [STYLED](https://styled-rho.vercel.app/)
 
