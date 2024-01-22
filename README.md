@@ -1,6 +1,6 @@
 # Team STYLED
 
-![STYLED 시연 영상](https://github.com/prgrms-fe-devcourse/FEDC5_STYLED_sehee/assets/87266785/aff09406-1721-474a-9525-80d9f09d2943)
+![styledd](https://github.com/prgrms-fe-devcourse/FEDC5_STYLED_sehee/assets/87266785/bb921f95-e8d4-49e0-919f-4cb9e6901a30)
 
 ## ✨ [STYLED](https://styled-rho.vercel.app/)
 
@@ -20,7 +20,7 @@
 
 ## 🌈 실행 화면
 
-![STYLED-Chrome-2024-01-17-14-47-39](https://github.com/prgrms-fe-devcourse/FEDC5_STYLED_sehee/assets/87266785/21e82786-2776-4433-bb86-0276bb1de8a4)
+![STYLED 시연 영상](https://github.com/prgrms-fe-devcourse/FEDC5_STYLED_sehee/assets/87266785/aff09406-1721-474a-9525-80d9f09d2943)
 
 ## 🚀 실행 방법
 
