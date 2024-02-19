@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo } from 'react';
+import { debounce } from 'lodash';
 import UserList from './UserList';
 import { StyledHeader, StyledTitle, StyledWrapper } from './style';
 import { getOnlineUsers, getUsers } from '@/Services/User';
@@ -13,20 +14,19 @@ import { searchUsers } from '@/Services/Search';
 import { UserType } from '@/Types/UserType';
 
 const UserManager = () => {
-  const [isSubmit, setIsSubmit] = useState(false);
   const limit = 10;
   const refetchTime = 2000;
 
   const { values, errors, handleOnChange, handleOnSubmit } = useForm({
     initialState: { userName: '' },
-    callback: () => setIsSubmit(true),
+    callback: () => {},
     validate: validateSearchUser,
   });
 
   const { data: searchUserList, isLoading: searchIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.SEARCH_USER_LIST, values.userName],
     queryFn: () => searchUsers(values.userName),
-    enabled: isSubmit && !errors.userName,
+    enabled: !!values.userName && !errors.userName,
   });
 
   const { data: onlineUserList, isLoading: allUserIsLoading } = useQuery({
@@ -52,13 +52,9 @@ const UserManager = () => {
       ),
   });
 
-  const handleSearchChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      handleOnChange(e);
-      setIsSubmit(false);
-    },
-    [handleOnChange],
-  );
+  const handleSearchChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    handleOnChange(e);
+  }, 300);
 
   const loadMoreUsers = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -67,10 +63,12 @@ const UserManager = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const userListToShow = useMemo(() => {
-    return searchUserList && isSubmit
-      ? searchUserList
-      : userList?.filter((user): user is UserType => user !== undefined) || [];
-  }, [searchUserList, isSubmit, userList]);
+    return (
+      searchUserList ||
+      userList?.filter((user): user is UserType => user !== undefined) ||
+      []
+    );
+  }, [searchUserList, userList]);
 
   const renderHeader = () => (
     <StyledHeader>
