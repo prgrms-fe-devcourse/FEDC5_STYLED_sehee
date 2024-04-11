@@ -14,7 +14,7 @@ import { GetChannelPostRequestType } from '@/Types/Request';
 import { getChannels } from '@/Services/Channel';
 import Skeleton from '@/Components/Base/Skeleton';
 import useResize from '@/Hooks/useResize';
-import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.webp';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHeadContainer from './style';
 import { PostLikeProps } from './type';

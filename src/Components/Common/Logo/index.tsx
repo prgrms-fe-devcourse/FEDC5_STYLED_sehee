@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
-import logoWebp from '@/Assets/Images/STYLED-logo.webp';
-import STYLED_LOGO from '@/Assets/Images/STYLED-logo.png';
+import logo from '@/Assets/Images/STYLED-logo.webp';
 import StyledLogoImage from './style';
 import Props from './type';
 
@@ -21,17 +20,11 @@ const Logo = ({ width = '25rem', height = '10rem', ...props }: Props) => {
       onClick={handleOnClick}
       {...props}
     >
-      <picture>
-        <source
-          srcSet={logoWebp}
-          type="image/webp"
-        />
-        <StyledLogoImage
-          draggable={false}
-          src={STYLED_LOGO}
-          alt="STYLED 로고"
-        />
-      </picture>
+      <StyledLogoImage
+        draggable={false}
+        src={logo}
+        alt="STYLED 로고"
+      />
     </Button>
   );
 };

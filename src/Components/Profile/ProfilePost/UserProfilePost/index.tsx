@@ -4,7 +4,7 @@ import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
 import Skeleton from '@/Components/Base/Skeleton';
 import useResize from '@/Hooks/useResize';
-import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.webp';
 import { PostProps } from './type';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHr from './style';
