@@ -1,8 +1,8 @@
 import { useInView } from 'react-intersection-observer';
 import { useEffect, memo } from 'react';
+import { UserType } from '@/Types/UserType';
 import { Props } from './type';
 import UserItem from '../UserItem';
-import { UserType } from '@/Types/UserType';
 import { StyledUserList, StyledNonList } from './style';
 
 const UserList = ({ userList, onlineUserList, loadMoreUsers }: Props) => {

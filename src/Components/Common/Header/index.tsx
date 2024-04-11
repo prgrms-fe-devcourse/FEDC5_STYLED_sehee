@@ -1,10 +1,10 @@
 // import { useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
+import useResize from '@/Hooks/useResize';
 import { StyledHeaderContainer, StyledDivider } from './style';
 import HeaderTab from './HeaderTab';
 import HeaderLogo from './HeaderLogo';
 import HeaderProps from './type';
-import useResize from '@/Hooks/useResize';
 import Hamburger from './Hamburger';
 // import useTabStore from '@/Stores/Tab';
 

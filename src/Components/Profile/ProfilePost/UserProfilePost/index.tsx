@@ -2,12 +2,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
+import Skeleton from '@/Components/Base/Skeleton';
+import useResize from '@/Hooks/useResize';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import { PostProps } from './type';
 import { StyledGridPost, StyledProfilePostContainer } from '../style';
 import StyledHr from './style';
-import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
-import Skeleton from '@/Components/Base/Skeleton';
-import useResize from '@/Hooks/useResize';
 
 const UserProfilePost = ({ posts, isLoading }: PostProps) => {
   const { userId } = useParams() || '';
