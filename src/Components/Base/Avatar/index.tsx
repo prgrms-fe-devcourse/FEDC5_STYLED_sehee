@@ -1,4 +1,5 @@
-import { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { AvatarProp } from './type';
 import { StyledImage, StyledAvatar, StyledWrapper } from './style';
 
@@ -17,6 +18,19 @@ const Avatar = forwardRef(
     }: AvatarProp,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
+    const [loadedSrc, setLoadedSrc] = useState('');
+    const { ref: inViewRef, inView } = useInView({
+      triggerOnce: true,
+      rootMargin: '50px 0px',
+    });
+
+    if (inView && !loadedSrc) {
+      setLoadedSrc(
+        src ||
+          'https://user-images.githubusercontent.com/17202261/101670093-195d9180-3a96-11eb-9bd4-9f31cbe44aea.png',
+      );
+    }
+
     return (
       <StyledWrapper
         $size={size}
@@ -26,12 +40,10 @@ const Avatar = forwardRef(
         <StyledAvatar
           $shape={shape}
           {...containerProps}
+          ref={inViewRef}
         >
           <StyledImage
-            src={
-              src ||
-              'https://user-images.githubusercontent.com/17202261/101670093-195d9180-3a96-11eb-9bd4-9f31cbe44aea.png'
-            }
+            src={loadedSrc}
             alt={alt}
             $size={size}
             $mode={mode}

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
-const useResize = () => {
-  const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
+const useResize = (size?: number) => {
+  const [isMobileSize, setIsMobileSize] = useState(
+    window.innerWidth < (size || 768),
+  );
   const { device } = useTheme();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileSize(window.innerWidth < 768);
+      setIsMobileSize(window.innerWidth < (size || 768));
     };
 
     window.addEventListener('resize', handleResize);
@@ -15,7 +17,7 @@ const useResize = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [device]);
+  }, [device, size]);
 
   return {
     isMobileSize,

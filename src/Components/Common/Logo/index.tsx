@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '@/Components/Base/Button';
+import logo from '@/Assets/Images/STYLED-logo.webp';
 import StyledLogoImage from './style';
 import Props from './type';
-import STYLED_LOGO from '@/Assets/Images/STYLED-logo.png';
 
 const Logo = ({ width = '25rem', height = '10rem', ...props }: Props) => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Logo = ({ width = '25rem', height = '10rem', ...props }: Props) => {
     >
       <StyledLogoImage
         draggable={false}
-        src={STYLED_LOGO}
+        src={logo}
         alt="STYLED 로고"
       />
     </Button>
