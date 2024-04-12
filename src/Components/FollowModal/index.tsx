@@ -2,13 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { debounce } from 'lodash';
-import Input from '../Base/Input';
-import Modal from '../Common/Modal';
-import UserCard from '../Common/UserCard';
-import DirectMessageSkeleton from '../DirectMessage/Skeleton';
-import { StyledBody, StyledContainer, StyledHeader } from './style';
-import { FollowModalProps } from './type';
+import debounce from 'lodash/debounce';
 import { UserType } from '@/Types/UserType';
 import { followUser, unfollowUser } from '@/Services/Follow';
 import { getUser } from '@/Services/User';
@@ -16,6 +10,12 @@ import { sendNotifications } from '@/Services/Notification';
 import useResize from '@/Hooks/useResize';
 import useDebouncedSearch from '@/Hooks/useDebouncedSearch';
 import useIsTyping from '@/Hooks/useIsTyping';
+import { FollowModalProps } from './type';
+import { StyledBody, StyledContainer, StyledHeader } from './style';
+import DirectMessageSkeleton from '../DirectMessage/Skeleton';
+import UserCard from '../Common/UserCard';
+import Modal from '../Common/Modal';
+import Input from '../Base/Input';
 
 /**
  * @param userData 해당 유저의 UserType 데이터

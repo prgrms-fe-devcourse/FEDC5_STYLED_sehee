@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { ChangeEvent, useCallback, useMemo } from 'react';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { getOnlineUsers, getUsers } from '@/Services/User';
 import QUERY_KEYS from '@/Constants/queryKeys';
 import { useForm } from '@/Hooks';

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { Props } from './type';
 
 const useDebouncedSearch = ({
