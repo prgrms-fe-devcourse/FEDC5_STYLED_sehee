@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Pretendard Variable';
+  src: local('Pretendard Variable');
+  src: url('../../Assets/Fonts/subset-PretendardVariable-Regular.woff2')
+    format('woff2');
+  src: url('../../Assets/Fonts/subset-PretendardVariable-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
