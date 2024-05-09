@@ -7,17 +7,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import ImageCard from '@/Components/Common/ImageCard';
 import { PostType } from '@/Types/PostType';
-import { PostLikeProps } from './type';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import { getPostByChannel } from '@/Services/Post';
 import { GetChannelPostRequestType } from '@/Types/Request';
-import { StyledGridPost, StyledProfilePostContainer } from '../style';
-import StyledHeadContainer from './style';
-import logoBlack from '@/Assets/Images/STYLED-logo-black.png';
 import { getChannels } from '@/Services/Channel';
 import Skeleton from '@/Components/Base/Skeleton';
 import useResize from '@/Hooks/useResize';
+import logoBlack from '@/Assets/Images/STYLED-logo-black.webp';
+import { StyledGridPost, StyledProfilePostContainer } from '../style';
+import StyledHeadContainer from './style';
+import { PostLikeProps } from './type';
 
 const MyProfilePost = ({ posts, likes, isLoading }: PostLikeProps) => {
   const [isLike, setIsLike] = useState(false);

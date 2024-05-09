@@ -2,11 +2,11 @@ import { useTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { ForwardedRef, forwardRef } from 'react';
 import Avatar from '@/Components/Base/Avatar';
-import { Props } from './type';
 import Badge from '@/Components/Base/Badge';
-import { StyledContainer, StyledUserName } from './style';
 import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 import useAuthUserStore from '@/Stores/AuthUser';
+import { StyledContainer, StyledUserName } from './style';
+import { Props } from './type';
 
 const UserItem = forwardRef(
   (

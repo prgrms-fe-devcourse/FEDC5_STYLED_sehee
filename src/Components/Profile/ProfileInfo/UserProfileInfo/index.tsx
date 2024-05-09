@@ -2,10 +2,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useState } from 'react';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import Button from '@/Components/Base/Button';
-import { StyledButtonContainer, StyledName } from '../style';
-import { NameProps } from './type';
 import useMessageReceiver from '@/Stores/MessageReceiver';
 import { followUser, unfollowUser } from '@/Services/Follow';
 import { sendNotifications } from '@/Services/Notification';
@@ -16,6 +14,8 @@ import useAuthUserStore from '@/Stores/AuthUser';
 import { NotificationTypeList } from '@/Types/Request';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
+import { NameProps } from './type';
+import { StyledButtonContainer, StyledName } from '../style';
 
 const UserProfileInfo = ({ name, user, isFollowing }: NameProps) => {
   const { setReceiver, setIsClickedUserCard } = useMessageReceiver();

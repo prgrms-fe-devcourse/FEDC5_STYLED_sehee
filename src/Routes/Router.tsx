@@ -1,76 +1,91 @@
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Spinner from '@/Components/Base/Spinner';
 
-import {
-  DetailPage,
-  HomePage,
-  NotFoundPage,
-  LoginPage,
-  SignUpPage,
-  DirectMessagePage,
-  ProfilePage,
-} from '@/Pages';
-import AddChannelModal from '@/Pages/HomePage/AddChannelModal';
-import ModalRouter from './ModalRouter';
+const DetailPage = lazy(() => import('@/Pages/DetailPage'));
+const HomePage = lazy(() => import('@/Pages/HomePage'));
+const NotFoundPage = lazy(() => import('@/Pages/NotFoundPage'));
+const LoginPage = lazy(() => import('@/Pages/LoginPage'));
+const SignUpPage = lazy(() => import('@/Pages/SignUpPage'));
+const DirectMessagePage = lazy(() => import('@/Pages/DirectMessagePage'));
+const ProfilePage = lazy(() => import('@/Pages/ProfilePage'));
+const AddChannelModal = lazy(() => import('@/Pages/HomePage/AddChannelModal'));
+const ModalRouter = lazy(() => import('./ModalRouter'));
 
 const RouterManager = () => {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={<HomePage />}
-      >
+    <Suspense
+      fallback={
+        <div
+          style={{
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Spinner />
+        </div>
+      }
+    >
+      <Routes>
         <Route
-          path="add-channel"
-          element={<AddChannelModal />}
+          path="/"
+          element={<HomePage />}
+        >
+          <Route
+            path="add-channel"
+            element={<AddChannelModal />}
+          />
+          <Route
+            path="*"
+            element={<ModalRouter />}
+          />
+          <Route
+            path="modal-detail/:postId"
+            element={<DetailPage />}
+          />
+        </Route>
+        <Route
+          path="/login"
+          element={<LoginPage />}
         />
         <Route
-          path="*"
-          element={<ModalRouter />}
+          path="/signup"
+          element={<SignUpPage />}
         />
         <Route
-          path="modal-detail/:postId"
-          element={<DetailPage />}
-        />
-      </Route>
-      <Route
-        path="/login"
-        element={<LoginPage />}
-      />
-      <Route
-        path="/signup"
-        element={<SignUpPage />}
-      />
-      <Route
-        path="/profile/:userId"
-        element={<ProfilePage />}
-      >
+          path="/profile/:userId"
+          element={<ProfilePage />}
+        >
+          <Route
+            path="*"
+            element={<ModalRouter />}
+          />
+          <Route
+            path="modal-detail/:postId"
+            element={<DetailPage />}
+          />
+        </Route>
         <Route
-          path="*"
-          element={<ModalRouter />}
-        />
+          path="/directmessage"
+          element={<DirectMessagePage />}
+        >
+          <Route
+            path="*"
+            element={<ModalRouter />}
+          />
+          <Route
+            path="modal-detail/:postId"
+            element={<DetailPage />}
+          />
+        </Route>
         <Route
-          path="modal-detail/:postId"
-          element={<DetailPage />}
+          path="/*"
+          element={<NotFoundPage />}
         />
-      </Route>
-      <Route
-        path="/directmessage"
-        element={<DirectMessagePage />}
-      >
-        <Route
-          path="*"
-          element={<ModalRouter />}
-        />
-        <Route
-          path="modal-detail/:postId"
-          element={<DetailPage />}
-        />
-      </Route>
-      <Route
-        path="/*"
-        element={<NotFoundPage />}
-      />
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 };
 

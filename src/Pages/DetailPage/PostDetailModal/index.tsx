@@ -11,9 +11,30 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { debounce } from 'lodash';
-import { PostDetailModalProps } from './type';
+import debounce from 'lodash/debounce';
 import Modal from '@/Components/Common/Modal';
+import UserCard from '@/Components/Common/UserCard';
+import Button from '@/Components/Base/Button';
+import Icon from '@/Components/Base/Icon';
+import Input from '@/Components/Base/Input';
+import QUERY_KEYS from '@/Constants/queryKeys';
+import { getUser } from '@/Services/User';
+import { calculateDate } from '@/Utils/UTCtoKST';
+import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
+import { getPostDetail } from '@/Services/Post';
+import useAuthUserStore from '@/Stores/AuthUser';
+import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
+import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
+import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
+import { useCreateNotification } from '@/Hooks/Api/Notification';
+import useMessageReceiver from '@/Stores/MessageReceiver';
+import Skeleton from '@/Components/Base/Skeleton';
+import { useReadMessage } from '@/Hooks/Api/Message';
+import Alert from '@/Components/Common/Alert';
+import NON_AUTH_USER from '@/Constants/nonAuthUser';
+import { NotificationTypeList } from '@/Types/Request';
+import PostDetailSkeleton from './PostDetailSkeleton';
+import PostDotModal from './PostDotModal';
 import {
   StyledImageCardContainer,
   StyledImage,
@@ -35,28 +56,7 @@ import {
   StyledText,
   StyledDeleteCommentContainer,
 } from './style';
-import UserCard from '@/Components/Common/UserCard';
-import Button from '@/Components/Base/Button';
-import Icon from '@/Components/Base/Icon';
-import PostDotModal from './PostDotModal';
-import Input from '@/Components/Base/Input';
-import QUERY_KEYS from '@/Constants/queryKeys';
-import { getUser } from '@/Services/User';
-import { calculateDate } from '@/Utils/UTCtoKST';
-import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
-import { getPostDetail } from '@/Services/Post';
-import useAuthUserStore from '@/Stores/AuthUser';
-import { useDisLikeById, useLikeById } from '@/Hooks/Api/Like';
-import { useFollowByUserId, useUnfollowByUserId } from '@/Hooks/Api/Follow';
-import { useCreateComment, useDeleteComment } from '@/Hooks/Api/Comment';
-import { useCreateNotification } from '@/Hooks/Api/Notification';
-import useMessageReceiver from '@/Stores/MessageReceiver';
-import Skeleton from '@/Components/Base/Skeleton';
-import PostDetailSkeleton from './PostDetailSkeleton';
-import { useReadMessage } from '@/Hooks/Api/Message';
-import Alert from '@/Components/Common/Alert';
-import NON_AUTH_USER from '@/Constants/nonAuthUser';
-import { NotificationTypeList } from '@/Types/Request';
+import { PostDetailModalProps } from './type';
 
 const PostDetailModal = ({
   postLike,
@@ -101,8 +101,8 @@ const PostDetailModal = ({
     ({ user }) => user === authUser._id,
   );
 
-  const isMyFollow = postDetailData?.author.followers.some(
-    (follower) => authUser.following?.some(({ _id }) => _id === follower),
+  const isMyFollow = postDetailData?.author.followers.some((follower) =>
+    authUser.following?.some(({ _id }) => _id === follower),
   );
 
   const myLikeList = useMemo(() => {
