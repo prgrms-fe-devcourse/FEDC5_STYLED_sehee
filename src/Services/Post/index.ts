@@ -78,6 +78,10 @@ export const createPost = async ({
     if (image == null) {
       throw new Error('이미지가 비어있습니다.');
     }
+<<<<<<< Updated upstream
+=======
+    const resizedImage = await resizeImage(image, 1100, 308, 'JPEG');
+>>>>>>> Stashed changes
     const formData = new FormData();
     formData.append('title', title);
     formData.append('image', image);
@@ -126,7 +130,12 @@ export const updatePost = async ({
     formData.append('postId', postId);
     formData.append('title', title);
     if (image instanceof File) {
+<<<<<<< Updated upstream
       formData.append('image', image);
+=======
+      const resizedImage = await resizeImage(image, 1100, 308, 'JPEG');
+      formData.append('image', resizedImage);
+>>>>>>> Stashed changes
     }
     formData.append('channelId', channelId);
 

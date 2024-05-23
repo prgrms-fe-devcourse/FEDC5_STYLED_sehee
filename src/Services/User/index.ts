@@ -61,6 +61,10 @@ export const getUser = async (userId: string) => {
  */
 export const updateProfileImage = async (image: File) => {
   try {
+<<<<<<< Updated upstream
+=======
+    const resizedImage = await resizeImage(image, 138, 138, 'JPEG');
+>>>>>>> Stashed changes
     const formData = new FormData();
     formData.append('isCover', 'false');
     formData.append('image', image);
@@ -82,6 +86,10 @@ export const updateProfileImage = async (image: File) => {
  */
 export const updateCoverImage = async (image: File) => {
   try {
+<<<<<<< Updated upstream
+=======
+    const resizedImage = await resizeImage(image, 138, 138, 'JPEG');
+>>>>>>> Stashed changes
     const formData = new FormData();
     formData.append('isCover', 'true');
     formData.append('image', image);
