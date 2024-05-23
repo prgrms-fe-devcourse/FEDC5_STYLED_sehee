@@ -4,13 +4,14 @@ import { useLocation } from 'react-router-dom';
 import { lightTheme, darkTheme } from '@/Styles/Theme';
 import GlobalStyle from '@/Styles/Global';
 import RouteManager from '@/Routes/Router';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Header from './Components/Common/Header';
 import { useDarkModeStore } from './Stores';
 import DarkMode from './Components/DarkMode';
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { retry: 2 },
+    queries: { retry: 0 },
   },
 });
 
@@ -27,6 +28,7 @@ const App = () => {
         />
         <RouteManager />
         <DarkMode />
+        <ReactQueryDevtools initialIsOpen />
       </QueryClientProvider>
     </ThemeProvider>
   );
