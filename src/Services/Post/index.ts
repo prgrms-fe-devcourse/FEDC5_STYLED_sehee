@@ -7,6 +7,7 @@ import {
   PostCreatePostRequestType,
   PutUpdatePostRequestType,
 } from '@/Types/Request';
+import resizeImage from '@/Utils/resizeImage';
 
 /**
  * @brief 특정 채널의 포스트 목록을 불러옵니다.
@@ -78,13 +79,10 @@ export const createPost = async ({
     if (image == null) {
       throw new Error('이미지가 비어있습니다.');
     }
-<<<<<<< Updated upstream
-=======
     const resizedImage = await resizeImage(image, 1100, 308, 'JPEG');
->>>>>>> Stashed changes
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('image', image);
+    formData.append('image', resizedImage);
     formData.append('channelId', channelId);
 
     await axiosAuthInstance.post(DOMAIN.CREATE_POST, formData);
@@ -130,12 +128,8 @@ export const updatePost = async ({
     formData.append('postId', postId);
     formData.append('title', title);
     if (image instanceof File) {
-<<<<<<< Updated upstream
-      formData.append('image', image);
-=======
       const resizedImage = await resizeImage(image, 1100, 308, 'JPEG');
       formData.append('image', resizedImage);
->>>>>>> Stashed changes
     }
     formData.append('channelId', channelId);
 

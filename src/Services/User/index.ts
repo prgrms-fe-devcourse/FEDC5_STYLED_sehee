@@ -3,6 +3,7 @@ import { GetUserListRequestType } from '@/Types/Request';
 import { UserType } from '@/Types/UserType';
 import { DOMAIN } from '@/Constants/Api';
 import handleError from '@/Api/handleError';
+import resizeImage from '@/Utils/resizeImage';
 
 /**
  * @brief 전체 사용자 목록을 불러옵니다.
@@ -61,13 +62,10 @@ export const getUser = async (userId: string) => {
  */
 export const updateProfileImage = async (image: File) => {
   try {
-<<<<<<< Updated upstream
-=======
     const resizedImage = await resizeImage(image, 138, 138, 'JPEG');
->>>>>>> Stashed changes
     const formData = new FormData();
     formData.append('isCover', 'false');
-    formData.append('image', image);
+    formData.append('image', resizedImage);
 
     const res = await axiosAuthInstance.post<UserType>(
       DOMAIN.UPLOAD_PHOTO,
@@ -86,13 +84,10 @@ export const updateProfileImage = async (image: File) => {
  */
 export const updateCoverImage = async (image: File) => {
   try {
-<<<<<<< Updated upstream
-=======
     const resizedImage = await resizeImage(image, 138, 138, 'JPEG');
->>>>>>> Stashed changes
     const formData = new FormData();
     formData.append('isCover', 'true');
-    formData.append('image', image);
+    formData.append('image', resizedImage);
 
     const res = await axiosAuthInstance.post<UserType>(
       DOMAIN.UPLOAD_PHOTO,
