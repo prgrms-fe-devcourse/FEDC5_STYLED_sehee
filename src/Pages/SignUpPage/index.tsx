@@ -10,11 +10,11 @@ import Logo from '@/Components/Common/Logo';
 import SignUpForm from '@/Components/SignUp/SignUpForm';
 import Spinner from '@/Components/Base/Spinner';
 import HistoryBackButton from '@/Components/Common/HistoryBackButton';
-import { StyledWrap, StyledContainer } from './style';
 import { checkAuth } from '@/Services/Auth';
 
 import { UserResponseType } from '@/Types/Response';
 import Alert from '@/Components/Common/Alert';
+import { StyledWrap, StyledContainer } from './style';
 
 const SignUpPage = () => {
   const navigator = useNavigate();

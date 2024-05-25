@@ -6,6 +6,7 @@ import { UserType } from '@/Types/UserType';
 import { PostType } from '@/Types/PostType';
 import { searchAll } from '@/Services/Search';
 import Modal from '@/Components/Common/Modal';
+import useResize from '@/Hooks/useResize';
 import Spinner from '../Base/Spinner';
 import Button from '../Base/Button';
 import SearchBar from './SearchBar';
@@ -20,7 +21,6 @@ import {
   StyledHeaderTitle,
   StyledWrapper,
 } from './style';
-import useResize from '@/Hooks/useResize';
 import Icon from '../Base/Icon';
 
 // TODO: SearchPostList, SearchUserList 컴포넌트 통합

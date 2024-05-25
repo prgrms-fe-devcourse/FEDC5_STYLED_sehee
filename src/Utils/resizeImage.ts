@@ -4,6 +4,7 @@ type ResizeImage = (
   imageFile: File,
   width: number,
   height: number,
+  type: 'PNG' | 'JPEG' | 'WEBP',
   quality?: number,
 ) => Promise<Blob>;
 
@@ -11,6 +12,7 @@ const resizeImage: ResizeImage = async (
   imageFile,
   width,
   height,
+  type,
   quality = 100,
 ) => {
   return new Promise<Blob>((resolve, reject) => {
@@ -18,7 +20,7 @@ const resizeImage: ResizeImage = async (
       imageFile,
       width,
       height,
-      'WEBP',
+      type,
       quality,
       0,
       (url) => {
