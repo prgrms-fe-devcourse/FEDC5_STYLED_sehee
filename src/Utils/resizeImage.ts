@@ -13,7 +13,7 @@ const resizeImage: ResizeImage = async (
   width,
   height,
   type,
-  quality = 100,
+  quality = 80,
 ) => {
   return new Promise<Blob>((resolve, reject) => {
     FileResizer.imageFileResizer(

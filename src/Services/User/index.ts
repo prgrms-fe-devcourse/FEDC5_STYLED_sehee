@@ -62,7 +62,7 @@ export const getUser = async (userId: string) => {
  */
 export const updateProfileImage = async (image: File) => {
   try {
-    const resizedImage = await resizeImage(image, 138, 138, 'JPEG');
+    const resizedImage = await resizeImage(image, 138, 138, 'WEBP');
     const formData = new FormData();
     formData.append('isCover', 'false');
     formData.append('image', resizedImage);
@@ -84,7 +84,7 @@ export const updateProfileImage = async (image: File) => {
  */
 export const updateCoverImage = async (image: File) => {
   try {
-    const resizedImage = await resizeImage(image, 138, 138, 'JPEG');
+    const resizedImage = await resizeImage(image, 138, 138, 'WEBP');
     const formData = new FormData();
     formData.append('isCover', 'true');
     formData.append('image', resizedImage);
