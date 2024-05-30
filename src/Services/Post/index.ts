@@ -79,7 +79,7 @@ export const createPost = async ({
     if (image == null) {
       throw new Error('이미지가 비어있습니다.');
     }
-    const resizedImage = await resizeImage(image, 1100, 308, 'JPEG');
+    const resizedImage = await resizeImage(image, 1100, 308, 'WEBP');
     const formData = new FormData();
     formData.append('title', title);
     formData.append('image', resizedImage);
@@ -128,7 +128,7 @@ export const updatePost = async ({
     formData.append('postId', postId);
     formData.append('title', title);
     if (image instanceof File) {
-      const resizedImage = await resizeImage(image, 1100, 308, 'JPEG');
+      const resizedImage = await resizeImage(image, 1100, 308, 'WEBP');
       formData.append('image', resizedImage);
     }
     formData.append('channelId', channelId);
