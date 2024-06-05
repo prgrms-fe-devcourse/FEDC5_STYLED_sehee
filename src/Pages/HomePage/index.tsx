@@ -1,5 +1,4 @@
 /* eslint no-underscore-dangle: 0 */
-// _id 파라미터 사용시 eslint 에러 발생 방지
 import { useTheme } from 'styled-components';
 import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -10,20 +9,6 @@ import {
 } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-// import { debounce } from 'lodash';
-import {
-  StyledCategoryList,
-  StyledCategoryTitle,
-  StyledCategoryTitleContainer,
-  StyledDropDown,
-  StyledHeaderContainer,
-  StyledLeftContainer,
-  StyledMainContentContainer,
-  StyledNoPost,
-  StyledObserver,
-  StyledPostCardList,
-  StyledWrapper,
-} from './style';
 import Button from '@/Components/Base/Button';
 import Icon from '@/Components/Base/Icon';
 import { getChannels } from '@/Services/Channel';
@@ -45,6 +30,20 @@ import { ChannelType } from '@/Types/ChannelType';
 import { NotificationTypeList } from '@/Types/Request';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
+import debounce from 'lodash/debounce';
+import {
+  StyledCategoryList,
+  StyledCategoryTitle,
+  StyledCategoryTitleContainer,
+  StyledDropDown,
+  StyledHeaderContainer,
+  StyledLeftContainer,
+  StyledMainContentContainer,
+  StyledNoPost,
+  StyledObserver,
+  StyledPostCardList,
+  StyledWrapper,
+} from './style';
 
 const HomePage = () => {
   const { colors, size } = useTheme();
@@ -56,10 +55,10 @@ const HomePage = () => {
   const { currentChannelId, setCurrentChannelId } = useChannelStore();
   const [refInView, inView] = useInView();
 
-  const { likeById } = useLikeById();
-  const { disLikeById } = useDisLikeById();
-  const { followByUserId } = useFollowByUserId();
-  const { unfollowByUserId } = useUnfollowByUserId();
+  const { likeById } = useLikeById(currentChannelId);
+  const { disLikeById } = useDisLikeById(currentChannelId);
+  const { followByUserId } = useFollowByUserId(currentChannelId);
+  const { unfollowByUserId } = useUnfollowByUserId(currentChannelId);
   const { createNotification } = useCreateNotification();
 
   const [errorMode, setErrorMode] = useState<NotificationTypeList>();
@@ -98,7 +97,6 @@ const HomePage = () => {
   useEffect(() => {
     if (!isCheckAuthLoading && userObj) setAuthUser(userObj);
   }, [isCheckAuthLoading, userObj, setAuthUser]);
-
   /**
    * 모든 채널을 fetch하는 useQuery 훅
    */
@@ -167,36 +165,41 @@ const HomePage = () => {
    * @param id target postId
    * @param newState 바뀔 좋아요 상태
    */
-  const handleClickLike = (
-    targetPostId: string,
-    targetAuthorId: string,
-    newState: boolean,
-  ) => {
-    if (Object.keys(authUser).length === 0) {
-      setErrorMode('LIKE');
-      setIsAlertOpen(true);
-      return;
-    }
-    if (newState) {
-      if (authUser.likes?.some(({ post }) => post === targetPostId)) return;
-      likeById(targetPostId, {
-        onSuccess: (targetLikeData) => {
-          if (targetLikeData) {
-            createNotification({
-              notificationType: 'LIKE',
-              notificationTypeId: targetLikeData._id,
-              userId: targetAuthorId,
-              postId: targetLikeData.post,
-            });
+  const handleClickLike = debounce(
+    (targetPostId: string, targetAuthorId: string, newState: boolean) => {
+      if (!userObj || Object.keys(userObj).length === 0) {
+        setErrorMode('LIKE');
+        setIsAlertOpen(true);
+        return;
+      }
+
+      if (newState) {
+        if (userObj.likes?.some(({ post }) => post === targetPostId)) {
+          return;
+        }
+        likeById(targetPostId, {
+          onSuccess: (targetLikeData) => {
+            if (targetLikeData) {
+              createNotification({
+                notificationType: 'LIKE',
+                notificationTypeId: targetLikeData._id,
+                userId: targetAuthorId,
+                postId: targetLikeData.post,
+              });
+            }
+          },
+        });
+      } else if (userObj) {
+        userObj.likes?.forEach(({ post, _id: likeId }) => {
+          if (post === targetPostId) {
+            disLikeById(likeId);
           }
-        },
-      });
-    } else if (authUser) {
-      authUser.likes?.forEach(({ post, _id: likeId }) => {
-        if (post === targetPostId) disLikeById(likeId);
-      });
-    }
-  };
+        });
+      }
+    },
+    1000,
+    { leading: false, trailing: true },
+  );
 
   /*
    * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
@@ -209,37 +212,38 @@ const HomePage = () => {
   /**
    * follow api 연동 함수
    */
-  const handleFollowClick = (
-    nextFollowState: boolean,
-    targetUserId: string,
-  ) => {
-    if (Object.keys(authUser).length === 0) {
-      setErrorMode('FOLLOW');
-      setIsAlertOpen(true);
-      return;
-    }
-    if (nextFollowState) {
-      if (authUser.following?.some(({ _id }) => targetUserId === _id)) return;
-      followByUserId(targetUserId, {
-        onSuccess: (targetFollowData) => {
-          if (targetFollowData) {
-            createNotification({
-              notificationType: 'FOLLOW',
-              notificationTypeId: targetFollowData._id,
-              userId: targetUserId,
-              postId: null,
-            });
+  const handleFollowClick = debounce(
+    (nextFollowState: boolean, targetUserId: string) => {
+      if (Object.keys(authUser).length === 0) {
+        setErrorMode('FOLLOW');
+        setIsAlertOpen(true);
+        return;
+      }
+      if (nextFollowState) {
+        if (authUser.following?.some(({ _id }) => targetUserId === _id)) return;
+        followByUserId(targetUserId, {
+          onSuccess: (targetFollowData) => {
+            if (targetFollowData) {
+              createNotification({
+                notificationType: 'FOLLOW',
+                notificationTypeId: targetFollowData._id,
+                userId: targetUserId,
+                postId: null,
+              });
+            }
+          },
+        });
+      } else if (authUser) {
+        authUser.following?.forEach(({ user, _id: followId }) => {
+          if (user === targetUserId) {
+            unfollowByUserId(followId);
           }
-        },
-      });
-    } else if (authUser) {
-      authUser.following?.forEach(({ user, _id: followId }) => {
-        if (user === targetUserId) {
-          unfollowByUserId(followId);
-        }
-      });
-    }
-  };
+        });
+      }
+    },
+    1000,
+    { leading: false, trailing: true },
+  );
 
   return (
     <>
@@ -337,11 +341,8 @@ const HomePage = () => {
                       authorName={post.author.fullName || ''}
                       authorId={post.author._id}
                       authorThumbnail={post.author.image || ''}
-                      isFollower={post.author.followers.some(
-                        (follower) =>
-                          authUser.following?.some(
-                            ({ _id }) => _id === follower,
-                          ),
+                      isFollower={post.author.followers.some((follower) =>
+                        authUser.following?.some(({ _id }) => _id === follower),
                       )}
                       isLike={
                         authUser &&

@@ -1,6 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
-import { PostCardProps } from './type';
+import Icon from '@/Components/Base/Icon';
+import Button from '@/Components/Base/Button';
+import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
+import { useState } from 'react';
 import {
   StyledPostCardWrapper,
   StyledPostCardHeader,
@@ -12,9 +15,7 @@ import {
   StyledPostCardTitle,
   StyledPostCardImage,
 } from './style';
-import Icon from '@/Components/Base/Icon';
-import Button from '@/Components/Base/Button';
-import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
+import { PostCardProps } from './type';
 
 const PostCard = ({
   postId,
@@ -35,10 +36,12 @@ const PostCard = ({
   onFollowBtnClick,
   onLikeIconClick,
 }: PostCardProps) => {
+  const [likeState, setLikeState] = useState(isLike);
+  const [followState, setFollowState] = useState(isFollower);
   const { colors } = useTheme();
 
-  const followBtnBgColor = isFollower ? colors.read : colors.follow;
-  const followBtnHoverBgColor = isFollower
+  const followBtnBgColor = followState ? colors.read : colors.follow;
+  const followBtnHoverBgColor = followState
     ? 'rgba(0, 149, 246, 0.7)'
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
@@ -48,7 +51,12 @@ const PostCard = ({
    * @param id userId
    */
   const handleFollowClick = (id: string) => {
-    return onFollowBtnClick && onFollowBtnClick(!isFollower, id);
+    setFollowState((prev) => {
+      if (onFollowBtnClick) {
+        onFollowBtnClick(!prev, id);
+      }
+      return !prev;
+    });
   };
 
   /**
@@ -56,9 +64,12 @@ const PostCard = ({
    * @param id postId
    */
   const handleClickLike = (targetPostId: string, targetAuthorId: string) => {
-    return (
-      onLikeIconClick && onLikeIconClick(targetPostId, targetAuthorId, !isLike)
-    );
+    setLikeState((prev) => {
+      if (onLikeIconClick) {
+        onLikeIconClick(targetPostId, targetAuthorId, !prev);
+      }
+      return !prev;
+    });
   };
 
   return (
@@ -90,12 +101,12 @@ const PostCard = ({
               hoverTextColor={followBtnTextColor}
               onClick={() => handleFollowClick(authorId)}
             >
-              {isFollower ? '팔로잉' : '팔로우'}
+              {followState ? '팔로잉' : '팔로우'}
             </Button>
           ) : null}
         </StyledProfileContainer>
         <Icon
-          name={isLike ? 'favorite' : 'favorite_border'}
+          name={likeState ? 'favorite' : 'favorite_border'}
           style={{ color: `${colors.alert}`, ...HeartIconStyle }}
           onClick={() => handleClickLike(postId, authorId)}
         />
