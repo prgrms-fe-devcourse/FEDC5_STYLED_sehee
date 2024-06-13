@@ -33,6 +33,7 @@ import { useReadMessage } from '@/Hooks/Api/Message';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
 import { NotificationTypeList } from '@/Types/Request';
+import { useChannelStore } from '@/Stores';
 import PostDetailSkeleton from './PostDetailSkeleton';
 import PostDotModal from './PostDotModal';
 import {
@@ -74,6 +75,7 @@ const PostDetailModal = ({
   const { user: authUser } = useAuthUserStore();
   const { setReceiver, setIsClickedUserCard } = useMessageReceiver();
   const { mutateReadMessage } = useReadMessage();
+  const { currentChannelId } = useChannelStore();
 
   // 디바이스 크기 조절 감지 함수
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
@@ -121,10 +123,10 @@ const PostDetailModal = ({
 
   const { commentById } = useCreateComment();
   const { deleteCommentById } = useDeleteComment();
-  const { followByUserId } = useFollowByUserId();
-  const { unfollowByUserId } = useUnfollowByUserId();
-  const { likeById } = useLikeById();
-  const { disLikeById } = useDisLikeById();
+  const { followByUserId } = useFollowByUserId(currentChannelId);
+  const { unfollowByUserId } = useUnfollowByUserId(currentChannelId);
+  const { likeById } = useLikeById(currentChannelId);
+  const { disLikeById } = useDisLikeById(currentChannelId);
   const { createNotification } = useCreateNotification();
 
   /**
