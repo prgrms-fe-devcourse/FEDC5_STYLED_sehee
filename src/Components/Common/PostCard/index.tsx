@@ -51,12 +51,10 @@ const PostCard = ({
    * @param id userId
    */
   const handleFollowClick = (id: string) => {
-    setFollowState((prev) => {
-      if (onFollowBtnClick) {
-        onFollowBtnClick(!prev, id);
-      }
-      return !prev;
-    });
+    setFollowState(!isFollower);
+    if (onFollowBtnClick) {
+      onFollowBtnClick(!isFollower, id, () => setFollowState(isFollower));
+    }
   };
 
   /**
@@ -64,12 +62,13 @@ const PostCard = ({
    * @param id postId
    */
   const handleClickLike = (targetPostId: string, targetAuthorId: string) => {
-    setLikeState((prev) => {
-      if (onLikeIconClick) {
-        onLikeIconClick(targetPostId, targetAuthorId, !prev);
-      }
-      return !prev;
-    });
+    setLikeState(!likeState);
+    if (onLikeIconClick) {
+      console.log(likeState);
+      onLikeIconClick(targetPostId, targetAuthorId, !likeState, () =>
+        setLikeState(likeState),
+      );
+    }
   };
 
   return (

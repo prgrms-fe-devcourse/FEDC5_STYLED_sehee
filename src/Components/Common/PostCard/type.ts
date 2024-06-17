@@ -18,10 +18,15 @@ export interface PostCardProps extends HTMLAttributes<HTMLDivElement> {
   onImageClick?: () => void;
   onUserNameClick?: () => void;
   onUserAvatarClick?: () => void;
-  onFollowBtnClick?: (nextFollowState: boolean, userId: string) => void;
+  onFollowBtnClick?: (
+    nextFollowState: boolean,
+    userId: string,
+    onErrorFollow: () => void,
+  ) => void;
   onLikeIconClick?: (
     postId: string,
     authorId: string,
     nextLikeState: boolean,
+    onErrorLike: () => void,
   ) => void;
 }
