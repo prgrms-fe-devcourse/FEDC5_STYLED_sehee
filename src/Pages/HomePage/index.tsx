@@ -166,7 +166,12 @@ const HomePage = () => {
    * @param newState 바뀔 좋아요 상태
    */
   const handleClickLike = debounce(
-    (targetPostId: string, targetAuthorId: string, newState: boolean) => {
+    (
+      targetPostId: string,
+      targetAuthorId: string,
+      newState: boolean,
+      onErrorLike: () => void,
+    ) => {
       if (!userObj || Object.keys(userObj).length === 0) {
         setErrorMode('LIKE');
         setIsAlertOpen(true);
@@ -188,11 +193,18 @@ const HomePage = () => {
               });
             }
           },
+          onError: () => {
+            onErrorLike();
+          },
         });
       } else if (userObj) {
         userObj.likes?.forEach(({ post, _id: likeId }) => {
           if (post === targetPostId) {
-            disLikeById(likeId);
+            disLikeById(likeId, {
+              onError: () => {
+                onErrorLike();
+              },
+            });
           }
         });
       }
@@ -213,7 +225,11 @@ const HomePage = () => {
    * follow api 연동 함수
    */
   const handleFollowClick = debounce(
-    (nextFollowState: boolean, targetUserId: string) => {
+    (
+      nextFollowState: boolean,
+      targetUserId: string,
+      onErrorFollow: () => void,
+    ) => {
       if (Object.keys(authUser).length === 0) {
         setErrorMode('FOLLOW');
         setIsAlertOpen(true);
@@ -232,11 +248,18 @@ const HomePage = () => {
               });
             }
           },
+          onError: () => {
+            onErrorFollow();
+          },
         });
       } else if (authUser) {
         authUser.following?.forEach(({ user, _id: followId }) => {
           if (user === targetUserId) {
-            unfollowByUserId(followId);
+            unfollowByUserId(followId, {
+              onError: () => {
+                onErrorFollow();
+              },
+            });
           }
         });
       }
