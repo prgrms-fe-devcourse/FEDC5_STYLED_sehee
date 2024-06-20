@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import {
   InfiniteData,
   useMutation,
@@ -9,9 +8,6 @@ import { createLike, deleteLike } from '@/Services/Like';
 import useAuthUserStore from '@/Stores/AuthUser';
 import { PostType } from '@/Types/PostType';
 
-/**
- * 좋아요 api 호출 useMutation 훅
- */
 export const useLikeById = (currentChannelId: string) => {
   const queryClient = useQueryClient();
   const { user } = useAuthUserStore();
@@ -26,7 +22,6 @@ export const useLikeById = (currentChannelId: string) => {
       const previousLikeState = queryClient.getQueryData<
         InfiniteData<PostType[]>
       >([QUERY_KEYS.POST_BY_ID, currentChannelId]);
-
       const updatedLikeState = {
         ...previousLikeState,
         pages: previousLikeState?.pages.map((page) =>
@@ -60,7 +55,7 @@ export const useLikeById = (currentChannelId: string) => {
       return { previousLikeState };
     },
     onError: (error, _, context) => {
-      console.error(error);
+      alert(`좋아요 등록 실패 ${error}`);
       queryClient.setQueryData(
         [QUERY_KEYS.POST_BY_ID, currentChannelId],
         context?.previousLikeState,
@@ -82,10 +77,6 @@ export const useLikeById = (currentChannelId: string) => {
     likeById,
   };
 };
-
-/**
- * 좋아요 취소 api 호출 useMutation 훅
- */
 
 export const useDisLikeById = (currentChannelId: string) => {
   const queryClient = useQueryClient();
@@ -121,7 +112,7 @@ export const useDisLikeById = (currentChannelId: string) => {
       return { previousLikeState };
     },
     onError: (error, _, context) => {
-      console.error(error);
+      alert(`좋아요 취소 실패 ${error}`);
       queryClient.setQueryData(
         [QUERY_KEYS.POST_BY_ID, currentChannelId],
         context?.previousLikeState,

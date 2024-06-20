@@ -3,7 +3,6 @@ import { useTheme } from 'styled-components';
 import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
 import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
-import { useState } from 'react';
 import {
   StyledPostCardWrapper,
   StyledPostCardHeader,
@@ -36,38 +35,23 @@ const PostCard = ({
   onFollowBtnClick,
   onLikeIconClick,
 }: PostCardProps) => {
-  const [likeState, setLikeState] = useState(isLike);
-  const [followState, setFollowState] = useState(isFollower);
   const { colors } = useTheme();
 
-  const followBtnBgColor = followState ? colors.read : colors.follow;
-  const followBtnHoverBgColor = followState
+  const followBtnBgColor = isFollower ? colors.read : colors.follow;
+  const followBtnHoverBgColor = isFollower
     ? 'rgba(0, 149, 246, 0.7)'
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
 
-  /**
-   * 상위 컴포넌트로 바뀔 follow 상태와 userId를 넘기는 함수
-   * @param id userId
-   */
   const handleFollowClick = (id: string) => {
-    setFollowState(!isFollower);
     if (onFollowBtnClick) {
-      onFollowBtnClick(!isFollower, id, () => setFollowState(isFollower));
+      onFollowBtnClick(!isFollower, id);
     }
   };
 
-  /**
-   * 상위 컴포넌트로 바뀔 like 상태와 postId를 넘기는 함수
-   * @param id postId
-   */
   const handleClickLike = (targetPostId: string, targetAuthorId: string) => {
-    setLikeState(!likeState);
     if (onLikeIconClick) {
-      console.log(likeState);
-      onLikeIconClick(targetPostId, targetAuthorId, !likeState, () =>
-        setLikeState(likeState),
-      );
+      onLikeIconClick(targetPostId, targetAuthorId, !isLike);
     }
   };
 
@@ -100,12 +84,12 @@ const PostCard = ({
               hoverTextColor={followBtnTextColor}
               onClick={() => handleFollowClick(authorId)}
             >
-              {followState ? '팔로잉' : '팔로우'}
+              {isFollower ? '팔로잉' : '팔로우'}
             </Button>
           ) : null}
         </StyledProfileContainer>
         <Icon
-          name={likeState ? 'favorite' : 'favorite_border'}
+          name={isLike ? 'favorite' : 'favorite_border'}
           style={{ color: `${colors.alert}`, ...HeartIconStyle }}
           onClick={() => handleClickLike(postId, authorId)}
         />

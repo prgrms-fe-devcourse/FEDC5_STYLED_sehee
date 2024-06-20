@@ -28,6 +28,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': ['warn'],
     'import/no-cycle': 'off',
+    'no-underscore-dangle': 'off',
   },
   parserOptions: {
     ecmaVersion: 'latest',
