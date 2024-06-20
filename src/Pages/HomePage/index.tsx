@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 import { useTheme } from 'styled-components';
 import { MouseEvent, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
