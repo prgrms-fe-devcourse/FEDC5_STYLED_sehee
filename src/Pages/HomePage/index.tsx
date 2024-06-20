@@ -30,7 +30,6 @@ import { ChannelType } from '@/Types/ChannelType';
 import { NotificationTypeList } from '@/Types/Request';
 import Alert from '@/Components/Common/Alert';
 import NON_AUTH_USER from '@/Constants/nonAuthUser';
-import debounce from 'lodash/debounce';
 import {
   StyledCategoryList,
   StyledCategoryTitle,
@@ -68,15 +67,9 @@ const HomePage = () => {
     navigate(`/profile/${userId}`);
   };
 
-  /**
-   *
-   * @param e 채널 버튼 클릭 이벤트
-   * @returns eslint 에러때문에 반환, channelId 상태 업데이트
-   */
   const handleClickChannel = (e: MouseEvent<HTMLButtonElement>) => {
     const channelId = e.currentTarget.dataset.id;
 
-    // 다른 채널 클릭 시 무한 스크롤 쿼리 초기화
     if (channelId !== currentChannelId) {
       queryClient.removeQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
       queryClient.refetchQueries({ queryKey: [QUERY_KEYS.POST_BY_ID] });
@@ -85,10 +78,6 @@ const HomePage = () => {
     return channelId && setCurrentChannelId(channelId);
   };
 
-  /**
-   * 메인페이지 최초 접속 시 사용자 인증 여부 확인하고
-   * user 데이터를 스토어에 저장하는 useQuery 훅
-   */
   const { data: userObj, isLoading: isCheckAuthLoading } = useQuery({
     queryKey: [QUERY_KEYS.CHECK_AUTH],
     queryFn: checkAuth,
@@ -97,20 +86,13 @@ const HomePage = () => {
   useEffect(() => {
     if (!isCheckAuthLoading && userObj) setAuthUser(userObj);
   }, [isCheckAuthLoading, userObj, setAuthUser]);
-  /**
-   * 모든 채널을 fetch하는 useQuery 훅
-   */
-  const {
-    data: channelList,
-    isSuccess: isChannelListSuccess,
-    // isLoading: isChannelListLoading,
-  } = useQuery({
+
+  const { data: channelList, isSuccess: isChannelListSuccess } = useQuery({
     queryKey: [QUERY_KEYS.CHANNEL_LIST],
     queryFn: getChannels,
     enabled: !isCheckAuthLoading,
   });
 
-  // 채널명 배열
   const channelNameList = channelList
     ?.map((channel) => {
       if (Object.keys(channels).includes(channel.name)) {
@@ -119,12 +101,6 @@ const HomePage = () => {
       return channel.name;
     })
     .filter((channelName) => channelName);
-
-  /**
-   * 채널이 변경되면 해당 채널에 대한 포스트를 10개씩 불러오는 함수
-   * postOffeset이 10씩 증가하고 중복해서 포스트를 불러오지 않도록 가드 구현
-   * @param channelId 채널 ID
-   */
 
   const {
     hasNextPage,
@@ -153,126 +129,85 @@ const HomePage = () => {
     }
   }, [hasNextPage, inView, fetchNextPage]);
 
-  /**
-   * 채널 생성 모달 여는 함수
-   */
   const handleOpenCreateChannel = () => {
     navigate('/add-channel');
   };
 
-  /**
-   * 메인 페이지에서 포스트 Card의 좋아요 버튼 클릭 시 api 호출하는 함수
-   * @param id target postId
-   * @param newState 바뀔 좋아요 상태
-   */
-  const handleClickLike = debounce(
-    (
-      targetPostId: string,
-      targetAuthorId: string,
-      newState: boolean,
-      onErrorLike: () => void,
-    ) => {
-      if (!userObj || Object.keys(userObj).length === 0) {
-        setErrorMode('LIKE');
-        setIsAlertOpen(true);
+  const handleClickLike = (
+    targetPostId: string,
+    targetAuthorId: string,
+    newState: boolean,
+  ) => {
+    if (!userObj || Object.keys(userObj).length === 0) {
+      setErrorMode('LIKE');
+      setIsAlertOpen(true);
+      return;
+    }
+
+    if (newState) {
+      if (userObj.likes?.some(({ post }) => post === targetPostId)) {
         return;
       }
-
-      if (newState) {
-        if (userObj.likes?.some(({ post }) => post === targetPostId)) {
-          return;
-        }
-        likeById(targetPostId, {
-          onSuccess: (targetLikeData) => {
-            if (targetLikeData) {
-              createNotification({
-                notificationType: 'LIKE',
-                notificationTypeId: targetLikeData._id,
-                userId: targetAuthorId,
-                postId: targetLikeData.post,
-              });
-            }
-          },
-          onError: () => {
-            onErrorLike();
-          },
-        });
-      } else if (userObj) {
-        userObj.likes?.forEach(({ post, _id: likeId }) => {
-          if (post === targetPostId) {
-            disLikeById(likeId, {
-              onError: () => {
-                onErrorLike();
-              },
+      likeById(targetPostId, {
+        onSuccess: (targetLikeData) => {
+          if (targetLikeData) {
+            createNotification({
+              notificationType: 'LIKE',
+              notificationTypeId: targetLikeData._id,
+              userId: targetAuthorId,
+              postId: targetLikeData.post,
             });
           }
-        });
-      }
-    },
-    1000,
-    { leading: false, trailing: true },
-  );
+        },
+      });
+    } else if (userObj) {
+      userObj.likes?.forEach(({ post, _id: likeId }) => {
+        if (post === targetPostId) {
+          disLikeById(likeId);
+        }
+      });
+    }
+  };
 
-  /*
-   * 포스트 ID를 받아 해당 포스트 상세 모달 중첩 라우팅해주는 함수
-   * @param postId 포스트 ID
-   */
   const handleClickPostImage = (postId: string) => {
     navigate(`/modal-detail/${postId}`);
   };
 
-  /**
-   * follow api 연동 함수
-   */
-  const handleFollowClick = debounce(
-    (
-      nextFollowState: boolean,
-      targetUserId: string,
-      onErrorFollow: () => void,
-    ) => {
-      if (Object.keys(authUser).length === 0) {
-        setErrorMode('FOLLOW');
-        setIsAlertOpen(true);
-        return;
-      }
-      if (nextFollowState) {
-        if (authUser.following?.some(({ _id }) => targetUserId === _id)) return;
-        followByUserId(targetUserId, {
-          onSuccess: (targetFollowData) => {
-            if (targetFollowData) {
-              createNotification({
-                notificationType: 'FOLLOW',
-                notificationTypeId: targetFollowData._id,
-                userId: targetUserId,
-                postId: null,
-              });
-            }
-          },
-          onError: () => {
-            onErrorFollow();
-          },
-        });
-      } else if (authUser) {
-        authUser.following?.forEach(({ user, _id: followId }) => {
-          if (user === targetUserId) {
-            unfollowByUserId(followId, {
-              onError: () => {
-                onErrorFollow();
-              },
+  const handleFollowClick = (
+    nextFollowState: boolean,
+    targetUserId: string,
+  ) => {
+    if (Object.keys(authUser).length === 0) {
+      setErrorMode('FOLLOW');
+      setIsAlertOpen(true);
+      return;
+    }
+    if (nextFollowState) {
+      if (authUser.following?.some(({ _id }) => targetUserId === _id)) return;
+      followByUserId(targetUserId, {
+        onSuccess: (targetFollowData) => {
+          if (targetFollowData) {
+            createNotification({
+              notificationType: 'FOLLOW',
+              notificationTypeId: targetFollowData._id,
+              userId: targetUserId,
+              postId: null,
             });
           }
-        });
-      }
-    },
-    1000,
-    { leading: false, trailing: true },
-  );
+        },
+      });
+    } else if (authUser) {
+      authUser.following?.forEach(({ user, _id: followId }) => {
+        if (user === targetUserId) {
+          unfollowByUserId(followId);
+        }
+      });
+    }
+  };
 
   return (
     <>
-      {/* Header 컴포넌트 있다고 가정 */}
       <StyledHeaderContainer />
-      {/* 모바일 카테고리 드롭다운 */}
       {isMobileSize && (
         <StyledDropDown>
           <DropDown
@@ -294,7 +229,6 @@ const HomePage = () => {
         <StyledLeftContainer>
           <StyledCategoryTitleContainer>
             <StyledCategoryTitle>Category</StyledCategoryTitle>
-            {/* 카테고리 채널 추가 버튼 */}
             {authUser.role === 'SuperAdmin' && (
               <Button
                 width={size.large}
@@ -315,7 +249,6 @@ const HomePage = () => {
               </Button>
             )}
           </StyledCategoryTitleContainer>
-          {/* 채널 버튼 리스트 */}
           <StyledCategoryList>
             {channelList?.map((channel) => {
               return (
@@ -346,7 +279,6 @@ const HomePage = () => {
           </StyledCategoryList>
         </StyledLeftContainer>
         <StyledMainContentContainer>
-          {/* 포스트 카드 리스트 */}
           <StyledPostCardList>
             {currentChannelId === '' && (
               <StyledNoPost>카테고리를 선택해주세요!</StyledNoPost>
@@ -365,7 +297,10 @@ const HomePage = () => {
                       authorId={post.author._id}
                       authorThumbnail={post.author.image || ''}
                       isFollower={post.author.followers.some((follower) =>
-                        authUser.following?.some(({ _id }) => _id === follower),
+                        userObj?.following?.some(
+                          ({ _id }) =>
+                            _id === follower || follower === 'OptimisticId',
+                        ),
                       )}
                       isLike={
                         authUser &&
