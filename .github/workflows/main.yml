@@ -26,4 +26,4 @@ jobs:
           folder: dist
           bucket: ${{ secrets.AWS_S3_BUCKET_NAME }}
           dist-id: ${{ secrets.AWS_CLOUDFRONT_ID }}
-          invalidation: /*
+          invalidation: / *
