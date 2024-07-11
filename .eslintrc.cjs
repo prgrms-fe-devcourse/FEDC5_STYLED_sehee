@@ -16,6 +16,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint', 'react-hooks', 'prettier'],
   rules: {
+    'import/no-extraneous-dependencies': 'off',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
@@ -27,6 +28,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': ['warn'],
     'import/no-cycle': 'off',
+    'no-underscore-dangle': 'off',
   },
   parserOptions: {
     ecmaVersion: 'latest',

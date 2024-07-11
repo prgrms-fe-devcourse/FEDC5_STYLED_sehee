@@ -3,25 +3,21 @@ import { useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from '@/Hooks';
 
-import StyledForm from './style';
 import SignUpButton from '@/Components/Base/Button';
 import Input from '@/Components/Base/Input';
-import validateSignUp from './validateSignUp';
 import Spinner from '@/Components/Base/Spinner';
 
 import ERROR_MESSAGES from '@/Constants/Message';
 import { signUp, login } from '@/Services/Auth';
 import { PostSignUpRequestType } from '@/Types/Request';
+import validateSignUp from './validateSignUp';
+import StyledForm from './style';
 import { Props } from './type';
 
 const SignUpForm = ({ onSuccessCallback, onErrorCallback }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { colors, size } = useTheme();
 
-  /**
-   * @brief 회원가입 폼을 제출할 경우 처리되는 Mutation입니다.
-   * @brief 입력받은 Form 데이터를 바탕으로 회원가입, 로그인, 홈 이동을 순차적으로 처리합니다.
-   */
   const { mutate, status } = useMutation({
     mutationFn: (signUpFormData: PostSignUpRequestType) =>
       signUp(signUpFormData),

@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
-import { PostCardProps } from './type';
+import Icon from '@/Components/Base/Icon';
+import Button from '@/Components/Base/Button';
+import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 import {
   StyledPostCardWrapper,
   StyledPostCardHeader,
@@ -12,9 +14,7 @@ import {
   StyledPostCardTitle,
   StyledPostCardImage,
 } from './style';
-import Icon from '@/Components/Base/Icon';
-import Button from '@/Components/Base/Button';
-import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
+import { PostCardProps } from './type';
 
 const PostCard = ({
   postId,
@@ -43,22 +43,16 @@ const PostCard = ({
     : 'rgba(119, 82, 254, 0.7)';
   const followBtnTextColor = colors.buttonText;
 
-  /**
-   * 상위 컴포넌트로 바뀔 follow 상태와 userId를 넘기는 함수
-   * @param id userId
-   */
   const handleFollowClick = (id: string) => {
-    return onFollowBtnClick && onFollowBtnClick(!isFollower, id);
+    if (onFollowBtnClick) {
+      onFollowBtnClick(!isFollower, id);
+    }
   };
 
-  /**
-   * 상위 컴포넌트로 바뀔 like 상태와 postId를 넘기는 함수
-   * @param id postId
-   */
   const handleClickLike = (targetPostId: string, targetAuthorId: string) => {
-    return (
-      onLikeIconClick && onLikeIconClick(targetPostId, targetAuthorId, !isLike)
-    );
+    if (onLikeIconClick) {
+      onLikeIconClick(targetPostId, targetAuthorId, !isLike);
+    }
   };
 
   return (

@@ -28,7 +28,12 @@ const UserManager = () => {
   const { data: searchUserList, isLoading: searchIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.SEARCH_USER_LIST, values.userName],
     queryFn: () => searchUsers(values.userName),
-    enabled: !!values.userName && !errors.userName && !isMobileSize,
+    enabled:
+      !!values.userName &&
+      !errors.userName &&
+      !isMobileSize &&
+      /^[가-힣a-zA-Z0-9]+$/.test(values.userName),
+    staleTime: 5 * 60 * 1000,
   });
 
   const { data: onlineUserList, isLoading: allUserIsLoading } = useQuery({
@@ -58,7 +63,7 @@ const UserManager = () => {
 
   const handleSearchChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
     handleOnChange(e);
-  }, 300);
+  }, 400);
 
   const loadMoreUsers = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
