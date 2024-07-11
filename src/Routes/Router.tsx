@@ -1,6 +1,6 @@
-import Spinner from '@/Components/Base/Spinner';
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Spinner from '@/Components/Base/Spinner';
 
 const DetailPage = lazy(() => import('@/Pages/DetailPage'));
 const HomePage = lazy(() => import('@/Pages/HomePage'));
