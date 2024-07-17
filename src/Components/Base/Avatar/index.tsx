@@ -1,7 +1,8 @@
-import { ForwardedRef, forwardRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { AvatarProp } from './type';
 import { StyledImage, StyledAvatar, StyledWrapper } from './style';
+import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 
 const Avatar = forwardRef(
   (
@@ -24,12 +25,11 @@ const Avatar = forwardRef(
       rootMargin: '50px 0px',
     });
 
-    if (inView && !loadedSrc) {
-      setLoadedSrc(
-        src ||
-          'https://user-images.githubusercontent.com/17202261/101670093-195d9180-3a96-11eb-9bd4-9f31cbe44aea.png',
-      );
-    }
+    useEffect(() => {
+      if (inView) {
+        setLoadedSrc(src || DEFAULT_USER_IMAGE_SRC);
+      }
+    }, [inView]);
 
     return (
       <StyledWrapper
