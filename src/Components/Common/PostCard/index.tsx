@@ -1,13 +1,10 @@
-/* eslint-disable no-underscore-dangle */
 import { useTheme } from 'styled-components';
 import Icon from '@/Components/Base/Icon';
 import Button from '@/Components/Base/Button';
-import DEFAULT_USER_IMAGE_SRC from '@/Constants/defaultUserImage';
 import {
   StyledPostCardWrapper,
   StyledPostCardHeader,
   StyledPostCardBody,
-  StyledProfileAvatar,
   StyledProfileName,
   StyledProfileContainer,
   HeartIconStyle,
@@ -15,6 +12,9 @@ import {
   StyledPostCardImage,
 } from './style';
 import { PostCardProps } from './type';
+import Avatar from '@/Components/Base/Avatar';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const PostCard = ({
   postId,
@@ -36,6 +36,18 @@ const PostCard = ({
   onLikeIconClick,
 }: PostCardProps) => {
   const { colors } = useTheme();
+
+  const [loadedSrc, setLoadedSrc] = useState('');
+  const { ref: inViewRef, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: '50px 0px',
+  });
+
+  useEffect(() => {
+    if (inView) {
+      setLoadedSrc(imageUrl);
+    }
+  }, [inView]);
 
   const followBtnBgColor = isFollower ? colors.read : colors.follow;
   const followBtnHoverBgColor = isFollower
@@ -62,10 +74,10 @@ const PostCard = ({
     >
       <StyledPostCardHeader>
         <StyledProfileContainer>
-          {/* 아바타 컴포넌트 삽입 필요 */}
-          <StyledProfileAvatar
-            src={authorThumbnail || DEFAULT_USER_IMAGE_SRC}
-            alt="프로필 아바타"
+          <Avatar
+            src={authorThumbnail || ''}
+            className="user-avatar"
+            size={40}
             onClick={onUserAvatarClick}
           />
           <StyledProfileName onClick={onUserNameClick}>
@@ -95,9 +107,12 @@ const PostCard = ({
         />
       </StyledPostCardHeader>
       <StyledPostCardTitle>{content}</StyledPostCardTitle>
-      <StyledPostCardBody onClick={onImageClick}>
+      <StyledPostCardBody
+        ref={inViewRef}
+        onClick={onImageClick}
+      >
         <StyledPostCardImage
-          src={imageUrl}
+          src={loadedSrc}
           alt="포스트 카드 이미지"
           $objectFit={objectFit}
         />

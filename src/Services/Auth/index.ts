@@ -67,10 +67,8 @@ export const logout = async () => {
 export const checkAuth = async () => {
   try {
     const res = await axiosAuthInstance.get<UserType>(DOMAIN.AUTH_USER);
-
     return res.data;
   } catch (e) {
-    handleError(e);
     return null;
   }
 };

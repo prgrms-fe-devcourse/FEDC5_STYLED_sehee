@@ -89,7 +89,9 @@ const HomePage = () => {
   const { data: channelList, isSuccess: isChannelListSuccess } = useQuery({
     queryKey: [QUERY_KEYS.CHANNEL_LIST],
     queryFn: getChannels,
-    enabled: !isCheckAuthLoading,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    meta: { persist: true },
   });
 
   const channelNameList = channelList
@@ -118,8 +120,7 @@ const HomePage = () => {
     getNextPageParam: (lastPage, allPages) => {
       return lastPage?.length !== 0 ? allPages.length * 10 : undefined;
     },
-    enabled:
-      !isCheckAuthLoading && isChannelListSuccess && currentChannelId !== '',
+    enabled: isChannelListSuccess && currentChannelId !== '',
   });
 
   useEffect(() => {

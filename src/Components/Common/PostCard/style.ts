@@ -33,12 +33,6 @@ export const StyledProfileContainer = styled.div`
   color: ${({ theme }) => theme.colors.textReverse};
 `;
 
-export const StyledProfileAvatar = styled.img`
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-`;
-
 export const StyledProfileName = styled.span`
   cursor: pointer;
 `;
